@@ -10,16 +10,16 @@ import java.util.List;
  * @author Andrii Kopp
  */
 public class FunctionalModelOptimization {
-	private int[][] arrows;
-	private double[] weights;
-	private int[][] tunnels;
-	private int[][] changes;
-
 	/**
 	 * Default amount of IDEF0 arrow types (input, output, control, mechanism,
 	 * call)
 	 */
 	private static final int ARROW_TYPES_LENGTH = 5;
+
+	private int[][] arrows;
+	private double[] weights;
+	private int[][] tunnels;
+	private int[][] changes;
 
 	/**
 	 * Initializes instance state with specified matrices and array, which
