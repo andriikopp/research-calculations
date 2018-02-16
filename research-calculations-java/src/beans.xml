@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="appProperties" class="bp.AppProperties">
+		<property name="properties">
+			<props>
+				<prop key="triplestorePath">triplestore/</prop>
+				<prop key="defaultModelFileExtName">N-Triples (.nt)</prop>
+				<prop key="defaultModelFileName">model.nt</prop>
+				<prop key="messageEmptySet">The set of statements is empty!</prop>
+				<prop key="buttonClear">Clear All</prop>
+				<prop key="buttonSave">Save Description</prop>
+				<prop key="buttonAdd">Add Statement</prop>
+				<prop key="labelObject">Object</prop>
+				<prop key="labelSubject">Subject</prop>
+				<prop key="windowTitle">New Business Process Model Description (RDF)</prop>
+				<prop key="errEmpty">Subject and object shouldn't be empty strings!</prop>
+				<prop key="errSpaces">Subject and object shouldn't contain spaces!</prop>
+				<prop key="errLetters">Subject and object should contain only letters!
+				</prop>
+				<prop key="errExistsStatement">This statement is already exists!</prop>
+				<prop key="errSaving">Current set of statements can't be saved!</prop>
+			</props>
+		</property>
+	</bean>
+</beans>
