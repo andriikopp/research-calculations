@@ -18,10 +18,14 @@
 				<prop key="windowTitle">New Business Process Model Description (RDF)</prop>
 				<prop key="errEmpty">Subject and object shouldn't be empty strings!</prop>
 				<prop key="errSpaces">Subject and object shouldn't contain spaces!</prop>
-				<prop key="errLetters">Subject and object should contain only letters!
+				<prop key="errLetters">Subject and object should contain only letters and
+					numbers!
 				</prop>
 				<prop key="errExistsStatement">This statement is already exists!</prop>
 				<prop key="errSaving">Current set of statements can't be saved!</prop>
+				<prop key="chckbxDeclareFlowObject">Declare Flow Object</prop>
+				<prop key="resourceValidationRule">[A-Za-z0-9]*</prop>
+				<prop key="rdfFormat">N-TRIPLES</prop>
 			</props>
 		</property>
 	</bean>
