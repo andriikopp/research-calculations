@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -28,6 +30,7 @@ public class RDFStatementsContainer {
 	private static final String ERR_LETTERS = AppProperties.INSTANCE.getProperty("errLetters");
 	private static final String ERR_SPACES = AppProperties.INSTANCE.getProperty("errSpaces");
 	private static final String ERR_EMPTY = AppProperties.INSTANCE.getProperty("errEmpty");
+	private static final String ERR_UNDEFINED_RESOURCE = AppProperties.INSTANCE.getProperty("errResource");
 
 	private static final String URI_BASE_BPMODEL = "http://process-model.org/bpmodel/";
 	private static final String URI_BASE_RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
@@ -36,9 +39,11 @@ public class RDFStatementsContainer {
 	private static final String URI_BASE_RDF_PREFIX = "rdf:";
 
 	private Model model;
+	private Map<String, String> declaredResources;
 
 	public RDFStatementsContainer() {
 		this.model = ModelFactory.createDefaultModel();
+		this.declaredResources = new HashMap<String, String>();
 	}
 
 	/**
@@ -69,8 +74,17 @@ public class RDFStatementsContainer {
 		Resource objectResource = model.createResource(URI_BASE_BPMODEL + object);
 
 		if (property.equals(RDF_TYPE)) {
+			declaredResources.put(subject, object);
 			_property = model.createProperty(URI_BASE_RDF + property);
 		} else {
+			if (!declaredResources.containsKey(subject) || !declaredResources.containsKey(object)) {
+				throw new RuntimeException(ERR_UNDEFINED_RESOURCE);
+			}
+
+			BPModelValidator validator = new BPModelValidator(declaredResources);
+			validator.validateSubject(subject, property);
+			validator.validateObject(object, property);
+
 			_property = model.createProperty(URI_BASE_BPMODEL + property);
 		}
 
@@ -135,5 +149,6 @@ public class RDFStatementsContainer {
 	 */
 	public void clearStatements() {
 		model.removeAll();
+		declaredResources.clear();
 	}
 }
