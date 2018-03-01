@@ -1,4 +1,4 @@
-package bp.idef0;
+package bp.analysis;
 
 import static org.junit.Assert.assertEquals;
 
