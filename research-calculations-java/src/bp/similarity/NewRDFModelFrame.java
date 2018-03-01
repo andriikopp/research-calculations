@@ -23,7 +23,13 @@ import javax.swing.JCheckBox;
 import javax.swing.DefaultComboBoxModel;
 
 public class NewRDFModelFrame extends JFrame {
-	private static final String[] FLOW_OBJECT_TYPES = new String[] { "Activity", "SubProcess", "Gateway", "Event" };
+	private static final String[] PREDICATE_PROPERTIES = new String[] { BPModelValidator.PR_TRIGGERS,
+			BPModelValidator.PR_USED_BY, BPModelValidator.PR_EXECUTES, BPModelValidator.PR_IS_INPUT_FOR,
+			BPModelValidator.PR_IS_OUTPUT_OF, BPModelValidator.PR_MEASURES };
+	private static final String[] RESOURCE_TYPES = new String[] { BPModelValidator.RES_FUNCTION,
+			BPModelValidator.RES_PROCESS, BPModelValidator.RES_GATEWAY, BPModelValidator.RES_EVENT,
+			BPModelValidator.RES_ROLE, BPModelValidator.RES_DEPARTMENT, BPModelValidator.RES_SUPPORTING_SYSTEM,
+			BPModelValidator.RES_BUSINESS_OBJECT, BPModelValidator.RES_KPI };
 	private static final String BUTTON_CLEAR = AppProperties.INSTANCE.getProperty("buttonClear");
 	private static final String DEFAULT_MODEL_EXT_NAME = AppProperties.INSTANCE.getProperty("defaultModelFileExtName");
 	private static final String DEFAULT_MODEL_FILE_NAME = AppProperties.INSTANCE.getProperty("defaultModelFileName");
@@ -36,7 +42,6 @@ public class NewRDFModelFrame extends JFrame {
 	private static final String WINDOW_TITLE = AppProperties.INSTANCE.getProperty("windowTitle");
 	private static final String CHCKBX_DECLARE_FLOW_OBJECT = AppProperties.INSTANCE
 			.getProperty("chckbxDeclareFlowObject");
-	private static final String PROPERTY_CONNECTING_OBJECT = "ConnectingObject";
 	private static final String PROPERTY_TYPE = "type";
 
 	private static final long serialVersionUID = 1L;
@@ -88,27 +93,37 @@ public class NewRDFModelFrame extends JFrame {
 		textFieldSubject.setColumns(10);
 
 		textFieldObject = new JTextField();
-		textFieldObject.setBounds(106, 39, 220, 20);
+		textFieldObject.setBounds(106, 70, 220, 20);
 		contentPane.add(textFieldObject);
 		textFieldObject.setColumns(10);
 		textFieldObject.setEnabled(false);
 
 		JLabel lblObject = new JLabel(LABEL_OBJECT);
-		lblObject.setBounds(10, 42, 86, 14);
+		lblObject.setBounds(10, 73, 86, 14);
 		contentPane.add(lblObject);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 104, 504, 214);
+		scrollPane.setBounds(10, 135, 504, 183);
 		contentPane.add(scrollPane);
 
 		final JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(FLOW_OBJECT_TYPES));
-		comboBox.setBounds(336, 39, 178, 20);
-		contentPane.add(comboBox);
+		JComboBox flowObjectComboBox = new JComboBox();
+		flowObjectComboBox.setModel(new DefaultComboBoxModel(RESOURCE_TYPES));
+		flowObjectComboBox.setBounds(336, 70, 178, 20);
+		contentPane.add(flowObjectComboBox);
+
+		JComboBox predicateComboBox = new JComboBox();
+		predicateComboBox.setModel(new DefaultComboBoxModel(PREDICATE_PROPERTIES));
+		predicateComboBox.setBounds(106, 39, 220, 20);
+		contentPane.add(predicateComboBox);
+		predicateComboBox.setEnabled(false);
+
+		JLabel lblPredicate = new JLabel("Predicate");
+		lblPredicate.setBounds(10, 42, 86, 14);
+		contentPane.add(lblPredicate);
 
 		JCheckBox chckbxDeclareFlowObject = new JCheckBox(CHCKBX_DECLARE_FLOW_OBJECT);
 		chckbxDeclareFlowObject.addMouseListener(new MouseAdapter() {
@@ -116,10 +131,12 @@ public class NewRDFModelFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (chckbxDeclareFlowObject.isSelected()) {
 					textFieldObject.setEnabled(false);
-					comboBox.setEnabled(true);
+					predicateComboBox.setEnabled(false);
+					flowObjectComboBox.setEnabled(true);
 				} else {
 					textFieldObject.setEnabled(true);
-					comboBox.setEnabled(false);
+					predicateComboBox.setEnabled(true);
+					flowObjectComboBox.setEnabled(false);
 				}
 			}
 		});
@@ -137,9 +154,9 @@ public class NewRDFModelFrame extends JFrame {
 
 				if (chckbxDeclareFlowObject.isSelected()) {
 					property = PROPERTY_TYPE;
-					object = comboBox.getSelectedItem().toString();
+					object = flowObjectComboBox.getSelectedItem().toString();
 				} else {
-					property = PROPERTY_CONNECTING_OBJECT;
+					property = predicateComboBox.getSelectedItem().toString();
 					object = textFieldObject.getText();
 				}
 
@@ -155,7 +172,7 @@ public class NewRDFModelFrame extends JFrame {
 				}
 			}
 		});
-		btnAddStatement.setBounds(106, 70, 130, 23);
+		btnAddStatement.setBounds(106, 101, 130, 23);
 		contentPane.add(btnAddStatement);
 
 		JButton btnSaveDescription = new JButton(BUTTON_SAVE);
