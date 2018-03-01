@@ -15,15 +15,18 @@
 				<prop key="buttonAdd">Add Statement</prop>
 				<prop key="labelObject">Object</prop>
 				<prop key="labelSubject">Subject</prop>
-				<prop key="windowTitle">New Business Process Model Description (RDF)</prop>
+				<prop key="windowTitle">New Business Process Model RDF Description</prop>
 				<prop key="errEmpty">Subject and object shouldn't be empty strings!</prop>
 				<prop key="errSpaces">Subject and object shouldn't contain spaces!</prop>
 				<prop key="errLetters">Subject and object should contain only letters and
 					numbers!
 				</prop>
+				<prop key="errResource">Subject and object should be declared as resources!
+				</prop>
 				<prop key="errExistsStatement">This statement is already exists!</prop>
 				<prop key="errSaving">Current set of statements can't be saved!</prop>
-				<prop key="chckbxDeclareFlowObject">Declare Flow Object</prop>
+				<prop key="errInvalidStatement">Invalid statement!</prop>
+				<prop key="chckbxDeclareFlowObject">Declare Resource</prop>
 				<prop key="resourceValidationRule">[A-Za-z0-9]*</prop>
 				<prop key="rdfFormat">N-TRIPLES</prop>
 			</props>
