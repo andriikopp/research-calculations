@@ -1,4 +1,4 @@
-package bp.similarity;
+package bp.storing;
 
 import java.io.File;
 import java.io.FileWriter;

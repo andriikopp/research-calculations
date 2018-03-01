@@ -1,4 +1,4 @@
-package bp.similarity;
+package bp.storing;
 
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
@@ -22,7 +22,12 @@ import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 import javax.swing.DefaultComboBoxModel;
 
-public class NewRDFModelFrame extends JFrame {
+/**
+ * Form provides business process models storing.
+ * 
+ * @author Andrii Kopp
+ */
+public class BPModelStoringFrame extends JFrame {
 	private static final String[] PREDICATE_PROPERTIES = new String[] { BPModelValidator.PR_TRIGGERS,
 			BPModelValidator.PR_USED_BY, BPModelValidator.PR_EXECUTES, BPModelValidator.PR_IS_INPUT_FOR,
 			BPModelValidator.PR_IS_OUTPUT_OF, BPModelValidator.PR_MEASURES };
@@ -59,7 +64,7 @@ public class NewRDFModelFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NewRDFModelFrame frame = new NewRDFModelFrame();
+					BPModelStoringFrame frame = new BPModelStoringFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -71,7 +76,7 @@ public class NewRDFModelFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NewRDFModelFrame() {
+	public BPModelStoringFrame() {
 		setResizable(false);
 		rdfContainer = new RDFStatementsContainer();
 
