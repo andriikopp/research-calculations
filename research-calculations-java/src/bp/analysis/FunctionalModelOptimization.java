@@ -1,4 +1,4 @@
-package bp.idef0;
+package bp.analysis;
 
 import java.util.ArrayList;
 import java.util.List;

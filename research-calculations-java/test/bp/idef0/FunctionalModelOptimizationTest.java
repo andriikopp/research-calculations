@@ -7,6 +7,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import bp.analysis.FunctionalModelOptimization;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FunctionalModelOptimizationTest {
 	private static FunctionalModelOptimization optimization;
