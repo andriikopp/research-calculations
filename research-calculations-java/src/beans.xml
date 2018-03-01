@@ -15,7 +15,7 @@
 				<prop key="buttonAdd">Add Statement</prop>
 				<prop key="labelObject">Object</prop>
 				<prop key="labelSubject">Subject</prop>
-				<prop key="windowTitle">New Business Process Model RDF Description</prop>
+				<prop key="windowTitle">Business Process Models Storing</prop>
 				<prop key="errEmpty">Subject and object shouldn't be empty strings!</prop>
 				<prop key="errSpaces">Subject and object shouldn't contain spaces!</prop>
 				<prop key="errLetters">Subject and object should contain only letters and
