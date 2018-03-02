@@ -6,7 +6,7 @@
 	<bean id="appProperties" class="bp.AppProperties">
 		<property name="properties">
 			<props>
-				<prop key="triplestorePath">triplestore/</prop>
+				<prop key="triplestorePath">models/</prop>
 				<prop key="defaultModelFileExtName">N-Triples (.nt)</prop>
 				<prop key="defaultModelFileName">model.nt</prop>
 				<prop key="messageEmptySet">The set of statements is empty!</prop>
