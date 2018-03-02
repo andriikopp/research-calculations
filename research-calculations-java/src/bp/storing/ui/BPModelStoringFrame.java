@@ -187,21 +187,25 @@ public class BPModelStoringFrame extends JFrame {
 		btnSaveDescription.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (rdfContainer.getStatements().isEmpty()) {
-					JOptionPane.showMessageDialog(null, MESSAGE_EMPTY_SET);
-				} else {
-					JFileChooser saveFileDialog = new JFileChooser();
+				try {
+					if (rdfContainer.getStatements().isEmpty()) {
+						JOptionPane.showMessageDialog(null, MESSAGE_EMPTY_SET);
+					} else {
+						JFileChooser saveFileDialog = new JFileChooser();
 
-					saveFileDialog.setCurrentDirectory(new File(TRIPLESTORE_PATH));
-					saveFileDialog.setSelectedFile(new File(DEFAULT_MODEL_FILE_NAME));
-					saveFileDialog.setFileFilter(new FileNameExtensionFilter(DEFAULT_MODEL_EXT_NAME, "nt"));
+						saveFileDialog.setCurrentDirectory(new File(TRIPLESTORE_PATH));
+						saveFileDialog.setSelectedFile(new File(DEFAULT_MODEL_FILE_NAME));
+						saveFileDialog.setFileFilter(new FileNameExtensionFilter(DEFAULT_MODEL_EXT_NAME, "nt"));
 
-					int result = saveFileDialog.showSaveDialog(null);
+						int result = saveFileDialog.showSaveDialog(null);
 
-					if (result == JFileChooser.APPROVE_OPTION) {
-						File targetFile = saveFileDialog.getSelectedFile();
-						rdfContainer.saveStatements(targetFile);
+						if (result == JFileChooser.APPROVE_OPTION) {
+							File targetFile = saveFileDialog.getSelectedFile();
+							rdfContainer.saveStatements(targetFile);
+						}
 					}
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}
 			}
 		});
