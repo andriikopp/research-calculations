@@ -2,8 +2,6 @@ package bp;
 
 import java.util.Properties;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 /**
  * Provides access to the application properties.
  * 
@@ -12,8 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class AppProperties {
 	private Properties properties;
 
-	public static final AppProperties INSTANCE = (AppProperties) new ClassPathXmlApplicationContext("beans.xml")
-			.getBean("appProperties");
+	public static final AppProperties INSTANCE = (AppProperties) AppContext.CONTEXT.getBean("appProperties");
 
 	/**
 	 * Returns value of the property according to the specified key.
