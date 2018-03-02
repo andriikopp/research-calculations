@@ -1,4 +1,4 @@
-package bp.storing;
+package bp.storing.ui;
 
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
@@ -18,6 +18,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import bp.AppProperties;
+import bp.storing.BPModelValidator;
+import bp.storing.RDFStatementsContainer;
+
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 import javax.swing.DefaultComboBoxModel;
