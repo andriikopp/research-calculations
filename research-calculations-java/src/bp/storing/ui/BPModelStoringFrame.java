@@ -64,7 +64,7 @@ public class BPModelStoringFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextField textFieldSubject;
 	private JTextField textFieldObject;
-	private JTextField textField;
+	private JTextField textFieldProcessName;
 
 	/**
 	 * Launch the application.
@@ -138,6 +138,36 @@ public class BPModelStoringFrame extends JFrame {
 		JLabel lblPredicate = new JLabel(LABEL_PREDICATE);
 		lblPredicate.setBounds(10, 42, 86, 14);
 		contentPane.add(lblPredicate);
+
+		JLabel lblSelectProcess = new JLabel(LABEL_SELECT_PROCESS);
+		lblSelectProcess.setBounds(10, 332, 130, 14);
+		contentPane.add(lblSelectProcess);
+
+		JComboBox selectProcessComboBox = new JComboBox();
+		selectProcessComboBox.setBounds(150, 329, 364, 20);
+		contentPane.add(selectProcessComboBox);
+
+		textFieldProcessName = new JTextField();
+		textFieldProcessName.setBounds(150, 383, 364, 20);
+		contentPane.add(textFieldProcessName);
+		textFieldProcessName.setColumns(10);
+		textFieldProcessName.setEnabled(false);
+
+		JLabel lblProcessName = new JLabel(LABEL_PROCESS_NAME);
+		lblProcessName.setBounds(10, 386, 130, 14);
+		contentPane.add(lblProcessName);
+
+		JScrollPane processDescrScrollPane = new JScrollPane();
+		processDescrScrollPane.setBounds(150, 414, 364, 52);
+		contentPane.add(processDescrScrollPane);
+
+		JTextArea processDescrTextArea = new JTextArea();
+		processDescrScrollPane.setViewportView(processDescrTextArea);
+		processDescrTextArea.setEnabled(false);
+
+		JLabel lblProcessDescription = new JLabel(LABEL_PROCESS_DESCR);
+		lblProcessDescription.setBounds(10, 415, 130, 14);
+		contentPane.add(lblProcessDescription);
 
 		JCheckBox chckbxDeclareFlowObject = new JCheckBox(CHCKBX_DECLARE_FLOW_OBJECT);
 		chckbxDeclareFlowObject.addMouseListener(new MouseAdapter() {
@@ -229,36 +259,22 @@ public class BPModelStoringFrame extends JFrame {
 		btnClearAll.setBounds(150, 477, 100, 23);
 		contentPane.add(btnClearAll);
 
-		JLabel lblSelectProcess = new JLabel(LABEL_SELECT_PROCESS);
-		lblSelectProcess.setBounds(10, 332, 130, 14);
-		contentPane.add(lblSelectProcess);
-
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(150, 329, 364, 20);
-		contentPane.add(comboBox);
-
 		JCheckBox chckbxOrCreateNew = new JCheckBox(LABEL_NEW_PROCESS);
+		chckbxOrCreateNew.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (chckbxOrCreateNew.isSelected()) {
+					selectProcessComboBox.setEnabled(false);
+					textFieldProcessName.setEnabled(true);
+					processDescrTextArea.setEnabled(true);
+				} else {
+					selectProcessComboBox.setEnabled(true);
+					textFieldProcessName.setEnabled(false);
+					processDescrTextArea.setEnabled(false);
+				}
+			}
+		});
 		chckbxOrCreateNew.setBounds(10, 353, 200, 23);
 		contentPane.add(chckbxOrCreateNew);
-
-		textField = new JTextField();
-		textField.setBounds(150, 383, 364, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
-
-		JLabel lblProcessName = new JLabel(LABEL_PROCESS_NAME);
-		lblProcessName.setBounds(10, 386, 130, 14);
-		contentPane.add(lblProcessName);
-
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(150, 414, 364, 52);
-		contentPane.add(scrollPane_1);
-
-		JTextArea textArea_1 = new JTextArea();
-		scrollPane_1.setViewportView(textArea_1);
-
-		JLabel lblProcessDescription = new JLabel(LABEL_PROCESS_DESCR);
-		lblProcessDescription.setBounds(10, 415, 130, 14);
-		contentPane.add(lblProcessDescription);
 	}
 }
