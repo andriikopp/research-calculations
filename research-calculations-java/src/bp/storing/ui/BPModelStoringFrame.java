@@ -47,6 +47,11 @@ public class BPModelStoringFrame extends JFrame {
 	private static final String BUTTON_ADD = AppProperties.INSTANCE.getProperty("buttonAdd");
 	private static final String LABEL_OBJECT = AppProperties.INSTANCE.getProperty("labelObject");
 	private static final String LABEL_SUBJECT = AppProperties.INSTANCE.getProperty("labelSubject");
+	private static final String LABEL_PREDICATE = AppProperties.INSTANCE.getProperty("labelPredicate");
+	private static final String LABEL_SELECT_PROCESS = AppProperties.INSTANCE.getProperty("labelSelectProcess");
+	private static final String LABEL_NEW_PROCESS = AppProperties.INSTANCE.getProperty("labelNewProcess");
+	private static final String LABEL_PROCESS_NAME = AppProperties.INSTANCE.getProperty("labelProcessName");
+	private static final String LABEL_PROCESS_DESCR = AppProperties.INSTANCE.getProperty("labelProcessDescr");
 	private static final String WINDOW_TITLE = AppProperties.INSTANCE.getProperty("windowTitle");
 	private static final String CHCKBX_DECLARE_FLOW_OBJECT = AppProperties.INSTANCE
 			.getProperty("chckbxDeclareFlowObject");
@@ -59,6 +64,7 @@ public class BPModelStoringFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextField textFieldSubject;
 	private JTextField textFieldObject;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -85,7 +91,7 @@ public class BPModelStoringFrame extends JFrame {
 
 		setTitle(WINDOW_TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 540, 400);
+		setBounds(100, 100, 540, 540);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -129,7 +135,7 @@ public class BPModelStoringFrame extends JFrame {
 		contentPane.add(predicateComboBox);
 		predicateComboBox.setEnabled(false);
 
-		JLabel lblPredicate = new JLabel("Predicate");
+		JLabel lblPredicate = new JLabel(LABEL_PREDICATE);
 		lblPredicate.setBounds(10, 42, 86, 14);
 		contentPane.add(lblPredicate);
 
@@ -209,7 +215,7 @@ public class BPModelStoringFrame extends JFrame {
 				}
 			}
 		});
-		btnSaveDescription.setBounds(10, 327, 130, 23);
+		btnSaveDescription.setBounds(10, 477, 130, 23);
 		contentPane.add(btnSaveDescription);
 
 		JButton btnClearAll = new JButton(BUTTON_CLEAR);
@@ -220,7 +226,39 @@ public class BPModelStoringFrame extends JFrame {
 				rdfContainer.clearStatements();
 			}
 		});
-		btnClearAll.setBounds(150, 327, 100, 23);
+		btnClearAll.setBounds(150, 477, 100, 23);
 		contentPane.add(btnClearAll);
+
+		JLabel lblSelectProcess = new JLabel(LABEL_SELECT_PROCESS);
+		lblSelectProcess.setBounds(10, 332, 130, 14);
+		contentPane.add(lblSelectProcess);
+
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(150, 329, 364, 20);
+		contentPane.add(comboBox);
+
+		JCheckBox chckbxOrCreateNew = new JCheckBox(LABEL_NEW_PROCESS);
+		chckbxOrCreateNew.setBounds(10, 353, 200, 23);
+		contentPane.add(chckbxOrCreateNew);
+
+		textField = new JTextField();
+		textField.setBounds(150, 383, 364, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+
+		JLabel lblProcessName = new JLabel(LABEL_PROCESS_NAME);
+		lblProcessName.setBounds(10, 386, 130, 14);
+		contentPane.add(lblProcessName);
+
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(150, 414, 364, 52);
+		contentPane.add(scrollPane_1);
+
+		JTextArea textArea_1 = new JTextArea();
+		scrollPane_1.setViewportView(textArea_1);
+
+		JLabel lblProcessDescription = new JLabel(LABEL_PROCESS_DESCR);
+		lblProcessDescription.setBounds(10, 415, 130, 14);
+		contentPane.add(lblProcessDescription);
 	}
 }
