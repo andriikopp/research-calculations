@@ -15,6 +15,11 @@
 				<prop key="buttonAdd">Add Statement</prop>
 				<prop key="labelObject">Object</prop>
 				<prop key="labelSubject">Subject</prop>
+				<prop key="labelPredicate">Predicate</prop>
+				<prop key="labelSelectProcess">Select Process</prop>
+				<prop key="labelNewProcess">Or Create New Process</prop>
+				<prop key="labelProcessName">Process Name</prop>
+				<prop key="labelProcessDescr">Process Description</prop>
 				<prop key="windowTitle">Business Process Models Storing</prop>
 				<prop key="errEmpty">Subject and object shouldn't be empty strings!</prop>
 				<prop key="errSpaces">Subject and object shouldn't contain spaces!</prop>
