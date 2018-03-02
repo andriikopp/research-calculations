@@ -11,7 +11,7 @@
 				<prop key="defaultModelFileName">model.nt</prop>
 				<prop key="messageEmptySet">The set of statements is empty!</prop>
 				<prop key="buttonClear">Clear All</prop>
-				<prop key="buttonSave">Save Description</prop>
+				<prop key="buttonSave">Save Model</prop>
 				<prop key="buttonAdd">Add Statement</prop>
 				<prop key="labelObject">Object</prop>
 				<prop key="labelSubject">Subject</prop>
