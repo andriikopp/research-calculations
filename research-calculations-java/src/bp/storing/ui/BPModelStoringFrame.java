@@ -4,8 +4,12 @@ import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.UUID;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,13 +21,14 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import bp.AppContext;
 import bp.AppProperties;
 import bp.storing.BPModelValidator;
 import bp.storing.RDFStatementsContainer;
-
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
-import javax.swing.DefaultComboBoxModel;
+import bp.storing.dao.api.IModelDAO;
+import bp.storing.dao.api.IProcessDAO;
+import bp.storing.beans.Model;
+import bp.storing.beans.Process;
 
 /**
  * Form provides business process models storing.
@@ -60,6 +65,8 @@ public class BPModelStoringFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private RDFStatementsContainer rdfContainer;
+	private IProcessDAO processDAO = (IProcessDAO) AppContext.CONTEXT.getBean("processDAO");
+	private IModelDAO modelDAO = (IModelDAO) AppContext.CONTEXT.getBean("modelDAO");
 
 	private JPanel contentPane;
 	private JTextField textFieldSubject;
@@ -144,6 +151,7 @@ public class BPModelStoringFrame extends JFrame {
 		contentPane.add(lblSelectProcess);
 
 		JComboBox selectProcessComboBox = new JComboBox();
+		selectProcessComboBox.setModel(new DefaultComboBoxModel(processDAO.retrieve().toArray()));
 		selectProcessComboBox.setBounds(150, 329, 364, 20);
 		contentPane.add(selectProcessComboBox);
 
@@ -219,6 +227,24 @@ public class BPModelStoringFrame extends JFrame {
 		btnAddStatement.setBounds(106, 101, 130, 23);
 		contentPane.add(btnAddStatement);
 
+		JCheckBox chckbxOrCreateNew = new JCheckBox(LABEL_NEW_PROCESS);
+		chckbxOrCreateNew.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (chckbxOrCreateNew.isSelected()) {
+					selectProcessComboBox.setEnabled(false);
+					textFieldProcessName.setEnabled(true);
+					processDescrTextArea.setEnabled(true);
+				} else {
+					selectProcessComboBox.setEnabled(true);
+					textFieldProcessName.setEnabled(false);
+					processDescrTextArea.setEnabled(false);
+				}
+			}
+		});
+		chckbxOrCreateNew.setBounds(10, 353, 200, 23);
+		contentPane.add(chckbxOrCreateNew);
+
 		JButton btnSaveDescription = new JButton(BUTTON_SAVE);
 		btnSaveDescription.addMouseListener(new MouseAdapter() {
 			@Override
@@ -238,6 +264,26 @@ public class BPModelStoringFrame extends JFrame {
 						if (result == JFileChooser.APPROVE_OPTION) {
 							File targetFile = saveFileDialog.getSelectedFile();
 							rdfContainer.saveStatements(targetFile);
+
+							String processId = null;
+
+							if (chckbxOrCreateNew.isSelected()) {
+								processId = UUID.randomUUID().toString();
+
+								String processName = textFieldProcessName.toString();
+								String processDescr = processDescrTextArea.toString();
+
+								processDAO.store(new Process(processId, processName, processDescr));
+							} else {
+								String processName = selectProcessComboBox.getSelectedItem().toString();
+
+								processId = processDAO.retrieveByName(processName).getId();
+							}
+
+							String modelId = UUID.randomUUID().toString();
+							String fileName = targetFile.getName();
+
+							modelDAO.store(new Model(modelId, processId, fileName));
 						}
 					}
 				} catch (Exception ex) {
@@ -258,23 +304,5 @@ public class BPModelStoringFrame extends JFrame {
 		});
 		btnClearAll.setBounds(150, 477, 100, 23);
 		contentPane.add(btnClearAll);
-
-		JCheckBox chckbxOrCreateNew = new JCheckBox(LABEL_NEW_PROCESS);
-		chckbxOrCreateNew.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (chckbxOrCreateNew.isSelected()) {
-					selectProcessComboBox.setEnabled(false);
-					textFieldProcessName.setEnabled(true);
-					processDescrTextArea.setEnabled(true);
-				} else {
-					selectProcessComboBox.setEnabled(true);
-					textFieldProcessName.setEnabled(false);
-					processDescrTextArea.setEnabled(false);
-				}
-			}
-		});
-		chckbxOrCreateNew.setBounds(10, 353, 200, 23);
-		contentPane.add(chckbxOrCreateNew);
 	}
 }
