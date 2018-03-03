@@ -25,6 +25,7 @@ import bp.AppContext;
 import bp.AppProperties;
 import bp.storing.BPModelValidator;
 import bp.storing.RDFStatementsContainer;
+import bp.storing.StoringValidator;
 import bp.storing.dao.api.IModelDAO;
 import bp.storing.dao.api.IProcessDAO;
 import bp.storing.beans.Model;
@@ -270,8 +271,6 @@ public class BPModelStoringFrame extends JFrame {
 								throw new RuntimeException(ERR_MODEL_DUPLICATE);
 							}
 
-							rdfContainer.saveStatements(targetFile);
-
 							String processId = null;
 
 							if (chckbxOrCreateNew.isSelected()) {
@@ -284,7 +283,9 @@ public class BPModelStoringFrame extends JFrame {
 									throw new RuntimeException(ERR_PROCESS_DUPLICATE);
 								}
 
-								processDAO.store(new Process(processId, processName, processDescr));
+								Process process = new Process(processId, processName, processDescr);
+								StoringValidator.validateProcess(process);
+								processDAO.store(process);
 
 								selectProcessComboBox
 										.setModel(new DefaultComboBoxModel(processDAO.retrieve().toArray()));
@@ -297,7 +298,11 @@ public class BPModelStoringFrame extends JFrame {
 							String modelId = UUID.randomUUID().toString();
 							String fileName = targetFile.getName();
 
-							modelDAO.store(new Model(modelId, processId, fileName));
+							Model model = new Model(modelId, processId, fileName);
+							StoringValidator.validateModel(model);
+							modelDAO.store(model);
+
+							rdfContainer.saveStatements(targetFile);
 						}
 					}
 				} catch (Exception ex) {
