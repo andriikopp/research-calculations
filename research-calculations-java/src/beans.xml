@@ -34,11 +34,16 @@
 				<prop key="chckbxDeclareFlowObject">Declare Resource</prop>
 				<prop key="resourceValidationRule">[A-Za-z0-9]*</prop>
 				<prop key="rdfFormat">N-TRIPLES</prop>
+				<prop key="errProcessDuplicate">Process with that name is already exists!</prop>
 			</props>
 		</property>
 	</bean>
 	<bean id="processDAO" class="bp.storing.dao.jaccess.JaccessProcessDAO">
+		<property name="database" value="storage.accdb" />
+		<property name="table" value="Process" />
 	</bean>
 	<bean id="modelDAO" class="bp.storing.dao.jaccess.JaccessModelDAO">
+		<property name="database" value="storage.accdb" />
+		<property name="table" value="Model" />
 	</bean>
 </beans>
