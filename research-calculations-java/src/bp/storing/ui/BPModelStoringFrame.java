@@ -60,6 +60,8 @@ public class BPModelStoringFrame extends JFrame {
 	private static final String WINDOW_TITLE = AppProperties.INSTANCE.getProperty("windowTitle");
 	private static final String CHCKBX_DECLARE_FLOW_OBJECT = AppProperties.INSTANCE
 			.getProperty("chckbxDeclareFlowObject");
+	private static final String ERR_PROCESS_DUPLICATE = AppProperties.INSTANCE.getProperty("errProcessDuplicate");
+	private static final String ERR_MODEL_DUPLICATE = AppProperties.INSTANCE.getProperty("errModelDuplicate");
 	private static final String PROPERTY_TYPE = "type";
 
 	private static final long serialVersionUID = 1L;
@@ -263,6 +265,11 @@ public class BPModelStoringFrame extends JFrame {
 
 						if (result == JFileChooser.APPROVE_OPTION) {
 							File targetFile = saveFileDialog.getSelectedFile();
+
+							if (modelDAO.retrieveByName(targetFile.getName()) != null) {
+								throw new RuntimeException(ERR_MODEL_DUPLICATE);
+							}
+
 							rdfContainer.saveStatements(targetFile);
 
 							String processId = null;
@@ -270,10 +277,17 @@ public class BPModelStoringFrame extends JFrame {
 							if (chckbxOrCreateNew.isSelected()) {
 								processId = UUID.randomUUID().toString();
 
-								String processName = textFieldProcessName.toString();
-								String processDescr = processDescrTextArea.toString();
+								String processName = textFieldProcessName.getText();
+								String processDescr = processDescrTextArea.getText();
+
+								if (processDAO.retrieveByName(processName) != null) {
+									throw new RuntimeException(ERR_PROCESS_DUPLICATE);
+								}
 
 								processDAO.store(new Process(processId, processName, processDescr));
+
+								selectProcessComboBox
+										.setModel(new DefaultComboBoxModel(processDAO.retrieve().toArray()));
 							} else {
 								String processName = selectProcessComboBox.getSelectedItem().toString();
 
