@@ -36,6 +36,11 @@
 				<prop key="rdfFormat">N-TRIPLES</prop>
 				<prop key="errProcessDuplicate">Process with that name is already exists!</prop>
 				<prop key="errModelDuplicate">Model with that name is already exists!</prop>
+				<prop key="retrTitle">Business Process Models Retrieve</prop>
+				<prop key="retrFile">File</prop>
+				<prop key="retrStore">Store Model</prop>
+				<prop key="retrProcesses">Processes</prop>
+				<prop key="errInvalidData">Invalid process or model data!</prop>
 			</props>
 		</property>
 	</bean>
