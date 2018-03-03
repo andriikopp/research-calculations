@@ -28,6 +28,15 @@ public interface IModelDAO {
 	Model retrieveById(String id);
 
 	/**
+	 * Retrieves a certain process model by its name.
+	 * 
+	 * @param name
+	 *            - a name of a certain process model.
+	 * @return a certain process model.
+	 */
+	Model retrieveByName(String name);
+
+	/**
 	 * Retrieves a list of all process models from a storage.
 	 * 
 	 * @return a list of process models.
