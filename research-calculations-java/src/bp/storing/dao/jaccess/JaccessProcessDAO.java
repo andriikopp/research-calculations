@@ -34,7 +34,7 @@ public class JaccessProcessDAO extends JaccessAbstractDAO implements IProcessDAO
 		connect();
 
 		for (Row row : connection) {
-			String processId = row.getString("ProcessName");
+			String processId = row.getString("ProcessId");
 
 			if (processId.equals(id)) {
 				String name = row.getString("ProcessName");
