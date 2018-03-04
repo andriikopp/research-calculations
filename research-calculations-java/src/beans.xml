@@ -48,6 +48,23 @@
 				<prop key="retrRSimilar">Retrieve Similar Models</prop>
 			</props>
 		</property>
+		<property name="similarityLevel" value="0.7" />
+		<property name="domainCoefficients">
+			<map>
+				<entry key="units" value="0.16" />
+				<entry key="systems" value="0.16" />
+				<entry key="flow" value="0.2" />
+				<entry key="inputs" value="0.16" />
+				<entry key="outputs" value="0.16" />
+				<entry key="kpis" value="0.16" />
+			</map>
+		</property>
+		<property name="similarityCoefficients">
+			<map>
+				<entry key="semantic" value="0.5" />
+				<entry key="structure" value="0.5" />
+			</map>
+		</property>
 	</bean>
 	<bean id="processDAO" class="bp.storing.dao.jaccess.JaccessProcessDAO">
 		<property name="database" value="storage.accdb" />
