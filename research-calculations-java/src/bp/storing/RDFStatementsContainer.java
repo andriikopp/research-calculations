@@ -23,7 +23,7 @@ import bp.AppProperties;
  * @author Andrii Kopp
  */
 public class RDFStatementsContainer {
-	private static final String RDF_FORMAT = AppProperties.INSTANCE.getProperty("rdfFormat");;
+	private static final String RDF_FORMAT = AppProperties.INSTANCE.getProperty("rdfFormat");
 	private static final String RESOURCE_VALIDATION_RULE = AppProperties.INSTANCE.getProperty("resourceValidationRule");
 	private static final String ERR_SAVING = AppProperties.INSTANCE.getProperty("errSaving");
 	private static final String ERR_EXISTS_STATEMENT = AppProperties.INSTANCE.getProperty("errExistsStatement");
