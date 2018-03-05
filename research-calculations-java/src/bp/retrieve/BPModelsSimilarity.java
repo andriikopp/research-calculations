@@ -195,6 +195,7 @@ public class BPModelsSimilarity {
 		similarity += outputsSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(OUTPUTS_COEFF);
 		similarity += kpisSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(KPIS_COEFF);
 
+		// Logging similarity of business process models.
 		System.out.printf("Similarity: %s, %s, %.2f\n", modelFile, comparedModel.getFile(), similarity);
 
 		comparedModel.setFile(String.format("%s - %.2f%s", comparedModel.getFile(), (similarity * 100), "%"));
