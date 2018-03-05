@@ -152,6 +152,25 @@ public class BPModelRDFGraph {
 		return extractObjectsByPredicate(kpi, BPModelValidator.PR_MEASURES);
 	}
 
+	/**
+	 * Returns a set of subjects by a certain predicate.
+	 * 
+	 * @param predicate
+	 *            - a certain predicate.
+	 * @return a set of subjects by a certain predicate.
+	 */
+	public Set<String> extractSubjectsByPredicate(String predicate) {
+		Set<String> subjects = new HashSet<String>();
+
+		for (BPModelRDFStatement statement : statements) {
+			if (statement.getPredicate().equals(predicate)) {
+				subjects.add(statement.getSubject());
+			}
+		}
+
+		return subjects;
+	}
+
 	private Set<String> extractSubjectsByType(String object) {
 		Set<String> subjects = new HashSet<String>();
 
