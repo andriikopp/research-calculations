@@ -47,6 +47,19 @@
 				<prop key="retrMFile">Model File</prop>
 				<prop key="retrRSimilar">Retrieve Similar Models</prop>
 				<prop key="retrSettings">Settings</prop>
+				<prop key="settTitle">Business Process Models Retrieve Settings</prop>
+				<prop key="settApply">Apply</prop>
+				<prop key="settLevel">Level, %</prop>
+				<prop key="settStr">Structure</prop>
+				<prop key="settSem">Semantic</prop>
+				<prop key="settSimCoeffs">Similarity Coefficients</prop>
+				<prop key="settDomCoeffs">Domain Coefficients</prop>
+				<prop key="settKPIs">KPIs</prop>
+				<prop key="settOut">Outputs</prop>
+				<prop key="settIn">Inputs</prop>
+				<prop key="settFObj">Flow Objects</prop>
+				<prop key="settSSyst">Supporting Systems</prop>
+				<prop key="settOUnit">Organizational Units</prop>
 			</props>
 		</property>
 		<property name="similarityLevel" value="0.7" />
