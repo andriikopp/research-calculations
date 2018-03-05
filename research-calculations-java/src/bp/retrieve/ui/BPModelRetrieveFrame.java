@@ -77,7 +77,6 @@ public class BPModelRetrieveFrame extends JFrame {
 	 */
 	public BPModelRetrieveFrame() {
 		modelsTree = new BPModelsTree(processDAO, modelDAO);
-		modelsSimilarity = new BPModelsSimilarity(processDAO, modelDAO);
 
 		setResizable(false);
 		setTitle(RETRIEVE_TITLE);
@@ -159,6 +158,8 @@ public class BPModelRetrieveFrame extends JFrame {
 				String modelFile = textFieldMFile.getText();
 
 				if (modelFile != null && !modelFile.isEmpty()) {
+					modelsSimilarity = new BPModelsSimilarity(processDAO, modelDAO);
+
 					treeRetr.setModel(new DefaultTreeModel(modelsSimilarity.getSimilarModels(modelFile)));
 				}
 			}
