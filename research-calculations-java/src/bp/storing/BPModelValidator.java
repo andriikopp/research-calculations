@@ -93,7 +93,9 @@ public class BPModelValidator {
 
 		if (resourceDeclaration.equals(RES_FUNCTION) || resourceDeclaration.equals(RES_PROCESS)
 				|| resourceDeclaration.equals(RES_GATEWAY) || resourceDeclaration.equals(RES_EVENT)) {
-			if (!property.equals(PR_TRIGGERS)) {
+			if (!property.equals(PR_TRIGGERS) && !property.equals(PR_EXECUTES) && !property.equals(PR_USED_BY)
+					&& !property.equals(PR_IS_INPUT_FOR) && !property.equals(PR_IS_OUTPUT_OF)
+					&& !property.equals(PR_MEASURES)) {
 				throw new RuntimeException(INVALID_STATEMENT);
 			}
 		} else {
