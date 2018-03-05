@@ -195,8 +195,6 @@ public class BPModelsSimilarity {
 		similarity += outputsSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(OUTPUTS_COEFF);
 		similarity += kpisSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(KPIS_COEFF);
 
-		similarity /= balanceDomainCoefficients();
-
 		System.out.printf("Similarity: %s, %s, %.2f\n", modelFile, comparedModel.getFile(), similarity);
 
 		comparedModel.setFile(String.format("%s - %.2f%s", comparedModel.getFile(), (similarity * 100), "%"));
@@ -204,24 +202,11 @@ public class BPModelsSimilarity {
 		return similarity >= similarityLevel ? true : false;
 	}
 
-	private double balanceDomainCoefficients() {
-		double value = 0;
-
-		for (Map.Entry<String, Double> entry : domainCoefficients.entrySet()) {
-			if (entry.getValue() >= 0) {
-				value += entry.getValue();
-			}
-		}
-
-		return value;
-	}
-
 	private double organizationalUnitsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
 		Set<String> first = firstModel.extractOrganizationalUnits();
 		Set<String> second = secondModel.extractOrganizationalUnits();
 
 		if (Similarity.intersection(first, second).isEmpty()) {
-			domainCoefficients.put(UNITS_COEFF, -1.0);
 			return 0;
 		}
 
@@ -247,7 +232,6 @@ public class BPModelsSimilarity {
 		Set<String> second = secondModel.extractSupportingSystems();
 
 		if (Similarity.intersection(first, second).isEmpty()) {
-			domainCoefficients.put(SYSTEMS_COEFF, -1.0);
 			return 0;
 		}
 
@@ -273,7 +257,6 @@ public class BPModelsSimilarity {
 		Set<String> second = secondModel.extractFlowObjects();
 
 		if (Similarity.intersection(first, second).isEmpty()) {
-			domainCoefficients.put(FLOW_OBJECTS_COEFF, -1.0);
 			return 0;
 		}
 
@@ -300,7 +283,6 @@ public class BPModelsSimilarity {
 		Set<String> second = secondModel.extractBusinessObjects();
 
 		if (Similarity.intersection(first, second).isEmpty()) {
-			domainCoefficients.put(INPUTS_COEFF, -1.0);
 			return 0;
 		}
 
@@ -326,7 +308,6 @@ public class BPModelsSimilarity {
 		Set<String> second = secondModel.extractBusinessObjects();
 
 		if (Similarity.intersection(first, second).isEmpty()) {
-			domainCoefficients.put(OUTPUTS_COEFF, -1.0);
 			return 0;
 		}
 
@@ -352,7 +333,6 @@ public class BPModelsSimilarity {
 		Set<String> second = secondModel.extractKPIs();
 
 		if (Similarity.intersection(first, second).isEmpty()) {
-			domainCoefficients.put(KPIS_COEFF, -1.0);
 			return 0;
 		}
 
