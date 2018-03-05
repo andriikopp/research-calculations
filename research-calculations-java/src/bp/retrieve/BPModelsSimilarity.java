@@ -3,10 +3,15 @@ package bp.retrieve;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.apache.jena.rdf.model.ModelFactory;
+
 import bp.AppProperties;
+import bp.retrieve.similarity.Similarity;
+import bp.storing.BPModelValidator;
 import bp.storing.beans.Model;
 import bp.storing.beans.Process;
 import bp.storing.dao.api.IModelDAO;
@@ -19,6 +24,8 @@ import bp.storing.dao.api.IProcessDAO;
  */
 public class BPModelsSimilarity {
 	private static final String RETRIEVE_PROCESSES = AppProperties.INSTANCE.getProperty("retrProcesses");
+	private static final String RDF_FORMAT = AppProperties.INSTANCE.getProperty("rdfFormat");
+	private static final String TRIPLESTORE_PATH = AppProperties.INSTANCE.getProperty("triplestorePath");
 
 	public static final String UNITS_COEFF = "units";
 	public static final String SYSTEMS_COEFF = "systems";
@@ -36,6 +43,10 @@ public class BPModelsSimilarity {
 	private double similarityLevel;
 	private Map<String, Double> domainCoefficients;
 	private Map<String, Double> similarityCoefficients;
+
+	private Similarity jaccard = (a, b) -> {
+		return (double) Similarity.intersection(a, b).size() / (double) Similarity.union(a, b).size();
+	};
 
 	public BPModelsSimilarity(IProcessDAO processDAO, IModelDAO modelDAO) {
 		this.processDAO = processDAO;
@@ -163,12 +174,203 @@ public class BPModelsSimilarity {
 	}
 
 	private boolean isModelSimilar(String modelFile, Model comparedModel) {
-		// TODO
-		double similarity = 100;
+		org.apache.jena.rdf.model.Model rdfModel = ModelFactory.createDefaultModel();
+		rdfModel.read(TRIPLESTORE_PATH + "/" + modelFile, RDF_FORMAT);
 
-		comparedModel.setFile(String.format("%s - %.2f%s", comparedModel.getFile(), similarity, "%"));
+		org.apache.jena.rdf.model.Model rdfComparedModel = ModelFactory.createDefaultModel();
+		rdfComparedModel.read(TRIPLESTORE_PATH + "/" + comparedModel.getFile(), RDF_FORMAT);
 
-		return true;
+		BPModelRDFGraph modelRdfGraph = new BPModelRDFGraph(rdfModel);
+		BPModelRDFGraph comparedModelRdfGraph = new BPModelRDFGraph(rdfComparedModel);
+
+		double similarity = 0;
+
+		similarity += organizationalUnitsSimilarity(modelRdfGraph, comparedModelRdfGraph)
+				* domainCoefficients.get(UNITS_COEFF);
+		similarity += supporingSystemsSimilarity(modelRdfGraph, comparedModelRdfGraph)
+				* domainCoefficients.get(SYSTEMS_COEFF);
+		similarity += flowObjectsSimilarity(modelRdfGraph, comparedModelRdfGraph)
+				* domainCoefficients.get(FLOW_OBJECTS_COEFF);
+		similarity += inputsSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(INPUTS_COEFF);
+		similarity += outputsSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(OUTPUTS_COEFF);
+		similarity += kpisSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(KPIS_COEFF);
+
+		similarity /= balanceDomainCoefficients();
+
+		System.out.printf("Similarity: %s, %s, %.2f\n", modelFile, comparedModel.getFile(), similarity);
+
+		comparedModel.setFile(String.format("%s - %.2f%s", comparedModel.getFile(), (similarity * 100), "%"));
+
+		return similarity >= similarityLevel ? true : false;
+	}
+
+	private double balanceDomainCoefficients() {
+		double value = 0;
+
+		for (Map.Entry<String, Double> entry : domainCoefficients.entrySet()) {
+			if (entry.getValue() >= 0) {
+				value += entry.getValue();
+			}
+		}
+
+		return value;
+	}
+
+	private double organizationalUnitsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
+		Set<String> first = firstModel.extractOrganizationalUnits();
+		Set<String> second = secondModel.extractOrganizationalUnits();
+
+		if (Similarity.intersection(first, second).isEmpty()) {
+			domainCoefficients.put(UNITS_COEFF, -1.0);
+			return 0;
+		}
+
+		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
+		double structureSimilarity = 0;
+
+		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_EXECUTES);
+		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_EXECUTES);
+
+		for (String common : Similarity.intersection(first, second)) {
+			structureSimilarity += Similarity.similarity(firstModel.executes(common), secondModel.executes(common),
+					jaccard);
+		}
+
+		structureSimilarity /= (double) Similarity.union(first, second).size();
+
+		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
+				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
+	}
+
+	private double supporingSystemsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
+		Set<String> first = firstModel.extractSupportingSystems();
+		Set<String> second = secondModel.extractSupportingSystems();
+
+		if (Similarity.intersection(first, second).isEmpty()) {
+			domainCoefficients.put(SYSTEMS_COEFF, -1.0);
+			return 0;
+		}
+
+		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
+		double structureSimilarity = 0;
+
+		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_USED_BY);
+		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_USED_BY);
+
+		for (String common : Similarity.intersection(first, second)) {
+			structureSimilarity += Similarity.similarity(firstModel.usedBy(common), secondModel.usedBy(common),
+					jaccard);
+		}
+
+		structureSimilarity /= (double) Similarity.union(first, second).size();
+
+		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
+				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
+	}
+
+	private double flowObjectsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
+		Set<String> first = firstModel.extractFlowObjects();
+		Set<String> second = secondModel.extractFlowObjects();
+
+		if (Similarity.intersection(first, second).isEmpty()) {
+			domainCoefficients.put(FLOW_OBJECTS_COEFF, -1.0);
+			return 0;
+		}
+
+		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
+		double structureSimilarity = 0;
+
+		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_TRIGGERS);
+		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_TRIGGERS);
+
+		for (String common : Similarity.intersection(first, second)) {
+			structureSimilarity += Similarity.similarity(firstModel.triggers(common), secondModel.triggers(common),
+					jaccard);
+		}
+
+		structureSimilarity /= (double) Similarity.union(first, second).size();
+
+		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
+				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
+
+	}
+
+	private double inputsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
+		Set<String> first = firstModel.extractBusinessObjects();
+		Set<String> second = secondModel.extractBusinessObjects();
+
+		if (Similarity.intersection(first, second).isEmpty()) {
+			domainCoefficients.put(INPUTS_COEFF, -1.0);
+			return 0;
+		}
+
+		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
+		double structureSimilarity = 0;
+
+		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_IS_INPUT_FOR);
+		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_IS_INPUT_FOR);
+
+		for (String common : Similarity.intersection(first, second)) {
+			structureSimilarity += Similarity.similarity(firstModel.isInputFor(common), secondModel.isInputFor(common),
+					jaccard);
+		}
+
+		structureSimilarity /= (double) Similarity.union(first, second).size();
+
+		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
+				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
+	}
+
+	private double outputsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
+		Set<String> first = firstModel.extractBusinessObjects();
+		Set<String> second = secondModel.extractBusinessObjects();
+
+		if (Similarity.intersection(first, second).isEmpty()) {
+			domainCoefficients.put(OUTPUTS_COEFF, -1.0);
+			return 0;
+		}
+
+		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
+		double structureSimilarity = 0;
+
+		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_IS_OUTPUT_OF);
+		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_IS_OUTPUT_OF);
+
+		for (String common : Similarity.intersection(first, second)) {
+			structureSimilarity += Similarity.similarity(firstModel.isOutputOf(common), secondModel.isOutputOf(common),
+					jaccard);
+		}
+
+		structureSimilarity /= (double) Similarity.union(first, second).size();
+
+		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
+				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
+	}
+
+	private double kpisSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
+		Set<String> first = firstModel.extractKPIs();
+		Set<String> second = secondModel.extractKPIs();
+
+		if (Similarity.intersection(first, second).isEmpty()) {
+			domainCoefficients.put(KPIS_COEFF, -1.0);
+			return 0;
+		}
+
+		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
+		double structureSimilarity = 0;
+
+		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_MEASURES);
+		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_MEASURES);
+
+		for (String common : Similarity.intersection(first, second)) {
+			structureSimilarity += Similarity.similarity(firstModel.measures(common), secondModel.measures(common),
+					jaccard);
+		}
+
+		structureSimilarity /= (double) Similarity.union(first, second).size();
+
+		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
+				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
 	}
 
 	private double calculateCoefficientsSum(Map<String, Double> coefficientsMap) {
