@@ -43,6 +43,7 @@ public class BPModelRetrieveFrame extends JFrame {
 	private static final String RETRIEVE_RMODELS = AppProperties.INSTANCE.getProperty("retrRModels");
 	private static final String RETRIEVE_MFILE = AppProperties.INSTANCE.getProperty("retrMFile");
 	private static final String RETRIEVE_RSIMILAR = AppProperties.INSTANCE.getProperty("retrRSimilar");
+	private static final String RETRIEVE_SETTINGS = AppProperties.INSTANCE.getProperty("retrSettings");
 
 	private static final long serialVersionUID = 1L;
 
@@ -77,6 +78,7 @@ public class BPModelRetrieveFrame extends JFrame {
 	 */
 	public BPModelRetrieveFrame() {
 		modelsTree = new BPModelsTree(processDAO, modelDAO);
+		modelsSimilarity = new BPModelsSimilarity(processDAO, modelDAO);
 
 		setResizable(false);
 		setTitle(RETRIEVE_TITLE);
@@ -98,6 +100,16 @@ public class BPModelRetrieveFrame extends JFrame {
 			}
 		});
 		mnFile.add(mntmStoreModel);
+
+		JMenu mnSettings = new JMenu(RETRIEVE_SETTINGS);
+		mnSettings.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				RetrieveSettingsFrame frame = new RetrieveSettingsFrame(modelsSimilarity);
+				frame.setVisible(true);
+			}
+		});
+		menuBar.add(mnSettings);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -158,8 +170,6 @@ public class BPModelRetrieveFrame extends JFrame {
 				String modelFile = textFieldMFile.getText();
 
 				if (modelFile != null && !modelFile.isEmpty()) {
-					modelsSimilarity = new BPModelsSimilarity(processDAO, modelDAO);
-
 					treeRetr.setModel(new DefaultTreeModel(modelsSimilarity.getSimilarModels(modelFile)));
 				}
 			}

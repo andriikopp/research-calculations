@@ -46,6 +46,7 @@
 				<prop key="retrRModels">Retrieved Models</prop>
 				<prop key="retrMFile">Model File</prop>
 				<prop key="retrRSimilar">Retrieve Similar Models</prop>
+				<prop key="retrSettings">Settings</prop>
 			</props>
 		</property>
 		<property name="similarityLevel" value="0.7" />
