@@ -40,8 +40,8 @@ public class RetrieveSettingsFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] SAATY_SCALE = new String[] { "1", "3", "5", "7", "9" };
-	
+	private static final String[] SAATY_SCALE = new String[] { "0", "1", "3", "5", "7", "9" };
+
 	private JPanel contentPane;
 	private JTextField textFieldOU;
 	private JTextField textFieldSS;
