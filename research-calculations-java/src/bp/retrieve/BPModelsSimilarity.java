@@ -1,6 +1,7 @@
 package bp.retrieve;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,7 +12,6 @@ import org.apache.jena.rdf.model.ModelFactory;
 
 import bp.AppProperties;
 import bp.retrieve.similarity.Similarity;
-import bp.storing.BPModelValidator;
 import bp.storing.beans.Model;
 import bp.storing.beans.Process;
 import bp.storing.dao.api.IModelDAO;
@@ -44,8 +44,20 @@ public class BPModelsSimilarity {
 	private Map<String, Double> domainCoefficients;
 	private Map<String, Double> similarityCoefficients;
 
-	private Similarity jaccard = (a, b) -> {
-		return (double) Similarity.intersection(a, b).size() / (double) Similarity.union(a, b).size();
+	private Similarity similarityImpl = (a, b) -> {
+		// Models shouldn't even be considered as similar if they both doesn't
+		// contain common resources of a certain domain.
+		if (Similarity.union(a, b).isEmpty()) {
+			return 0.0;
+		}
+
+		double aSize = a.size();
+		double bSize = b.size();
+
+		double cSize = Similarity.intersection(a, b).size();
+
+		// Jaccard coefficient.
+		return cSize / (aSize + bSize - cSize);
 	};
 
 	public BPModelsSimilarity(IProcessDAO processDAO, IModelDAO modelDAO) {
@@ -207,22 +219,22 @@ public class BPModelsSimilarity {
 		Set<String> first = firstModel.extractOrganizationalUnits();
 		Set<String> second = secondModel.extractOrganizationalUnits();
 
-		if (Similarity.intersection(first, second).isEmpty()) {
-			return 0;
+		double semanticSimilarity = Similarity.similarity(first, second, similarityImpl);
+
+		Set<String> firstExecutes = new HashSet<String>();
+		Set<String> secondExecutes = new HashSet<String>();
+		
+		Set<String> intersection = Similarity.intersection(first, second);
+
+		for (String resource : intersection) {
+			firstExecutes.addAll(firstModel.executes(resource));
 		}
 
-		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
-		double structureSimilarity = 0;
-
-		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_EXECUTES);
-		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_EXECUTES);
-
-		for (String common : Similarity.intersection(first, second)) {
-			structureSimilarity += Similarity.similarity(firstModel.executes(common), secondModel.executes(common),
-					jaccard);
+		for (String resource : intersection) {
+			secondExecutes.addAll(secondModel.executes(resource));
 		}
 
-		structureSimilarity /= (double) Similarity.union(first, second).size();
+		double structureSimilarity = Similarity.similarity(firstExecutes, secondExecutes, similarityImpl);
 
 		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
 				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
@@ -232,22 +244,22 @@ public class BPModelsSimilarity {
 		Set<String> first = firstModel.extractSupportingSystems();
 		Set<String> second = secondModel.extractSupportingSystems();
 
-		if (Similarity.intersection(first, second).isEmpty()) {
-			return 0;
+		double semanticSimilarity = Similarity.similarity(first, second, similarityImpl);
+
+		Set<String> firstUsedBy = new HashSet<String>();
+		Set<String> secondUsedBy = new HashSet<String>();
+		
+		Set<String> intersection = Similarity.intersection(first, second);
+
+		for (String resource : intersection) {
+			firstUsedBy.addAll(firstModel.usedBy(resource));
 		}
 
-		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
-		double structureSimilarity = 0;
-
-		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_USED_BY);
-		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_USED_BY);
-
-		for (String common : Similarity.intersection(first, second)) {
-			structureSimilarity += Similarity.similarity(firstModel.usedBy(common), secondModel.usedBy(common),
-					jaccard);
+		for (String resource : intersection) {
+			secondUsedBy.addAll(secondModel.usedBy(resource));
 		}
 
-		structureSimilarity /= (double) Similarity.union(first, second).size();
+		double structureSimilarity = Similarity.similarity(firstUsedBy, secondUsedBy, similarityImpl);
 
 		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
 				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
@@ -257,48 +269,47 @@ public class BPModelsSimilarity {
 		Set<String> first = firstModel.extractFlowObjects();
 		Set<String> second = secondModel.extractFlowObjects();
 
-		if (Similarity.intersection(first, second).isEmpty()) {
-			return 0;
+		double semanticSimilarity = Similarity.similarity(first, second, similarityImpl);
+
+		Set<String> firstTriggers = new HashSet<String>();
+		Set<String> secondTriggers = new HashSet<String>();
+		
+		Set<String> intersection = Similarity.intersection(first, second);
+
+		for (String resource : intersection) {
+			firstTriggers.addAll(firstModel.triggers(resource));
 		}
 
-		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
-		double structureSimilarity = 0;
-
-		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_TRIGGERS);
-		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_TRIGGERS);
-
-		for (String common : Similarity.intersection(first, second)) {
-			structureSimilarity += Similarity.similarity(firstModel.triggers(common), secondModel.triggers(common),
-					jaccard);
+		for (String resource : intersection) {
+			secondTriggers.addAll(secondModel.triggers(resource));
 		}
 
-		structureSimilarity /= (double) Similarity.union(first, second).size();
+		double structureSimilarity = Similarity.similarity(firstTriggers, secondTriggers, similarityImpl);
 
 		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
 				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
-
 	}
 
 	private double inputsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
 		Set<String> first = firstModel.extractBusinessObjects();
 		Set<String> second = secondModel.extractBusinessObjects();
 
-		if (Similarity.intersection(first, second).isEmpty()) {
-			return 0;
+		double semanticSimilarity = Similarity.similarity(first, second, similarityImpl);
+
+		Set<String> firstIsInputFor = new HashSet<String>();
+		Set<String> secondIsInputFor = new HashSet<String>();
+		
+		Set<String> intersection = Similarity.intersection(first, second);
+
+		for (String resource : intersection) {
+			firstIsInputFor.addAll(firstModel.isInputFor(resource));
 		}
 
-		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
-		double structureSimilarity = 0;
-
-		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_IS_INPUT_FOR);
-		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_IS_INPUT_FOR);
-
-		for (String common : Similarity.intersection(first, second)) {
-			structureSimilarity += Similarity.similarity(firstModel.isInputFor(common), secondModel.isInputFor(common),
-					jaccard);
+		for (String resource : intersection) {
+			secondIsInputFor.addAll(secondModel.isInputFor(resource));
 		}
 
-		structureSimilarity /= (double) Similarity.union(first, second).size();
+		double structureSimilarity = Similarity.similarity(firstIsInputFor, secondIsInputFor, similarityImpl);
 
 		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
 				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
@@ -308,22 +319,22 @@ public class BPModelsSimilarity {
 		Set<String> first = firstModel.extractBusinessObjects();
 		Set<String> second = secondModel.extractBusinessObjects();
 
-		if (Similarity.intersection(first, second).isEmpty()) {
-			return 0;
+		double semanticSimilarity = Similarity.similarity(first, second, similarityImpl);
+
+		Set<String> firstIsOutputOf = new HashSet<String>();
+		Set<String> secondIsOutputOf = new HashSet<String>();
+		
+		Set<String> intersection = Similarity.intersection(first, second);
+
+		for (String resource : intersection) {
+			firstIsOutputOf.addAll(firstModel.isOutputOf(resource));
 		}
 
-		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
-		double structureSimilarity = 0;
-
-		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_IS_OUTPUT_OF);
-		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_IS_OUTPUT_OF);
-
-		for (String common : Similarity.intersection(first, second)) {
-			structureSimilarity += Similarity.similarity(firstModel.isOutputOf(common), secondModel.isOutputOf(common),
-					jaccard);
+		for (String resource : intersection) {
+			secondIsOutputOf.addAll(secondModel.isOutputOf(resource));
 		}
 
-		structureSimilarity /= (double) Similarity.union(first, second).size();
+		double structureSimilarity = Similarity.similarity(firstIsOutputOf, secondIsOutputOf, similarityImpl);
 
 		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
 				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
@@ -333,22 +344,22 @@ public class BPModelsSimilarity {
 		Set<String> first = firstModel.extractKPIs();
 		Set<String> second = secondModel.extractKPIs();
 
-		if (Similarity.intersection(first, second).isEmpty()) {
-			return 0;
+		double semanticSimilarity = Similarity.similarity(first, second, similarityImpl);
+
+		Set<String> firstMeasures = new HashSet<String>();
+		Set<String> secondMeasures = new HashSet<String>();
+		
+		Set<String> intersection = Similarity.intersection(first, second);
+
+		for (String resource : intersection) {
+			firstMeasures.addAll(firstModel.measures(resource));
 		}
 
-		double semanticSimilarity = Similarity.similarity(first, second, jaccard);
-		double structureSimilarity = 0;
-
-		first = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_MEASURES);
-		second = firstModel.extractSubjectsByPredicate(BPModelValidator.PR_MEASURES);
-
-		for (String common : Similarity.intersection(first, second)) {
-			structureSimilarity += Similarity.similarity(firstModel.measures(common), secondModel.measures(common),
-					jaccard);
+		for (String resource : intersection) {
+			secondMeasures.addAll(secondModel.measures(resource));
 		}
 
-		structureSimilarity /= (double) Similarity.union(first, second).size();
+		double structureSimilarity = Similarity.similarity(firstMeasures, secondMeasures, similarityImpl);
 
 		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
 				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
