@@ -26,10 +26,10 @@ import bp.AppProperties;
 import bp.storing.BPModelValidator;
 import bp.storing.RDFStatementsContainer;
 import bp.storing.StoringValidator;
-import bp.storing.dao.api.IModelDAO;
-import bp.storing.dao.api.IProcessDAO;
 import bp.storing.beans.Model;
 import bp.storing.beans.Process;
+import bp.storing.dao.api.IModelDAO;
+import bp.storing.dao.api.IProcessDAO;
 
 /**
  * Form provides business process models storing.
@@ -95,6 +95,7 @@ public class BPModelStoringFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public BPModelStoringFrame() {
 		setResizable(false);
 		rdfContainer = new RDFStatementsContainer();
