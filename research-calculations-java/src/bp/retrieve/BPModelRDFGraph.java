@@ -153,17 +153,19 @@ public class BPModelRDFGraph {
 	}
 
 	/**
-	 * Returns a set of subjects by a certain predicate.
+	 * Returns a set of subjects by a certain predicate and object if exits.
 	 * 
 	 * @param predicate
-	 *            - a certain predicate.
-	 * @return a set of subjects by a certain predicate.
+	 *            - a certain predicate;
+	 * @param object
+	 *            - a certain object.
+	 * @return a set of subjects by a certain predicate and object if exits.
 	 */
-	public Set<String> extractSubjectsByPredicate(String predicate) {
+	public Set<String> extractSubjectsByPredicateAndObject(String predicate, String object) {
 		Set<String> subjects = new HashSet<String>();
 
 		for (BPModelRDFStatement statement : statements) {
-			if (statement.getPredicate().equals(predicate)) {
+			if (statement.getPredicate().equals(predicate) && statement.getObject().equals(object)) {
 				subjects.add(statement.getSubject());
 			}
 		}
