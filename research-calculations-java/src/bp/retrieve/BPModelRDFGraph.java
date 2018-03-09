@@ -235,4 +235,8 @@ public class BPModelRDFGraph {
 			this.object = object;
 		}
 	}
+
+	public List<BPModelRDFStatement> getStatements() {
+		return statements;
+	}
 }
