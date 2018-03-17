@@ -45,10 +45,10 @@ public class BPModelsSimilarity {
 	private Map<String, Double> similarityCoefficients;
 
 	private Similarity similarityImpl = (a, b) -> {
-		// Models shouldn't even be considered as similar if they both doesn't
+		// Models should be considered as similar if they both doesn't
 		// contain common resources of a certain domain.
 		if (Similarity.union(a, b).isEmpty()) {
-			return 0.0;
+			return 1.0;
 		}
 
 		double aSize = a.size();
