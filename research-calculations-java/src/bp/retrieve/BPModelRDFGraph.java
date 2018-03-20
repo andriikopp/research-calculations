@@ -21,6 +21,10 @@ public class BPModelRDFGraph {
 
 	private List<BPModelRDFStatement> statements;
 
+	public BPModelRDFGraph() {
+		this.statements = new ArrayList<BPModelRDFStatement>();
+	}
+
 	public BPModelRDFGraph(Model model) {
 		this.statements = new ArrayList<BPModelRDFStatement>();
 
@@ -33,6 +37,20 @@ public class BPModelRDFGraph {
 
 			statements.add(new BPModelRDFStatement(subject, predicate, object));
 		}
+	}
+
+	/**
+	 * Allows to add RDF statement. Don't use it on a production, only for testing!
+	 * 
+	 * @param subject
+	 *            - a subject of RDF statement;
+	 * @param predicate
+	 *            - a predicate of RDF statement;
+	 * @param object
+	 *            - an object of RDF statement.
+	 */
+	public void addStatement(String subject, String predicate, String object) {
+		statements.add(new BPModelRDFStatement(subject, predicate, object));
 	}
 
 	/**
