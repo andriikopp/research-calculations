@@ -235,7 +235,6 @@ public class BPModelRDFGraph {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + getOuterType().hashCode();
 			result = prime * result + ((object == null) ? 0 : object.hashCode());
 			result = prime * result + ((predicate == null) ? 0 : predicate.hashCode());
 			result = prime * result + ((subject == null) ? 0 : subject.hashCode());
@@ -251,8 +250,6 @@ public class BPModelRDFGraph {
 			if (getClass() != obj.getClass())
 				return false;
 			BPModelRDFStatement other = (BPModelRDFStatement) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
 			if (object == null) {
 				if (other.object != null)
 					return false;
@@ -298,10 +295,6 @@ public class BPModelRDFGraph {
 
 		public void setObject(String object) {
 			this.object = object;
-		}
-
-		private BPModelRDFGraph getOuterType() {
-			return BPModelRDFGraph.this;
 		}
 	}
 
