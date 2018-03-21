@@ -19,13 +19,16 @@ import bp.storing.BPModelValidator;
 public class BPModelRDFGraph {
 	private static final String RDF_TYPE = "type";
 
+	private String name;
 	private List<BPModelRDFStatement> statements;
 
-	public BPModelRDFGraph() {
+	public BPModelRDFGraph(String name) {
+		this.name = name;
 		this.statements = new ArrayList<BPModelRDFStatement>();
 	}
 
-	public BPModelRDFGraph(Model model) {
+	public BPModelRDFGraph(String name, Model model) {
+		this.name = name;
 		this.statements = new ArrayList<BPModelRDFStatement>();
 
 		for (StmtIterator iterator = model.listStatements(); iterator.hasNext();) {
@@ -270,7 +273,7 @@ public class BPModelRDFGraph {
 
 		@Override
 		public String toString() {
-			return "BPModelRDFStatement [subject=" + subject + ", predicate=" + predicate + ", object=" + object + "]";
+			return "\n\t[" + subject + " " + predicate + " " + object + "]";
 		}
 
 		public String getSubject() {
@@ -325,7 +328,11 @@ public class BPModelRDFGraph {
 
 	@Override
 	public String toString() {
-		return "BPModelRDFGraph [statements=" + statements + "]";
+		return name + statements;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public List<BPModelRDFStatement> getStatements() {

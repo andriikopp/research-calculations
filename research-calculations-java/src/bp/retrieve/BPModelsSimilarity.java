@@ -214,13 +214,10 @@ public class BPModelsSimilarity {
 		org.apache.jena.rdf.model.Model rdfComparedModel = ModelFactory.createDefaultModel();
 		rdfComparedModel.read(TRIPLESTORE_PATH + "/" + comparedModel.getFile(), RDF_FORMAT);
 
-		BPModelRDFGraph modelRdfGraph = new BPModelRDFGraph(rdfModel);
-		BPModelRDFGraph comparedModelRdfGraph = new BPModelRDFGraph(rdfComparedModel);
+		BPModelRDFGraph modelRdfGraph = new BPModelRDFGraph(modelFile, rdfModel);
+		BPModelRDFGraph comparedModelRdfGraph = new BPModelRDFGraph(comparedModel.getFile(), rdfComparedModel);
 
 		double similarity = compareRDFGraphs(modelRdfGraph, comparedModelRdfGraph);
-
-		// Logging similarity of business process models.
-		System.out.printf("Similarity: %s, %s, %.2f\n", modelFile, comparedModel.getFile(), similarity);
 
 		comparedModel.setFile(String.format("%s - %.2f%s", comparedModel.getFile(), (similarity * 100), "%"));
 
@@ -239,6 +236,10 @@ public class BPModelsSimilarity {
 		similarity += inputsSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(INPUTS_COEFF);
 		similarity += outputsSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(OUTPUTS_COEFF);
 		similarity += kpisSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(KPIS_COEFF);
+
+		// Logging similarity of business process models.
+		System.out.printf("Similarity: %s, %s, %.2f\n", modelRdfGraph.getName(), comparedModelRdfGraph.getName(),
+				similarity);
 
 		return similarity;
 	}
