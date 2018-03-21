@@ -31,6 +31,10 @@ public class SimpleBPModelsContainer implements BPModelsContainer {
 
 	@Override
 	public void storeBPModel(BPModelRDFGraph bpModel) {
+		if (models.contains(bpModel)) {
+			throw new IllegalArgumentException();
+		}
+
 		models.add(bpModel);
 	}
 

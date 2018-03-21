@@ -25,7 +25,7 @@ public class TableBPModelsContainer implements BPModelsContainer {
 	private Map<String, Set<BPModelRDFGraph>> processFlowObjectsDictionary;
 
 	private int operationsCount;
-	
+
 	// Implementation of a similarity measure.
 	private BPModelsSimilarity bpModelsSimilarity;
 
@@ -35,12 +35,16 @@ public class TableBPModelsContainer implements BPModelsContainer {
 		this.organizationalUnitsDictionary = new HashMap<String, Set<BPModelRDFGraph>>();
 		this.supportingSystemsDictionary = new HashMap<String, Set<BPModelRDFGraph>>();
 		this.processFlowObjectsDictionary = new HashMap<String, Set<BPModelRDFGraph>>();
-		
+
 		this.bpModelsSimilarity = bpModelsSimilarity;
 	}
 
 	@Override
 	public void storeBPModel(BPModelRDFGraph bpModel) {
+		if (models.containsKey(bpModel)) {
+			throw new IllegalArgumentException();
+		}
+
 		// Extract resources from a model according to the domains.
 		Set<String> organizationalUnits = bpModel.extractOrganizationalUnits();
 		Set<String> supportingSystems = bpModel.extractSupportingSystems();
