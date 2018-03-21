@@ -60,10 +60,18 @@ public class BPModelsSimilarity {
 		return cSize / (aSize + bSize - cSize);
 	};
 
+	public BPModelsSimilarity() {
+		initialize();
+	}
+
 	public BPModelsSimilarity(IProcessDAO processDAO, IModelDAO modelDAO) {
 		this.processDAO = processDAO;
 		this.modelDAO = modelDAO;
 
+		initialize();
+	}
+
+	private void initialize() {
 		double similarityLevel = AppProperties.INSTANCE.getSimilarityLevel();
 		Map<String, Double> domainCoefficients = AppProperties.INSTANCE.getDomainCoefficients();
 		Map<String, Double> similarityCoefficients = AppProperties.INSTANCE.getSimilarityCoefficients();
