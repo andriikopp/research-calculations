@@ -119,8 +119,8 @@ public class BPModelsSimilarity {
 	 * Sets a value of a certain similarity coefficient.
 	 * 
 	 * @param coefficient
-	 *            - a similarity coefficient name, either
-	 *            {@link #SEMANTIC_COEFF} or {@link #STRUCTURE_COEFF};
+	 *            - a similarity coefficient name, either {@link #SEMANTIC_COEFF} or
+	 *            {@link #STRUCTURE_COEFF};
 	 * @param value
 	 *            - a similarity coefficient value.
 	 */
@@ -185,6 +185,20 @@ public class BPModelsSimilarity {
 		return root;
 	}
 
+	/**
+	 * Returns true if two RDF graphs, represented business process models, are
+	 * similar enough.
+	 * 
+	 * @param first
+	 *            - first RDF graph;
+	 * @param second
+	 *            - second RDF graph.
+	 * @return - true if two RDF graphs are similar enough.
+	 */
+	public boolean compareBPModelRDFGraphs(BPModelRDFGraph first, BPModelRDFGraph second) {
+		return compareRDFGraphs(first, second) >= similarityLevel ? true : false;
+	}
+
 	private boolean isModelSimilar(String modelFile, Model comparedModel) {
 		org.apache.jena.rdf.model.Model rdfModel = ModelFactory.createDefaultModel();
 		rdfModel.read(TRIPLESTORE_PATH + "/" + modelFile, RDF_FORMAT);
@@ -195,6 +209,17 @@ public class BPModelsSimilarity {
 		BPModelRDFGraph modelRdfGraph = new BPModelRDFGraph(rdfModel);
 		BPModelRDFGraph comparedModelRdfGraph = new BPModelRDFGraph(rdfComparedModel);
 
+		double similarity = compareRDFGraphs(modelRdfGraph, comparedModelRdfGraph);
+
+		// Logging similarity of business process models.
+		System.out.printf("Similarity: %s, %s, %.2f\n", modelFile, comparedModel.getFile(), similarity);
+
+		comparedModel.setFile(String.format("%s - %.2f%s", comparedModel.getFile(), (similarity * 100), "%"));
+
+		return similarity >= similarityLevel ? true : false;
+	}
+
+	private double compareRDFGraphs(BPModelRDFGraph modelRdfGraph, BPModelRDFGraph comparedModelRdfGraph) {
 		double similarity = 0;
 
 		similarity += organizationalUnitsSimilarity(modelRdfGraph, comparedModelRdfGraph)
@@ -207,12 +232,7 @@ public class BPModelsSimilarity {
 		similarity += outputsSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(OUTPUTS_COEFF);
 		similarity += kpisSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(KPIS_COEFF);
 
-		// Logging similarity of business process models.
-		System.out.printf("Similarity: %s, %s, %.2f\n", modelFile, comparedModel.getFile(), similarity);
-
-		comparedModel.setFile(String.format("%s - %.2f%s", comparedModel.getFile(), (similarity * 100), "%"));
-
-		return similarity >= similarityLevel ? true : false;
+		return similarity;
 	}
 
 	private double organizationalUnitsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
@@ -223,7 +243,7 @@ public class BPModelsSimilarity {
 
 		Set<String> firstExecutes = new HashSet<String>();
 		Set<String> secondExecutes = new HashSet<String>();
-		
+
 		Set<String> intersection = Similarity.intersection(first, second);
 
 		for (String resource : intersection) {
@@ -248,7 +268,7 @@ public class BPModelsSimilarity {
 
 		Set<String> firstUsedBy = new HashSet<String>();
 		Set<String> secondUsedBy = new HashSet<String>();
-		
+
 		Set<String> intersection = Similarity.intersection(first, second);
 
 		for (String resource : intersection) {
@@ -273,7 +293,7 @@ public class BPModelsSimilarity {
 
 		Set<String> firstTriggers = new HashSet<String>();
 		Set<String> secondTriggers = new HashSet<String>();
-		
+
 		Set<String> intersection = Similarity.intersection(first, second);
 
 		for (String resource : intersection) {
@@ -298,7 +318,7 @@ public class BPModelsSimilarity {
 
 		Set<String> firstIsInputFor = new HashSet<String>();
 		Set<String> secondIsInputFor = new HashSet<String>();
-		
+
 		Set<String> intersection = Similarity.intersection(first, second);
 
 		for (String resource : intersection) {
@@ -323,7 +343,7 @@ public class BPModelsSimilarity {
 
 		Set<String> firstIsOutputOf = new HashSet<String>();
 		Set<String> secondIsOutputOf = new HashSet<String>();
-		
+
 		Set<String> intersection = Similarity.intersection(first, second);
 
 		for (String resource : intersection) {
@@ -348,7 +368,7 @@ public class BPModelsSimilarity {
 
 		Set<String> firstMeasures = new HashSet<String>();
 		Set<String> secondMeasures = new HashSet<String>();
-		
+
 		Set<String> intersection = Similarity.intersection(first, second);
 
 		for (String resource : intersection) {
