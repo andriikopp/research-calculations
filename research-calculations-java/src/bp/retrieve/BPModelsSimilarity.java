@@ -37,6 +37,8 @@ public class BPModelsSimilarity {
 	public static final String SEMANTIC_COEFF = "semantic";
 	public static final String STRUCTURE_COEFF = "structure";
 
+	private static boolean isLoggingOn = true;
+
 	private IProcessDAO processDAO;
 	private IModelDAO modelDAO;
 
@@ -194,17 +196,16 @@ public class BPModelsSimilarity {
 	}
 
 	/**
-	 * Returns true if two RDF graphs, represented business process models, are
-	 * similar enough.
+	 * Returns similarity of two RDF graphs, represented business process models.
 	 * 
 	 * @param first
 	 *            - first RDF graph;
 	 * @param second
 	 *            - second RDF graph.
-	 * @return - true if two RDF graphs are similar enough.
+	 * @return - similarity of two RDF graphs.
 	 */
-	public boolean compareBPModelRDFGraphs(BPModelRDFGraph first, BPModelRDFGraph second) {
-		return compareRDFGraphs(first, second) >= similarityLevel ? true : false;
+	public double compareBPModelRDFGraphs(BPModelRDFGraph first, BPModelRDFGraph second) {
+		return compareRDFGraphs(first, second);
 	}
 
 	private boolean isModelSimilar(String modelFile, Model comparedModel) {
@@ -237,9 +238,11 @@ public class BPModelsSimilarity {
 		similarity += outputsSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(OUTPUTS_COEFF);
 		similarity += kpisSimilarity(modelRdfGraph, comparedModelRdfGraph) * domainCoefficients.get(KPIS_COEFF);
 
-		// Logging similarity of business process models.
-		System.out.printf("Similarity: %s, %s, %.2f\n", modelRdfGraph.getName(), comparedModelRdfGraph.getName(),
-				similarity);
+		if (isLoggingOn) {
+			// Logging similarity of business process models.
+			System.out.printf("Similarity: %s, %s, %.2f\n", modelRdfGraph.getName(), comparedModelRdfGraph.getName(),
+					similarity);
+		}
 
 		return similarity;
 	}
@@ -414,5 +417,13 @@ public class BPModelsSimilarity {
 
 	public Map<String, Double> getSimilarityCoefficients() {
 		return similarityCoefficients;
+	}
+
+	public static void setLoggingOn() {
+		isLoggingOn = true;
+	}
+
+	public static void setLoggingOff() {
+		isLoggingOn = false;
 	}
 }

@@ -62,15 +62,15 @@
 				<prop key="settOUnit">Organizational Units</prop>
 			</props>
 		</property>
-		<property name="similarityLevel" value="0.7" />
+		<property name="similarityLevel" value="0.6" />
 		<property name="domainCoefficients">
 			<map>
-				<entry key="units" value="0.16" />
-				<entry key="systems" value="0.16" />
-				<entry key="flow" value="0.2" />
-				<entry key="inputs" value="0.16" />
-				<entry key="outputs" value="0.16" />
-				<entry key="kpis" value="0.16" />
+				<entry key="units" value="0.33" />
+				<entry key="systems" value="0.33" />
+				<entry key="flow" value="0.34" />
+				<entry key="inputs" value="0" />
+				<entry key="outputs" value="0" />
+				<entry key="kpis" value="0" />
 			</map>
 		</property>
 		<property name="similarityCoefficients">

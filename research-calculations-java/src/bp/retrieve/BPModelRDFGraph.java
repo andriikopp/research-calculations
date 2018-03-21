@@ -42,6 +42,16 @@ public class BPModelRDFGraph {
 		}
 	}
 
+	public BPModelRDFGraph(String name, BPModelRDFGraph bpModel) {
+		this.name = name;
+		this.statements = new ArrayList<BPModelRDFStatement>();
+
+		for (BPModelRDFStatement statement : bpModel.getStatements()) {
+			statements.add(
+					new BPModelRDFStatement(statement.getSubject(), statement.getPredicate(), statement.getObject()));
+		}
+	}
+
 	/**
 	 * Allows to add RDF statement. Don't use it on a production, only for testing!
 	 * 
