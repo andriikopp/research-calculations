@@ -16,6 +16,7 @@ public class BPModelValidator {
 	public static final String PR_IS_INPUT_FOR = "isInputFor";
 	public static final String PR_IS_OUTPUT_OF = "isOutputOf";
 	public static final String PR_MEASURES = "measures";
+	public static final String PR_TYPE = "type";
 
 	public static final String RES_FUNCTION = "Function";
 	public static final String RES_PROCESS = "Process";
@@ -36,8 +37,7 @@ public class BPModelValidator {
 	}
 
 	/**
-	 * Throws runtime exception if a property for a specified subject is not
-	 * valid.
+	 * Throws runtime exception if a property for a specified subject is not valid.
 	 * 
 	 * @param subject
 	 *            - a declared resource of the RDF statements set;
@@ -80,8 +80,7 @@ public class BPModelValidator {
 	}
 
 	/**
-	 * Throws runtime exception if a property for a specified object is not
-	 * valid.
+	 * Throws runtime exception if a property for a specified object is not valid.
 	 * 
 	 * @param object
 	 *            - a declared resource of the RDF statements set;
