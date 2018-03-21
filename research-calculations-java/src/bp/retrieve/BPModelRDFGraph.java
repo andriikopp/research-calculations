@@ -231,6 +231,51 @@ public class BPModelRDFGraph {
 			this.object = object;
 		}
 
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((object == null) ? 0 : object.hashCode());
+			result = prime * result + ((predicate == null) ? 0 : predicate.hashCode());
+			result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			BPModelRDFStatement other = (BPModelRDFStatement) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (object == null) {
+				if (other.object != null)
+					return false;
+			} else if (!object.equals(other.object))
+				return false;
+			if (predicate == null) {
+				if (other.predicate != null)
+					return false;
+			} else if (!predicate.equals(other.predicate))
+				return false;
+			if (subject == null) {
+				if (other.subject != null)
+					return false;
+			} else if (!subject.equals(other.subject))
+				return false;
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return "BPModelRDFStatement [subject=" + subject + ", predicate=" + predicate + ", object=" + object + "]";
+		}
+
 		public String getSubject() {
 			return subject;
 		}
@@ -254,6 +299,40 @@ public class BPModelRDFGraph {
 		public void setObject(String object) {
 			this.object = object;
 		}
+
+		private BPModelRDFGraph getOuterType() {
+			return BPModelRDFGraph.this;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((statements == null) ? 0 : statements.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BPModelRDFGraph other = (BPModelRDFGraph) obj;
+		if (statements == null) {
+			if (other.statements != null)
+				return false;
+		} else if (!statements.equals(other.statements))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "BPModelRDFGraph [statements=" + statements + "]";
 	}
 
 	public List<BPModelRDFStatement> getStatements() {
