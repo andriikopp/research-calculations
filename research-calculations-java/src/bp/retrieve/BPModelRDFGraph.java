@@ -100,6 +100,22 @@ public class BPModelRDFGraph {
 	}
 
 	/**
+	 * Returns a set of flow objects.
+	 * 
+	 * @param includeGateways
+	 *            - set true if gateways should be included.
+	 * @return a set of flow objects.
+	 */
+	public Set<String> extractFlowObjects(boolean includeGateways) {
+		Set<String> result = extractSubjectsByType(BPModelValidator.RES_FUNCTION);
+		result.addAll(extractSubjectsByType(BPModelValidator.RES_PROCESS));
+		result.addAll(extractSubjectsByType(BPModelValidator.RES_EVENT));
+		if (includeGateways)
+			result.addAll(extractSubjectsByType(BPModelValidator.RES_GATEWAY));
+		return result;
+	}
+
+	/**
 	 * Returns a set of business objects.
 	 * 
 	 * @return a set of flow objects.

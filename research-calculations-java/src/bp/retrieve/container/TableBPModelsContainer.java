@@ -48,7 +48,10 @@ public class TableBPModelsContainer implements BPModelsContainer {
 		// Extract resources from a model according to the domains.
 		Set<String> organizationalUnits = bpModel.extractOrganizationalUnits();
 		Set<String> supportingSystems = bpModel.extractSupportingSystems();
-		Set<String> processFlowObjects = bpModel.extractFlowObjects();
+
+		// Extract flow objects except gateways to provide an adequate closeness of
+		// models.
+		Set<String> processFlowObjects = bpModel.extractFlowObjects(false);
 
 		// Set of models, related to the considered one.
 		Set<BPModelRDFGraph> relatedModels = new LinkedHashSet<BPModelRDFGraph>();
