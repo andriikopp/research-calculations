@@ -42,9 +42,12 @@ public class BPModelsSimilarity {
 	private IProcessDAO processDAO;
 	private IModelDAO modelDAO;
 
-	private double similarityLevel;
-	private Map<String, Double> domainCoefficients;
-	private Map<String, Double> similarityCoefficients;
+	/**
+	 * This properties might be considered as customizable in further extensions.
+	 */
+	protected double similarityLevel;
+	protected Map<String, Double> domainCoefficients;
+	protected Map<String, Double> similarityCoefficients;
 
 	/**
 	 * This property might be considered as customizable implementation of the
