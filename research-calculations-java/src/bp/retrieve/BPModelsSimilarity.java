@@ -46,7 +46,15 @@ public class BPModelsSimilarity {
 	private Map<String, Double> domainCoefficients;
 	private Map<String, Double> similarityCoefficients;
 
-	private Similarity similarityImpl = (a, b) -> {
+	/**
+	 * This property might be considered as customizable implementation of the
+	 * similarity method. By default it is implemented as the Jaccard's similarity
+	 * index. It's expected to be also defined as others similarity indexes. Also it
+	 * might be defined as similarity metric that is based on semantic similarity
+	 * between the concepts represented in the sets of strings (words) passed as
+	 * arguments.
+	 */
+	protected Similarity similarityImpl = (a, b) -> {
 		// Models should be considered as similar if they both doesn't
 		// contain common resources of a certain domain.
 		if (Similarity.union(a, b).isEmpty()) {
