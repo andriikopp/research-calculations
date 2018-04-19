@@ -14,3 +14,13 @@
 # Maven
 log/
 target/
+
+# BP Models
+models/
+
+# Future Work
+src/bp/storing/nosql/
+
+# NoSQL Storage
+storage/
+
