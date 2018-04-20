@@ -106,6 +106,7 @@ public class BPModelRDFGraph {
 	 *            - set true if gateways should be included.
 	 * @return a set of flow objects.
 	 */
+	@Deprecated
 	public Set<String> extractFlowObjects(boolean includeGateways) {
 		Set<String> result = extractSubjectsByType(BPModelValidator.RES_FUNCTION);
 		result.addAll(extractSubjectsByType(BPModelValidator.RES_PROCESS));
@@ -113,6 +114,15 @@ public class BPModelRDFGraph {
 		if (includeGateways)
 			result.addAll(extractSubjectsByType(BPModelValidator.RES_GATEWAY));
 		return result;
+	}
+
+	/**
+	 * Returns a set of flow objects except gateways.
+	 * 
+	 * @return a set of flow objects except gateways.
+	 */
+	public Set<String> extractFlowObjectsExceptGateways() {
+		return extractFlowObjects(false);
 	}
 
 	/**

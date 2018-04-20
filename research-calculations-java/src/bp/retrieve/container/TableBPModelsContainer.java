@@ -51,7 +51,7 @@ public class TableBPModelsContainer implements BPModelsContainer {
 
 		// Extract flow objects except gateways to provide an adequate closeness of
 		// models.
-		Set<String> processFlowObjects = bpModel.extractFlowObjects(false);
+		Set<String> processFlowObjects = bpModel.extractFlowObjectsExceptGateways();
 
 		// Set of models, related to the considered one.
 		Set<BPModelRDFGraph> relatedModels = new LinkedHashSet<BPModelRDFGraph>();
