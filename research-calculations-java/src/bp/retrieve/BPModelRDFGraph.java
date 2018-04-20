@@ -1,6 +1,7 @@
 package bp.retrieve;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -67,6 +68,320 @@ public class BPModelRDFGraph {
 	}
 
 	/**
+	 * Add function to model's description.
+	 * 
+	 * @param resource
+	 *            - function URI.
+	 */
+	public void addFunction(String resource) {
+		addStatement(resource, BPModelValidator.PR_TYPE, BPModelValidator.RES_FUNCTION);
+	}
+
+	/**
+	 * Add process to model's description.
+	 * 
+	 * @param resource
+	 *            - process URI.
+	 */
+	public void addProcess(String resource) {
+		addStatement(resource, BPModelValidator.PR_TYPE, BPModelValidator.RES_PROCESS);
+	}
+
+	/**
+	 * Add event to model's description.
+	 * 
+	 * @param resource
+	 *            - event URI.
+	 */
+	public void addEvent(String resource) {
+		addStatement(resource, BPModelValidator.PR_TYPE, BPModelValidator.RES_EVENT);
+	}
+
+	/**
+	 * Add role to model's description.
+	 * 
+	 * @param resource
+	 *            - role URI.
+	 */
+	public void addRole(String resource) {
+		addStatement(resource, BPModelValidator.PR_TYPE, BPModelValidator.RES_ROLE);
+	}
+
+	/**
+	 * Add department to model's description.
+	 * 
+	 * @param resource
+	 *            - department URI.
+	 */
+	public void addDepartment(String resource) {
+		addStatement(resource, BPModelValidator.PR_TYPE, BPModelValidator.RES_DEPARTMENT);
+	}
+
+	/**
+	 * Add supporting system to model's description.
+	 * 
+	 * @param resource
+	 *            - supporting system URI.
+	 */
+	public void addSupportingSystem(String resource) {
+		addStatement(resource, BPModelValidator.PR_TYPE, BPModelValidator.RES_SUPPORTING_SYSTEM);
+	}
+
+	/**
+	 * Add business object to model's description.
+	 * 
+	 * @param resource
+	 *            - business object URI.
+	 */
+	public void addBusinessObject(String resource) {
+		addStatement(resource, BPModelValidator.PR_TYPE, BPModelValidator.RES_BUSINESS_OBJECT);
+	}
+
+	/**
+	 * Add KPI to model's description.
+	 * 
+	 * @param resource
+	 *            - indicator URI.
+	 */
+	public void addKpi(String resource) {
+		addStatement(resource, BPModelValidator.PR_TYPE, BPModelValidator.RES_KPI);
+	}
+
+	/**
+	 * Add start event to BPMN-based model's description.
+	 */
+	public void addBPMNStartEvent() {
+		addStatement(BPModelValidator.BPMN_START_EVENT, BPModelValidator.PR_TYPE, BPModelValidator.RES_EVENT);
+	}
+
+	/**
+	 * Add end event to BPMN-based model's description.
+	 */
+	public void addBPMNEndEvent() {
+		addStatement(BPModelValidator.BPMN_END_EVENT, BPModelValidator.PR_TYPE, BPModelValidator.RES_EVENT);
+	}
+
+	/**
+	 * Use Sequence pattern to connect BPMN-specific start event.
+	 * 
+	 * @param resource
+	 *            - subsequent flow object.
+	 */
+	public void addStartEventSequence(String resource) {
+		addStatement(BPModelValidator.BPMN_START_EVENT, BPModelValidator.PR_TRIGGERS, resource);
+	}
+
+	/**
+	 * Use Sequence pattern to connect BPMN-specific end event.
+	 * 
+	 * @param resource
+	 *            - preceding flow object.
+	 */
+	public void addEndEventSequence(String resource) {
+		addStatement(resource, BPModelValidator.PR_TRIGGERS, BPModelValidator.BPMN_END_EVENT);
+	}
+
+	/**
+	 * Add 'AND' gateway usage to model's description.
+	 */
+	public void addAndGateway() {
+		addStatement(BPModelValidator.AND_GATEWAY, BPModelValidator.PR_TYPE, BPModelValidator.RES_GATEWAY);
+	}
+
+	/**
+	 * Add 'OR' gateway usage to model's description.
+	 */
+	public void addOrGateway() {
+		addStatement(BPModelValidator.OR_GATEWAY, BPModelValidator.PR_TYPE, BPModelValidator.RES_GATEWAY);
+	}
+
+	/**
+	 * Add 'XOR' gateway usage to model's description.
+	 */
+	public void addXorGateway() {
+		addStatement(BPModelValidator.XOR_GATEWAY, BPModelValidator.PR_TYPE, BPModelValidator.RES_GATEWAY);
+	}
+
+	/**
+	 * Use Parallel Split pattern to describe process flow.
+	 * 
+	 * @param preceding
+	 *            - preceding flow object;
+	 * @param subsequent
+	 *            - subsequent flow objects.
+	 */
+	public void addAndSplit(String preceding, String... subsequent) {
+		addStatement(preceding, BPModelValidator.PR_TRIGGERS, BPModelValidator.AND_GATEWAY);
+
+		for (String object : subsequent) {
+			addStatement(BPModelValidator.AND_GATEWAY, BPModelValidator.PR_TRIGGERS, object);
+		}
+	}
+
+	/**
+	 * Use Synchronization pattern to describe process flow.
+	 * 
+	 * @param subsequent
+	 *            - subsequent flow object;
+	 * @param preceding
+	 *            - preceding flow objects.
+	 */
+	public void addAndJoin(String subsequent, String... preceding) {
+		for (String object : preceding) {
+			addStatement(object, BPModelValidator.PR_TRIGGERS, BPModelValidator.AND_GATEWAY);
+		}
+
+		addStatement(BPModelValidator.AND_GATEWAY, BPModelValidator.PR_TRIGGERS, subsequent);
+	}
+
+	/**
+	 * Use Exclusive Choice pattern to describe process flow.
+	 * 
+	 * @param preceding
+	 *            - preceding flow object;
+	 * @param subsequent
+	 *            - subsequent flow objects.
+	 */
+	public void addXorSplit(String preceding, String... subsequent) {
+		addStatement(preceding, BPModelValidator.PR_TRIGGERS, BPModelValidator.XOR_GATEWAY);
+
+		for (String object : subsequent) {
+			addStatement(BPModelValidator.XOR_GATEWAY, BPModelValidator.PR_TRIGGERS, object);
+		}
+	}
+
+	/**
+	 * Use Simple Merge pattern to describe process flow.
+	 * 
+	 * @param subsequent
+	 *            - subsequent flow object;
+	 * @param preceding
+	 *            - preceding flow objects.
+	 */
+	public void addXorJoin(String subsequent, String... preceding) {
+		for (String object : preceding) {
+			addStatement(object, BPModelValidator.PR_TRIGGERS, BPModelValidator.XOR_GATEWAY);
+		}
+
+		addStatement(BPModelValidator.XOR_GATEWAY, BPModelValidator.PR_TRIGGERS, subsequent);
+	}
+
+	/**
+	 * Use OR-split to describe process flow.
+	 * 
+	 * @param preceding
+	 *            - preceding flow object;
+	 * @param subsequent
+	 *            - subsequent flow objects.
+	 */
+	public void addOrSplit(String preceding, String... subsequent) {
+		addStatement(preceding, BPModelValidator.PR_TRIGGERS, BPModelValidator.OR_GATEWAY);
+
+		for (String object : subsequent) {
+			addStatement(BPModelValidator.OR_GATEWAY, BPModelValidator.PR_TRIGGERS, object);
+		}
+	}
+
+	/**
+	 * Use OR-join to describe process flow.
+	 * 
+	 * @param subsequent
+	 *            - subsequent flow object;
+	 * @param preceding
+	 *            - preceding flow objects.
+	 */
+	public void addOrJoin(String subsequent, String... preceding) {
+		for (String object : preceding) {
+			addStatement(object, BPModelValidator.PR_TRIGGERS, BPModelValidator.OR_GATEWAY);
+		}
+
+		addStatement(BPModelValidator.OR_GATEWAY, BPModelValidator.PR_TRIGGERS, subsequent);
+	}
+
+	/**
+	 * Use Sequence pattern to describe process flow.
+	 * 
+	 * @param sequence
+	 *            - array of process flow objects that should be considered as a
+	 *            sequence.
+	 */
+	public void addSequence(String... sequence) {
+		for (int i = 0; i < sequence.length - 1; i++) {
+			addStatement(sequence[i], BPModelValidator.PR_TRIGGERS, sequence[i + 1]);
+		}
+	}
+
+	/**
+	 * Assign supporting system to one or more functions/processes.
+	 * 
+	 * @param supportingSystem
+	 *            - assigned supporting system;
+	 * @param functions
+	 *            - functions or processes to which supporting system is assigned.
+	 */
+	public void usedBy(String supportingSystem, String... functions) {
+		for (String function : functions) {
+			addStatement(supportingSystem, BPModelValidator.PR_USED_BY, function);
+		}
+	}
+
+	/**
+	 * Assign organizational unit to one or more functions/processes.
+	 * 
+	 * @param organizationalUnit
+	 *            - assigned organizational unit;
+	 * @param functions
+	 *            - functions or processes to which organizational unit is assigned.
+	 */
+	public void executes(String organizationalUnit, String... functions) {
+		for (String function : functions) {
+			addStatement(organizationalUnit, BPModelValidator.PR_EXECUTES, function);
+		}
+	}
+
+	/**
+	 * Assign inputs to a functions/process.
+	 * 
+	 * @param function
+	 *            - considered function/process.
+	 * @param businessObjects
+	 *            - assigned inputs.
+	 */
+	public void isInputFor(String function, String... businessObjects) {
+		for (String object : businessObjects) {
+			addStatement(object, BPModelValidator.PR_IS_INPUT_FOR, function);
+		}
+	}
+
+	/**
+	 * Assign outputs to a functions/process.
+	 * 
+	 * @param function
+	 *            - considered function/process.
+	 * @param businessObjects
+	 *            - assigned outputs.
+	 */
+	public void isOutputOf(String function, String... businessObjects) {
+		for (String object : businessObjects) {
+			addStatement(object, BPModelValidator.PR_IS_OUTPUT_OF, function);
+		}
+	}
+
+	/**
+	 * Assign indicators to a functions/process.
+	 * 
+	 * @param function
+	 *            - considered function/process.
+	 * @param indicators
+	 *            - assigned indicators.
+	 */
+	public void measures(String function, String... indicators) {
+		for (String indicator : indicators) {
+			addStatement(indicator, BPModelValidator.PR_MEASURES, function);
+		}
+	}
+
+	/**
 	 * Returns a set of organizational units.
 	 * 
 	 * @return a set of organizational units.
@@ -123,6 +438,30 @@ public class BPModelRDFGraph {
 	 */
 	public Set<String> extractFlowObjectsExceptGateways() {
 		return extractFlowObjects(false);
+	}
+
+	/**
+	 * Returns a set of flow objects except BPMN-specific start/end events.
+	 * 
+	 * @return a set of flow objects except BPMN-specific start/end events.
+	 */
+	public Set<String> extractFlowObjectsExceptBPMNStartEndEvents() {
+		Set<String> result = extractFlowObjects();
+		result.removeAll(Arrays.asList(BPModelValidator.BPMN_START_EVENT, BPModelValidator.BPMN_END_EVENT));
+		return result;
+	}
+
+	/**
+	 * Returns a set of flow objects except gateways and BPMN-specific start/end
+	 * events.
+	 * 
+	 * @return a set of flow objects except gateways and BPMN-specific start/end
+	 *         events.
+	 */
+	public Set<String> extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents() {
+		Set<String> result = extractFlowObjectsExceptGateways();
+		result.removeAll(Arrays.asList(BPModelValidator.BPMN_START_EVENT, BPModelValidator.BPMN_END_EVENT));
+		return result;
 	}
 
 	/**

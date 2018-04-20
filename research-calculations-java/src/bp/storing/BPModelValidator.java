@@ -28,6 +28,31 @@ public class BPModelValidator {
 	public static final String RES_BUSINESS_OBJECT = "BusinessObject";
 	public static final String RES_KPI = "KPI";
 
+	/**
+	 * This event might be used only as BPMN-based model component 'Start Event'.
+	 */
+	public static final String BPMN_START_EVENT = "Start";
+
+	/**
+	 * This event might be used only as BPMN-based model component 'End Event'.
+	 */
+	public static final String BPMN_END_EVENT = "End";
+
+	/**
+	 * This gateway might be used only as 'AND' gateway.
+	 */
+	public static final String AND_GATEWAY = "AND";
+
+	/**
+	 * This gateway might be used only as 'OR' gateway.
+	 */
+	public static final String OR_GATEWAY = "OR";
+
+	/**
+	 * This gateway might be used only as 'XOR' gateway.
+	 */
+	public static final String XOR_GATEWAY = "XOR";
+
 	private static final String INVALID_STATEMENT = AppProperties.INSTANCE.getProperty("errInvalidStatement");
 
 	private Map<String, String> declaredResources;

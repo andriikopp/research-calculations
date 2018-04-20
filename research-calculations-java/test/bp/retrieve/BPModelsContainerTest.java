@@ -9,12 +9,11 @@ import org.junit.Test;
 import bp.retrieve.container.SimpleBPModelsContainer;
 import bp.retrieve.container.TableBPModelsContainer;
 import bp.retrieve.container.api.BPModelsContainer;
-import bp.storing.BPModelValidator;
 
 public class BPModelsContainerTest {
 	private static final int EXPERIMENTS_AMOUNT = 10;
-	private static final List<Integer> REPOSITORY_SIZE_LIST = Arrays.asList(10, 20, 50, 100, 200, 500, 1000, 2000,
-			5000);
+	private static final List<Integer> REPOSITORY_SIZE_LIST = Arrays.asList(10, 20, 50, 100, 200, 500, 1000, 2000, 5000,
+			10000);
 	private static final int STORE_SIZE = 10000;
 
 	private BPModelsSimilarity bpModelsSimilarity;
@@ -101,29 +100,24 @@ public class BPModelsContainerTest {
 	private BPModelRDFGraph getStoredBPModel(int modelCounter) {
 		BPModelRDFGraph storedBPModel = new BPModelRDFGraph("Model " + modelCounter);
 
-		storedBPModel.addStatement("A" + modelCounter, BPModelValidator.PR_TYPE, BPModelValidator.RES_FUNCTION);
-		storedBPModel.addStatement("B" + modelCounter, BPModelValidator.PR_TYPE, BPModelValidator.RES_FUNCTION);
-		storedBPModel.addStatement("C" + modelCounter, BPModelValidator.PR_TYPE, BPModelValidator.RES_FUNCTION);
-		storedBPModel.addStatement("D" + modelCounter, BPModelValidator.PR_TYPE, BPModelValidator.RES_FUNCTION);
+		storedBPModel.addBPMNStartEvent();
+		storedBPModel.addBPMNEndEvent();
+		storedBPModel.addFunction("A" + modelCounter);
+		storedBPModel.addFunction("B" + modelCounter);
+		storedBPModel.addFunction("C" + modelCounter);
+		storedBPModel.addFunction("D" + modelCounter);
+		storedBPModel.addAndGateway();
+		storedBPModel.addDepartment("U" + modelCounter);
+		storedBPModel.addSupportingSystem("S" + modelCounter);
 
-		storedBPModel.addStatement("U" + modelCounter, BPModelValidator.PR_TYPE, BPModelValidator.RES_DEPARTMENT);
+		storedBPModel.executes("U" + modelCounter, "A" + modelCounter);
+		storedBPModel.executes("U" + modelCounter, "D" + modelCounter);
+		storedBPModel.usedBy("S" + modelCounter, "B" + modelCounter);
 
-		storedBPModel.addStatement("S" + modelCounter, BPModelValidator.PR_TYPE,
-				BPModelValidator.RES_SUPPORTING_SYSTEM);
-
-		storedBPModel.addStatement("AND", BPModelValidator.PR_TYPE, BPModelValidator.RES_GATEWAY);
-
-		storedBPModel.addStatement("U" + modelCounter, BPModelValidator.PR_EXECUTES, "A" + modelCounter);
-		storedBPModel.addStatement("U" + modelCounter, BPModelValidator.PR_EXECUTES, "D" + modelCounter);
-
-		storedBPModel.addStatement("S" + modelCounter, BPModelValidator.PR_USED_BY, "B" + modelCounter);
-
-		storedBPModel.addStatement("A" + modelCounter, BPModelValidator.PR_TRIGGERS, "AND");
-		storedBPModel.addStatement("AND", BPModelValidator.PR_TRIGGERS, "B" + modelCounter);
-		storedBPModel.addStatement("AND", BPModelValidator.PR_TRIGGERS, "C" + modelCounter);
-		storedBPModel.addStatement("B" + modelCounter, BPModelValidator.PR_TRIGGERS, "AND");
-		storedBPModel.addStatement("C" + modelCounter, BPModelValidator.PR_TRIGGERS, "AND");
-		storedBPModel.addStatement("AND", BPModelValidator.PR_TRIGGERS, "D" + modelCounter);
+		storedBPModel.addStartEventSequence("A" + modelCounter);
+		storedBPModel.addAndSplit("A" + modelCounter, "B" + modelCounter, "C" + modelCounter);
+		storedBPModel.addAndJoin("D" + modelCounter, "B" + modelCounter, "C" + modelCounter);
+		storedBPModel.addEndEventSequence("D" + modelCounter);
 
 		return storedBPModel;
 	}
@@ -131,28 +125,22 @@ public class BPModelsContainerTest {
 	private BPModelRDFGraph getRetrievedModel() {
 		BPModelRDFGraph storedBPModel = new BPModelRDFGraph("Model R");
 
-		storedBPModel.addStatement("A1", BPModelValidator.PR_TYPE, BPModelValidator.RES_FUNCTION);
-		storedBPModel.addStatement("B2", BPModelValidator.PR_TYPE, BPModelValidator.RES_FUNCTION);
-		storedBPModel.addStatement("C3", BPModelValidator.PR_TYPE, BPModelValidator.RES_FUNCTION);
-		storedBPModel.addStatement("D4", BPModelValidator.PR_TYPE, BPModelValidator.RES_FUNCTION);
+		storedBPModel.addFunction("A1");
+		storedBPModel.addFunction("B2");
+		storedBPModel.addFunction("C3");
+		storedBPModel.addFunction("D4");
+		storedBPModel.addAndGateway();
+		storedBPModel.addDepartment("U5");
+		storedBPModel.addSupportingSystem("S6");
 
-		storedBPModel.addStatement("U5", BPModelValidator.PR_TYPE, BPModelValidator.RES_DEPARTMENT);
+		storedBPModel.executes("U5", "A1");
+		storedBPModel.executes("U5", "D4");
+		storedBPModel.usedBy("S6", "B2");
 
-		storedBPModel.addStatement("S6", BPModelValidator.PR_TYPE, BPModelValidator.RES_SUPPORTING_SYSTEM);
-
-		storedBPModel.addStatement("AND", BPModelValidator.PR_TYPE, BPModelValidator.RES_GATEWAY);
-
-		storedBPModel.addStatement("U5", BPModelValidator.PR_EXECUTES, "A1");
-		storedBPModel.addStatement("U5", BPModelValidator.PR_EXECUTES, "D4");
-
-		storedBPModel.addStatement("S6", BPModelValidator.PR_USED_BY, "B2");
-
-		storedBPModel.addStatement("A1", BPModelValidator.PR_TRIGGERS, "AND");
-		storedBPModel.addStatement("AND", BPModelValidator.PR_TRIGGERS, "B2");
-		storedBPModel.addStatement("AND", BPModelValidator.PR_TRIGGERS, "C3");
-		storedBPModel.addStatement("B2", BPModelValidator.PR_TRIGGERS, "AND");
-		storedBPModel.addStatement("C3", BPModelValidator.PR_TRIGGERS, "AND");
-		storedBPModel.addStatement("AND", BPModelValidator.PR_TRIGGERS, "D4");
+		storedBPModel.addStartEventSequence("A1");
+		storedBPModel.addAndSplit("A1", "B2", "C3");
+		storedBPModel.addAndJoin("D4", "B2", "C3");
+		storedBPModel.addEndEventSequence("D4");
 
 		return storedBPModel;
 	}
