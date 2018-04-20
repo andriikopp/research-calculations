@@ -309,10 +309,15 @@ public class BPModelsSimilarity {
 	}
 
 	private double flowObjectsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
-		Set<String> first = firstModel.extractFlowObjects();
-		Set<String> second = secondModel.extractFlowObjects();
+		// Don't use BPMN-specific start/end events and gateways to measure label
+		// similarity.
+		Set<String> first = firstModel.extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents();
+		Set<String> second = secondModel.extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents();
 
 		double semanticSimilarity = Similarity.similarity(first, second, similarityImpl);
+
+		first = firstModel.extractFlowObjects();
+		second = secondModel.extractFlowObjects();
 
 		Set<String> firstTriggers = new HashSet<String>();
 		Set<String> secondTriggers = new HashSet<String>();
