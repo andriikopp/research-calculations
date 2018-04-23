@@ -68,6 +68,31 @@ public class ProcessModelRepository {
 		}
 	}
 
+	/**
+	 * Retrieve a Business Process Model from the repository.
+	 * 
+	 * @param processModel
+	 *            - a process model that might be retrieved.
+	 * @return a process model.
+	 */
+	public GenericProcessModel retrieve(GenericProcessModel processModel) {
+		for (Map.Entry<BPModelRDFGraph, GenericProcessModel> entry : processModelsMapping.entrySet()) {
+			if (entry.getValue().getId().equals(processModel.getId()))
+				return entry.getValue();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve all Business Process Models from the repository.
+	 * 
+	 * @return all process models.
+	 */
+	public List<GenericProcessModel> retrieveAll() {
+		return new ArrayList<GenericProcessModel>(processModelsMapping.values());
+	}
+
 	private ProcessModelRepository() {
 		this.processModelsContainer = null;
 		this.processModelsMapping = new HashMap<BPModelRDFGraph, GenericProcessModel>();
