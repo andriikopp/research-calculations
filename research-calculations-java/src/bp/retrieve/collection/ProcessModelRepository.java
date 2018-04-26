@@ -7,6 +7,7 @@ import java.util.Map;
 
 import bp.retrieve.BPModelRDFGraph;
 import bp.retrieve.container.api.BPModelsContainer;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Collection of business process models.
@@ -91,6 +92,25 @@ public class ProcessModelRepository {
 	 */
 	public List<GenericProcessModel> retrieveAll() {
 		return new ArrayList<GenericProcessModel>(processModelsMapping.values());
+	}
+
+	/**
+	 * Remove specific business process model from the collection.
+	 * 
+	 * @param processModel
+	 *            - a model that should be removed.
+	 */
+	public void remove(GenericProcessModel processModel) {
+		// Would be implemented in further release.
+		throw new NotImplementedException();
+	}
+
+	/**
+	 * Remove all business process models from the collection.
+	 */
+	public void removeAll() {
+		processModelsContainer.clear();
+		processModelsMapping.clear();
 	}
 
 	private ProcessModelRepository() {
