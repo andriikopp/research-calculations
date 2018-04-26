@@ -30,6 +30,9 @@ public class AcceleratedPSOBPModelsSimilarity extends CustomizableBPModelsSimila
 	public double compareBPModelRDFGraphs(BPModelRDFGraph first, BPModelRDFGraph second) {
 		BPModelsSimilarityPSOptimization pso = new BPModelsSimilarityPSOptimization(SWARM_SIZE);
 
+		// Use current similarity index.
+		SimilarityUtil.setSimilarity(similarityImpl);
+
 		// Calculate and initialize similarities.
 		pso.setOrganizationalUnitsSimilarity(SimilarityUtil.getOrganizationalUnitsSimilarity(first, second));
 		pso.setSupportingSystemSimilarity(SimilarityUtil.getSupportingSystemSimilarity(first, second));

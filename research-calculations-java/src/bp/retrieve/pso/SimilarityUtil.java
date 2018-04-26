@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import bp.retrieve.BPModelRDFGraph;
-import bp.retrieve.similarity.SemanticSimilarity;
 import bp.retrieve.similarity.Similarity;
 
 /**
@@ -15,7 +14,17 @@ import bp.retrieve.similarity.Similarity;
  */
 public class SimilarityUtil {
 	// Similarity index that is used to define these measures.
-	private static final Similarity SIMILARITY = new SemanticSimilarity();
+	private static Similarity similarity;
+
+	/**
+	 * Set a similarity index.
+	 * 
+	 * @param similarity
+	 *            - instance of the similarity index.
+	 */
+	public static void setSimilarity(Similarity similarity) {
+		SimilarityUtil.similarity = similarity;
+	}
 
 	/**
 	 * Returns the value of label similarity of organizational units.
@@ -28,7 +37,7 @@ public class SimilarityUtil {
 	 */
 	public static double getOrganizationalUnitsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
 		return Similarity.similarity(firstModel.extractOrganizationalUnits(), secondModel.extractOrganizationalUnits(),
-				SIMILARITY);
+				similarity);
 	}
 
 	/**
@@ -42,7 +51,7 @@ public class SimilarityUtil {
 	 */
 	public static double getSupportingSystemSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
 		return Similarity.similarity(firstModel.extractSupportingSystems(), secondModel.extractSupportingSystems(),
-				SIMILARITY);
+				similarity);
 	}
 
 	/**
@@ -56,7 +65,7 @@ public class SimilarityUtil {
 	 */
 	public static double getProcessFlowObjectsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
 		return Similarity.similarity(firstModel.extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents(),
-				secondModel.extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents(), SIMILARITY);
+				secondModel.extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents(), similarity);
 	}
 
 	/**
@@ -83,7 +92,7 @@ public class SimilarityUtil {
 			second.addAll(secondModel.executes(resource));
 		}
 
-		return Similarity.similarity(first, second, SIMILARITY);
+		return Similarity.similarity(first, second, similarity);
 	}
 
 	/**
@@ -110,7 +119,7 @@ public class SimilarityUtil {
 			second.addAll(secondModel.executes(resource));
 		}
 
-		return Similarity.similarity(first, second, SIMILARITY);
+		return Similarity.similarity(first, second, similarity);
 	}
 
 	/**
@@ -137,6 +146,6 @@ public class SimilarityUtil {
 			second.addAll(secondModel.executes(resource));
 		}
 
-		return Similarity.similarity(first, second, SIMILARITY);
+		return Similarity.similarity(first, second, similarity);
 	}
 }
