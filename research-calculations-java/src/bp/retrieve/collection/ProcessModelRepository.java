@@ -72,13 +72,13 @@ public class ProcessModelRepository {
 	/**
 	 * Retrieve a Business Process Model from the repository.
 	 * 
-	 * @param processModel
-	 *            - a process model that might be retrieved.
+	 * @param id
+	 *            - an ID of the process model that might be retrieved.
 	 * @return a process model.
 	 */
-	public GenericProcessModel retrieve(GenericProcessModel processModel) {
+	public GenericProcessModel retrieve(String id) {
 		for (Map.Entry<BPModelRDFGraph, GenericProcessModel> entry : processModelsMapping.entrySet()) {
-			if (entry.getValue().getId().equals(processModel.getId()))
+			if (entry.getValue().getId().equals(id))
 				return entry.getValue();
 		}
 
