@@ -68,6 +68,28 @@ public abstract class GenericProcessModel {
 		return image;
 	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public BPModelRDFGraph setName(String name) {
+		BPModelRDFGraph modelDescription = getModelDescription();
+		modelDescription.setName(name);
+		return modelDescription;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
