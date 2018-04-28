@@ -32,6 +32,7 @@ public class ProcessModelRepositoryView {
 	// Reusable tags.
 	private static final ContainerTag HOME = a("Home").withHref("./home");
 	private static final ContainerTag SEARCH = a("Search").withHref("./search");
+	private static final ContainerTag SHARED = a("Shared models").withHref("./sharedModels");
 	
 	/**
 	 * Shows the home page.
@@ -61,7 +62,7 @@ public class ProcessModelRepositoryView {
 					span(" "),
 					input().withType("submit").withValue("View")
 				).withAction("./retrieveOnRange"),
-				HOME, span(" "), SEARCH,
+				HOME, span(" "), SEARCH, span(" "), SHARED,
 				hr(),
 				p("Collection size: " + size + " model(s)")
 			)
@@ -88,7 +89,7 @@ public class ProcessModelRepositoryView {
 					span(" "),
 					input().withType("submit").withValue("Search")
 				).withAction("./retrieveByKeywords"),
-				HOME, span(" "), SEARCH,
+				HOME, span(" "), SEARCH, span(" "), SHARED,
 				hr()
 			)
 		).render();
@@ -108,18 +109,15 @@ public class ProcessModelRepositoryView {
 			),
 			body(
 				h2(TITLE),
-				HOME, span(" "), SEARCH,
+				HOME, span(" "), SEARCH, span(" "), SHARED,
 				hr(),
 				p("Retrieved: " + processModels.size() + " model(s)"),
 				each(processModels, processModel -> div(
 						p(b("Name: "), span(processModel.getName())),
-						p(b("File: "), a(processModel.getFile()).withHref("./files/" + processModel.getFile())),
+						p(b("File: "), span(processModel.getFile())),
 						p(b("Description: ")),
 						p(span(processModel.getDescription())),
-						p(img().withSrc("./images/" + processModel.getImage())
-								.attr("height", "200")
-								.attr("width", "400")),
-						p(a("Fullscreen image...").withHref("./images/" + processModel.getImage())),
+						p(img().withSrc("./images/" + processModel.getImage())),
 						a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId()),
 						hr()
 					)
@@ -142,7 +140,7 @@ public class ProcessModelRepositoryView {
 			),
 			body(
 				h2(TITLE),
-				HOME, span(" "), SEARCH,
+				HOME, span(" "), SEARCH, span(" "), SHARED,
 				hr(),
 				p(errorMessage)
 			)

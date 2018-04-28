@@ -30,6 +30,13 @@ public class ProcessModelRepositoryController {
 	};
 
 	/**
+	 * Access shared models page of the application.
+	 */
+	public static Route sharedModels = (Request request, Response response) -> {
+		return ProcessModelRepositoryView.viewProcessModels(ProcessModelRepositoryService.retrieveAll());
+	};
+
+	/**
 	 * Access results of the range-based retrievement of process models.
 	 */
 	public static Route retrieveOnRange = (Request request, Response response) -> {
