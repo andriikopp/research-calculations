@@ -22,7 +22,8 @@ public class APSOAndManualBPModelsSimilarityTest {
 			.domain(0.33, 0.33, 0.34)
 			.closeness(0.5, 0.5)
 			.threshold(SIMILARITY_THRESHOLD)
-			.semantic()
+			.semantic(0.25, 0.75, 1.0)
+			.synonyms("Verification invoice", "Verify invoice")
 			.tableContainer()
 			.collection(
 				new FirstProcessModel(),
@@ -37,7 +38,8 @@ public class APSOAndManualBPModelsSimilarityTest {
 		repository = config()
 			.apso()
 			.threshold(SIMILARITY_THRESHOLD)
-			.semantic()
+			.semantic(0.25, 0.75, 1.0)
+			.synonyms("Verification invoice", "Verify invoice")
 			.tableContainer()
 			.collection(
 				new FirstProcessModel(),

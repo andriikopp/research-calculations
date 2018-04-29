@@ -13,10 +13,23 @@ import java.util.Set;
  * @author Andrii Kopp
  */
 public class SemanticSimilarity implements Similarity {
+	// Semantic similarity weight coefficients.
+	private double concepts;
+	private double synonyms;
+	private double equal;
+
 	private Map<String, Set<String>> synonymsMap;
 
 	public SemanticSimilarity() {
 		synonymsMap = new HashMap<String, Set<String>>();
+	}
+
+	public SemanticSimilarity(double concepts, double synonyms, double equal) {
+		synonymsMap = new HashMap<String, Set<String>>();
+
+		this.concepts = concepts;
+		this.synonyms = synonyms;
+		this.equal = equal;
 	}
 
 	/**
@@ -43,18 +56,24 @@ public class SemanticSimilarity implements Similarity {
 
 		for (String firstConcept : first) {
 			for (String secondConcept : second) {
-				// Check full equality.
-				if (firstConcept.equals(secondConcept)) {
-					sum += 1.0;
+				double weight = 0;
 
-					// Check for common concepts.
-				} else if (areHaveCommonConcepts(firstConcept, secondConcept)) {
-					sum += 1.0;
-
-					// Check for synonyms.
-				} else if (areSynonyms(firstConcept, secondConcept)) {
-					sum += 1.0;
+				// Check for common concepts.
+				if (areHaveCommonConcepts(firstConcept, secondConcept)) {
+					weight = concepts;
 				}
+
+				// Check for synonyms.
+				if (areSynonyms(firstConcept, secondConcept)) {
+					weight = synonyms;
+				}
+
+				// Check for total equality.
+				if (firstConcept.equals(secondConcept)) {
+					weight = equal;
+				}
+
+				sum += weight;
 			}
 		}
 

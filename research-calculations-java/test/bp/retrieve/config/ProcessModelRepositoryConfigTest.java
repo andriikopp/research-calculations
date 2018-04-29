@@ -21,7 +21,7 @@ public class ProcessModelRepositoryConfigTest {
 		ProcessModelRepository repository = config()
 			.apso()
 			.threshold(0.6)
-			.semantic()
+			.semantic(0.25, 0.75, 1.0)
 			.synonyms("Verification invoice", "Verify invoice")
 			.tableContainer()
 			.collection(

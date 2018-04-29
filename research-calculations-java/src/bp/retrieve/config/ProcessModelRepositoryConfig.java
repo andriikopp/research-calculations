@@ -119,10 +119,16 @@ public class ProcessModelRepositoryConfig {
 	 * Use semantic similarity to measure business process models closeness. In case
 	 * it never called, default Jaccard index would be used.
 	 * 
+	 * @param concepts
+	 *            - the weight of concepts similarity;
+	 * @param synonyms
+	 *            - the weight of synonyms similarity;
+	 * @param equal
+	 *            - the weight of total labels equality.
 	 * @return instance of itself.
 	 */
-	public ProcessModelRepositoryConfig semantic() {
-		similarityMeasure = new SemanticSimilarity();
+	public ProcessModelRepositoryConfig semantic(double concepts, double synonyms, double equal) {
+		similarityMeasure = new SemanticSimilarity(concepts, synonyms, equal);
 		modelsSimilarity.defineSimilarityMethod(similarityMeasure);
 		return this;
 	}
