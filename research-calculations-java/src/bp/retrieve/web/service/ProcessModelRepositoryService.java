@@ -57,13 +57,13 @@ public class ProcessModelRepositoryService {
 		for (GenericProcessModel processModel : processModels) {
 			for (String keyword : keywordsArray) {
 				// Check name of the process model.
-				if (processModel.getName().contains(keyword)) {
+				if (processModel.getName().toLowerCase().contains(keyword.toLowerCase())) {
 					processModelsByKeywords.add(processModel);
 					continue;
 				}
 
 				// Check description of the process model.
-				if (processModel.getDescription().contains(keyword)) {
+				if (processModel.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
 					processModelsByKeywords.add(processModel);
 					continue;
 				}
