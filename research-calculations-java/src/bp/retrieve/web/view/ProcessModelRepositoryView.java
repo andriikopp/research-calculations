@@ -113,14 +113,36 @@ public class ProcessModelRepositoryView {
 				hr(),
 				p("Retrieved: " + processModels.size() + " model(s)"),
 				each(processModels, processModel -> div(
-						p(b("Name: "), span(processModel.getName())),
+						p(b("Name: "), a(processModel.getName())
+							.withHref("./retrieveById?id=" + processModel.getId())),
 						p(b("File: "), span(processModel.getFile())),
 						p(b("Description: ")),
 						p(span(processModel.getDescription())),
-						p(img().withSrc("./images/" + processModel.getImage())),
 						a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId()),
 						hr()
 					)
+				)
+			)
+		).render();
+	}
+	
+	public static String viewProcessModel(GenericProcessModel processModel) {
+		return html(
+			head(
+				title(TITLE)
+			),
+			body(
+				h2(TITLE),
+				HOME, span(" "), SEARCH, span(" "), SHARED,
+				hr(),
+				div(
+					p(b("Name: "), span(processModel.getName())),
+					p(b("File: "), span(processModel.getFile())),
+					p(b("Description: ")),
+					p(span(processModel.getDescription())),
+					p(img().withSrc("./images/" + processModel.getImage())),
+					a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId()),
+					hr()
 				)
 			)
 		).render();

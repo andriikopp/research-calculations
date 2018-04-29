@@ -33,6 +33,7 @@ public class ProcessModelRepositoryApplication {
 			get("/retrieveOnRange", ProcessModelRepositoryController.retrieveOnRange);
 			get("/retrieveByKeywords", ProcessModelRepositoryController.retrieveByKeywords);
 			get("/retrieveSimilar", ProcessModelRepositoryController.retrieveSimilar);
+			get("/retrieveById", ProcessModelRepositoryController.retrieveById);
 		});
 
 		System.out.println("Business Process Model Repository Application started...");

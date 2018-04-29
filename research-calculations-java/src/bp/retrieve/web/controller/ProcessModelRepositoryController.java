@@ -77,4 +77,17 @@ public class ProcessModelRepositoryController {
 			return ProcessModelRepositoryView.viewError(e.getMessage());
 		}
 	};
+
+	/**
+	 * Access delailed page of the process model.
+	 */
+	public static Route retrieveById = (Request request, Response response) -> {
+		try {
+			final String id = request.queryParams("id");
+
+			return ProcessModelRepositoryView.viewProcessModel(ProcessModelRepositoryService.retrieveById(id));
+		} catch (Exception e) {
+			return ProcessModelRepositoryView.viewError(e.getMessage());
+		}
+	};
 }

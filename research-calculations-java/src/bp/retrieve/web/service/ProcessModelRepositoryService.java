@@ -91,6 +91,20 @@ public class ProcessModelRepositoryService {
 	}
 
 	/**
+	 * Returns the process model retrieved by its ID.
+	 * 
+	 * @param id
+	 *            - the identifier of process model.
+	 * @return the process model retrieved by its ID.
+	 */
+	public static GenericProcessModel retrieveById(String id) {
+		if (id == null || id.isEmpty())
+			throw new IllegalArgumentException("Invalid model!");
+
+		return processModelRepository.retrieve(id);
+	}
+
+	/**
 	 * Returns the list of process models stored in the repository.
 	 * 
 	 * @return
