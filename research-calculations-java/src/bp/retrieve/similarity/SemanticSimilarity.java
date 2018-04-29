@@ -43,20 +43,42 @@ public class SemanticSimilarity implements Similarity {
 
 		for (String firstConcept : first) {
 			for (String secondConcept : second) {
+				// Check full equality.
 				if (firstConcept.equals(secondConcept)) {
 					sum += 1.0;
-				} else {
-					if (areSynonyms(firstConcept, secondConcept)) {
-						sum += 1.0;
-					}
+
+					// Check for common concepts.
+				} else if (areHaveCommonConcepts(firstConcept, secondConcept)) {
+					sum += 1.0;
+
+					// Check for synonyms.
+				} else if (areSynonyms(firstConcept, secondConcept)) {
+					sum += 1.0;
 				}
 			}
 		}
 
 		// Sorencen-Dice index.
 		return 2.0 * sum / (double) (first.size() + second.size());
+
 	}
 
+	// Return 'true' if 'a' and 'b' have common concepts. E.g. 'Verify invoice' and
+	// 'Verification invoice' have common concept 'invoice'. Thus 'a' and 'b' are
+	// close. Otherwise return 'false'.
+	private boolean areHaveCommonConcepts(String a, String b) {
+		Set<String> aConcepts = new HashSet<String>();
+		aConcepts.addAll(Arrays.asList(a.split("\\s+")));
+
+		Set<String> bConcepts = new HashSet<String>();
+		bConcepts.addAll(Arrays.asList(b.split("\\s+")));
+
+		return !Similarity.intersection(aConcepts, bConcepts).isEmpty();
+	}
+
+	// Return 'true' if 'a' and 'b' are synonyms. E.g. 'Verify invoice' and
+	// 'Verification invoice' are synonyms. Thus 'a' and 'b' are close. Otherwise
+	// return 'false'.
 	private boolean areSynonyms(String a, String b) {
 		if (!synonymsMap.containsKey(a) && !synonymsMap.containsKey(b)) {
 			return false;
