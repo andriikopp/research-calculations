@@ -104,7 +104,7 @@ public class ProcessModelRepositoryConfig {
 	 * automatically using default value from {@code beans.xml}.
 	 * 
 	 * @param similarityThreshold
-	 *            - value of similarity threshold [0, 1].
+	 *            - value of the similarity threshold [0, 1].
 	 * @return instance of itself.
 	 */
 	public ProcessModelRepositoryConfig threshold(double similarityThreshold) {
@@ -112,6 +112,19 @@ public class ProcessModelRepositoryConfig {
 			throw new IllegalParameterException("Similarity threshold " + similarityThreshold + " is invalid!");
 
 		modelsSimilarity.setSimilarityLevel(similarityThreshold);
+		return this;
+	}
+
+	/**
+	 * Use semantic similarity to measure business process models closeness. Current
+	 * implementation uses Jaro-Winkler distance to measure similarity of concepts.
+	 * In case it never called, default Jaccard index would be used.
+	 * 
+	 * @return instance of itself.
+	 */
+	public ProcessModelRepositoryConfig semantic() {
+		similarityMeasure = new SemanticSimilarity(modelsSimilarity.getSimilarityLevel());
+		modelsSimilarity.defineSimilarityMethod(similarityMeasure);
 		return this;
 	}
 
@@ -127,6 +140,7 @@ public class ProcessModelRepositoryConfig {
 	 *            - the weight of total labels equality.
 	 * @return instance of itself.
 	 */
+	@Deprecated
 	public ProcessModelRepositoryConfig semantic(double concepts, double synonyms, double equal) {
 		similarityMeasure = new SemanticSimilarity(concepts, synonyms, equal);
 		modelsSimilarity.defineSimilarityMethod(similarityMeasure);
@@ -145,6 +159,7 @@ public class ProcessModelRepositoryConfig {
 	 *            - one or several related synonyms.
 	 * @return instance of itself.
 	 */
+	@Deprecated
 	public ProcessModelRepositoryConfig synonyms(String concept, String... synonyms) {
 		if (similarityMeasure instanceof SemanticSimilarity) {
 			((SemanticSimilarity) similarityMeasure).addSynonyms(concept, synonyms);

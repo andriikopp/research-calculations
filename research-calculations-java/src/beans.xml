@@ -68,7 +68,7 @@
 		</property>
 		<!-- Start: Similarity coefficients -->
 		<!-- Model similarity threshold -->
-		<property name="similarityLevel" value="0.4" />
+		<property name="similarityLevel" value="0.6" />
 		<!-- Domains importance similarity coefficients -->
 		<property name="domainCoefficients">
 			<map>

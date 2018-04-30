@@ -14,9 +14,7 @@ public class SemanticSimilarityTest {
 	private CustomizableBPModelsSimilarity bpModelsSimilarity;
 
 	@Test
-	public void testSimilarity() {
-		similarity.addSynonyms("Verification invoice", "Verify invoice");
-		
+	public void testSimilarity() {		
 		bpModelsSimilarity.defineSimilarityMethod(similarity);
 
 		bpModelsSimilarity.compareByFlowObjects();
@@ -26,8 +24,8 @@ public class SemanticSimilarityTest {
 	}
 
 	public SemanticSimilarityTest() {
-		similarity = new SemanticSimilarity();
 		bpModelsSimilarity = new CustomizableBPModelsSimilarity();
+		similarity = new SemanticSimilarity(bpModelsSimilarity.getSimilarityLevel());
 
 		firstModel = model("Model 1")
 				.start()

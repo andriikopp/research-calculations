@@ -22,10 +22,8 @@ public class ProcessModelRepositoryTest {
 	
 	@Test
 	public void test() {
-		SemanticSimilarity similarity = new SemanticSimilarity();
-		similarity.addSynonyms("Verification invoice", "Verify invoice");
-		
 		CustomizableBPModelsSimilarity modelsSimilarity = new CustomizableBPModelsSimilarity();
+		SemanticSimilarity similarity = new SemanticSimilarity(modelsSimilarity.getSimilarityLevel());
 		modelsSimilarity.defineSimilarityMethod(similarity);
 
 		BPModelsContainer container = new TableBPModelsContainer(modelsSimilarity);

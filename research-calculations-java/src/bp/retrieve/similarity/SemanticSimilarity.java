@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.text.similarity.JaroWinklerDistance;
+
 /**
  * Simple semantic similarity measure of concepts. Based on a dictionary of
  * synonyms that might be set manually.
@@ -14,16 +16,30 @@ import java.util.Set;
  */
 public class SemanticSimilarity implements Similarity {
 	// Semantic similarity weight coefficients.
+	@SuppressWarnings("unused")
 	private double concepts;
+	@SuppressWarnings("unused")
 	private double synonyms;
+	@SuppressWarnings("unused")
 	private double equal;
+
+	// Use Apache Commons Text library (Jaro-Winkler distance measure between
+	// strings).
+	private JaroWinklerDistance distance;
+
+	// Strings similarity threshold.
+	private double similarityThreshold;
 
 	private Map<String, Set<String>> synonymsMap;
 
-	public SemanticSimilarity() {
+	public SemanticSimilarity(double similarityThreshold) {
 		synonymsMap = new HashMap<String, Set<String>>();
+		distance = new JaroWinklerDistance();
+
+		this.similarityThreshold = similarityThreshold;
 	}
 
+	@Deprecated
 	public SemanticSimilarity(double concepts, double synonyms, double equal) {
 		synonymsMap = new HashMap<String, Set<String>>();
 
@@ -40,6 +56,7 @@ public class SemanticSimilarity implements Similarity {
 	 * @param synonyms
 	 *            - one or several synonyms of this concept.
 	 */
+	@Deprecated
 	public void addSynonyms(String label, String... synonyms) {
 		Set<String> synonymsSet = new HashSet<String>();
 		synonymsSet.addAll(Arrays.asList(synonyms));
@@ -56,35 +73,28 @@ public class SemanticSimilarity implements Similarity {
 
 		for (String firstConcept : first) {
 			for (String secondConcept : second) {
-				double weight = 0;
-
-				// Check for common concepts.
-				if (areHaveCommonConcepts(firstConcept, secondConcept)) {
-					weight = concepts;
-				}
-
-				// Check for synonyms.
-				if (areSynonyms(firstConcept, secondConcept)) {
-					weight = synonyms;
-				}
-
-				// Check for total equality.
-				if (firstConcept.equals(secondConcept)) {
-					weight = equal;
-				}
-
-				sum += weight;
+				// Labels similarity.
+				if (similarity(firstConcept, secondConcept))
+					sum += 1.0;
 			}
 		}
 
 		// Sorencen-Dice index.
 		return 2.0 * sum / (double) (first.size() + second.size());
+	}
 
+	// Calculates the similarity between two strings as the number within [0, 1]
+	// range.
+	private boolean similarity(String a, String b) {
+		// Consider that strings are similar if distance is greater or equal to the
+		// threshold.
+		return distance.apply(a, b) >= similarityThreshold;
 	}
 
 	// Return 'true' if 'a' and 'b' have common concepts. E.g. 'Verify invoice' and
 	// 'Verification invoice' have common concept 'invoice'. Thus 'a' and 'b' are
 	// close. Otherwise return 'false'.
+	@SuppressWarnings("unused")
 	private boolean areHaveCommonConcepts(String a, String b) {
 		Set<String> aConcepts = new HashSet<String>();
 		aConcepts.addAll(Arrays.asList(a.split("\\s+")));
@@ -98,6 +108,7 @@ public class SemanticSimilarity implements Similarity {
 	// Return 'true' if 'a' and 'b' are synonyms. E.g. 'Verify invoice' and
 	// 'Verification invoice' are synonyms. Thus 'a' and 'b' are close. Otherwise
 	// return 'false'.
+	@SuppressWarnings("unused")
 	private boolean areSynonyms(String a, String b) {
 		if (!synonymsMap.containsKey(a) && !synonymsMap.containsKey(b)) {
 			return false;
