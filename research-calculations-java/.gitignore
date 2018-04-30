@@ -17,6 +17,7 @@ target/
 
 # BP Models
 models/
+main/
 
 # Future Work
 src/bp/storing/nosql/
