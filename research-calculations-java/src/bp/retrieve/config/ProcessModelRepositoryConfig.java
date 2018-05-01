@@ -150,8 +150,7 @@ public class ProcessModelRepositoryConfig {
 	/**
 	 * Set label synonyms to measure semantic similarity properly. Using semantic
 	 * similarity withoud specifying of the synonyms makes sence only if you are
-	 * sure that nodes of business process models contains equal concepts. In case
-	 * it never called, nothing more than plain Sorencen-Dice index would be used.
+	 * sure that nodes of business process models contains equal concepts.
 	 * 
 	 * @param concept
 	 *            - a concept represented by a label;
