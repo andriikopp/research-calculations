@@ -112,11 +112,11 @@ public class SimilarityUtil {
 				secondModel.extractSupportingSystems());
 
 		for (String resource : intersection) {
-			first.addAll(firstModel.executes(resource));
+			first.addAll(firstModel.usedBy(resource));
 		}
 
 		for (String resource : intersection) {
-			second.addAll(secondModel.executes(resource));
+			second.addAll(secondModel.usedBy(resource));
 		}
 
 		return Similarity.similarity(first, second, similarity);
@@ -139,11 +139,11 @@ public class SimilarityUtil {
 				secondModel.extractFlowObjects());
 
 		for (String resource : intersection) {
-			first.addAll(firstModel.executes(resource));
+			first.addAll(firstModel.triggers(resource));
 		}
 
 		for (String resource : intersection) {
-			second.addAll(secondModel.executes(resource));
+			second.addAll(secondModel.triggers(resource));
 		}
 
 		return Similarity.similarity(first, second, similarity);
