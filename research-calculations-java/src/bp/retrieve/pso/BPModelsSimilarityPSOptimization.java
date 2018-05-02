@@ -12,8 +12,8 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Andrii Kopp
  */
 public class BPModelsSimilarityPSOptimization {
-	private static final int DIMENSION = 5;
-	private static final int SIMILARITIES = 6;
+	private int dimension = 5;
+	private int similaritiesCount = 6;
 
 	// Allowable range of values.
 	private static final double LOWER_BOUND = 0;
@@ -39,7 +39,7 @@ public class BPModelsSimilarityPSOptimization {
 	 *            - the number of particles within the swarm.
 	 */
 	public BPModelsSimilarityPSOptimization(int swarmSize) {
-		this.similarities = new double[SIMILARITIES];
+		this.similarities = new double[similaritiesCount];
 		this.swarmSize = swarmSize;
 		this.swarm = new ArrayList<double[]>();
 	}
@@ -54,10 +54,10 @@ public class BPModelsSimilarityPSOptimization {
 	public double similarity() {
 		// Preparation stage.
 		for (int i = 0; i < swarmSize; i++) {
-			double[] particle = new double[DIMENSION];
+			double[] particle = new double[dimension];
 
 			// Define initial particle values.
-			for (int j = 0; j < DIMENSION; j++)
+			for (int j = 0; j < dimension; j++)
 				particle[j] = rand(LOWER_BOUND, UPPER_BOUND);
 
 			norm(particle); // Normalize obtained values.
@@ -67,10 +67,10 @@ public class BPModelsSimilarityPSOptimization {
 
 		for (int counter = 1; counter <= MAX_ITERATIONS; counter++)
 			for (int i = 0; i < swarmSize; i++) {
-				double[] particle = new double[DIMENSION];
+				double[] particle = new double[dimension];
 
 				// Move particle to the next position.
-				for (int j = 0; j < DIMENSION; j++)
+				for (int j = 0; j < dimension; j++)
 					particle[j] = (1 - BETA) * swarm.get(i)[j] + BETA * global[j]
 							+ ALPHA * rand(LOWER_BOUND, UPPER_BOUND);
 
@@ -91,9 +91,9 @@ public class BPModelsSimilarityPSOptimization {
 		double aSum = coeff[0] + coeff[1] + coeff[2];
 		double bSum = coeff[3] + coeff[4];
 
-		for (int i = 0; i < DIMENSION - 2; i++)
+		for (int i = 0; i < dimension - 2; i++)
 			coeff[i] /= aSum;
-		for (int i = DIMENSION - 2; i < DIMENSION; i++)
+		for (int i = dimension - 2; i < dimension; i++)
 			coeff[i] /= bSum;
 	}
 
@@ -102,11 +102,38 @@ public class BPModelsSimilarityPSOptimization {
 		return ThreadLocalRandom.current().nextDouble(min, max);
 	}
 
-	// Similarity measure.
-	private double measure(double[] coeff) {
+	/**
+	 * Similarity measure of business process models.
+	 * 
+	 * @param coeff
+	 *            - the array of similarity coefficients.
+	 * @return the value of similarity between two business process models.
+	 */
+	public double measure(double[] coeff) {
 		return coeff[0] * (coeff[3] * similarities[0] + coeff[4] * similarities[3])
 				+ coeff[1] * (coeff[3] * similarities[1] + coeff[4] * similarities[4])
 				+ coeff[2] * (coeff[3] * similarities[2] + coeff[4] * similarities[5]);
+	}
+
+	/**
+	 * Set the dimension of the optimization problem. Default is 5.
+	 * 
+	 * @param dimension
+	 *            - the dimension of the optimization problem.
+	 */
+	public void setDimension(int dimension) {
+		this.dimension = dimension;
+	}
+
+	/**
+	 * Set the number of similarities used to measure similarity of business process
+	 * models.
+	 * 
+	 * @param similaritiesCount
+	 *            - the number of similarities.
+	 */
+	public void setSimilaritiesCount(int similaritiesCount) {
+		this.similaritiesCount = similaritiesCount;
 	}
 
 	/**
