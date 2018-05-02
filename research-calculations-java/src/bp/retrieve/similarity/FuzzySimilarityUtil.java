@@ -109,6 +109,23 @@ public class FuzzySimilarityUtil {
 				/ sumOfMembershipFunctions(fuzzyUnion(first, second));
 	}
 
+	/**
+	 * Returns the support of fuzzy set.
+	 * 
+	 * @param fuzzySet
+	 *            - the fuzzy set which support should be obtained.
+	 * @return the support of fuzzy set.
+	 */
+	public static Set<String> support(Map<String, Double> fuzzySet) {
+		Set<String> supportSet = new HashSet<String>();
+
+		for (Map.Entry<String, Double> entry : fuzzySet.entrySet())
+			if (entry.getValue() > 0)
+				supportSet.add(entry.getKey());
+
+		return supportSet;
+	}
+
 	// Returns sum of memberships of the fuzzy set.
 	private static double sumOfMembershipFunctions(Map<String, Double> fuzzySet) {
 		double result = 0;
