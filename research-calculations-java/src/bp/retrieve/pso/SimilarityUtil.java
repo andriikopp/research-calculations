@@ -83,9 +83,8 @@ public class SimilarityUtil {
 		Set<String> second = new HashSet<String>();
 
 		// Use fuzzy intersection of organizational units.
-		Set<String> fuzzyIntersection = FuzzySimilarityUtil
-				.fuzzyIntersection(firstModel.extractOrganizationalUnits(), secondModel.extractOrganizationalUnits())
-				.keySet();
+		Set<String> fuzzyIntersection = FuzzySimilarityUtil.support(FuzzySimilarityUtil
+				.fuzzyIntersection(firstModel.extractOrganizationalUnits(), secondModel.extractOrganizationalUnits()));
 
 		for (String resource : fuzzyIntersection) {
 			first.addAll(firstModel.executes(resource));
@@ -112,9 +111,8 @@ public class SimilarityUtil {
 		Set<String> second = new HashSet<String>();
 
 		// Use fuzzy intersection of IT-systems.
-		Set<String> fuzzyIntersection = FuzzySimilarityUtil
-				.fuzzyIntersection(firstModel.extractSupportingSystems(), secondModel.extractSupportingSystems())
-				.keySet();
+		Set<String> fuzzyIntersection = FuzzySimilarityUtil.support(FuzzySimilarityUtil
+				.fuzzyIntersection(firstModel.extractSupportingSystems(), secondModel.extractSupportingSystems()));
 
 		for (String resource : fuzzyIntersection) {
 			first.addAll(firstModel.usedBy(resource));
@@ -141,8 +139,8 @@ public class SimilarityUtil {
 		Set<String> second = new HashSet<String>();
 
 		// Use fuzzy intersection of process flow objects.
-		Set<String> fuzzyIntersection = FuzzySimilarityUtil
-				.fuzzyIntersection(firstModel.extractFlowObjects(), secondModel.extractFlowObjects()).keySet();
+		Set<String> fuzzyIntersection = FuzzySimilarityUtil.support(FuzzySimilarityUtil
+				.fuzzyIntersection(firstModel.extractFlowObjects(), secondModel.extractFlowObjects()));
 
 		for (String resource : fuzzyIntersection) {
 			first.addAll(firstModel.triggers(resource));
