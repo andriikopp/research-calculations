@@ -197,6 +197,15 @@ public class BPModelsSimilarityPSOptimization {
 	}
 
 	/**
+	 * Returns all distance values.
+	 * 
+	 * @return all distance values.
+	 */
+	public double[] getSimilarities() {
+		return similarities;
+	}
+
+	/**
 	 * Returns obtained similarity coeffs.
 	 * 
 	 * @return obtained similarity coeffs.

@@ -23,7 +23,7 @@ public class ProcessModelRepositoryTest {
 	@Test
 	public void test() {
 		CustomizableBPModelsSimilarity modelsSimilarity = new CustomizableBPModelsSimilarity();
-		SemanticSimilarity similarity = new SemanticSimilarity(modelsSimilarity.getSimilarityLevel());
+		SemanticSimilarity similarity = new SemanticSimilarity();
 		modelsSimilarity.defineSimilarityMethod(similarity);
 
 		BPModelsContainer container = new TableBPModelsContainer(modelsSimilarity);

@@ -24,8 +24,8 @@ public class SemanticSimilarityTest {
 	}
 
 	public SemanticSimilarityTest() {
+		similarity = new SemanticSimilarity();
 		bpModelsSimilarity = new CustomizableBPModelsSimilarity();
-		similarity = new SemanticSimilarity(bpModelsSimilarity.getSimilarityLevel());
 
 		firstModel = model("Model 1")
 				.start()

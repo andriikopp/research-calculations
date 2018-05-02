@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.text.similarity.JaroWinklerDistance;
-
 /**
  * Simple semantic similarity measure of concepts. Based on a dictionary of
  * synonyms that might be set manually.
@@ -23,20 +21,10 @@ public class SemanticSimilarity implements Similarity {
 	@SuppressWarnings("unused")
 	private double equal;
 
-	// Use Apache Commons Text library (Jaro-Winkler distance measure between
-	// strings).
-	private JaroWinklerDistance distance;
-
-	// Strings similarity threshold.
-	private double similarityThreshold;
-
 	private Map<String, Set<String>> synonymsMap;
 
-	public SemanticSimilarity(double similarityThreshold) {
+	public SemanticSimilarity() {
 		synonymsMap = new HashMap<String, Set<String>>();
-		distance = new JaroWinklerDistance();
-
-		this.similarityThreshold = similarityThreshold;
 	}
 
 	@Deprecated
@@ -65,30 +53,8 @@ public class SemanticSimilarity implements Similarity {
 
 	@Override
 	public double coefficient(Set<String> first, Set<String> second) {
-		if (Similarity.union(first, second).isEmpty()) {
-			return 1.0;
-		}
-
-		double sum = 0;
-
-		for (String firstConcept : first) {
-			for (String secondConcept : second) {
-				// Labels similarity.
-				if (similarity(firstConcept, secondConcept))
-					sum += 1.0;
-			}
-		}
-
-		// Sorencen-Dice index.
-		return 2.0 * sum / (double) (first.size() + second.size());
-	}
-
-	// Calculates the similarity between two strings as the number within [0, 1]
-	// range.
-	private boolean similarity(String a, String b) {
-		// Consider that strings are similar if distance is greater or equal to the
-		// threshold.
-		return distance.apply(a, b) >= similarityThreshold;
+		// Use fuzzy Jaccard distance.
+		return FuzzySimilarityUtil.fuzzyJaccardDistance(first, second);
 	}
 
 	// Return 'true' if 'a' and 'b' have common concepts. E.g. 'Verify invoice' and

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import bp.retrieve.BPModelRDFGraph;
+import bp.retrieve.similarity.FuzzySimilarityUtil;
 import bp.retrieve.similarity.Similarity;
 
 /**
@@ -81,14 +82,16 @@ public class SimilarityUtil {
 		Set<String> first = new HashSet<String>();
 		Set<String> second = new HashSet<String>();
 
-		Set<String> intersection = Similarity.intersection(firstModel.extractOrganizationalUnits(),
-				secondModel.extractOrganizationalUnits());
+		// Use fuzzy intersection of organizational units.
+		Set<String> fuzzyIntersection = FuzzySimilarityUtil
+				.fuzzyIntersection(firstModel.extractOrganizationalUnits(), secondModel.extractOrganizationalUnits())
+				.keySet();
 
-		for (String resource : intersection) {
+		for (String resource : fuzzyIntersection) {
 			first.addAll(firstModel.executes(resource));
 		}
 
-		for (String resource : intersection) {
+		for (String resource : fuzzyIntersection) {
 			second.addAll(secondModel.executes(resource));
 		}
 
@@ -108,14 +111,16 @@ public class SimilarityUtil {
 		Set<String> first = new HashSet<String>();
 		Set<String> second = new HashSet<String>();
 
-		Set<String> intersection = Similarity.intersection(firstModel.extractSupportingSystems(),
-				secondModel.extractSupportingSystems());
+		// Use fuzzy intersection of IT-systems.
+		Set<String> fuzzyIntersection = FuzzySimilarityUtil
+				.fuzzyIntersection(firstModel.extractSupportingSystems(), secondModel.extractSupportingSystems())
+				.keySet();
 
-		for (String resource : intersection) {
+		for (String resource : fuzzyIntersection) {
 			first.addAll(firstModel.usedBy(resource));
 		}
 
-		for (String resource : intersection) {
+		for (String resource : fuzzyIntersection) {
 			second.addAll(secondModel.usedBy(resource));
 		}
 
@@ -135,14 +140,15 @@ public class SimilarityUtil {
 		Set<String> first = new HashSet<String>();
 		Set<String> second = new HashSet<String>();
 
-		Set<String> intersection = Similarity.intersection(firstModel.extractFlowObjects(),
-				secondModel.extractFlowObjects());
+		// Use fuzzy intersection of process flow objects.
+		Set<String> fuzzyIntersection = FuzzySimilarityUtil
+				.fuzzyIntersection(firstModel.extractFlowObjects(), secondModel.extractFlowObjects()).keySet();
 
-		for (String resource : intersection) {
+		for (String resource : fuzzyIntersection) {
 			first.addAll(firstModel.triggers(resource));
 		}
 
-		for (String resource : intersection) {
+		for (String resource : fuzzyIntersection) {
 			second.addAll(secondModel.triggers(resource));
 		}
 

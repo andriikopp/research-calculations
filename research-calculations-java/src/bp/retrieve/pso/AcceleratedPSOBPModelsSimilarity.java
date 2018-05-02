@@ -44,10 +44,19 @@ public class AcceleratedPSOBPModelsSimilarity extends CustomizableBPModelsSimila
 		double similarity = pso.similarity();
 
 		System.out.printf("LOG: %s <> %s : %.4f\n", first.getName(), second.getName(), similarity);
+		System.out.print("\tSimilarity values:\t");
 
 		// Show similarity coefficient values.
 		for (double coeff : pso.getSimilarityCoeffs())
-			System.out.printf("\t%.4f\n", coeff);
+			System.out.printf("%.4f ", coeff);
+
+		System.out.print("\n\tDistance values:\t");
+
+		// Show distance values.
+		for (double coeff : pso.getSimilarities())
+			System.out.printf("%.4f ", coeff);
+
+		System.out.println();
 
 		return similarity;
 	}
