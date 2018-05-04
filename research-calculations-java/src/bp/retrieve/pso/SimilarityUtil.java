@@ -65,8 +65,7 @@ public class SimilarityUtil {
 	 * @return the value of label similarity of process flow objects.
 	 */
 	public static double getProcessFlowObjectsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
-		return Similarity.similarity(firstModel.extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents(),
-				secondModel.extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents(), similarity);
+		return Similarity.similarity(firstModel.extractFlowObjects(), secondModel.extractFlowObjects(), similarity);
 	}
 
 	/**
