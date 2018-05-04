@@ -279,6 +279,8 @@ public class BPModelsSimilarity {
 
 		double structureSimilarity = Similarity.similarity(firstExecutes, secondExecutes, similarityImpl);
 
+		System.out.printf("\tOrganizational Units:\t%.4f %.4f\n", semanticSimilarity, structureSimilarity);
+
 		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
 				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
 	}
@@ -304,6 +306,8 @@ public class BPModelsSimilarity {
 
 		double structureSimilarity = Similarity.similarity(firstUsedBy, secondUsedBy, similarityImpl);
 
+		System.out.printf("\tSupporting Systems:\t%.4f %.4f\n", semanticSimilarity, structureSimilarity);
+
 		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
 				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;
 	}
@@ -311,8 +315,8 @@ public class BPModelsSimilarity {
 	private double flowObjectsSimilarity(BPModelRDFGraph firstModel, BPModelRDFGraph secondModel) {
 		// Don't use BPMN-specific start/end events and gateways to measure label
 		// similarity.
-		Set<String> first = firstModel.extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents();
-		Set<String> second = secondModel.extractFlowObjectsExceptGatewaysAndBPMNStartEndEvents();
+		Set<String> first = firstModel.extractFlowObjects();
+		Set<String> second = secondModel.extractFlowObjects();
 
 		double semanticSimilarity = Similarity.similarity(first, second, similarityImpl);
 
@@ -333,6 +337,8 @@ public class BPModelsSimilarity {
 		}
 
 		double structureSimilarity = Similarity.similarity(firstTriggers, secondTriggers, similarityImpl);
+
+		System.out.printf("\tProcess Flow Objects:\t%.4f %.4f\n", semanticSimilarity, structureSimilarity);
 
 		return similarityCoefficients.get(SEMANTIC_COEFF) * semanticSimilarity
 				+ similarityCoefficients.get(STRUCTURE_COEFF) * structureSimilarity;

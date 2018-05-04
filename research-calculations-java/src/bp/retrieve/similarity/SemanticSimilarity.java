@@ -53,8 +53,32 @@ public class SemanticSimilarity implements Similarity {
 
 	@Override
 	public double coefficient(Set<String> first, Set<String> second) {
-		// Use fuzzy Jaccard distance.
-		return FuzzySimilarityUtil.fuzzyJaccardDistance(first, second);
+		// Use Jaccard distance.
+		return jaccardDistance(first, second);
+	}
+
+	/**
+	 * Jaccard distance between two sets. Highest value means highest similarity.
+	 * 
+	 * @param first
+	 *            - the first set;
+	 * @param second
+	 *            - the second set.
+	 * @return the value of similarity between two sets.
+	 */
+	public static double jaccardDistance(Set<String> first, Set<String> second) {
+		// Models should be considered as similar if they both doesn't
+		// contain common resources of a certain domain.
+		if (Similarity.union(first, second).isEmpty())
+			return 1.0;
+
+		double aSize = first.size();
+		double bSize = second.size();
+
+		double cSize = Similarity.intersection(first, second).size();
+
+		// Jaccard coefficient.
+		return cSize / (aSize + bSize - cSize);
 	}
 
 	// Return 'true' if 'a' and 'b' have common concepts. E.g. 'Verify invoice' and

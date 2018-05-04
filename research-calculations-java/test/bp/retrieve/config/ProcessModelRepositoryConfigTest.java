@@ -22,7 +22,7 @@ public class ProcessModelRepositoryConfigTest {
 			.apso()
 			.threshold(0.6)
 			.semantic()
-			.tableContainer()
+			.listContainer()
 			.collection(
 				new FirstProcessModel(),
 				new SecondProcessModel()

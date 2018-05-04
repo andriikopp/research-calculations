@@ -117,9 +117,8 @@ public class ProcessModelRepositoryConfig {
 
 	/**
 	 * Use semantic similarity to measure business process models closeness. Current
-	 * implementation uses Jaro-Winkler distance to measure similarity of concepts
-	 * based on fuzzy Jaccard distance. In case it never called, default Jaccard
-	 * index would be used.
+	 * implementation uses Jaccard distance. Further improvements on process model
+	 * nodes similarity would be implemented in later release.
 	 * 
 	 * @return instance of itself.
 	 */
@@ -196,6 +195,7 @@ public class ProcessModelRepositoryConfig {
 	 * 
 	 * @return instance of itself.
 	 */
+	@Deprecated
 	public ProcessModelRepositoryConfig tableContainer() {
 		if (modelsContainer != null)
 			throw new IllegalStateException("Container is already defined!");

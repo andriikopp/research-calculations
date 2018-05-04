@@ -23,7 +23,7 @@ public class APSOAndManualBPModelsSimilarityTest {
 			.closeness(0.5, 0.5)
 			.threshold(SIMILARITY_THRESHOLD)
 			.semantic()
-			.tableContainer()
+			.listContainer()
 			.collection(
 				new FirstProcessModel(),
 				new SecondProcessModel()
@@ -38,7 +38,7 @@ public class APSOAndManualBPModelsSimilarityTest {
 			.apso()
 			.threshold(SIMILARITY_THRESHOLD)
 			.semantic()
-			.tableContainer()
+			.listContainer()
 			.collection(
 				new FirstProcessModel(),
 				new SecondProcessModel()
