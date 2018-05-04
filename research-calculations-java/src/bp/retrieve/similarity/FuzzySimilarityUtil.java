@@ -144,6 +144,8 @@ public class FuzzySimilarityUtil {
 		Set<String> b = new HashSet<String>();
 		b.addAll(Arrays.asList("Order", "Verification invoice"));
 
+		System.out.println(toFuzzySet(a, b));
+		System.out.println(toFuzzySet(b, a));
 		System.out.println(fuzzyIntersection(a, b));
 		System.out.println(fuzzyUnion(a, b));
 		System.out.println(fuzzyJaccardDistance(a, b));
