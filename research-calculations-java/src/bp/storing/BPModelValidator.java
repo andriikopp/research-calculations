@@ -11,47 +11,47 @@ import bp.AppProperties;
  */
 public class BPModelValidator {
 	public static final String PR_TRIGGERS = "triggers";
-	public static final String PR_USED_BY = "usedBy";
+	public static final String PR_USED_BY = "used_by";
 	public static final String PR_EXECUTES = "executes";
-	public static final String PR_IS_INPUT_FOR = "isInputFor";
-	public static final String PR_IS_OUTPUT_OF = "isOutputOf";
+	public static final String PR_IS_INPUT_FOR = "is_input_for";
+	public static final String PR_IS_OUTPUT_OF = "is_output_of";
 	public static final String PR_MEASURES = "measures";
 	public static final String PR_TYPE = "type";
 
-	public static final String RES_FUNCTION = "Function";
-	public static final String RES_PROCESS = "Process";
-	public static final String RES_GATEWAY = "Gateway";
-	public static final String RES_EVENT = "Event";
-	public static final String RES_ROLE = "Role";
-	public static final String RES_DEPARTMENT = "Department";
-	public static final String RES_SUPPORTING_SYSTEM = "SupportingSystem";
-	public static final String RES_BUSINESS_OBJECT = "BusinessObject";
-	public static final String RES_KPI = "KPI";
+	public static final String RES_FUNCTION = "function";
+	public static final String RES_PROCESS = "process";
+	public static final String RES_GATEWAY = "gateway";
+	public static final String RES_EVENT = "event";
+	public static final String RES_ROLE = "role";
+	public static final String RES_DEPARTMENT = "department";
+	public static final String RES_SUPPORTING_SYSTEM = "supporting_system";
+	public static final String RES_BUSINESS_OBJECT = "business_object";
+	public static final String RES_KPI = "kpi";
 
 	/**
 	 * This event might be used only as BPMN-based model component 'Start Event'.
 	 */
-	public static final String BPMN_START_EVENT = "Start";
+	public static final String BPMN_START_EVENT = "start_event";
 
 	/**
 	 * This event might be used only as BPMN-based model component 'End Event'.
 	 */
-	public static final String BPMN_END_EVENT = "End";
+	public static final String BPMN_END_EVENT = "end_event";
 
 	/**
 	 * This gateway might be used only as 'AND' gateway.
 	 */
-	public static final String AND_GATEWAY = "AND";
+	public static final String AND_GATEWAY = "and_gateway";
 
 	/**
 	 * This gateway might be used only as 'OR' gateway.
 	 */
-	public static final String OR_GATEWAY = "OR";
+	public static final String OR_GATEWAY = "or_gateway";
 
 	/**
 	 * This gateway might be used only as 'XOR' gateway.
 	 */
-	public static final String XOR_GATEWAY = "XOR";
+	public static final String XOR_GATEWAY = "xor_gateway";
 
 	private static final String INVALID_STATEMENT = AppProperties.INSTANCE.getProperty("errInvalidStatement");
 
