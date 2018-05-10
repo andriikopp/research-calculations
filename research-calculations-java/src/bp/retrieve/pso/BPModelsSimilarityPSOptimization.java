@@ -76,7 +76,8 @@ public class BPModelsSimilarityPSOptimization {
 
 				norm(particle); // Normalize position coordinates.
 
-				if (measure(particle) < measure(global))
+				// Use '>' to maximize or '<' to minimize similarity.
+				if (measure(particle) > measure(global))
 					global = particle; // Update global optimal value.
 
 				swarm.set(i, particle);
