@@ -10,6 +10,11 @@ import bp.retrieve.BPModelRDFGraph;
 import bp.retrieve.collection.GenericProcessModel;
 import main.resources.repository.BPModelsCollection;
 
+/**
+ * Various methods used to define weights of similarities.
+ * 
+ * @author Andrii Kopp
+ */
 public class BPModelsSimilarityUtil {
 	private static final double PREFERENCE_LEVEL = 0.5;
 	private static final double GOLDEN_SECTION_COEFF = 0.618;
@@ -24,6 +29,9 @@ public class BPModelsSimilarityUtil {
 	private static final double ALPHA = 0.2;
 	private static final double BETA = 0.4;
 
+	/**
+	 * Integrated similarity measure of business process models.
+	 */
 	public static SimilarityFunction similarity = (weights, similarities) -> {
 		double measure = 0;
 
@@ -33,10 +41,34 @@ public class BPModelsSimilarityUtil {
 		return measure;
 	};
 
-	private interface FishbernFunction {
+	/**
+	 * Functional interface of the Fishbern's ranking function.
+	 * 
+	 * @author Andrii Kopp
+	 */
+	public static interface FishbernFunction {
+
+		/**
+		 * Fishbern's function.
+		 * 
+		 * @param index
+		 *            - the value of index;
+		 * @param n
+		 *            - the value of total amount.
+		 * @return the rank of the index-th object.
+		 */
 		double function(double index, double n);
 	}
 
+	/**
+	 * Extract similarity values of the pair of business process models.
+	 * 
+	 * @param first
+	 *            - a first model;
+	 * @param second
+	 *            - a second model.
+	 * @return the array of similarity values of this business process models.
+	 */
 	public static double[] extractSimilarities(BPModelRDFGraph first, BPModelRDFGraph second) {
 		SimilarityUtil.setSimilarity(SemanticSimilarityUtil.jaccardSimilarity);
 
@@ -77,6 +109,15 @@ public class BPModelsSimilarityUtil {
 		return similarities;
 	}
 
+	/**
+	 * Define weights of similarities using the direct estimation method.
+	 * 
+	 * @param similarities
+	 *            - the array of similarity values;
+	 * @param similarity
+	 *            - an implementation of the similarity measure.
+	 * @return the similarity value.
+	 */
 	public static double directEstimation(double[] similarities, SimilarityFunction similarity) {
 		double[] weights = new double[similarities.length];
 
@@ -88,6 +129,15 @@ public class BPModelsSimilarityUtil {
 		return similarity.measure(weights, similarities);
 	}
 
+	/**
+	 * Define weights of similarities using the ranking method.
+	 * 
+	 * @param similarities
+	 *            - the array of similarity values;
+	 * @param similarity
+	 *            - an implementation of the similarity measure.
+	 * @return the similarity value.
+	 */
 	public static double ranking(double[] similarities, SimilarityFunction similarity) {
 		double[] weights = new double[similarities.length];
 
@@ -115,6 +165,19 @@ public class BPModelsSimilarityUtil {
 		return similarity.measure(weights, similarities);
 	}
 
+	/**
+	 * Define weights of similarities using the ranking method based on the
+	 * Fishbern's function.
+	 * 
+	 * @param similarities
+	 *            - the array of similarity values;
+	 * @param similarity
+	 *            - an implementation of the similarity measure;
+	 * @param function
+	 *            - an implementation of the Fishbern's function (see interface
+	 *            {@link FishbernFunction}).
+	 * @return the similarity value.
+	 */
 	public static double fishbernEstimation(double[] similarities, SimilarityFunction similarity,
 			FishbernFunction function) {
 		double[] weights = new double[similarities.length];
@@ -144,6 +207,15 @@ public class BPModelsSimilarityUtil {
 		return similarity.measure(weights, similarities);
 	}
 
+	/**
+	 * Define weights of similarities using the pairwise comparison method.
+	 * 
+	 * @param similarities
+	 *            - the array of similarity values;
+	 * @param similarity
+	 *            - an implementation of the similarity measure.
+	 * @return the similarity value.
+	 */
 	public static double pairwiseComparison(double[] similarities, SimilarityFunction similarity) {
 		double[] weights = new double[similarities.length];
 
@@ -167,6 +239,15 @@ public class BPModelsSimilarityUtil {
 		return similarity.measure(weights, similarities);
 	}
 
+	/**
+	 * Define weights of similarities using the Accelerated PSO method.
+	 * 
+	 * @param similarities
+	 *            - the array of similarity values;
+	 * @param similarity
+	 *            - an implementation of the similarity measure.
+	 * @return the similarity value.
+	 */
 	public static double acceleratedPSO(double[] similarities, SimilarityFunction similarity) {
 		List<double[]> swarm = new ArrayList<>();
 		double[] global = null;
@@ -213,12 +294,16 @@ public class BPModelsSimilarityUtil {
 	private static double fishbernSecondEquation(double index, double n) {
 		return Math.pow(GOLDEN_SECTION_COEFF, index + 1.0) / (1.0 - Math.pow(GOLDEN_SECTION_COEFF, n));
 	}
-	
+
 	private static double harrington(double value) {
-		if (value > 0.8) return 9;
-		if (value > 0.63) return 7;
-		if (value > 0.37) return 5;
-		if (value > 0.2) return 3;
+		if (value > 0.8)
+			return 9;
+		if (value > 0.63)
+			return 7;
+		if (value > 0.37)
+			return 5;
+		if (value > 0.2)
+			return 3;
 		return 1;
 	}
 
