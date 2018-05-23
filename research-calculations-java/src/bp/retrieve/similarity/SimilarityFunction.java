@@ -1,4 +1,4 @@
-package bp.retrieve.pso;
+package bp.retrieve.similarity;
 
 /**
  * Functional interface of the integrated similarity measure.

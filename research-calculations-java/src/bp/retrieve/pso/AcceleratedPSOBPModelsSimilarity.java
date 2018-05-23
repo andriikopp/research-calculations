@@ -2,6 +2,7 @@ package bp.retrieve.pso;
 
 import bp.retrieve.BPModelRDFGraph;
 import bp.retrieve.CustomizableBPModelsSimilarity;
+import bp.retrieve.similarity.SimilarityUtil;
 
 /**
  * This extension is based on Accelerated Particle Swarm Optimization (APSO)

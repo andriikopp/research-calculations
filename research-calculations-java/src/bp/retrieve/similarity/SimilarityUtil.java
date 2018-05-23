@@ -1,10 +1,9 @@
-package bp.retrieve.pso;
+package bp.retrieve.similarity;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import bp.retrieve.BPModelRDFGraph;
-import bp.retrieve.similarity.Similarity;
 
 /**
  * Provides utilities used to define various similarities of two business

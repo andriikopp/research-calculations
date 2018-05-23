@@ -1,4 +1,4 @@
-package bp.retrieve.pso;
+package bp.retrieve.similarity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import bp.retrieve.pso.AcceleratedPSOBPModelsSimilarity;
 import org.junit.Test;
 
 import bp.retrieve.BPModelRDFGraph;
