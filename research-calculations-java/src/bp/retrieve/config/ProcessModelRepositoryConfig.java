@@ -37,11 +37,24 @@ public class ProcessModelRepositoryConfig {
 	}
 
 	/**
+	 * Takes the implementation of the {@link CustomizableBPModelsSimilarity} class in order to
+	 * set the method used to estimate similarity of business process models.
+	 *
+	 * @param similarity - the implementation of similarity estimation tool.
+	 * @return instance of itself.
+	 */
+	public ProcessModelRepositoryConfig method(CustomizableBPModelsSimilarity similarity) {
+		modelsSimilarity = similarity;
+		return this;
+	}
+
+	/**
 	 * Allows to use Accelerated Particle Swarm Optimization (APSO) for similarity
 	 * search of business process models.
 	 * 
 	 * @return instance of itself.
 	 */
+	@Deprecated
 	public ProcessModelRepositoryConfig apso() {
 		modelsSimilarity = new AcceleratedPSOBPModelsSimilarity();
 		return this;
@@ -61,6 +74,7 @@ public class ProcessModelRepositoryConfig {
 	 *            - importance of process flow objects similarity [0, 1].
 	 * @return instance of itself.
 	 */
+	@Deprecated
 	public ProcessModelRepositoryConfig domain(double units, double systems, double objects) {
 		if (modelsSimilarity instanceof AcceleratedPSOBPModelsSimilarity)
 			throw new IllegalStateException("APSO implementation doesn't need manually selected coeffs!");
@@ -89,6 +103,7 @@ public class ProcessModelRepositoryConfig {
 	 *            - importance of structure closeness [0, 1].
 	 * @return instance of itself.
 	 */
+	@Deprecated
 	public ProcessModelRepositoryConfig closeness(double label, double structure) {
 		if (modelsSimilarity instanceof AcceleratedPSOBPModelsSimilarity)
 			throw new IllegalStateException("APSO implementation doesn't need manually selected coeffs!");
@@ -122,6 +137,7 @@ public class ProcessModelRepositoryConfig {
 	 * 
 	 * @return instance of itself.
 	 */
+	@Deprecated
 	public ProcessModelRepositoryConfig semantic() {
 		similarityMeasure = new SemanticSimilarity();
 		modelsSimilarity.defineSimilarityMethod(similarityMeasure);
@@ -149,7 +165,7 @@ public class ProcessModelRepositoryConfig {
 
 	/**
 	 * Set label synonyms to measure semantic similarity properly. Using semantic
-	 * similarity withoud specifying of the synonyms makes sence only if you are
+	 * similarity withoud specifying of the synonyms makes sense only if you are
 	 * sure that nodes of business process models contains equal concepts.
 	 * 
 	 * @param concept
@@ -170,7 +186,7 @@ public class ProcessModelRepositoryConfig {
 	}
 
 	/**
-	 * Use list container as the colection of business process models. It provides
+	 * Use list container as the collection of business process models. It provides
 	 * pairwise comparison of business process models. Hence similarity search takes
 	 * much more time to perform. It is vital to set one of the available
 	 * containers, {@link SimpleBPModelsContainer} or

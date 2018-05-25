@@ -287,11 +287,25 @@ public class BPModelsSimilarityUtil {
 		return similarity.measure(global, similarities);
 	}
 
-	private static double fishbernFirstEquation(double index, double n) {
+	/**
+	 * Returns the rank using the first Fishbern's equation.
+	 *
+	 * @param index - the index of object;
+	 * @param n - the number of objects.
+	 * @return the rank according to the first Fishbern's equation.
+	 */
+	public static double fishbernFirstEquation(double index, double n) {
 		return 2.0 * (n - index + 1.0) / (n * (n + 1.0));
 	}
 
-	private static double fishbernSecondEquation(double index, double n) {
+	/**
+	 * Returns the rank usines the second Fishbern's equation.
+	 *
+	 * @param index - the index of object;
+	 * @param n - the number of objects.
+	 * @return the rank according to the second Fishbern's equation.
+	 */
+	public static double fishbernSecondEquation(double index, double n) {
 		return Math.pow(GOLDEN_SECTION_COEFF, index + 1.0) / (1.0 - Math.pow(GOLDEN_SECTION_COEFF, n));
 	}
 
