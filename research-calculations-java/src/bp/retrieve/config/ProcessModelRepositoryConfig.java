@@ -122,6 +122,7 @@ public class ProcessModelRepositoryConfig {
 	 *            - value of the similarity threshold [0, 1].
 	 * @return instance of itself.
 	 */
+	@Deprecated
 	public ProcessModelRepositoryConfig threshold(double similarityThreshold) {
 		if (similarityThreshold <= 0)
 			throw new IllegalParameterException("Similarity threshold " + similarityThreshold + " is invalid!");
