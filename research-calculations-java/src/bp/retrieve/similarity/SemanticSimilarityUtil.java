@@ -28,8 +28,9 @@ public class SemanticSimilarityUtil {
 	 * Implementation of the Jaccard's similarity measure.
 	 */
 	public static Similarity jaccardSimilarity = (first, second) -> {
+	    // If both sets are empty consider them as totally unequal.
 		if (Similarity.union(first, second).isEmpty())
-			return 1.0;
+			return 0.0;
 
 		return SemanticSimilarity.jaccardDistance(first, second);
 	};

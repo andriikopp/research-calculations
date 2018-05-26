@@ -9,7 +9,7 @@ public class SaatyScale {
     /**
      * Very bad state threshold.
      */
-    public static final double VERY_BAD = 0;
+    public static final double VERY_BAD = 1;
 
     /**
      * Bad state threshold.
