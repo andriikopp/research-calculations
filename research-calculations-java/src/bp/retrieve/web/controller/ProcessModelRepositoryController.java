@@ -1,5 +1,6 @@
 package bp.retrieve.web.controller;
 
+import bp.retrieve.collection.GenericProcessModel;
 import bp.retrieve.web.service.ProcessModelRepositoryService;
 import bp.retrieve.web.view.ProcessModelRepositoryView;
 import spark.Request;
@@ -71,8 +72,9 @@ public class ProcessModelRepositoryController {
 	public static Route retrieveSimilar = (Request request, Response response) -> {
 		try {
 			final String id = request.queryParams("id");
+			final GenericProcessModel pattern = ProcessModelRepositoryService.retrieveById(id);
 
-			return ProcessModelRepositoryView.viewProcessModels(ProcessModelRepositoryService.retrieveSimilar(id));
+			return ProcessModelRepositoryView.viewProcessModelsClustering(pattern, ProcessModelRepositoryService.retrieveSimilar(id));
 		} catch (Exception e) {
 			return ProcessModelRepositoryView.viewError(e.getMessage());
 		}

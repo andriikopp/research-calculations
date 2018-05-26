@@ -7,6 +7,9 @@ import java.util.Map;
 
 import bp.retrieve.BPModelRDFGraph;
 import bp.retrieve.container.api.BPModelsContainer;
+import bp.retrieve.container.clustering.ProcessModelCloseness;
+import bp.retrieve.container.clustering.ProcessModelClustering;
+import bp.retrieve.similarity.SimilarityMethodsToolset;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -41,6 +44,17 @@ public class ProcessModelRepository {
 		}
 
 		return retrievedModels;
+	}
+
+	/**
+	 * Returns the list of business process models with the results of clustering (FCM is used).
+	 *
+	 * @param processModel - the pattern business process model.
+	 * @return the results of clustering using FCM method.
+	 */
+	public List<ProcessModelCloseness> findAll(GenericProcessModel processModel) {
+		return ProcessModelClustering.cluster(processModel, processModelsMapping.values(),
+				SimilarityMethodsToolset.getCurrentMethod());
 	}
 
 	/**

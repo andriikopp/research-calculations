@@ -5,6 +5,7 @@ import java.util.List;
 
 import bp.retrieve.collection.GenericProcessModel;
 import bp.retrieve.collection.ProcessModelRepository;
+import bp.retrieve.container.clustering.ProcessModelCloseness;
 
 /**
  * Provides business logic of the repository application.
@@ -81,13 +82,13 @@ public class ProcessModelRepositoryService {
 	 *            - the ID of model that might be considered as a search pattern.
 	 * @return the list of process models.
 	 */
-	public static List<GenericProcessModel> retrieveSimilar(String id) {
+	public static List<ProcessModelCloseness> retrieveSimilar(String id) {
 		if (id == null || id.isEmpty())
 			throw new IllegalArgumentException("Invalid model!");
 
 		GenericProcessModel processModel = processModelRepository.retrieve(id);
 
-		return processModelRepository.find(processModel);
+		return processModelRepository.findAll(processModel);
 	}
 
 	/**

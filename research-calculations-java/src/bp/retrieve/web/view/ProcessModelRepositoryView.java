@@ -19,6 +19,7 @@ import static j2html.TagCreator.title;
 import java.util.List;
 
 import bp.retrieve.collection.GenericProcessModel;
+import bp.retrieve.container.clustering.ProcessModelCloseness;
 import j2html.tags.ContainerTag;
 
 /**
@@ -96,36 +97,11 @@ public class ProcessModelRepositoryView {
 	}
 
 	/**
-	 * Shows the list of process models.
-	 * 
-	 * @param processModels
-	 *            - the list of process models that should be demonstrated.
-	 * @return the render of process models list.
+	 * Shows detailed information about the business process model.
+	 *
+	 * @param processModel - the business process model to be shown.
+	 * @return the corresponding render.
 	 */
-	public static String viewProcessModels(List<GenericProcessModel> processModels) {
-		return html(
-			head(
-				title(TITLE)
-			),
-			body(
-				h2(TITLE),
-				HOME, span(" "), SEARCH, span(" "), SHARED,
-				hr(),
-				p("Retrieved: " + processModels.size() + " model(s)"),
-				each(processModels, processModel -> div(
-						p(b("Name: "), a(processModel.getName())
-							.withHref("./retrieveById?id=" + processModel.getId())),
-						p(b("File: "), span(processModel.getFile())),
-						p(b("Description: ")),
-						p(span(processModel.getDescription())),
-						a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId()),
-						hr()
-					)
-				)
-			)
-		).render();
-	}
-	
 	public static String viewProcessModel(GenericProcessModel processModel) {
 		return html(
 			head(
@@ -147,7 +123,68 @@ public class ProcessModelRepositoryView {
 			)
 		).render();
 	}
-	
+
+
+
+	/**
+	 * Shows the list of process models.
+	 *
+	 * @param processModels
+	 *            - the list of process models that should be demonstrated.
+	 * @return the render of process models list.
+	 */
+	public static String viewProcessModels(List<GenericProcessModel> processModels) {
+		return html(
+				head(
+						title(TITLE)
+				),
+				body(
+						h2(TITLE),
+						HOME, span(" "), SEARCH, span(" "), SHARED,
+						hr(),
+						p("Retrieved: " + processModels.size() + " model(s)"),
+						each(processModels, processModel -> div(
+								p(b("Name: "), a(processModel.getName())
+										.withHref("./retrieveById?id=" + processModel.getId())),
+								p(b("File: "), span(processModel.getFile())),
+								p(b("Description: ")),
+								p(span(processModel.getDescription())),
+								a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId()),
+								hr()
+								)
+						)
+				)
+		).render();
+	}
+
+	/**
+	 * Shows business process models clustering results.
+	 *
+	 * @param pattern - the pattern business process model;
+	 * @param clusteringResults - the list of clustered business process models.
+	 * @return the corresponding render.
+	 */
+	public static String viewProcessModelsClustering(GenericProcessModel pattern, List<ProcessModelCloseness> clusteringResults) {
+		return html(
+				head(
+						title(TITLE)
+				),
+				body(
+						h2(TITLE),
+						p(b("Pattern: "), a(pattern.getName()).withHref("./retrieveById?id=" + pattern.getId())),
+						HOME, span(" "), SEARCH, span(" "), SHARED,
+						hr(),
+						p("Retrieved: " + clusteringResults.size() + " model(s)"),
+						each(clusteringResults, clusteringResult -> div(
+								p(a(clusteringResult.getProcessModel().getName())
+										.withHref("./retrieveById?id=" + clusteringResult.getProcessModel().getId()),
+										span(String.format(" (%.2f)", clusteringResult.getClosenessValue())))
+								)
+						)
+				)
+		).render();
+	}
+
 	/**
 	 * Shows the error page.
 	 * 
