@@ -2,6 +2,7 @@ package bp.retrieve.container.clustering;
 
 import bp.retrieve.CustomizableBPModelsSimilarity;
 import bp.retrieve.collection.GenericProcessModel;
+import bp.retrieve.similarity.scales.HarringtonScale;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +16,8 @@ import java.util.List;
 public class ProcessModelClustering {
     // Fuzziness coefficient.
     private static final double FUZZINESS_COEFF = 1.5;
+
+    private static HarringtonScale threshold;
 
     /**
      * Returns the list of models and theirs fuzzy memberships.
@@ -30,15 +33,18 @@ public class ProcessModelClustering {
         List<ProcessModelCloseness> clusteringResults = new ArrayList<>();
         double sumOfMemberships = 0;
 
-        for (GenericProcessModel model : processModels)
-            if (!model.equals(processModel)) {
+        for (GenericProcessModel model : processModels) {
+            double similarityValue = similarity.compareBPModelRDFGraphs(processModel.getModelDescription(),
+                    model.getModelDescription());
+
+            if (!model.equals(processModel) && similarityValue >= threshold.getThresholdValue()) {
                 // Calculate the membership function value.
-                double membership = 1.0 / Math.pow(1.0 - similarity.compareBPModelRDFGraphs(processModel.getModelDescription(),
-                        model.getModelDescription()), 1.0 / (FUZZINESS_COEFF - 1.0));
+                double membership = 1.0 / Math.pow(1.0 - similarityValue, 1.0 / (FUZZINESS_COEFF - 1.0));
 
                 clusteringResults.add(new ProcessModelCloseness(model, membership));
                 sumOfMemberships += membership;
             }
+        }
 
         for (ProcessModelCloseness processModelCloseness : clusteringResults)
             processModelCloseness.setClosenessValue(processModelCloseness.getClosenessValue() / sumOfMemberships);
@@ -47,5 +53,13 @@ public class ProcessModelClustering {
         clusteringResults.sort((x, y) -> Double.compare(y.getClosenessValue(), x.getClosenessValue()));
 
         return clusteringResults;
+    }
+
+    public static HarringtonScale getThreshold() {
+        return threshold;
+    }
+
+    public static void setThreshold(HarringtonScale threshold) {
+        ProcessModelClustering.threshold = threshold;
     }
 }

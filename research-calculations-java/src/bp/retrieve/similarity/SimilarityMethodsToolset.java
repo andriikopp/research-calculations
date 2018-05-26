@@ -53,6 +53,16 @@ public class SimilarityMethodsToolset {
     }
 
     /**
+     * Use average similarity of business process models.
+     *
+     * @return the instance of corresponding implementation.
+     */
+    public static CustomizableBPModelsSimilarity useAverageSimilarity() {
+        currentMethod = AVERAGE_SIMILARITY;
+        return currentMethod;
+    }
+
+    /**
      * Get current method of similarity estimation.
      *
      * @return the instance of corresponding implementation.
@@ -60,6 +70,23 @@ public class SimilarityMethodsToolset {
     public static CustomizableBPModelsSimilarity getCurrentMethod() {
         return currentMethod;
     }
+
+    /*
+     * Average similarity value of business process models.
+     */
+    private static final CustomizableBPModelsSimilarity AVERAGE_SIMILARITY = new CustomizableBPModelsSimilarity() {
+        @Override
+        public double compareBPModelRDFGraphs(BPModelRDFGraph first, BPModelRDFGraph second) {
+            final double numberOfMethods = 4;
+
+            double averageSimilarity = (DIRECT_ESTIMATION.compareBPModelRDFGraphs(first, second) +
+                    ARITHMETIC_PROGRESSION.compareBPModelRDFGraphs(first, second) +
+                    GEOMETRIC_PROGRESSION.compareBPModelRDFGraphs(first, second) +
+                    PAIRWISE_COMPARISON.compareBPModelRDFGraphs(first, second)) / numberOfMethods;
+
+            return averageSimilarity;
+        }
+    };
 
     /*
      * Implementation of the direct estimation method used to define similarity of business process models.

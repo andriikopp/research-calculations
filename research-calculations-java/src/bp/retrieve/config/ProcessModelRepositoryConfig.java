@@ -2,6 +2,8 @@ package bp.retrieve.config;
 
 import java.util.Arrays;
 
+import bp.retrieve.container.clustering.ProcessModelClustering;
+import bp.retrieve.similarity.scales.HarringtonScale;
 import org.apache.jena.reasoner.IllegalParameterException;
 
 import bp.retrieve.BPModelsSimilarity;
@@ -128,6 +130,21 @@ public class ProcessModelRepositoryConfig {
 			throw new IllegalParameterException("Similarity threshold " + similarityThreshold + " is invalid!");
 
 		modelsSimilarity.setSimilarityLevel(similarityThreshold);
+		return this;
+	}
+
+	/**
+	 * Set similarity threshold. In case it won't, the default threshold would be set automatically and corresponds to
+	 * the {@code 'Very bad' - 0} state at the Harrington's scale.
+	 *
+	 * @param threshold - the value of threshold according to the Harrington's scale.
+	 * @return the instance of itself.
+	 */
+	public ProcessModelRepositoryConfig threshold(HarringtonScale threshold) {
+		if (threshold.getThresholdValue() <= 0)
+			throw new IllegalParameterException("Similarity threshold " + threshold.getThresholdValue() + " is invalid!");
+
+		ProcessModelClustering.setThreshold(threshold);
 		return this;
 	}
 

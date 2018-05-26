@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import bp.retrieve.similarity.scales.HarringtonScale;
 import org.junit.Test;
 
 import bp.retrieve.BPModelRDFGraph;
@@ -122,7 +123,7 @@ public class BPModelsSimilarityUtil {
 		double[] weights = new double[similarities.length];
 
 		for (int i = 0; i < similarities.length; i++)
-			weights[i] = harrington(similarities[i]);
+			weights[i] = HarringtonScale.harringtonToSaaty(similarities[i]);
 
 		norm(weights);
 
@@ -307,18 +308,6 @@ public class BPModelsSimilarityUtil {
 	 */
 	public static double fishbernSecondEquation(double index, double n) {
 		return Math.pow(GOLDEN_SECTION_COEFF, index + 1.0) / (1.0 - Math.pow(GOLDEN_SECTION_COEFF, n));
-	}
-
-	private static double harrington(double value) {
-		if (value > 0.8)
-			return 9;
-		if (value > 0.63)
-			return 7;
-		if (value > 0.37)
-			return 5;
-		if (value > 0.2)
-			return 3;
-		return 1;
 	}
 
 	private static void norm(double[] array) {
