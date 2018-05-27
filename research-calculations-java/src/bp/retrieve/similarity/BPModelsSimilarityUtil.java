@@ -328,23 +328,21 @@ public class BPModelsSimilarityUtil {
 	public void test() {
 		for (GenericProcessModel first : BPModelsCollection.models)
 			for (GenericProcessModel second : BPModelsCollection.models) {
-		        if (!first.equals(second)) {
-                    System.out.printf("%s <> %s\t", first.getName(), second.getName());
+                System.out.printf("%s <> %s\t", first.getName(), second.getName());
 
-                    BPModelRDFGraph a = SemanticSimilarityUtil.normalizeBPModel(first.getModelDescription());
-                    BPModelRDFGraph b = SemanticSimilarityUtil.normalizeBPModel(second.getModelDescription());
+                BPModelRDFGraph a = SemanticSimilarityUtil.normalizeBPModel(first.getModelDescription());
+                BPModelRDFGraph b = SemanticSimilarityUtil.normalizeBPModel(second.getModelDescription());
 
-                    double[] similarities = extractSimilarities(a, b);
+                double[] similarities = extractSimilarities(a, b);
 
-                    System.out.printf("%.2f\t", directEstimation(similarities, similarity));
-                    System.out.printf("%.2f\t", fishbernEstimation(similarities, similarity, (index, n) -> {
-                        return fishbernFirstEquation(index, n);
-                    }));
-                    System.out.printf("%.2f\t", fishbernEstimation(similarities, similarity, (index, n) -> {
-                        return fishbernSecondEquation(index, n);
-                    }));
-                    System.out.printf("%.2f\n", pairwiseComparison(similarities, similarity));
-                }
-			}
+                System.out.printf("%.2f\t", directEstimation(similarities, similarity));
+                System.out.printf("%.2f\t", fishbernEstimation(similarities, similarity, (index, n) -> {
+                    return fishbernFirstEquation(index, n);
+                }));
+                System.out.printf("%.2f\t", fishbernEstimation(similarities, similarity, (index, n) -> {
+                    return fishbernSecondEquation(index, n);
+                }));
+                System.out.printf("%.2f\n", pairwiseComparison(similarities, similarity));
+            }
 	}
 }
