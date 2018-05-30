@@ -64,6 +64,15 @@ public class BPModelRDFGraph {
 	 *            - an object of RDF statement.
 	 */
 	public void addStatement(String subject, String predicate, String object) {
+	    if (subject == null || subject.isEmpty())
+	        throw new IllegalArgumentException("Subject's identifier must be declared!");
+
+	    if (predicate == null || predicate.isEmpty())
+	        throw new IllegalArgumentException("Predicate must be declared!");
+
+	    if (object == null || object.isEmpty())
+	        throw new IllegalArgumentException("Object's identifier must be declared!");
+
 		statements.add(new BPModelRDFStatement(subject, predicate, object));
 	}
 
@@ -496,7 +505,7 @@ public class BPModelRDFGraph {
 	/**
 	 * Returns a set of processes that a supporting system is used by.
 	 * 
-	 * @param organizationalUnit
+	 * @param supportingSystem
 	 *            - a supporting system.
 	 * @return a set of processes that a supporting system is used by.
 	 */
