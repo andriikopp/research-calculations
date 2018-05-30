@@ -310,7 +310,12 @@ public class BPModelsSimilarityUtil {
 		return Math.pow(GOLDEN_SECTION_COEFF, index + 1.0) / (1.0 - Math.pow(GOLDEN_SECTION_COEFF, n));
 	}
 
-	private static void norm(double[] array) {
+    /**
+     * Normalization of the array of values.
+     *
+     * @param array - the array of values to be normalized.
+     */
+	public static void norm(double[] array) {
 		double sum = 0;
 
 		for (double value : array)
