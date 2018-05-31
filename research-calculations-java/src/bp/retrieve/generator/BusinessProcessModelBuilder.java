@@ -521,13 +521,10 @@ public class BusinessProcessModelBuilder {
 
         return new Object() {
             private double[] averageWeights;
-            private int numberOfMethods;
 
             private SimilarityFunction similarity = (weights, values) -> {
                 if (averageWeights == null)
                     averageWeights = new double[weights.length];
-
-                numberOfMethods++;
 
                 for (int i = 0; i < weights.length; i++)
                     averageWeights[i] += weights[i];
@@ -552,7 +549,7 @@ public class BusinessProcessModelBuilder {
                 BPModelsSimilarityUtil.pairwiseComparison(similarities, similarity);
 
                 for (int i = 0; i < averageWeights.length; i++)
-                    averageWeights[i] /= (double) numberOfMethods;
+                    averageWeights[i] /= 4.0;
 
                 BPModelsSimilarityUtil.norm(averageWeights);
 

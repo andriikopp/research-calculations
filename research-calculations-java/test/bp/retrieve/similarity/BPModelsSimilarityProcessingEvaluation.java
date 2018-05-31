@@ -24,6 +24,8 @@ public class BPModelsSimilarityProcessingEvaluation {
 
                 double[] similarities = BPModelsSimilarityUtil.extractSimilarities(a, b);
 
+                averageWeights = null;
+
                 System.out.printf("%.2f\t", BPModelsSimilarityUtil.directEstimation(similarities, similarity));
                 System.out.printf("%.2f\t", BPModelsSimilarityUtil.fishbernEstimation(similarities, similarity,
                         (index, n) -> BPModelsSimilarityUtil.fishbernFirstEquation(index, n)));
