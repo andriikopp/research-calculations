@@ -2,8 +2,10 @@ package bp.retrieve.generator;
 
 import bp.retrieve.BPModelRDFGraph;
 import bp.retrieve.collection.GenericProcessModel;
-import bp.retrieve.similarity.SemanticSimilarityUtil;
+import bp.retrieve.similarity.*;
 import bp.storing.BPModelValidator;
+
+import java.util.*;
 
 /**
  * Business process model builder is a simplified and enhanced version of {@link ProcessModelGenerator}.
@@ -235,27 +237,27 @@ public class BusinessProcessModelBuilder {
             rdfGraph.addStatement(process.getIdentifier(), BPModelValidator.PR_CONTAINS, function.getIdentifier());
     }
 
-    public static void usedBy(BPModelRDFGraph rdfGraph, SupportingSystem supportingSystem, Function[] functions) {
+    public static void usedBy(BPModelRDFGraph rdfGraph, SupportingSystem supportingSystem, Function... functions) {
         for (Function function : functions)
             rdfGraph.addStatement(supportingSystem.getIdentifier(), BPModelValidator.PR_USED_BY, function.getIdentifier());
     }
 
-    public static void executes(BPModelRDFGraph rdfGraph, OrganizationalUnit organizationalUnit, Function[] functions) {
+    public static void executes(BPModelRDFGraph rdfGraph, OrganizationalUnit organizationalUnit, Function... functions) {
         for (Function function : functions)
             rdfGraph.addStatement(organizationalUnit.getIdentifier(), BPModelValidator.PR_EXECUTES, function.getIdentifier());
     }
 
-    public static void isInputFor(BPModelRDFGraph rdfGraph, BusinessObject businessObject, Function[] functions) {
+    public static void isInputFor(BPModelRDFGraph rdfGraph, BusinessObject businessObject, Function... functions) {
         for (Function function : functions)
             rdfGraph.addStatement(businessObject.getIdentifier(), BPModelValidator.PR_IS_INPUT_FOR, function.getIdentifier());
     }
 
-    public static void isOutputOf(BPModelRDFGraph rdfGraph, BusinessObject businessObject, Function[] functions) {
+    public static void isOutputOf(BPModelRDFGraph rdfGraph, BusinessObject businessObject, Function... functions) {
         for (Function function : functions)
             rdfGraph.addStatement(businessObject.getIdentifier(), BPModelValidator.PR_IS_OUTPUT_OF, function.getIdentifier());
     }
 
-    public static void isRegulationOf(BPModelRDFGraph rdfGraph, Information information, Function[] functions) {
+    public static void isRegulationOf(BPModelRDFGraph rdfGraph, Information information, Function... functions) {
         for (Function function : functions)
             rdfGraph.addStatement(information.getIdentifier(), BPModelValidator.PR_IS_REGULATION_OF, function.getIdentifier());
     }
@@ -281,5 +283,281 @@ public class BusinessProcessModelBuilder {
                 return rdfGraph;
             }
         };
+    }
+
+    /* Extract */
+    public static Set<String> extractOrganizationalUnits(BPModelRDFGraph rdfGraph) {
+        Set<String> result = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getPredicate().equals(BPModelValidator.PR_TYPE) &&
+                    (statement.getObject().equals(BPModelValidator.RES_ROLE) ||
+                            statement.getObject().equals(BPModelValidator.RES_DEPARTMENT)))
+                result.add(statement.getSubject());
+
+        return result;
+    }
+
+    public static Set<String> extractSupportingSystems(BPModelRDFGraph rdfGraph) {
+        Set<String> result = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getPredicate().equals(BPModelValidator.PR_TYPE) &&
+                    statement.getObject().equals(BPModelValidator.RES_SUPPORTING_SYSTEM))
+                result.add(statement.getSubject());
+
+        return result;
+    }
+
+    public static Set<String> extractFlowObjects(BPModelRDFGraph rdfGraph) {
+        Set<String> result = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getPredicate().equals(BPModelValidator.PR_TYPE) &&
+                    (statement.getObject().equals(BPModelValidator.RES_FUNCTION) ||
+                            statement.getObject().equals(BPModelValidator.RES_PROCESS) ||
+                            statement.getObject().equals(BPModelValidator.RES_EVENT) ||
+                            statement.getObject().equals(BPModelValidator.RES_GATEWAY)))
+                result.add(statement.getSubject());
+
+        return result;
+    }
+
+    public static Set<String> extractBusinessObjects(BPModelRDFGraph rdfGraph) {
+        Set<String> result = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getPredicate().equals(BPModelValidator.PR_TYPE) &&
+                    (statement.getObject().equals(BPModelValidator.RES_INFORMATION) ||
+                            statement.getObject().equals(BPModelValidator.RES_MATERIAL) ||
+                            statement.getObject().equals(BPModelValidator.RES_RESOURCE)))
+                result.add(statement.getSubject());
+
+        return result;
+    }
+
+    public static Set<String> extractRelatedToOrganizationalUnit(BPModelRDFGraph rdfGraph, OrganizationalUnit organizationalUnit) {
+        Set<String> result = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getSubject().equals(organizationalUnit.getIdentifier()) &&
+                    statement.getPredicate().equals(BPModelValidator.PR_EXECUTES))
+                result.add(statement.getObject());
+
+        return result;
+    }
+
+    public static Set<String> extractRelatedToSupportingSystem(BPModelRDFGraph rdfGraph, SupportingSystem supportingSystem) {
+        Set<String> result = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getSubject().equals(supportingSystem.getIdentifier()) &&
+                    statement.getPredicate().equals(BPModelValidator.PR_USED_BY))
+                result.add(statement.getObject());
+
+        return result;
+    }
+
+    public static Set<String> extractRelatedToFlowObject(BPModelRDFGraph rdfGraph, FlowObject flowObject) {
+        Set<String> result = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getSubject().equals(flowObject.getIdentifier()) &&
+                    (statement.getPredicate().equals(BPModelValidator.PR_TRIGGERS) ||
+                            statement.getPredicate().equals(BPModelValidator.PR_CONTAINS)))
+                result.add(statement.getObject());
+
+        return result;
+    }
+
+    public static Set<String> extractRelatedToBusinessObject(BPModelRDFGraph rdfGraph, BusinessObject businessObject) {
+        Set<String> result = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getSubject().equals(businessObject.getIdentifier()) &&
+                    (statement.getPredicate().equals(BPModelValidator.PR_IS_INPUT_FOR) ||
+                            statement.getPredicate().equals(BPModelValidator.PR_IS_OUTPUT_OF) ||
+                            statement.getPredicate().equals(BPModelValidator.PR_IS_REGULATION_OF)))
+                result.add(statement.getObject());
+
+        return result;
+    }
+
+    /* Label similarity */
+    public static double organizationalUnitsLabelSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        return Similarity.similarity(extractOrganizationalUnits(first), extractOrganizationalUnits(second), similarity);
+    }
+
+    public static double supportingSystemsLabelSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        return Similarity.similarity(extractSupportingSystems(first), extractSupportingSystems(second), similarity);
+    }
+
+    public static double flowObjectsLabelSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        return Similarity.similarity(extractFlowObjects(first), extractFlowObjects(second), similarity);
+    }
+
+    public static double businessObjectsLabelSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        return Similarity.similarity(extractBusinessObjects(first), extractBusinessObjects(second), similarity);
+    }
+
+    /* Structure similarity */
+    public static double organizationalUnitsStructureSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        Set<String> firstObjects = new HashSet<String>();
+        Set<String> secondObjects = new HashSet<String>();
+
+        Set<String> intersection = Similarity.intersection(extractOrganizationalUnits(first), extractOrganizationalUnits(second));
+
+        for (String object : intersection) {
+            firstObjects.addAll(extractRelatedToOrganizationalUnit(first, new OrganizationalUnit(object)));
+        }
+
+        for (String object : intersection) {
+            secondObjects.addAll(extractRelatedToOrganizationalUnit(second, new OrganizationalUnit(object)));
+        }
+
+        return Similarity.similarity(firstObjects, secondObjects, similarity);
+    }
+
+    public static double supportingSystemsStructureSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        Set<String> firstObjects = new HashSet<String>();
+        Set<String> secondObjects = new HashSet<String>();
+
+        Set<String> intersection = Similarity.intersection(extractSupportingSystems(first), extractSupportingSystems(second));
+
+        for (String object : intersection) {
+            firstObjects.addAll(extractRelatedToSupportingSystem(first, new SupportingSystem(object)));
+        }
+
+        for (String object : intersection) {
+            secondObjects.addAll(extractRelatedToSupportingSystem(second, new SupportingSystem(object)));
+        }
+
+        return Similarity.similarity(firstObjects, secondObjects, similarity);
+    }
+
+    public static double flowObjectsStructureSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        Set<String> firstObjects = new HashSet<String>();
+        Set<String> secondObjects = new HashSet<String>();
+
+        Set<String> intersection = Similarity.intersection(extractFlowObjects(first), extractFlowObjects(second));
+
+        for (String object : intersection) {
+            firstObjects.addAll(extractRelatedToFlowObject(first, new FlowObject(object)));
+        }
+
+        for (String object : intersection) {
+            secondObjects.addAll(extractRelatedToFlowObject(second, new FlowObject(object)));
+        }
+
+        return Similarity.similarity(firstObjects, secondObjects, similarity);
+    }
+
+    public static double businessObjectsStructureSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        Set<String> firstObjects = new HashSet<String>();
+        Set<String> secondObjects = new HashSet<String>();
+
+        Set<String> intersection = Similarity.intersection(extractBusinessObjects(first), extractBusinessObjects(second));
+
+        for (String object : intersection) {
+            firstObjects.addAll(extractRelatedToBusinessObject(first, new BusinessObject(object)));
+        }
+
+        for (String object : intersection) {
+            secondObjects.addAll(extractRelatedToBusinessObject(second, new BusinessObject(object)));
+        }
+
+        return Similarity.similarity(firstObjects, secondObjects, similarity);
+    }
+
+    /* Total similarity */
+    public static double[] similarities(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        List<Double> usedSimilarities = new ArrayList<>();
+
+        final int numberOfSimilarities = 4;
+        boolean[] isSimilarityUsed = new boolean[numberOfSimilarities];
+
+        if (!extractOrganizationalUnits(first).isEmpty() && !extractOrganizationalUnits(second).isEmpty()) {
+            usedSimilarities.add(organizationalUnitsLabelSimilarity(first, second, similarity));
+            isSimilarityUsed[0] = true;
+        }
+
+        if (!extractSupportingSystems(first).isEmpty() && !extractSupportingSystems(second).isEmpty()) {
+            usedSimilarities.add(supportingSystemsLabelSimilarity(first, second, similarity));
+            isSimilarityUsed[1] = true;
+        }
+
+        if (!extractFlowObjects(first).isEmpty() && !extractFlowObjects(second).isEmpty()) {
+            usedSimilarities.add(flowObjectsLabelSimilarity(first, second, similarity));
+            isSimilarityUsed[2] = true;
+        }
+
+        if (!extractBusinessObjects(first).isEmpty() && !extractBusinessObjects(second).isEmpty()) {
+            usedSimilarities.add(businessObjectsLabelSimilarity(first, second, similarity));
+            isSimilarityUsed[3] = true;
+        }
+
+        if (isSimilarityUsed[0])
+            usedSimilarities.add(organizationalUnitsStructureSimilarity(first, second, similarity));
+
+        if (isSimilarityUsed[1])
+            usedSimilarities.add(supportingSystemsStructureSimilarity(first, second, similarity));
+
+        if (isSimilarityUsed[2])
+            usedSimilarities.add(flowObjectsStructureSimilarity(first, second, similarity));
+
+        if (isSimilarityUsed[3])
+            usedSimilarities.add(businessObjectsStructureSimilarity(first, second, similarity));
+
+        double[] similarities = new double[usedSimilarities.size()];
+
+        for (int i = 0; i < usedSimilarities.size(); i++)
+            similarities[i] = usedSimilarities.get(i);
+
+        return similarities;
+    }
+
+    public static double closeness(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        double[] similarities = similarities(first, second, similarity);
+
+        return new Object() {
+            private double[] averageWeights;
+            private int numberOfMethods;
+
+            private SimilarityFunction similarity = (weights, values) -> {
+                if (averageWeights == null)
+                    averageWeights = new double[weights.length];
+
+                numberOfMethods++;
+
+                for (int i = 0; i < weights.length; i++)
+                    averageWeights[i] += weights[i];
+
+                double measure = 0;
+
+                for (int i = 0; i < weights.length; i++)
+                    measure += weights[i] * values[i];
+
+                return measure;
+            };
+
+            public double measure() {
+                BPModelsSimilarityUtil.directEstimation(similarities, similarity);
+
+                BPModelsSimilarityUtil.fishbernEstimation(similarities, similarity,
+                        (index, n) -> BPModelsSimilarityUtil.fishbernFirstEquation(index, n));
+
+                BPModelsSimilarityUtil.fishbernEstimation(similarities, similarity,
+                        (index, n) -> BPModelsSimilarityUtil.fishbernSecondEquation(index, n));
+
+                BPModelsSimilarityUtil.pairwiseComparison(similarities, similarity);
+
+                for (int i = 0; i < averageWeights.length; i++)
+                    averageWeights[i] /= (double) numberOfMethods;
+
+                BPModelsSimilarityUtil.norm(averageWeights);
+
+                return BPModelsSimilarityUtil.similarity.measure(averageWeights, similarities);
+            }
+        }.measure();
     }
 }
