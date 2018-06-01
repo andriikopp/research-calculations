@@ -323,6 +323,22 @@ public class BusinessProcessModelBuilder {
         return result;
     }
 
+    public static Set<String> extractFunctionsProcessesAndEvents(BPModelRDFGraph rdfGraph) {
+        Set<String> result = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getPredicate().equals(BPModelValidator.PR_TYPE) &&
+                    (statement.getObject().equals(BPModelValidator.RES_FUNCTION) ||
+                            statement.getObject().equals(BPModelValidator.RES_PROCESS) ||
+                            statement.getObject().equals(BPModelValidator.RES_EVENT)))
+                // If not BPMN-specific start/end event.
+                if (!statement.getSubject().equals(BPModelValidator.BPMN_START_EVENT) &&
+                        !statement.getSubject().equals(BPModelValidator.BPMN_END_EVENT))
+                    result.add(statement.getSubject());
+
+        return result;
+    }
+
     public static Set<String> extractBusinessObjects(BPModelRDFGraph rdfGraph) {
         Set<String> result = new HashSet<>();
 
@@ -393,7 +409,8 @@ public class BusinessProcessModelBuilder {
     }
 
     public static double flowObjectsLabelSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
-        return Similarity.similarity(extractFlowObjects(first), extractFlowObjects(second), similarity);
+        // Without gateways and BPMN-specific start/end events.
+        return Similarity.similarity(extractFunctionsProcessesAndEvents(first), extractFunctionsProcessesAndEvents(second), similarity);
     }
 
     public static double businessObjectsLabelSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
@@ -439,6 +456,7 @@ public class BusinessProcessModelBuilder {
         Set<String> firstObjects = new HashSet<String>();
         Set<String> secondObjects = new HashSet<String>();
 
+        // With all process flow objects.
         Set<String> intersection = Similarity.intersection(extractFlowObjects(first), extractFlowObjects(second));
 
         for (String object : intersection) {
@@ -516,7 +534,48 @@ public class BusinessProcessModelBuilder {
         return similarities;
     }
 
-    public static double closeness(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+    public static class ClosenessResult {
+        private double[] weights;
+        private double[] similarities;
+        private double value;
+
+        public ClosenessResult(double[] weights, double[] similarities, double value) {
+            this.weights = weights;
+            this.similarities = similarities;
+            this.value = value;
+        }
+
+        public double[] getWeights() {
+            return weights;
+        }
+
+        public double[] getSimilarities() {
+            return similarities;
+        }
+
+        public double getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            String result = String.format("%.2f\n", value);
+
+            result += "Weights: ";
+            for (double x : weights)
+                result += String.format("%.2f ", x);
+            result += "\n";
+
+            result += "Similarities: ";
+            for (double x : similarities)
+                result += String.format("%.2f ", x);
+            result += "\n";
+
+            return result;
+        }
+    }
+
+    public static ClosenessResult closeness(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
         double[] similarities = similarities(first, second, similarity);
 
         return new Object() {
@@ -537,7 +596,7 @@ public class BusinessProcessModelBuilder {
                 return measure;
             };
 
-            public double measure() {
+            public ClosenessResult measure() {
                 BPModelsSimilarityUtil.directEstimation(similarities, similarity);
 
                 BPModelsSimilarityUtil.fishbernEstimation(similarities, similarity,
@@ -553,7 +612,9 @@ public class BusinessProcessModelBuilder {
 
                 BPModelsSimilarityUtil.norm(averageWeights);
 
-                return BPModelsSimilarityUtil.similarity.measure(averageWeights, similarities);
+                return new ClosenessResult(averageWeights,
+                        similarities,
+                        BPModelsSimilarityUtil.similarity.measure(averageWeights, similarities));
             }
         }.measure();
     }
