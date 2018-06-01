@@ -2,6 +2,7 @@ package bp.retrieve.similarity;
 
 import bp.retrieve.BPModelRDFGraph;
 import bp.retrieve.CustomizableBPModelsSimilarity;
+import bp.retrieve.generator.BusinessProcessModelBuilder;
 
 /**
  * Provides implementations of the {@link bp.retrieve.CustomizableBPModelsSimilarity} class
@@ -77,14 +78,7 @@ public class SimilarityMethodsToolset {
     private static final CustomizableBPModelsSimilarity AVERAGE_SIMILARITY = new CustomizableBPModelsSimilarity() {
         @Override
         public double compareBPModelRDFGraphs(BPModelRDFGraph first, BPModelRDFGraph second) {
-            final double numberOfMethods = 4;
-
-            double averageSimilarity = (DIRECT_ESTIMATION.compareBPModelRDFGraphs(first, second) +
-                    ARITHMETIC_PROGRESSION.compareBPModelRDFGraphs(first, second) +
-                    GEOMETRIC_PROGRESSION.compareBPModelRDFGraphs(first, second) +
-                    PAIRWISE_COMPARISON.compareBPModelRDFGraphs(first, second)) / numberOfMethods;
-
-            return averageSimilarity;
+            return BusinessProcessModelBuilder.closeness(first, second, SemanticSimilarityUtil.jaccardSimilarity).getValue();
         }
     };
 

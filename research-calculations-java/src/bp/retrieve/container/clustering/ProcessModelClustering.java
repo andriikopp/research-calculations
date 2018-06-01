@@ -55,6 +55,33 @@ public class ProcessModelClustering {
         return clusteringResults;
     }
 
+    /**
+     * Returns the list of models and theirs similarity values.
+     *
+     * @param processModel - the pattern;
+     * @param processModels - the set of business process models stored in repository;
+     * @param similarity - the implementation of business process models similarity measure.
+     * @return the results of comparison.
+     */
+    public static List<ProcessModelCloseness> similar(GenericProcessModel processModel,
+                                                      Collection<GenericProcessModel> processModels,
+                                                      CustomizableBPModelsSimilarity similarity) {
+        List<ProcessModelCloseness> clusteringResults = new ArrayList<>();
+
+        for (GenericProcessModel model : processModels) {
+            double similarityValue = similarity.compareBPModelRDFGraphs(processModel.getModelDescription(),
+                    model.getModelDescription());
+
+            if (!model.equals(processModel) && similarityValue >= threshold.getThresholdValue()) {
+                clusteringResults.add(new ProcessModelCloseness(model, similarityValue));
+            }
+        }
+
+        clusteringResults.sort((x, y) -> Double.compare(y.getClosenessValue(), x.getClosenessValue()));
+
+        return clusteringResults;
+    }
+
     public static HarringtonScale getThreshold() {
         return threshold;
     }

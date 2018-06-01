@@ -53,7 +53,7 @@ public class ProcessModelRepository {
 	 * @return the results of clustering using FCM method.
 	 */
 	public List<ProcessModelCloseness> findAll(GenericProcessModel processModel) {
-		return ProcessModelClustering.cluster(processModel, processModelsMapping.values(),
+		return ProcessModelClustering.similar(processModel, processModelsMapping.values(),
 				SimilarityMethodsToolset.getCurrentMethod());
 	}
 
