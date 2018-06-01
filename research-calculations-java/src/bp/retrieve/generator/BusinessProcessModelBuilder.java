@@ -85,6 +85,20 @@ public class BusinessProcessModelBuilder {
         }
     }
 
+    public static class DataStorage extends Process {
+
+        public DataStorage(String identifier) {
+            super(identifier);
+        }
+    }
+
+    public static class ExternalEntity extends Process {
+
+        public ExternalEntity(String identifier) {
+            super(identifier);
+        }
+    }
+
     public static class SupportingSystem extends Concept {
 
         public SupportingSystem(String identifier) {
@@ -190,6 +204,18 @@ public class BusinessProcessModelBuilder {
         return new Process(identifier);
     }
 
+    public static DataStorage dataStorage(BPModelRDFGraph rdfGraph, String identifier) {
+        rdfGraph.addStatement(identifier, BPModelValidator.PR_TYPE, BPModelValidator.RES_DATA_STORAGE);
+
+        return new DataStorage(identifier);
+    }
+
+    public static ExternalEntity externalEntity(BPModelRDFGraph rdfGraph, String identifier) {
+        rdfGraph.addStatement(identifier, BPModelValidator.PR_TYPE, BPModelValidator.RES_EXTERNAL_ENTITY);
+
+        return new ExternalEntity(identifier);
+    }
+
     public static SupportingSystem supportingSystem(BPModelRDFGraph rdfGraph, String identifier) {
         rdfGraph.addStatement(identifier, BPModelValidator.PR_TYPE, BPModelValidator.RES_SUPPORTING_SYSTEM);
 
@@ -232,9 +258,9 @@ public class BusinessProcessModelBuilder {
             rdfGraph.addStatement(subject.getIdentifier(), BPModelValidator.PR_TRIGGERS, flowObject.getIdentifier());
     }
 
-    public static void contains(BPModelRDFGraph rdfGraph, Process process, Function... functions) {
-        for (Function function : functions)
-            rdfGraph.addStatement(process.getIdentifier(), BPModelValidator.PR_CONTAINS, function.getIdentifier());
+    public static void contains(BPModelRDFGraph rdfGraph, Process process, FlowObject... flowObjects) {
+        for (FlowObject flowObject : flowObjects)
+            rdfGraph.addStatement(process.getIdentifier(), BPModelValidator.PR_CONTAINS, flowObject.getIdentifier());
     }
 
     public static void usedBy(BPModelRDFGraph rdfGraph, SupportingSystem supportingSystem, Function... functions) {
@@ -316,6 +342,8 @@ public class BusinessProcessModelBuilder {
             if (statement.getPredicate().equals(BPModelValidator.PR_TYPE) &&
                     (statement.getObject().equals(BPModelValidator.RES_FUNCTION) ||
                             statement.getObject().equals(BPModelValidator.RES_PROCESS) ||
+                            statement.getObject().equals(BPModelValidator.RES_DATA_STORAGE) ||
+                            statement.getObject().equals(BPModelValidator.RES_EXTERNAL_ENTITY) ||
                             statement.getObject().equals(BPModelValidator.RES_EVENT) ||
                             statement.getObject().equals(BPModelValidator.RES_GATEWAY)))
                 result.add(statement.getSubject());
@@ -323,13 +351,15 @@ public class BusinessProcessModelBuilder {
         return result;
     }
 
-    public static Set<String> extractFunctionsProcessesAndEvents(BPModelRDFGraph rdfGraph) {
+    public static Set<String> extractLabeledFlowObjects(BPModelRDFGraph rdfGraph) {
         Set<String> result = new HashSet<>();
 
         for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
             if (statement.getPredicate().equals(BPModelValidator.PR_TYPE) &&
                     (statement.getObject().equals(BPModelValidator.RES_FUNCTION) ||
                             statement.getObject().equals(BPModelValidator.RES_PROCESS) ||
+                            statement.getObject().equals(BPModelValidator.RES_DATA_STORAGE) ||
+                            statement.getObject().equals(BPModelValidator.RES_EXTERNAL_ENTITY) ||
                             statement.getObject().equals(BPModelValidator.RES_EVENT)))
                 // If not BPMN-specific start/end event.
                 if (!statement.getSubject().equals(BPModelValidator.BPMN_START_EVENT) &&
@@ -410,7 +440,7 @@ public class BusinessProcessModelBuilder {
 
     public static double flowObjectsLabelSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
         // Without gateways and BPMN-specific start/end events.
-        return Similarity.similarity(extractFunctionsProcessesAndEvents(first), extractFunctionsProcessesAndEvents(second), similarity);
+        return Similarity.similarity(extractLabeledFlowObjects(first), extractLabeledFlowObjects(second), similarity);
     }
 
     public static double businessObjectsLabelSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {

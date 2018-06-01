@@ -20,7 +20,6 @@ public class BPModelValidator {
     public static final String PR_IS_REGULATION_OF = "is_regulation_of";
     public static final String PR_CONTAINS = "contains";
 
-
     public static final String RES_FUNCTION = "function";
 	public static final String RES_PROCESS = "process";
 	public static final String RES_GATEWAY = "gateway";
@@ -33,7 +32,8 @@ public class BPModelValidator {
     public static final String RES_RESOURCE = "resource";
     public static final String RES_MATERIAL = "material";
     public static final String RES_INFORMATION = "information";
-
+    public static final String RES_DATA_STORAGE = "data_storage";
+    public static final String RES_EXTERNAL_ENTITY = "external_entity";
 
     /**
 	 * This event might be used only as BPMN-based model component 'Start Event'.
