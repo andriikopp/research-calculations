@@ -141,7 +141,7 @@ public class ProcessModelRepositoryConfig {
 	 * @return the instance of itself.
 	 */
 	public ProcessModelRepositoryConfig threshold(HarringtonScale threshold) {
-		if (threshold.getThresholdValue() <= 0)
+		if (threshold.getThresholdValue() < 0)
 			throw new IllegalParameterException("Similarity threshold " + threshold.getThresholdValue() + " is invalid!");
 
 		ProcessModelClustering.setThreshold(threshold);
