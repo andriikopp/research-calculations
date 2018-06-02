@@ -1,26 +1,12 @@
 package bp.retrieve.web.view;
 
-import static j2html.TagCreator.a;
-import static j2html.TagCreator.b;
-import static j2html.TagCreator.body;
-import static j2html.TagCreator.div;
-import static j2html.TagCreator.each;
-import static j2html.TagCreator.form;
-import static j2html.TagCreator.h2;
-import static j2html.TagCreator.head;
-import static j2html.TagCreator.hr;
-import static j2html.TagCreator.html;
-import static j2html.TagCreator.img;
-import static j2html.TagCreator.input;
-import static j2html.TagCreator.p;
-import static j2html.TagCreator.span;
-import static j2html.TagCreator.title;
-
 import java.util.List;
 
 import bp.retrieve.collection.GenericProcessModel;
 import bp.retrieve.container.clustering.ProcessModelCloseness;
 import j2html.tags.ContainerTag;
+
+import static j2html.TagCreator.*;
 
 /**
  * Provides presentation of the repository application.
@@ -28,73 +14,17 @@ import j2html.tags.ContainerTag;
  * @author Andrii Kopp
  */
 public class ProcessModelRepositoryView {
-	private static final String TITLE = "Business Process Model Repository";
-	
+    private static final String TITLE_LABEL = "Business Process Model Repository";
+
 	// Reusable tags.
-	private static final ContainerTag HOME = a("Home").withHref("./home");
-	private static final ContainerTag SEARCH = a("Search").withHref("./search");
-	private static final ContainerTag SHARED = a("Shared models").withHref("./sharedModels");
-	
-	/**
-	 * Shows the home page.
-	 * 
-	 * @param size
-	 *            - the number of stored process models.
-	 * @return the render of home page.
-	 */
-	public static String viewHome(int size) {
-		return html(
-			head(
-				title(TITLE)
-			),
-			body(
-				h2(TITLE),
-				form(
-					span("View models in range between "),
-					input().withType("number").withName("from")
-						.attr("min", "1")
-						.attr("max", String.valueOf(size))
-						.isRequired(),
-					span(" and "),
-					input().withType("number").withName("to")
-						.attr("min", "1")
-						.attr("max", String.valueOf(size))
-						.isRequired(),
-					span(" "),
-					input().withType("submit").withValue("View")
-				).withAction("./retrieveOnRange"),
-				HOME, span(" "), SEARCH, span(" "), SHARED,
-				hr(),
-				p("Collection size: " + size + " model(s)")
-			)
-		).render();
-	}
-	
-	/**
-	 * Shows the search page.
-	 * 
-	 * @return the render of search page.
-	 */
-	public static String viewSearch() {
-		return html(
-			head(
-				title(TITLE)
-			),
-			body(
-				h2(TITLE),
-				form(
-					input().withType("text").withName("keywords")
-						.withPlaceholder("name and description keywords")
-						.attr("size", "60")
-						.isRequired(),
-					span(" "),
-					input().withType("submit").withValue("Search")
-				).withAction("./retrieveByKeywords"),
-				HOME, span(" "), SEARCH, span(" "), SHARED,
-				hr()
-			)
-		).render();
-	}
+	private static final ContainerTag TITLE = a(TITLE_LABEL).withHref("./");
+	private static final ContainerTag SEARCH_FORM = form(
+                input().withType("text").withName("keywords")
+                        .attr("size", "60")
+                        .isRequired(),
+                span(" "),
+                input().withType("submit").withValue("Search")
+        ).withAction("./retrieveByKeywords");
 
 	/**
 	 * Shows detailed information about the business process model.
@@ -105,26 +35,23 @@ public class ProcessModelRepositoryView {
 	public static String viewProcessModel(GenericProcessModel processModel) {
 		return html(
 			head(
-				title(TITLE)
+				title(TITLE_LABEL)
 			),
 			body(
 				h2(TITLE),
-				HOME, span(" "), SEARCH, span(" "), SHARED,
+                    SEARCH_FORM,
 				hr(),
 				div(
-					p(b("Name: "), span(processModel.getName())),
-					p(b("File: "), span(processModel.getFile())),
+					p(b("Name: "), a(processModel.getName()).withHref("./retrieveById?id=" + processModel.getId())),
+					p(b("File: "), span(processModel.getFile()).withStyle("color: green")),
 					p(b("Description: ")),
 					p(span(processModel.getDescription())),
-					p(img().withSrc("./images/" + processModel.getImage())),
-					a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId()),
-					hr()
+                        p(a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId())),
+					p(img().withSrc("./images/" + processModel.getImage()))
 				)
 			)
 		).render();
 	}
-
-
 
 	/**
 	 * Shows the list of process models.
@@ -133,28 +60,31 @@ public class ProcessModelRepositoryView {
 	 *            - the list of process models that should be demonstrated.
 	 * @return the render of process models list.
 	 */
-	public static String viewProcessModels(List<GenericProcessModel> processModels) {
+	public static String viewProcessModels(List<GenericProcessModel> processModels, String... keywords) {
 		return html(
 				head(
-						title(TITLE)
+						title(TITLE_LABEL)
 				),
 				body(
 						h2(TITLE),
-						HOME, span(" "), SEARCH, span(" "), SHARED,
+                        getSearchForm(keywords),
 						hr(),
 						p("Retrieved: " + processModels.size() + " model(s)"),
 						each(processModels, processModel -> div(
-								p(b("Name: "), a(processModel.getName())
-										.withHref("./retrieveById?id=" + processModel.getId())),
-								p(b("File: "), span(processModel.getFile())),
-								p(b("Description: ")),
-								p(span(processModel.getDescription())),
-								a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId()),
-								hr()
-								)
-						)
-				)
-		).render();
+                                p(a(processModel.getName())
+                                                .withHref("./retrieveById?id=" + processModel.getId()),
+                                        br(),
+                                        small(processModel.getFile()).withStyle("color: green"),
+                                        br(),
+                                        small(processModel.getDescription()),
+                                        br(),
+                                        small(a("Similar models").withHref("./retrieveSimilar?id="
+                                                + processModel.getId()))
+                                )
+						    )
+				        )
+                )
+        ).render();
 	}
 
 	/**
@@ -167,18 +97,27 @@ public class ProcessModelRepositoryView {
 	public static String viewProcessModelsClustering(GenericProcessModel pattern, List<ProcessModelCloseness> clusteringResults) {
 		return html(
 				head(
-						title(TITLE)
+						title(TITLE_LABEL)
 				),
 				body(
 						h2(TITLE),
+                        SEARCH_FORM,
 						p(b("Pattern: "), a(pattern.getName()).withHref("./retrieveById?id=" + pattern.getId())),
-						HOME, span(" "), SEARCH, span(" "), SHARED,
 						hr(),
 						p("Retrieved: " + clusteringResults.size() + " model(s)"),
 						each(clusteringResults, clusteringResult -> div(
 								p(a(clusteringResult.getProcessModel().getName())
 										.withHref("./retrieveById?id=" + clusteringResult.getProcessModel().getId()),
-										span(String.format(" (%.2f)", clusteringResult.getClosenessValue())))
+										br(),
+										small(clusteringResult.getProcessModel().getFile()).withStyle("color: green"),
+										br(),
+										small(clusteringResult.getProcessModel().getDescription()),
+										br(),
+										small(String.format("Closeness: %.2f ", clusteringResult.getClosenessValue()))
+                                                .withStyle("color: blue"),
+                                        small(a("Similar models").withHref("./retrieveSimilar?id="
+                                                + clusteringResult.getProcessModel().getId()))
+                                        )
 								)
 						)
 				)
@@ -195,14 +134,29 @@ public class ProcessModelRepositoryView {
 	public static String viewError(String errorMessage) {
 		return html(
 			head(
-				title(TITLE)
+				title(TITLE_LABEL)
 			),
 			body(
 				h2(TITLE),
-				HOME, span(" "), SEARCH, span(" "), SHARED,
+                    SEARCH_FORM,
 				hr(),
 				p(errorMessage)
 			)
 		).render();
 	}
+
+	// Search form with the text.
+    private static ContainerTag getSearchForm(String... keywords) {
+        if (keywords.length == 0)
+            return SEARCH_FORM;
+
+        return form(
+                input().withType("text").withName("keywords")
+                        .withValue(keywords[0])
+                        .attr("size", "60")
+                        .isRequired(),
+                span(" "),
+                input().withType("submit").withValue("Search")
+        ).withAction("./retrieveByKeywords");
+    }
 }

@@ -16,40 +16,10 @@ import spark.Route;
 public class ProcessModelRepositoryController {
 
 	/**
-	 * Access home page of the application.
-	 */
-	public static Route home = (Request request, Response response) -> {
-		final int size = ProcessModelRepositoryService.retrieveAll().size();
-		return ProcessModelRepositoryView.viewHome(size);
-	};
-
-	/**
-	 * Access search page of the application.
-	 */
-	public static Route search = (Request request, Response response) -> {
-		return ProcessModelRepositoryView.viewSearch();
-	};
-
-	/**
 	 * Access shared models page of the application.
 	 */
 	public static Route sharedModels = (Request request, Response response) -> {
 		return ProcessModelRepositoryView.viewProcessModels(ProcessModelRepositoryService.retrieveAll());
-	};
-
-	/**
-	 * Access results of the range-based retrievement of process models.
-	 */
-	public static Route retrieveOnRange = (Request request, Response response) -> {
-		try {
-			final int from = Integer.parseInt(request.queryParams("from")) - 1;
-			final int to = Integer.parseInt(request.queryParams("to")) - 1;
-
-			return ProcessModelRepositoryView
-					.viewProcessModels(ProcessModelRepositoryService.retrieveOnRange(from, to));
-		} catch (Exception e) {
-			return ProcessModelRepositoryView.viewError(e.getMessage());
-		}
 	};
 
 	/**
@@ -60,7 +30,7 @@ public class ProcessModelRepositoryController {
 			final String keywords = request.queryParams("keywords");
 
 			return ProcessModelRepositoryView
-					.viewProcessModels(ProcessModelRepositoryService.retrieveByKeywords(keywords));
+					.viewProcessModels(ProcessModelRepositoryService.retrieveByKeywords(keywords), keywords);
 		} catch (Exception e) {
 			return ProcessModelRepositoryView.viewError(e.getMessage());
 		}

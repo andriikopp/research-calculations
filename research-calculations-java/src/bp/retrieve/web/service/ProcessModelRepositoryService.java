@@ -16,29 +16,6 @@ public class ProcessModelRepositoryService {
 	private static ProcessModelRepository processModelRepository;
 
 	/**
-	 * Returns the list of process models in the specified range.
-	 * 
-	 * @param from
-	 *            - the start position of the ragne;
-	 * @param to
-	 *            - the end position of the range.
-	 * @return the list of process models.
-	 */
-	public static List<GenericProcessModel> retrieveOnRange(int from, int to) {
-		List<GenericProcessModel> processModels = processModelRepository.retrieveAll();
-
-		if (from < 0 || to >= processModels.size() || (from > to))
-			throw new IllegalArgumentException("Invalid range!");
-
-		List<GenericProcessModel> processModelsOnRange = new ArrayList<GenericProcessModel>();
-
-		for (int index = from; index <= to; index++)
-			processModelsOnRange.add(processModels.get(index));
-
-		return processModelsOnRange;
-	}
-
-	/**
 	 * Returns the list of process models which name or/and description matches the
 	 * specified keywords.
 	 * 

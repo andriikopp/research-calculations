@@ -63,7 +63,7 @@ public class ProcessModelClustering {
      * @param similarity - the implementation of business process models similarity measure.
      * @return the results of comparison.
      */
-    public static List<ProcessModelCloseness> similar(GenericProcessModel processModel,
+    public static List<ProcessModelCloseness> search(GenericProcessModel processModel,
                                                       Collection<GenericProcessModel> processModels,
                                                       CustomizableBPModelsSimilarity similarity) {
         List<ProcessModelCloseness> clusteringResults = new ArrayList<>();
@@ -72,7 +72,7 @@ public class ProcessModelClustering {
             double similarityValue = similarity.compareBPModelRDFGraphs(processModel.getModelDescription(),
                     model.getModelDescription());
 
-            if (!model.equals(processModel) && similarityValue >= threshold.getThresholdValue()) {
+            if (!model.equals(processModel) && similarityValue > HarringtonScale.VERY_BAD) {
                 clusteringResults.add(new ProcessModelCloseness(model, similarityValue));
             }
         }

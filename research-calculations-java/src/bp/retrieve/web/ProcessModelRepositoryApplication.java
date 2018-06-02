@@ -27,10 +27,7 @@ public class ProcessModelRepositoryApplication {
 		staticFiles.location("/repository");
 
 		path("/", () -> {
-			get("/home", ProcessModelRepositoryController.home);
-			get("/search", ProcessModelRepositoryController.search);
-			get("/sharedModels", ProcessModelRepositoryController.sharedModels);
-			get("/retrieveOnRange", ProcessModelRepositoryController.retrieveOnRange);
+            get("/", ProcessModelRepositoryController.sharedModels);
 			get("/retrieveByKeywords", ProcessModelRepositoryController.retrieveByKeywords);
 			get("/retrieveSimilar", ProcessModelRepositoryController.retrieveSimilar);
 			get("/retrieveById", ProcessModelRepositoryController.retrieveById);
