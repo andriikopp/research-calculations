@@ -4,8 +4,11 @@ import bp.retrieve.BPModelRDFGraph;
 import bp.retrieve.collection.GenericProcessModel;
 import bp.retrieve.similarity.*;
 import bp.storing.BPModelValidator;
+import j2html.tags.ContainerTag;
 
 import java.util.*;
+
+import static j2html.TagCreator.*;
 
 /**
  * Business process model builder is a simplified and enhanced version of {@link ProcessModelGenerator}.
@@ -429,6 +432,55 @@ public class BusinessProcessModelBuilder {
         return result;
     }
 
+    public static Set<String> extractSubjects(BPModelRDFGraph rdfGraph) {
+        Set<String> subjects = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            subjects.add(statement.getSubject());
+
+        return subjects;
+    }
+
+    public static Set<String> extractPredicates(BPModelRDFGraph rdfGraph, String subject) {
+        Set<String> predicates = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getSubject().equals(subject))
+                predicates.add(statement.getPredicate());
+
+        return predicates;
+    }
+
+    public static Set<String> extractObjects(BPModelRDFGraph rdfGraph, String subject, String predicate) {
+        Set<String> objects = new HashSet<>();
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : rdfGraph.getStatements())
+            if (statement.getSubject().equals(subject) && statement.getPredicate().equals(predicate))
+                objects.add(statement.getObject());
+
+        return objects;
+    }
+
+    public static Map<String, Map<String, Set<String>>> extractStructure(BPModelRDFGraph rdfGraph) {
+        Map<String, Map<String, Set<String>>> structure = new HashMap<>();
+
+        for (String subject : extractSubjects(rdfGraph)) {
+            Map<String, Set<String>> relatedObjects = new LinkedHashMap<>();
+
+            for (String predicate : extractPredicates(rdfGraph, subject))
+                if (!predicate.equals(BPModelValidator.PR_TYPE))
+                    relatedObjects.put(predicate, extractObjects(rdfGraph, subject, predicate));
+
+            structure.put(subject, relatedObjects);
+        }
+
+        return structure;
+    }
+
+    public static String extractType(BPModelRDFGraph rdfGraph, String subject) {
+        return (String) extractObjects(rdfGraph, subject, BPModelValidator.PR_TYPE).toArray()[0];
+    }
+
     /* Label similarity */
     public static double organizationalUnitsLabelSimilarity(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
         return Similarity.similarity(extractOrganizationalUnits(first), extractOrganizationalUnits(second), similarity);
@@ -647,5 +699,32 @@ public class BusinessProcessModelBuilder {
                         BPModelsSimilarityUtil.similarity.measure(averageWeights, similarities));
             }
         }.measure();
+    }
+
+    /* Description */
+    public static ContainerTag description(BPModelRDFGraph rdfGraph) {
+        Map<String, Map<String, Set<String>>> structure = extractStructure(rdfGraph);
+
+        return small(
+                table(
+                        tbody(
+                                each(structure.keySet(), subject -> tr(
+                                        td(small(a(subject).withName(subject))),
+                                        td(small(extractType(rdfGraph, subject))),
+                                        each(structure.get(subject).keySet(), predicate -> td(
+                                                table(
+                                                        tr(td(small(i(predicate))),
+                                                                td(each(structure.get(subject).get(predicate), object ->
+                                                                                span(small(a(object).withHref("#" + object)), br())
+                                                                        )
+                                                                )
+                                                        )
+                                                )
+                                                )
+                                        )
+                                )
+                        )
+                )).attr("border", "1")
+        );
     }
 }

@@ -2,6 +2,7 @@ package bp.retrieve.web.view;
 
 import bp.retrieve.collection.GenericProcessModel;
 import bp.retrieve.container.clustering.ProcessModelCloseness;
+import bp.retrieve.generator.BusinessProcessModelBuilder;
 import bp.storing.FileRepositoryUtils;
 import j2html.tags.ContainerTag;
 
@@ -47,6 +48,7 @@ public class ProcessModelRepositoryView {
 					p(b("File: "), span(processModel.getFile()).withStyle("color: green")),
 					p(b("Description: ")),
 					p(span(processModel.getDescription())),
+                            p(BusinessProcessModelBuilder.description(processModel.getModelDescription())),
                         p(b("Created: "), span(FileRepositoryUtils.getFileCreatedTime(processModel.getFile()))),
                         p(b("Last modified: "), span(FileRepositoryUtils.getFileLastModifiedTime(processModel.getFile()))),
                         p(a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId())),
