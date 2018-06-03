@@ -3,6 +3,7 @@ package bp.storing;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileOwnerAttributeView;
 import java.text.SimpleDateFormat;
 
 /**
@@ -44,6 +45,23 @@ public class FileRepositoryUtils {
         try {
             return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(
                     Files.readAttributes(Paths.get(className), BasicFileAttributes.class).lastModifiedTime().toMillis());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Returns the name of a file's owner.
+     *
+     * @param fileName - the file from repository.
+     * @return the name of a file's owner.
+     */
+    public static String getFileOwnerName(String fileName) {
+        String[] classPath = fileName.split("\\.");
+        String className = gitRepositoryPath + "/files/" + classPath[classPath.length - 1] + ".java";
+
+        try {
+            return Files.getFileAttributeView(Paths.get(className), FileOwnerAttributeView.class).getOwner().getName();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

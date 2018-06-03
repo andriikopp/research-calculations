@@ -51,6 +51,7 @@ public class ProcessModelRepositoryView {
                             p(BusinessProcessModelBuilder.description(processModel.getModelDescription())),
                         p(b("Created: "), span(FileRepositoryUtils.getFileCreatedTime(processModel.getFile()))),
                         p(b("Last modified: "), span(FileRepositoryUtils.getFileLastModifiedTime(processModel.getFile()))),
+                        p(b("Owner: "), span(FileRepositoryUtils.getFileOwnerName(processModel.getFile()))),
                         p(a("Similar models").withHref("./retrieveSimilar?id=" + processModel.getId())),
 					p(img().withSrc("./images/" + processModel.getImage()))
 				)
