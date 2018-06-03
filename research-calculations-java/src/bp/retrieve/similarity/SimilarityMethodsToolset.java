@@ -78,7 +78,10 @@ public class SimilarityMethodsToolset {
     private static final CustomizableBPModelsSimilarity AVERAGE_SIMILARITY = new CustomizableBPModelsSimilarity() {
         @Override
         public double compareBPModelRDFGraphs(BPModelRDFGraph first, BPModelRDFGraph second) {
-            return BusinessProcessModelBuilder.closeness(first, second, SemanticSimilarityUtil.jaccardSimilarity).getValue();
+            return BusinessProcessModelBuilder.closeness(
+                    BusinessProcessModelBuilder.normalized(first),
+                    BusinessProcessModelBuilder.normalized(second),
+                    SemanticSimilarityUtil.jaccardSimilarity).getValue();
         }
     };
 
