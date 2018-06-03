@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import bp.retrieve.container.clustering.ProcessModelClustering;
 import bp.retrieve.similarity.scales.HarringtonScale;
+import bp.storing.FileRepositoryUtils;
 import org.apache.jena.reasoner.IllegalParameterException;
 
 import bp.retrieve.BPModelsSimilarity;
@@ -37,6 +38,18 @@ public class ProcessModelRepositoryConfig {
 	public static ProcessModelRepositoryConfig config() {
 		return new ProcessModelRepositoryConfig();
 	}
+
+    /**
+     * Starts configuration of the repository.
+     *
+     * @param gitRepositoryPath - path to the Git-repository.
+     * @return instance of itself.
+     */
+    public static ProcessModelRepositoryConfig config(String gitRepositoryPath) {
+        FileRepositoryUtils.setGitRepositoryPath(gitRepositoryPath);
+
+        return new ProcessModelRepositoryConfig();
+    }
 
 	/**
 	 * Takes the implementation of the {@link CustomizableBPModelsSimilarity} class in order to
