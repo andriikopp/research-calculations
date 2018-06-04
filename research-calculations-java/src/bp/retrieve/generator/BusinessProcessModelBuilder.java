@@ -756,7 +756,7 @@ public class BusinessProcessModelBuilder {
                         tbody(
                                 each(structure.keySet(), subject -> tr(
                                         td(small(a(subject).withName(subject))),
-                                        td(small(extractType(rdfGraph, subject))),
+                                        td(small(span(i("type")), span(" " + extractType(rdfGraph, subject)))),
                                         each(structure.get(subject).keySet(), predicate -> td(
                                                 table(
                                                         tr(td(small(i(predicate))),
