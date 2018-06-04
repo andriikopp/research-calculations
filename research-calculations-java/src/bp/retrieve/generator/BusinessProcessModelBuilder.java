@@ -616,6 +616,52 @@ public class BusinessProcessModelBuilder {
         return similarities;
     }
 
+    public static double[] labelSimilarities(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        List<Double> usedSimilarities = new ArrayList<>();
+
+        if (!extractOrganizationalUnits(first).isEmpty() && !extractOrganizationalUnits(second).isEmpty())
+            usedSimilarities.add(organizationalUnitsLabelSimilarity(first, second, similarity));
+
+        if (!extractSupportingSystems(first).isEmpty() && !extractSupportingSystems(second).isEmpty())
+            usedSimilarities.add(supportingSystemsLabelSimilarity(first, second, similarity));
+
+        if (!extractFlowObjects(first).isEmpty() && !extractFlowObjects(second).isEmpty())
+            usedSimilarities.add(flowObjectsLabelSimilarity(first, second, similarity));
+
+        if (!extractBusinessObjects(first).isEmpty() && !extractBusinessObjects(second).isEmpty())
+            usedSimilarities.add(businessObjectsLabelSimilarity(first, second, similarity));
+
+        double[] similarities = new double[usedSimilarities.size()];
+
+        for (int i = 0; i < usedSimilarities.size(); i++)
+            similarities[i] = usedSimilarities.get(i);
+
+        return similarities;
+    }
+
+    public static double[] structureSimilarities(BPModelRDFGraph first, BPModelRDFGraph second, Similarity similarity) {
+        List<Double> usedSimilarities = new ArrayList<>();
+
+        if (!extractOrganizationalUnits(first).isEmpty() && !extractOrganizationalUnits(second).isEmpty())
+            usedSimilarities.add(organizationalUnitsStructureSimilarity(first, second, similarity));
+
+        if (!extractSupportingSystems(first).isEmpty() && !extractSupportingSystems(second).isEmpty())
+            usedSimilarities.add(supportingSystemsStructureSimilarity(first, second, similarity));
+
+        if (!extractFlowObjects(first).isEmpty() && !extractFlowObjects(second).isEmpty())
+            usedSimilarities.add(flowObjectsStructureSimilarity(first, second, similarity));
+
+        if (!extractBusinessObjects(first).isEmpty() && !extractBusinessObjects(second).isEmpty())
+            usedSimilarities.add(businessObjectsStructureSimilarity(first, second, similarity));
+
+        double[] similarities = new double[usedSimilarities.size()];
+
+        for (int i = 0; i < usedSimilarities.size(); i++)
+            similarities[i] = usedSimilarities.get(i);
+
+        return similarities;
+    }
+
     public static class ClosenessResult {
         private double[] weights;
         private double[] similarities;
