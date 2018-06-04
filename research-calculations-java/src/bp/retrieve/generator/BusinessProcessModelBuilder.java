@@ -305,8 +305,8 @@ public class BusinessProcessModelBuilder {
         return result;
     }
 
-    public static GenericProcessModel wrapped(BPModelRDFGraph rdfGraph) {
-        return new GenericProcessModel(null, null, null) {
+    public static GenericProcessModel wrapped(BPModelRDFGraph rdfGraph, String file, String image) {
+        return new GenericProcessModel(rdfGraph.getName(), file, image) {
             @Override
             public BPModelRDFGraph getModelDescription() {
                 return rdfGraph;
