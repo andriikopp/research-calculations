@@ -773,4 +773,14 @@ public class BusinessProcessModelBuilder {
                 )).attr("border", "1")
         );
     }
+
+    /* Transformation */
+    public static BPModelRDFGraph transformArray(String name, String[][] statements) {
+        BPModelRDFGraph rdfGraph = new BPModelRDFGraph(name);
+
+        for (String[] statement : statements)
+            rdfGraph.addStatement(statement[0], statement[1], statement[2]);
+
+        return rdfGraph;
+    }
 }
