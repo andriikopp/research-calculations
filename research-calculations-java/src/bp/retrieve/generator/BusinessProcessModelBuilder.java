@@ -5,7 +5,13 @@ import bp.retrieve.collection.GenericProcessModel;
 import bp.retrieve.similarity.*;
 import bp.storing.BPModelValidator;
 import j2html.tags.ContainerTag;
+import main.resources.repository.files.ContractManagement;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
 
+import java.io.OutputStream;
 import java.util.*;
 
 import static j2html.TagCreator.*;
@@ -782,5 +788,39 @@ public class BusinessProcessModelBuilder {
             rdfGraph.addStatement(statement[0], statement[1], statement[2]);
 
         return rdfGraph;
+    }
+
+    public static void write(BPModelRDFGraph rdfGraph, OutputStream outputStream, String format) {
+        BPModelRDFGraph normalizedRdfGraph = normalized(rdfGraph);
+
+        Model model = ModelFactory.createDefaultModel();
+
+        final String rdfNsResource = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+
+        for (BPModelRDFGraph.BPModelRDFStatement statement : normalizedRdfGraph.getStatements()) {
+            org.apache.jena.rdf.model.Resource subject = model.createResource(rdfNsResource + statement.getSubject());
+            Property predicate = model.createProperty(rdfNsResource + statement.getPredicate());
+            org.apache.jena.rdf.model.Resource object = model.createResource(rdfNsResource + statement.getObject());
+
+            model.add(model.createStatement(subject, predicate, object));
+        }
+
+        model.write(System.out, format);
+    }
+
+    public static void writeXML(BPModelRDFGraph rdfGraph, OutputStream outputStream) {
+        write(rdfGraph, outputStream, "RDF/XML");
+    }
+
+    public static void writeTriples(BPModelRDFGraph rdfGraph, OutputStream outputStream) {
+        write(rdfGraph, outputStream, "N-TRIPLES");
+    }
+
+    public static void writeJSON(BPModelRDFGraph rdfGraph, OutputStream outputStream) {
+        write(rdfGraph, outputStream, "JSON-LD");
+    }
+
+    public static void writeTurtle(BPModelRDFGraph rdfGraph, OutputStream outputStream) {
+        write(rdfGraph, outputStream, "TURTLE");
     }
 }
