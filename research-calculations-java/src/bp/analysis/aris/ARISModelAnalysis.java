@@ -2,6 +2,7 @@ package bp.analysis.aris;
 
 import bp.analysis.aris.model.*;
 
+import java.io.PrintStream;
 import java.util.*;
 
 /**
@@ -16,7 +17,7 @@ public class ARISModelAnalysis {
 
     public static final int FUNCTION_INDICATORS_NUMBER = 4;
 
-    public static boolean validateNodesCoherence(ARISeEPCBusinessModel model) {
+    public static Set<ARISeEPCFlowObject> validateNodesCoherence(ARISeEPCBusinessModel model) {
         Set<ARISeEPCFlowObject> nodes = model.getFlowObjects();
 
         ARISeEPCFlowObject startNode = (ARISeEPCFlowObject) nodes.toArray()[0];
@@ -38,7 +39,11 @@ public class ARISModelAnalysis {
             }
         }
 
-        return nodes.size() == visited.size();
+        Set<ARISeEPCFlowObject> unreachableNodes = new HashSet<>();
+        unreachableNodes.addAll(nodes);
+        unreachableNodes.removeAll(visited);
+
+        return unreachableNodes;
     }
 
     public static boolean validateStartEndNodes(ARISeEPCBusinessModel model) {
@@ -134,6 +139,102 @@ public class ARISModelAnalysis {
         return invalidFunctions;
     }
 
+    public static void write(ARISeEPCBusinessModel model, PrintStream out) {
+        Set<ARISeEPCFlowObject> unreachableNodes = validateNodesCoherence(model);
+
+        if (!unreachableNodes.isEmpty()) {
+            out.println("There are unreachable nodes:");
+
+            for (ARISeEPCFlowObject flowObject : unreachableNodes)
+                out.println(flowObject.getName());
+        }
+
+        if (!validateStartEndNodes(model)) {
+            out.println("The start/end nodes are missed!");
+        }
+
+        Set<ARISeEPCEvent> invalidEvents = validateEvents(model);
+
+        if (!invalidEvents.isEmpty()) {
+            out.println("There are inappropriately connected events:");
+
+            for (ARISeEPCEvent event : invalidEvents)
+                out.println(event.getName());
+        }
+
+        Set<ARISeEPCFunction> invalidFunctions = validateFunctions(model);
+
+        if (!invalidFunctions.isEmpty()) {
+            out.println("There are inappropriately connected functions:");
+
+            for (ARISeEPCFunction function : invalidFunctions)
+                out.println(function.getName());
+        }
+
+        Set<ARISeEPCProcess> invalidProcesses = validateProcesses(model);
+
+        if (!invalidProcesses.isEmpty()) {
+            out.println("There are inappropriately connected processes:");
+
+            for (ARISeEPCProcess process : invalidProcesses)
+                out.println(process.getName());
+        }
+
+        Set<ARISeEPCGateway> invalidGateways = validateGateways(model);
+
+        if (!invalidGateways.isEmpty()) {
+            out.println("There are inappropriately connected gateways:");
+
+            for (ARISeEPCGateway gateway : invalidGateways)
+                out.println(gateway.getName());
+        }
+
+        invalidFunctions = validateFunctionsOrganizationalUnits(model);
+
+        if (!invalidFunctions.isEmpty()) {
+            out.println("There are functions assigned to no organizational units:");
+
+            for (ARISeEPCFunction function : invalidFunctions)
+                out.println(function.getName());
+        }
+
+        invalidFunctions = validateFunctionsInputsOutputs(model);
+
+        if (!invalidFunctions.isEmpty()) {
+            out.println("There are functions that require/produce nothing:");
+
+            for (ARISeEPCFunction function : invalidFunctions)
+                out.println(function.getName());
+        }
+
+        invalidFunctions = validateFunctionsApplicationSystems(model);
+
+        if (!invalidFunctions.isEmpty()) {
+            out.println("There are functions supported by no application systems:");
+
+            for (ARISeEPCFunction function : invalidFunctions)
+                out.println(function.getName());
+        }
+
+        Map<ARISeEPCFunction, Double[]> functionsIndicators = calculateFunctionsIndicators(model);
+        Map<ARISeEPCFunction, Double> functionsBalancing = calculateFunctionsBalancing(functionsIndicators);
+
+        out.println("Functions indicators:");
+
+        for (Map.Entry<ARISeEPCFunction, Double[]> entry : functionsIndicators.entrySet()) {
+            out.print(entry.getKey().getName());
+            out.printf("\t Org = %.2f", entry.getValue()[0]);
+            out.printf("\t Req = %.2f", entry.getValue()[1]);
+            out.printf("\tProd = %.2f", entry.getValue()[2]);
+            out.printf("\tSupp = %.2f", entry.getValue()[3]);
+            out.printf("\tTotal = %.2f", functionsBalancing.get(entry.getKey()));
+            out.println();
+        }
+
+        out.print("Model evaluation: ");
+        out.printf("%.2f\n", calculateModelBalancing(functionsBalancing));
+    }
+
     /* Chain of analysis functions. */
     public static Map<ARISeEPCFunction, Double[]> calculateFunctionsIndicators(ARISeEPCBusinessModel model) {
         Map<ARISeEPCFunction, Double[]> functionsIndicators = new HashMap<>();
@@ -199,41 +300,24 @@ public class ARISModelAnalysis {
     public static void main(String[] args) {
         ARISeEPCBusinessModel model = ARISeEPCBusinessModel.createInstance();
 
-        ARISeEPCEvent                       startEvent  = ARISeEPCEvent.event("Start event");
+        ARISeEPCEvent                       startEvent  = ARISeEPCEvent.event("Start Event");
         ARISeEPCFunction                    functionA   = ARISeEPCFunction.function("Function A");
         ARISeEPCGateway.ARISeEPCXorGateway  xorGateway  = ARISeEPCGateway.ARISeEPCXorGateway.xorGateway();
         ARISeEPCEvent                       eventA      = ARISeEPCEvent.event("Event A");
         ARISeEPCEvent                       eventB      = ARISeEPCEvent.event("Event B");
         ARISeEPCFunction                    functionB   = ARISeEPCFunction.function("Function B");
         ARISeEPCFunction                    functionC   = ARISeEPCFunction.function("Function C");
-        ARISeEPCEvent                       endEventA   = ARISeEPCEvent.event("End event A");
-        ARISeEPCEvent                       endEventB   = ARISeEPCEvent.event("End event B");
+        ARISeEPCEvent                       endEventA   = ARISeEPCEvent.event("End Event A");
+        ARISeEPCEvent                       endEventB   = ARISeEPCEvent.event("End Event B");
 
-        model.createControlFlow(startEvent, functionA);
-        model.createControlFlow(functionA, xorGateway);
-        model.createControlFlow(xorGateway, eventA, eventB);
-        model.createControlFlow(eventA, functionB);
-        model.createControlFlow(eventB, functionC);
-        model.createControlFlow(functionB, endEventA);
-        model.createControlFlow(functionC, endEventB);
+        model.createControlFlow(startEvent,     functionA);
+        model.createControlFlow(functionA,      xorGateway);
+        model.createControlFlow(xorGateway,     eventA,         eventB);
+        model.createControlFlow(eventA,         functionB);
+        model.createControlFlow(eventB,         functionC);
+        model.createControlFlow(functionB,      endEventA);
+        model.createControlFlow(functionC,      endEventB);
 
-        System.out.println(validateNodesCoherence(model));
-        System.out.println(validateStartEndNodes(model));
-        System.out.println(validateEvents(model));
-        System.out.println(validateFunctions(model));
-        System.out.println(validateProcesses(model));
-        System.out.println(validateGateways(model));
-
-        System.out.println(validateFunctionsOrganizationalUnits(model));
-        System.out.println(validateFunctionsInputsOutputs(model));
-        System.out.println(validateFunctionsApplicationSystems(model));
-
-        Map<ARISeEPCFunction, Double[]> functionsIndicators = calculateFunctionsIndicators(model);
-        Map<ARISeEPCFunction, Double> functionsBalancing = calculateFunctionsBalancing(functionsIndicators);
-
-        System.out.println(calculateModelBalancing(functionsBalancing));
-
-        model.buildKnowledgeModel();
-        model.getKnowledgeModel().write(System.out, "JSON-LD");
+        write(model, System.out);
     }
 }
