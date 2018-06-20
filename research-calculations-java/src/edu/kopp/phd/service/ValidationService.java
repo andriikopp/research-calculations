@@ -3,14 +3,9 @@ package edu.kopp.phd.service;
 import edu.kopp.phd.model.flow.*;
 import edu.kopp.phd.model.flow.Process;
 import edu.kopp.phd.repository.RDFRepository;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.rdf.model.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ValidationService {
     private RDFRepository repository = RDFRepository.getInstance();
@@ -87,6 +82,38 @@ public class ValidationService {
         return endNodes;
     }
 
+    public Set<FlowObject> validateNodesCoherenceByProcessName(String processName) {
+        Process process = new Process(repository.getModel().createResource(RDFRepository.NS_REPOSITORY +
+                processName.replaceAll("\\s+", "_")));
+
+        Map<FlowObject, List<Statement>> nodes = repository.retrieveProcess(process);
+
+        FlowObject startNode = (FlowObject) nodes.keySet().toArray()[0];
+
+        Queue<FlowObject> queue = new LinkedList<>();
+        Set<FlowObject> visited = new HashSet<>();
+
+        queue.add(startNode);
+        visited.add(startNode);
+
+        while (!queue.isEmpty()) {
+            FlowObject node = queue.poll();
+
+            for (FlowObject flowObject : getCoherentNodes(node, nodes)) {
+                if (!visited.contains(flowObject)) {
+                    queue.add(flowObject);
+                    visited.add(flowObject);
+                }
+            }
+        }
+
+        Set<FlowObject> unreachableNodes = new HashSet<>();
+        unreachableNodes.addAll(nodes.keySet());
+        unreachableNodes.removeAll(visited);
+
+        return unreachableNodes;
+    }
+
     public boolean validateStartEndNodesByProcessName(String processName) {
         return getStartNodesByProcessName(processName).size() >= 1 &&
                 getEndNodesByProcessName(processName).size() >= 1;
@@ -132,5 +159,32 @@ public class ValidationService {
                 invalidGateways.add(gateway);
 
         return invalidGateways;
+    }
+
+    private Set<FlowObject> getCoherentNodes(FlowObject flowObject, Map<FlowObject, List<Statement>> flowObjects) {
+        Model processModel = ModelFactory.createDefaultModel();
+
+        for (Map.Entry<FlowObject, List<Statement>> entry : flowObjects.entrySet())
+            for (Statement statement : entry.getValue())
+                processModel.add(statement);
+
+        Set<FlowObject> coherentNodes = new HashSet<>();
+
+        StmtIterator iterator = processModel.listStatements();
+
+        while (iterator.hasNext()) {
+            Statement statement = iterator.nextStatement();
+
+            if ((statement.getSubject().equals(flowObject.getResource()) &&
+                    statement.getPredicate().equals(repository.getIsPredecessorOf())))
+                coherentNodes.add(new FlowObject((Resource) statement.getObject()));
+
+
+            if ((statement.getObject().equals(flowObject.getResource()) &&
+                    statement.getPredicate().equals(repository.getIsPredecessorOf())))
+                coherentNodes.add(new FlowObject(statement.getSubject()));
+        }
+
+        return coherentNodes;
     }
 }
