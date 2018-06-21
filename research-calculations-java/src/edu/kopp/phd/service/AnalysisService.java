@@ -11,20 +11,20 @@ public class AnalysisService {
 
     private ControlFlowService controlFlowService = new ControlFlowService();
 
-    public Map<Function, String> getFunctionErrorsByProcessName(String processName) {
+    public List<String> getFunctionErrorsByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
 
-        Map<Function, String> functionErrors = new HashMap<>();
+        List<String> functionErrors = new ArrayList<>();
 
         for (Function function : functions) {
             if (!(function.getOrganizationalUnits().size() >= 1))
-                functionErrors.put(function, String.format("Function '%s' doesn't have any organizational units", function));
+                functionErrors.add(String.format("Function '%s' doesn't have any organizational units", function));
 
             if (!(function.getInputs().size() >= 1 && function.getOutputs().size() >= 1))
-                functionErrors.put(function, String.format("Function '%s' doesn't have any inputs/outputs", function));
+                functionErrors.add(String.format("Function '%s' doesn't have any inputs/outputs", function));
 
             if (!(function.getApplicationSystems().size() >= 1))
-                functionErrors.put(function, String.format("Function '%s' doesn't have any application systems", function));
+                functionErrors.add(String.format("Function '%s' doesn't have any application systems", function));
         }
 
         return functionErrors;
