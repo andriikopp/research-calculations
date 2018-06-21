@@ -13,6 +13,22 @@ import java.util.*;
 public class ControlFlowService {
     private RDFRepository repository = RDFRepository.getInstance();
 
+    public List<Process> getAllProcesses() {
+        List<Process> processes = new ArrayList<>();
+
+        StmtIterator iterator = repository.getModel().listStatements();
+
+        while (iterator.hasNext()) {
+            Statement statement = iterator.nextStatement();
+
+            if (statement.getPredicate().equals(repository.getA()) &&
+                    statement.getObject().equals(repository.getProcess()))
+                processes.add(new Process(statement.getSubject()));
+        }
+
+        return processes;
+    }
+
     public List<Function> getDetailedFunctionsByProcessName(String processName) {
         List<Function> processEnvironmentFunctions = new ArrayList<>();
 
