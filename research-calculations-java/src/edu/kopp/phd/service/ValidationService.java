@@ -164,10 +164,15 @@ public class ValidationService {
     public Set<Event> validateEventsAndGatewaysConnectionsByProcessName(String processName) {
         Set<Event> invalidEvents = new HashSet<>();
 
+        Process process = new Process(repository.getModel().createResource(RDFRepository.NS_REPOSITORY +
+                processName.replaceAll("\\s+", "_")));
+
         for (Event event : controlFlowService.getDetailedEventsByProcessName(processName))
             for (FlowObject flowObject : event.getSubsequent())
-                if (flowObject.getResource().equals(repository.getOrGateway()) ||
-                        flowObject.getResource().equals(repository.getxOrGateway()))
+                if (flowObject.getResource().getURI().contains(RDFRepository.NS_REPOSITORY +
+                            process.getResource().getLocalName() + "/or") ||
+                        flowObject.getResource().getURI().contains((RDFRepository.NS_REPOSITORY +
+                                process.getResource().getLocalName() + "/xor")))
                     invalidEvents.add(event);
 
         return invalidEvents;

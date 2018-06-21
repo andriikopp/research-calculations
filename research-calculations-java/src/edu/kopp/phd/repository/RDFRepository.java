@@ -37,7 +37,9 @@ public class RDFRepository implements Repository {
 
     private Resource event;
     private Resource function;
-    private Resource gateway;
+    private Resource andGateway;
+    private Resource orGateway;
+    private Resource xOrGateway;
     private Resource process;
 
     private Resource organizationalUnit;
@@ -45,10 +47,6 @@ public class RDFRepository implements Repository {
     private Resource applicationSystem;
     private Resource material;
     private Resource information;
-
-    private Resource andGateway;
-    private Resource orGateway;
-    private Resource xOrGateway;
 
     private static final RDFRepository INSTANCE = new RDFRepository();
 
@@ -65,7 +63,9 @@ public class RDFRepository implements Repository {
 
         event = model.createResource(NS_REPOSITORY_TYPE + "Event");
         function = model.createResource(NS_REPOSITORY_TYPE + "Function");
-        gateway = model.createResource(NS_REPOSITORY_TYPE + "Gateway");
+        andGateway = model.createResource(NS_REPOSITORY_TYPE + "AND");
+        orGateway = model.createResource(NS_REPOSITORY_TYPE + "OR");
+        xOrGateway = model.createResource(NS_REPOSITORY_TYPE + "XOR");
         process = model.createResource(NS_REPOSITORY_TYPE + "Process");
 
         organizationalUnit = model.createResource(NS_REPOSITORY_TYPE + "OrganizationalUnit");
@@ -73,10 +73,6 @@ public class RDFRepository implements Repository {
         applicationSystem = model.createResource(NS_REPOSITORY_TYPE + "ApplicationSystem");
         material = model.createResource(NS_REPOSITORY_TYPE + "Material");
         information = model.createResource(NS_REPOSITORY_TYPE + "Information");
-
-        andGateway = model.createResource(NS_REPOSITORY + "AND");
-        orGateway = model.createResource(NS_REPOSITORY + "OR");
-        xOrGateway = model.createResource(NS_REPOSITORY + "XOR");
     }
 
     public static RDFRepository getInstance() {
@@ -89,7 +85,8 @@ public class RDFRepository implements Repository {
 
     @Override
     public Event createEvent(String name, Process process) {
-        Resource subject = model.createResource(NS_REPOSITORY + name.replaceAll("\\s+", "_"));
+        Resource subject = model.createResource(NS_REPOSITORY + process.getResource().getLocalName() + "/" +
+                name.replaceAll("\\s+", "_"));
 
         model.add(model.createStatement(subject, a, event));
 
@@ -100,7 +97,8 @@ public class RDFRepository implements Repository {
 
     @Override
     public Function createFunction(String name, Process process) {
-        Resource subject = model.createResource(NS_REPOSITORY + name.replaceAll("\\s+", "_"));
+        Resource subject = model.createResource(NS_REPOSITORY + process.getResource().getLocalName() + "/"
+                + name.replaceAll("\\s+", "_"));
 
         model.add(model.createStatement(subject, a, function));
 
@@ -110,30 +108,39 @@ public class RDFRepository implements Repository {
     }
 
     @Override
-    public Gateway createAndGateway(Process process) {
-        model.add(model.createStatement(andGateway, a, gateway));
+    public AndGateway createAndGateway(Process process) {
+        Resource subject = model.createResource(NS_REPOSITORY + process.getResource().getLocalName() + "/and/AND"
+                + (getNumberOfGatewaysByProcess(process) + 1));
 
-        model.add(model.createStatement(process.getResource(), isComposedBy, andGateway));
+        model.add(model.createStatement(subject, a, andGateway));
 
-        return new Gateway(andGateway);
+        model.add(model.createStatement(process.getResource(), isComposedBy, subject));
+
+        return new AndGateway(subject);
     }
 
     @Override
-    public Gateway createOrGateway(Process process) {
-        model.add(model.createStatement(orGateway, a, gateway));
+    public OrGateway createOrGateway(Process process) {
+        Resource subject = model.createResource(NS_REPOSITORY + process.getResource().getLocalName() + "/or/OR"
+                + (getNumberOfGatewaysByProcess(process) + 1));
 
-        model.add(model.createStatement(process.getResource(), isComposedBy, orGateway));
+        model.add(model.createStatement(subject, a, orGateway));
 
-        return new Gateway(orGateway);
+        model.add(model.createStatement(process.getResource(), isComposedBy, subject));
+
+        return new OrGateway(subject);
     }
 
     @Override
-    public Gateway createXOrGateway(Process process) {
-        model.add(model.createStatement(xOrGateway, a, gateway));
+    public XOrGateway createXOrGateway(Process process) {
+        Resource subject = model.createResource(NS_REPOSITORY + process.getResource().getLocalName() + "/xor/XOR"
+                + (getNumberOfGatewaysByProcess(process) + 1));
 
-        model.add(model.createStatement(process.getResource(), isComposedBy, xOrGateway));
+        model.add(model.createStatement(subject, a, xOrGateway));
 
-        return new Gateway(xOrGateway);
+        model.add(model.createStatement(process.getResource(), isComposedBy, subject));
+
+        return new XOrGateway(subject);
     }
 
     @Override
@@ -147,7 +154,8 @@ public class RDFRepository implements Repository {
 
     @Override
     public Process createProcessInterface(String name, Process process) {
-        Resource subject = model.createResource(NS_REPOSITORY + name.replaceAll("\\s+", "_"));
+        Resource subject = model.createResource(NS_REPOSITORY + process.getResource().getLocalName() + "/"
+                + name.replaceAll("\\s+", "_"));
 
         model.add(model.createStatement(subject, a, this.process));
 
@@ -283,6 +291,28 @@ public class RDFRepository implements Repository {
         model.read(inputStream, null);
     }
 
+    private int getNumberOfGatewaysByProcess(Process process) {
+        int count = 0;
+
+        StmtIterator stmtIterator = model.listStatements();
+
+        while (stmtIterator.hasNext()) {
+            Statement statement = stmtIterator.nextStatement();
+
+            if (statement.getSubject().equals(process.getResource()) &&
+                    statement.getPredicate().equals(isComposedBy) &&
+                    (((Resource)statement.getObject()).getURI().contains(NS_REPOSITORY +
+                            process.getResource().getLocalName() + "/and") ||
+                            ((Resource)statement.getObject()).getURI().contains(NS_REPOSITORY +
+                                    process.getResource().getLocalName() + "/or") ||
+                            ((Resource)statement.getObject()).getURI().contains(NS_REPOSITORY +
+                                    process.getResource().getLocalName() + "/xor")))
+                count++;
+        }
+
+        return count;
+    }
+
     public Property getA() {
         return a;
     }
@@ -319,8 +349,16 @@ public class RDFRepository implements Repository {
         return function;
     }
 
-    public Resource getGateway() {
-        return gateway;
+    public Resource getAndGateway() {
+        return andGateway;
+    }
+
+    public Resource getOrGateway() {
+        return orGateway;
+    }
+
+    public Resource getxOrGateway() {
+        return xOrGateway;
     }
 
     public Resource getProcess() {
@@ -345,17 +383,5 @@ public class RDFRepository implements Repository {
 
     public Resource getInformation() {
         return information;
-    }
-
-    public Resource getAndGateway() {
-        return andGateway;
-    }
-
-    public Resource getOrGateway() {
-        return orGateway;
-    }
-
-    public Resource getxOrGateway() {
-        return xOrGateway;
     }
 }

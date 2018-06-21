@@ -131,7 +131,9 @@ public class ControlFlowService {
         for (Map.Entry<FlowObject, List<Statement>> entry : flowObjects.entrySet()) {
             for (Statement statement : entry.getValue())
                 if (statement.getPredicate().equals(repository.getA()) &&
-                        statement.getObject().equals(repository.getGateway())) {
+                        (statement.getObject().equals(repository.getAndGateway()) ||
+                            statement.getObject().equals(repository.getOrGateway()) ||
+                            statement.getObject().equals(repository.getxOrGateway()))) {
                     Gateway gateway = new Gateway(entry.getKey().getResource());
 
                     gateway.setPreceding(getPreceding(entry.getKey(), flowObjects));

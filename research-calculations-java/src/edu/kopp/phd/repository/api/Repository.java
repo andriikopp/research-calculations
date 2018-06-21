@@ -14,11 +14,11 @@ public interface Repository {
 
     Function createFunction(String name, Process process);
 
-    Gateway createAndGateway(Process process);
+    AndGateway createAndGateway(Process process);
 
-    Gateway createOrGateway(Process process);
+    OrGateway createOrGateway(Process process);
 
-    Gateway createXOrGateway(Process process);
+    XOrGateway createXOrGateway(Process process);
 
     Process createProcess(String name);
 
