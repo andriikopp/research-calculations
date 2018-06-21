@@ -146,6 +146,17 @@ public class RDFRepository implements Repository {
     }
 
     @Override
+    public Process createProcessInterface(String name, Process process) {
+        Resource subject = model.createResource(NS_REPOSITORY + name.replaceAll("\\s+", "_"));
+
+        model.add(model.createStatement(subject, a, this.process));
+
+        model.add(model.createStatement(process.getResource(), isComposedBy, subject));
+
+        return new Process(subject);
+    }
+
+    @Override
     public OrganizationalUnit createOrganizationalUnit(String name) {
         Resource subject = model.createResource(NS_REPOSITORY + name.replaceAll("\\s+", "_"));
 

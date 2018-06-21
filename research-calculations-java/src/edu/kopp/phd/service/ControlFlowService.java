@@ -129,42 +129,69 @@ public class ControlFlowService {
         return gateways;
     }
 
-    public String getJSONNodesRepresentation() {
+    public String getJSONNodesRepresentationByProcessName(String processName) {
         String nodesArray = "nodesArray = [";
 
-        ResIterator resIterator = repository.getModel().listSubjects();
+        Process process = new Process(repository.getModel().createResource(RDFRepository.NS_REPOSITORY +
+                processName.replaceAll("\\s+", "_")));
 
-        while (resIterator.hasNext()) {
-            Resource resource = resIterator.nextResource();
+        for (List<Statement> values : repository.retrieveProcess(process).values())
+            for (Statement statement : values) {
+                if (statement.getPredicate().equals(repository.getA())) {
+                    String color = "#bfbfbf";
 
-            if (!nodesArray.contains(resource.getURI()))
-                nodesArray += "{id: '" + resource.getURI() + "', label: '" + resource.getLocalName() + "'},";
-        }
+                    if (statement.getObject().equals(repository.getEvent()))
+                        color = "#ff6666";
+                    else if (statement.getObject().equals(repository.getFunction()))
+                        color = "#33cc33";
+                    else if (statement.getObject().equals(repository.getProcess()))
+                        color = "#669999";
 
-        NodeIterator nodeIterator = repository.getModel().listObjects();
+                    nodesArray += "{id: '" + statement.getSubject().getURI() + "', label: '" +
+                            statement.getSubject().getLocalName() + "', color: '" + color + "'},";
+                }
 
-        while (nodeIterator.hasNext()) {
-            Resource resource = (Resource) nodeIterator.nextNode();
+                if (statement.getPredicate().equals(repository.getIsPerformedBy())) {
+                    String color = "#ffff00";
 
-            if (!nodesArray.contains(resource.getURI()))
-                nodesArray += "{id: '" + resource.getURI() + "', label: '" + resource.getLocalName() + "'},";
-        }
+                    if (!nodesArray.contains(((Resource) statement.getObject()).getURI()))
+                        nodesArray += "{id: '" + ((Resource) statement.getObject()).getURI() + "', label: '" +
+                                ((Resource) statement.getObject()).getLocalName() + "', color: '" + color + "'},";
+                }
+
+                if (statement.getPredicate().equals(repository.getIsSupportedBy())) {
+                    String color = "#66ccff";
+
+                    if (!nodesArray.contains(((Resource) statement.getObject()).getURI()))
+                        nodesArray += "{id: '" + ((Resource) statement.getObject()).getURI() + "', label: '" +
+                                ((Resource) statement.getObject()).getLocalName() + "', color: '" + color + "'},";
+                }
+
+                if (statement.getPredicate().equals(repository.getRequires()) ||
+                        statement.getPredicate().equals(repository.getProduces())) {
+                    String color = "#bfbfbf";
+
+                    if (!nodesArray.contains(((Resource) statement.getObject()).getURI()))
+                        nodesArray += "{id: '" + ((Resource) statement.getObject()).getURI() + "', label: '" +
+                                ((Resource) statement.getObject()).getLocalName() + "', color: '" + color + "'},";
+                }
+            }
 
         return nodesArray + "];";
     }
 
-    public String getJSONEdgesRepresentation() {
+    public String getJSONEdgesRepresentationByProcessName(String processName) {
         String edgesArray = "edgesArray = [";
 
-        StmtIterator iterator = repository.getModel().listStatements();
+        Process process = new Process(repository.getModel().createResource(RDFRepository.NS_REPOSITORY +
+                processName.replaceAll("\\s+", "_")));
 
-        while (iterator.hasNext()) {
-            Statement statement = iterator.nextStatement();
-
-            edgesArray += "{from: '" + statement.getSubject().getURI() + "', to: '"
-                    + ((Resource) statement.getObject()).getURI() + "', label: '"
-                    + statement.getPredicate().getLocalName() + "', arrows: 'to' },";
-        }
+        for (List<Statement> values : repository.retrieveProcess(process).values())
+            for (Statement statement : values)
+                if (!statement.getPredicate().equals(repository.getA()))
+                    edgesArray += "{from: '" + statement.getSubject().getURI() + "', to: '"
+                            + ((Resource) statement.getObject()).getURI() + "', label: '"
+                            + statement.getPredicate().getLocalName() + "', arrows: 'to' },";
 
         return edgesArray + "];";
     }

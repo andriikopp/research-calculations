@@ -22,6 +22,8 @@ public interface Repository {
 
     Process createProcess(String name);
 
+    Process createProcessInterface(String name, Process process);
+
     OrganizationalUnit createOrganizationalUnit(String name);
 
     Position createPosition(String name);
