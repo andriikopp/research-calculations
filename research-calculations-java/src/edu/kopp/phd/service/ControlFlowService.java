@@ -129,6 +129,53 @@ public class ControlFlowService {
         return gateways;
     }
 
+    public String getJSONNodesRepresentation() {
+        String nodesArray = "nodesArray = [";
+
+        ResIterator resIterator = repository.getModel().listSubjects();
+
+        while (resIterator.hasNext()) {
+            Resource resource = resIterator.nextResource();
+
+            if (!nodesArray.contains(resource.getURI()))
+                nodesArray += "{id: '" + resource.getURI() + "', label: '" + resource.getLocalName() + "'},";
+        }
+
+        NodeIterator nodeIterator = repository.getModel().listObjects();
+
+        while (nodeIterator.hasNext()) {
+            Resource resource = (Resource) nodeIterator.nextNode();
+
+            if (!nodesArray.contains(resource.getURI()))
+                nodesArray += "{id: '" + resource.getURI() + "', label: '" + resource.getLocalName() + "'},";
+        }
+
+        nodesArray += "{id: '" + repository.getA().getURI() + "', label: '" + repository.getA().getLocalName() + "'},";
+        nodesArray += "{id: '" + repository.getIsPredecessorOf().getURI() + "', label: '" + repository.getIsPredecessorOf().getLocalName() + "'},";
+        nodesArray += "{id: '" + repository.getIsComposedBy().getURI() + "', label: '" + repository.getIsComposedBy().getLocalName() + "'},";
+        nodesArray += "{id: '" + repository.getIsPerformedBy().getURI() + "', label: '" + repository.getIsPerformedBy().getLocalName() + "'},";
+        nodesArray += "{id: '" + repository.getIsSupportedBy().getURI() + "', label: '" + repository.getIsSupportedBy().getLocalName() + "'},";
+        nodesArray += "{id: '" + repository.getRequires().getURI() + "', label: '" + repository.getRequires().getLocalName() + "'},";
+        nodesArray += "{id: '" + repository.getProduces().getURI() + "', label: '" + repository.getProduces().getLocalName() + "'}";
+
+        return nodesArray + "];";
+    }
+
+    public String getJSONEdgesRepresentation() {
+        String edgesArray = "edgesArray = [";
+
+        StmtIterator iterator = repository.getModel().listStatements();
+
+        while (iterator.hasNext()) {
+            Statement statement = iterator.nextStatement();
+
+            edgesArray += "{from: '" + statement.getSubject().getURI() + "', to: '" + statement.getPredicate().getURI() + "'},";
+            edgesArray += "{from: '" + statement.getPredicate().getURI() + "', to: '" + ((Resource) statement.getObject()).getURI() + "'},";
+        }
+
+        return edgesArray + "];";
+    }
+
     private Set<FlowObject> getPreceding(FlowObject flowObject, Map<FlowObject, List<Statement>> flowObjects) {
         Set<FlowObject> preceding = new HashSet<>();
 
