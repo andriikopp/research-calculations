@@ -150,14 +150,6 @@ public class ControlFlowService {
                 nodesArray += "{id: '" + resource.getURI() + "', label: '" + resource.getLocalName() + "'},";
         }
 
-        nodesArray += "{id: '" + repository.getA().getURI() + "', label: '" + repository.getA().getLocalName() + "'},";
-        nodesArray += "{id: '" + repository.getIsPredecessorOf().getURI() + "', label: '" + repository.getIsPredecessorOf().getLocalName() + "'},";
-        nodesArray += "{id: '" + repository.getIsComposedBy().getURI() + "', label: '" + repository.getIsComposedBy().getLocalName() + "'},";
-        nodesArray += "{id: '" + repository.getIsPerformedBy().getURI() + "', label: '" + repository.getIsPerformedBy().getLocalName() + "'},";
-        nodesArray += "{id: '" + repository.getIsSupportedBy().getURI() + "', label: '" + repository.getIsSupportedBy().getLocalName() + "'},";
-        nodesArray += "{id: '" + repository.getRequires().getURI() + "', label: '" + repository.getRequires().getLocalName() + "'},";
-        nodesArray += "{id: '" + repository.getProduces().getURI() + "', label: '" + repository.getProduces().getLocalName() + "'}";
-
         return nodesArray + "];";
     }
 
@@ -169,8 +161,9 @@ public class ControlFlowService {
         while (iterator.hasNext()) {
             Statement statement = iterator.nextStatement();
 
-            edgesArray += "{from: '" + statement.getSubject().getURI() + "', to: '" + statement.getPredicate().getURI() + "'},";
-            edgesArray += "{from: '" + statement.getPredicate().getURI() + "', to: '" + ((Resource) statement.getObject()).getURI() + "'},";
+            edgesArray += "{from: '" + statement.getSubject().getURI() + "', to: '"
+                    + ((Resource) statement.getObject()).getURI() + "', label: '"
+                    + statement.getPredicate().getLocalName() + "', arrows: 'to' },";
         }
 
         return edgesArray + "];";
