@@ -161,6 +161,18 @@ public class ValidationService {
         return invalidGateways;
     }
 
+    public Set<Event> validateEventsAndGatewaysConnectionsByProcessName(String processName) {
+        Set<Event> invalidEvents = new HashSet<>();
+
+        for (Event event : controlFlowService.getDetailedEventsByProcessName(processName))
+            for (FlowObject flowObject : event.getSubsequent())
+                if (flowObject.getResource().equals(repository.getOrGateway()) ||
+                        flowObject.getResource().equals(repository.getxOrGateway()))
+                    invalidEvents.add(event);
+
+        return invalidEvents;
+    }
+
     private Set<FlowObject> getCoherentNodes(FlowObject flowObject, Map<FlowObject, List<Statement>> flowObjects) {
         Model processModel = ModelFactory.createDefaultModel();
 
