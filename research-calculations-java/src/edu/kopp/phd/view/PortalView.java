@@ -1,24 +1,39 @@
-package edu.kopp.phd.service;
+package edu.kopp.phd.view;
 
+import edu.kopp.phd.model.environment.ApplicationSystem;
+import edu.kopp.phd.model.environment.BusinessObject;
+import edu.kopp.phd.model.environment.OrganizationalUnit;
 import edu.kopp.phd.model.flow.*;
 import edu.kopp.phd.model.flow.Process;
+import edu.kopp.phd.service.AnalysisService;
+import edu.kopp.phd.service.ControlFlowService;
+import edu.kopp.phd.service.ValidationService;
 import edu.kopp.phd.util.FileUtils;
 
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Set;
 
-public class PortalService {
+public class PortalView {
     public static final String PROCESSES_PATH = "portal/processes/";
+
     public static final String TEMPLATE_PROCESS = "portal/templates/tmpl_process.html";
+    public static final String TEMPLATE_INDEX = "portal/templates/tmpl_index.html";
+
     public static final String HTML_FILE = ".html";
 
     public static final String WARNING_SIGN = "<span class=\"badge badge-warning\">!</span>";
     public static final String NEXT_LINE = "<br/>";
 
-    private ControlFlowService controlFlowService = new ControlFlowService();
-    private ValidationService validationService = new ValidationService();
-    private AnalysisService analysisService = new AnalysisService();
+    private ControlFlowService controlFlowService;
+    private ValidationService validationService;
+    private AnalysisService analysisService;
+
+    public PortalView(ControlFlowService controlFlowService, ValidationService validationService, AnalysisService analysisService) {
+        this.controlFlowService = controlFlowService;
+        this.validationService = validationService;
+        this.analysisService = analysisService;
+    }
 
     public void deployPortal() {
         for (Process process : controlFlowService.getAllProcesses()) {
@@ -34,6 +49,10 @@ public class PortalService {
                     .replace("${nodesArray}", controlFlowService.getJSONNodesRepresentationByProcessName(processName))
                     .replace("${edgesArray}", controlFlowService.getJSONEdgesRepresentationByProcessName(processName)));
         }
+
+        FileUtils.writeFile(PROCESSES_PATH + "index" + HTML_FILE, FileUtils.readFile(TEMPLATE_INDEX,
+                Charset.defaultCharset())
+                .replace("${processes}", getHomeLayout()));
     }
 
     private String getEPCWarningsLayout(String processName) {
@@ -132,5 +151,63 @@ public class PortalService {
         } catch (Exception err) {
             return "N/A";
         }
+    }
+
+    private String getHomeLayout() {
+        String home = "";
+
+        for (Process process : controlFlowService.getAllProcesses()) {
+            String processName = process.getResource().getLocalName();
+
+            home += "<div class=\"card bg-light mb-3\">\n" +
+                    "   <div class=\"card-body\">\n" +
+                    "       <h5 class=\"card-title\"><a href=\"" + processName + HTML_FILE + "\">" + processName + "</a></h5>\n" +
+                    "       <table class=\"table\">\n" +
+                    "           <tr>\n" +
+                    "               <td>Function View</td>\n" +
+                    "               <td>Organization View</td>\n" +
+                    "               <td>Application View</td>\n" +
+                    "               <td>Inputs</td>\n" +
+                    "               <td>Outputs</td>\n" +
+                    "           </tr>\n";
+
+            for (Function function : controlFlowService.getDetailedFunctionsByProcessName(processName)) {
+                String orgUnits = "";
+
+                for (OrganizationalUnit organizationalUnit : function.getOrganizationalUnits())
+                    orgUnits += "<span class=\"badge badge-warning\">" + organizationalUnit.getResource().getLocalName() + "</span> ";
+
+                String appSystems = "";
+
+                for (ApplicationSystem applicationSystem : function.getApplicationSystems())
+                    appSystems += "<span class=\"badge badge-primary\">" + applicationSystem.getResource().getLocalName() + "</span> ";
+
+                String inputs = "";
+
+                for (BusinessObject businessObject : function.getInputs())
+                    inputs += "<span class=\"badge badge-secondary\">" + businessObject.getResource().getLocalName() + "</span> ";
+
+                String outputs = "";
+
+                for (BusinessObject businessObject : function.getOutputs())
+                    outputs += "<span class=\"badge badge-secondary\">" + businessObject.getResource().getLocalName() + "</span> ";
+
+                home += "<tr>\n" +
+                        "   <td>\n" +
+                        "       <span class=\"badge badge-success\">" + function.getResource().getLocalName() + "</span>\n" +
+                        "   </td>\n" +
+                        "   <td>\n" + orgUnits + "</td>\n" +
+                        "   <td>\n" + appSystems + "</td>\n" +
+                        "   <td>\n" + inputs + "</td>\n" +
+                        "   <td>\n" + outputs + "</td>\n" +
+                        "</tr>\n";
+            }
+
+            home += "       </table>\n" +
+                    "   </div>\n" +
+                    "</div>";
+        }
+
+        return home;
     }
 }

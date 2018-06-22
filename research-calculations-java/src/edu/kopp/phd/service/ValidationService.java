@@ -10,7 +10,11 @@ import java.util.*;
 public class ValidationService {
     private RDFRepository repository = RDFRepository.getInstance();
 
-    private ControlFlowService controlFlowService = new ControlFlowService();
+    private ControlFlowService controlFlowService;
+
+    public ValidationService(ControlFlowService controlFlowService) {
+        this.controlFlowService = controlFlowService;
+    }
 
     public Set<FlowObject> getStartNodesByProcessName(String processName) {
         Process process = new Process(repository.getModel().createResource(RDFRepository.NS_REPOSITORY +

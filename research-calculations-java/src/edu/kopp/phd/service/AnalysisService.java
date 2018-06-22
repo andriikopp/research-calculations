@@ -9,7 +9,11 @@ public class AnalysisService {
     public static final double SEQUENTIAL_WEIGHT = 0.83;
     public static final double COMMUNICATION_WEIGHT = 0.67;
 
-    private ControlFlowService controlFlowService = new ControlFlowService();
+    private ControlFlowService controlFlowService;
+
+    public AnalysisService(ControlFlowService controlFlowService) {
+        this.controlFlowService = controlFlowService;
+    }
 
     public List<String> getFunctionErrorsByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
