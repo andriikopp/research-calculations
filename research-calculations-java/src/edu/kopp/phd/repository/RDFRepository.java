@@ -23,7 +23,7 @@ public class RDFRepository implements Repository {
     public static final String NS_REPOSITORY_RELATION = "http://www.repository.edu/relation#";
     public static final String NS_REPOSITORY_TYPE = "http://www.repository.edu/type#";
 
-    public static final String REPOSITORY_PATH = "repository.xml";
+    public static final String REPOSITORY_PATH = "portal/repository.xml";
 
     private Model model;
 

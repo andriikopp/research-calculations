@@ -1,0 +1,149 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://www.repository.edu/relation#">
+  <rdf:Description rdf:about="http://www.repository.edu/Order_delivery">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/Order_supplied">
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/Place_invoice">
+            <j.0:isPredecessorOf>
+              <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/Invoice_placed">
+                <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+              </rdf:Description>
+            </j.0:isPredecessorOf>
+            <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/Order_prepared">
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/Supply_order">
+            <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Order_delivery/Order_supplied"/>
+            <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_delivery/Invoice_placed"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/interface#Order_processing">
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/Contract_signed">
+            <j.0:isPredecessorOf>
+              <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/Prepare_order">
+                <j.0:isPredecessorOf>
+                  <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/xor/XOR1">
+                    <j.0:isPredecessorOf>
+                      <rdf:Description rdf:about="http://www.repository.edu/Order_delivery/Order_cancelled">
+                        <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+                      </rdf:Description>
+                    </j.0:isPredecessorOf>
+                    <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Order_delivery/Order_prepared"/>
+                    <j.0:a rdf:resource="http://www.repository.edu/type#XOR"/>
+                  </rdf:Description>
+                </j.0:isPredecessorOf>
+                <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+              </rdf:Description>
+            </j.0:isPredecessorOf>
+            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_delivery/Order_cancelled"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_delivery/Contract_signed"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_delivery/Place_invoice"/>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_delivery/Supply_order"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_delivery/Prepare_order"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_delivery/xor/XOR1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Order_processing">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/xor/XOR1">
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Order_cancelled">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Order_confirmed">
+            <j.0:isPredecessorOf>
+              <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Sign_contract">
+                <j.0:produces>
+                  <rdf:Description rdf:about="http://www.repository.edu/Signed_contract">
+                    <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+                  </rdf:Description>
+                </j.0:produces>
+                <j.0:requires>
+                  <rdf:Description rdf:about="http://www.repository.edu/Confirmed_order">
+                    <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+                  </rdf:Description>
+                </j.0:requires>
+                <j.0:isSupportedBy>
+                  <rdf:Description rdf:about="http://www.repository.edu/CRM_System">
+                    <j.0:a rdf:resource="http://www.repository.edu/type#ApplicationSystem"/>
+                  </rdf:Description>
+                </j.0:isSupportedBy>
+                <j.0:isPerformedBy>
+                  <rdf:Description rdf:about="http://www.repository.edu/Sales_department">
+                    <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+                  </rdf:Description>
+                </j.0:isPerformedBy>
+                <j.0:isPredecessorOf>
+                  <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Contract_signed">
+                    <j.0:isPredecessorOf>
+                      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/interface#Order_delivery">
+                        <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+                      </rdf:Description>
+                    </j.0:isPredecessorOf>
+                    <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+                  </rdf:Description>
+                </j.0:isPredecessorOf>
+                <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+              </rdf:Description>
+            </j.0:isPredecessorOf>
+            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:a rdf:resource="http://www.repository.edu/type#XOR"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/interface#Order_delivery"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Sign_contract"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Check_order">
+        <j.0:produces rdf:resource="http://www.repository.edu/Confirmed_order"/>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/Received_order">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isSupportedBy rdf:resource="http://www.repository.edu/CRM_System"/>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Warehouse">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Sales_department"/>
+        <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Order_processing/xor/XOR1"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Contract_signed"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Order_cancelled"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Order_confirmed"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Order_received">
+        <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Order_processing/Check_order"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+</rdf:RDF>
