@@ -45,22 +45,14 @@
                             <h5 class="card-title">Event-driven Process Chain</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Validation</h6>
                             <p class="card-text">
-                                <small>
-                                    Unreachable nodes: ${unreachableNodes}<br/>
-                                    Process has at least one start and end node: ${startEndExist}<br/>
-                                    Invalid events: ${invalidEvents}<br/>
-                                    Invalid functions: ${invalidFunctions}<br/>
-                                    Invalid process interfaces: ${invalidProcessInterfaces}<br/>
-                                    Invalid gateways: ${invalidGateways}<br/>
-                                    Events that make decisions: ${eventDecisions}
-                                </small>
+                                <small>${epcWarnings}</small>
                             </p>
                         </div>
                     </div>
                     <div class="card mt-2">
                         <div class="card-body">
                             <h5 class="card-title">ARIS Process Environment</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Warnings</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Validation</h6>
                             <p class="card-text">
                                 <small>${arisWarnings}</small>
                             </p>
