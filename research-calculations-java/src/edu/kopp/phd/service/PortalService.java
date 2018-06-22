@@ -65,7 +65,7 @@ public class PortalService {
                 state = "warning";
 
             functionsMetrics += "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
-                    "Evaluation of function '" + entry.getKey().getResource().getLocalName() + "' is " + String.format("%.2f", metric) +
+                    "Evaluation of the function '" + entry.getKey().getResource().getLocalName() + "' is " + String.format("%.2f", metric) +
                     "</div>";
         }
 

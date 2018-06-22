@@ -22,7 +22,8 @@ public class ControlFlowService {
             Statement statement = iterator.nextStatement();
 
             if (statement.getPredicate().equals(repository.getA()) &&
-                    statement.getObject().equals(repository.getProcess()))
+                    statement.getObject().equals(repository.getProcess()) &&
+                    !statement.getSubject().getURI().contains("/interface#"))
                 processes.add(new Process(statement.getSubject()));
         }
 
