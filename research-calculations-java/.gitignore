@@ -25,3 +25,5 @@ src/bp/storing/nosql/
 # NoSQL Storage
 storage/
 
+# Portal
+portal/
