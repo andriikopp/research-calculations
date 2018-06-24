@@ -10,6 +10,8 @@ import edu.kopp.phd.service.ControlFlowService;
 import edu.kopp.phd.service.SimilarityService;
 import edu.kopp.phd.service.ValidationService;
 import edu.kopp.phd.util.FileUtils;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -25,6 +27,8 @@ public class PortalView {
 
     public static final String WARNING_SIGN = "<span class=\"badge badge-warning\">!</span>";
     public static final String NEXT_LINE = "<br/>";
+
+    private static final Logger LOGGER = Logger.getLogger(PortalView.class);
 
     private ControlFlowService controlFlowService;
     private ValidationService validationService;
@@ -54,82 +58,100 @@ public class PortalView {
     }
 
     private String getEPCWarningsLayout(String processName) {
-        String warnings = "";
+        try {
+            String warnings = "";
 
-        Set<FlowObject> unreachableNodes = validationService.validateNodesCoherenceByProcessName(processName);
+            Set<FlowObject> unreachableNodes = validationService.validateNodesCoherenceByProcessName(processName);
 
-        if (!unreachableNodes.isEmpty())
-            warnings += WARNING_SIGN + " Unreachable nodes: " + unreachableNodes.toString() + NEXT_LINE;
+            if (!unreachableNodes.isEmpty())
+                warnings += WARNING_SIGN + " Unreachable nodes: " + unreachableNodes.toString() + NEXT_LINE;
 
-        if (!validationService.validateStartEndNodesByProcessName(processName))
-            warnings += WARNING_SIGN + " Process doesn't have at least one start and end node" + NEXT_LINE;
+            if (!validationService.validateStartEndNodesByProcessName(processName))
+                warnings += WARNING_SIGN + " Process doesn't have at least one start and end node" + NEXT_LINE;
 
-        Set<Event> invalidEvents = validationService.validateEventsByProcessName(processName);
+            Set<Event> invalidEvents = validationService.validateEventsByProcessName(processName);
 
-        if (!invalidEvents.isEmpty())
-            warnings += WARNING_SIGN + " Invalid events: " + invalidEvents.toString() + NEXT_LINE;
+            if (!invalidEvents.isEmpty())
+                warnings += WARNING_SIGN + " Invalid events: " + invalidEvents.toString() + NEXT_LINE;
 
-        Set<Function> invalidFunctions = validationService.validateFunctionsByProcessName(processName);
+            Set<Function> invalidFunctions = validationService.validateFunctionsByProcessName(processName);
 
-        if (!invalidFunctions.isEmpty())
-            warnings += WARNING_SIGN + " Invalid functions: " + invalidFunctions.toString() + NEXT_LINE;
+            if (!invalidFunctions.isEmpty())
+                warnings += WARNING_SIGN + " Invalid functions: " + invalidFunctions.toString() + NEXT_LINE;
 
-        Set<Process> invalidProcessInterfaces = validationService.validateProcessesByProcessName(processName);
+            Set<Process> invalidProcessInterfaces = validationService.validateProcessesByProcessName(processName);
 
-        if (!invalidProcessInterfaces.isEmpty())
-            warnings += WARNING_SIGN + " Invalid process interfaces: " + invalidProcessInterfaces.toString() + NEXT_LINE;
+            if (!invalidProcessInterfaces.isEmpty())
+                warnings += WARNING_SIGN + " Invalid process interfaces: " + invalidProcessInterfaces.toString() + NEXT_LINE;
 
-        Set<Gateway> invalidGateways = validationService.validateGatewaysByProcessName(processName);
+            Set<Gateway> invalidGateways = validationService.validateGatewaysByProcessName(processName);
 
-        if (!invalidGateways.isEmpty())
-            warnings += WARNING_SIGN + " Invalid gateways: " + invalidGateways.toString() + NEXT_LINE;
+            if (!invalidGateways.isEmpty())
+                warnings += WARNING_SIGN + " Invalid gateways: " + invalidGateways.toString() + NEXT_LINE;
 
-        Set<Event> eventDecisions = validationService.validateEventsAndGatewaysConnectionsByProcessName(processName);
+            Set<Event> eventDecisions = validationService.validateEventsAndGatewaysConnectionsByProcessName(processName);
 
-        if (!eventDecisions.isEmpty())
-            warnings += WARNING_SIGN + " Events that make decisions: " + eventDecisions.toString() + NEXT_LINE;
+            if (!eventDecisions.isEmpty())
+                warnings += WARNING_SIGN + " Events that make decisions: " + eventDecisions.toString() + NEXT_LINE;
 
-        if (warnings.isEmpty())
-            warnings = "No warnings";
+            if (warnings.isEmpty())
+                warnings = "No warnings";
 
-        return warnings;
+            return warnings;
+        } catch (Exception err) {
+            LOGGER.error(err.getMessage(), err);
+
+            return "N/A";
+        }
     }
 
     private String getARISWarningsLayout(String processName) {
-        String warnings = "";
+        try {
+            String warnings = "";
 
-        for (String warning : analysisService.getFunctionErrorsByProcessName(processName))
-            warnings += WARNING_SIGN + " " + warning + NEXT_LINE;
+            for (String warning : analysisService.getFunctionErrorsByProcessName(processName))
+                warnings += WARNING_SIGN + " " + warning + NEXT_LINE;
 
-        if (warnings.isEmpty())
-            warnings = "No warnings";
+            if (warnings.isEmpty())
+                warnings = "No warnings";
 
-        return warnings;
+            return warnings;
+        } catch (Exception err) {
+            LOGGER.error(err.getMessage(), err);
+
+            return "N/A";
+        }
     }
 
     private String getFunctionsMetricsLayout(String processName) {
-        String functionsMetrics = "";
+        try {
+            String functionsMetrics = "";
 
-        for (Map.Entry<Function, Map<String, Double>> entry : analysisService.getFunctionIndicatorsByProcessName(processName)
-                .entrySet()) {
-            String state = "success";
+            for (Map.Entry<Function, Map<String, Double>> entry : analysisService.getFunctionIndicatorsByProcessName(processName)
+                    .entrySet()) {
+                String state = "success";
 
-            double metric = entry.getValue().get("Agg.");
+                double metric = entry.getValue().get("Agg.");
 
-            if (metric < 0)
-                state = "danger";
-            else if (metric > 0)
-                state = "warning";
+                if (metric < 0)
+                    state = "danger";
+                else if (metric > 0)
+                    state = "warning";
 
-            functionsMetrics += "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
-                    "Evaluation of the function '" + entry.getKey().getResource().getLocalName() + "' is " + String.format("%.2f", metric) +
-                    "</div>";
+                functionsMetrics += "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
+                        "Evaluation of the function '" + entry.getKey().getResource().getLocalName() + "' is " + String.format("%.2f", metric) +
+                        "</div>";
+            }
+
+            if (functionsMetrics.isEmpty())
+                functionsMetrics = "N/A";
+
+            return functionsMetrics;
+        } catch (Exception err) {
+            LOGGER.error(err.getMessage(), err);
+
+            return "N/A";
         }
-
-        if (functionsMetrics.isEmpty())
-            functionsMetrics = "N/A";
-
-        return functionsMetrics;
     }
 
     private String getEvaluationLayout(String processName) {
@@ -147,6 +169,8 @@ public class PortalView {
                     String.format("%.2f", metric) +
                     "</div>";
         } catch (Exception err) {
+            LOGGER.error(err.getMessage(), err);
+
             return "N/A";
         }
     }
@@ -176,6 +200,8 @@ public class PortalView {
                     "   <div class=\"card-body\">" + recommendations + "</div>" +
                     "</div>";
         } catch (Exception err) {
+            LOGGER.error(err.getMessage(), err);
+
             return "N/A";
         }
     }
@@ -239,19 +265,25 @@ public class PortalView {
     }
 
     private String getSimilarModelsLayout(Process process) {
-        String layout = "";
+        try {
+            String layout = "";
 
-        for (Map.Entry<Process, Double> entry : similarityService.getSimilarProcessesByProcessPattern(process)) {
-            String processName = entry.getKey().getResource().getLocalName();
+            for (Map.Entry<Process, Double> entry : similarityService.getSimilarProcessesByProcessPattern(process)) {
+                String processName = entry.getKey().getResource().getLocalName();
 
-            layout += "<a href=\"" + processName + HTML_FILE + "\">" + processName + "</a>" +
-                    " <span class=\"badge badge-light\">" + String.format("%.0f", entry.getValue() * 100) + "%</span><br/>";
+                layout += "<a href=\"" + processName + HTML_FILE + "\">" + processName + "</a>" +
+                        " <span class=\"badge badge-light\">" + String.format("%.0f", entry.getValue() * 100) + "%</span><br/>";
+            }
+
+            if (layout.isEmpty())
+                layout = "No similar models";
+
+            return layout;
+        } catch (Exception err) {
+            LOGGER.error(err.getMessage(), err);
+
+            return "N/A";
         }
-
-        if (layout.isEmpty())
-            layout = "No similar models";
-
-        return layout;
     }
 
     public void setControlFlowService(ControlFlowService controlFlowService) {

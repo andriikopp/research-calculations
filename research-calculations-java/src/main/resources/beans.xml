@@ -1,0 +1,104 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="appProperties" class="bp.AppProperties">
+		<property name="properties">
+			<props>
+				<!-- Start: RDF-related properties -->
+				<prop key="triplestorePath">models/</prop>
+				<prop key="defaultModelFileExtName">N-Triples (.nt)</prop>
+				<prop key="defaultModelFileName">model.nt</prop>
+				<prop key="resourceValidationRule">[A-Za-z0-9]*</prop>
+				<prop key="rdfFormat">N-TRIPLES</prop>
+				<!-- End: RDF-related properties -->
+				<!-- Start: Old desktop forms properies -->
+				<prop key="messageEmptySet">The set of statements is empty!</prop>
+				<prop key="buttonClear">Clear All</prop>
+				<prop key="buttonSave">Save Model</prop>
+				<prop key="buttonAdd">Add Statement</prop>
+				<prop key="labelObject">Object</prop>
+				<prop key="labelSubject">Subject</prop>
+				<prop key="labelPredicate">Predicate</prop>
+				<prop key="labelSelectProcess">Select Process</prop>
+				<prop key="labelNewProcess">Or Create New Process</prop>
+				<prop key="labelProcessName">Process Name</prop>
+				<prop key="labelProcessDescr">Process Description</prop>
+				<prop key="windowTitle">Business Process Models Store</prop>
+				<prop key="errEmpty">Subject and object shouldn't be empty strings!</prop>
+				<prop key="errSpaces">Subject and object shouldn't contain spaces!</prop>
+				<prop key="errLetters">Subject and object should contain only letters and
+					numbers!
+				</prop>
+				<prop key="errResource">Subject and object should be declared as resources!
+				</prop>
+				<prop key="errExistsStatement">This statement is already exists!</prop>
+				<prop key="errSaving">Current set of statements can't be saved!</prop>
+				<prop key="errInvalidStatement">Invalid statement!</prop>
+				<prop key="chckbxDeclareFlowObject">Declare Resource</prop>
+				<prop key="errProcessDuplicate">Process with that name is already exists!</prop>
+				<prop key="errModelDuplicate">Model with that name is already exists!</prop>
+				<prop key="retrTitle">Business Process Models Retrieve</prop>
+				<prop key="retrFile">File</prop>
+				<prop key="retrStore">Store Model</prop>
+				<prop key="retrProcesses">Processes</prop>
+				<prop key="errInvalidData">Invalid process or model data!</prop>
+				<prop key="retrPName">Process Name</prop>
+				<prop key="retrPDescr">Process Description</prop>
+				<prop key="retrRModels">Retrieved Models</prop>
+				<prop key="retrMFile">Model File</prop>
+				<prop key="retrRSimilar">Retrieve Similar Models</prop>
+				<prop key="retrSettings">Settings</prop>
+				<prop key="settTitle">Business Process Models Retrieve Settings</prop>
+				<prop key="settApply">Apply</prop>
+				<prop key="settLevel">Level, %</prop>
+				<prop key="settStr">Structure</prop>
+				<prop key="settSem">Semantic</prop>
+				<prop key="settSimCoeffs">Similarity Coefficients</prop>
+				<prop key="settDomCoeffs">Domain Coefficients</prop>
+				<prop key="settKPIs">KPIs</prop>
+				<prop key="settOut">Outputs</prop>
+				<prop key="settIn">Inputs</prop>
+				<prop key="settFObj">Flow Objects</prop>
+				<prop key="settSSyst">Supporting Systems</prop>
+				<prop key="settOUnit">Organizational Units</prop>
+				<!-- End: Old desktop forms properies -->
+			</props>
+		</property>
+		<!-- Start: Similarity coefficients -->
+		<!-- Model similarity threshold -->
+		<property name="similarityLevel" value="0.6" />
+		<!-- Domains importance similarity coefficients -->
+		<property name="domainCoefficients">
+			<map>
+				<entry key="units" value="0.33" />
+				<entry key="systems" value="0.33" />
+				<entry key="flow" value="0.34" />
+				<entry key="inputs" value="0" />
+				<entry key="outputs" value="0" />
+				<entry key="kpis" value="0" />
+			</map>
+		</property>
+		<!-- Closeness importance similarity coefficients -->
+		<property name="similarityCoefficients">
+			<map>
+				<entry key="semantic" value="0.5" />
+				<entry key="structure" value="0.5" />
+			</map>
+		</property>
+		<!-- End: Similarity coefficients -->
+	</bean>
+	<!-- Start: Old DAO classes used to store data into embedded DB -->
+	<!-- Processes storage -->
+	<bean id="processDAO" class="bp.storing.dao.jaccess.JaccessProcessDAO">
+		<property name="database" value="storage.accdb" />
+		<property name="table" value="Process" />
+	</bean>
+	<!-- Models storage -->
+	<bean id="modelDAO" class="bp.storing.dao.jaccess.JaccessModelDAO">
+		<property name="database" value="storage.accdb" />
+		<property name="table" value="Model" />
+	</bean>
+	<!-- End: Old DAO classes used to store data into embedded DB -->
+</beans>

@@ -1,6 +1,1020 @@
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:j.0="http://www.repository.edu/relation#">
+  <rdf:Description rdf:about="http://www.repository.edu/Учет_отпусков">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Учет_отпусков/Составление_графика_отпусков_по_подраз-делениям">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction15">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction15">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Учет_отпусков/Утверждение_проекта_сводного_графика_отпусков">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction14">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction14">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction14">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Учет_отпусков/Составление_сводного_графика_отпусков_">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction7">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction7">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction7">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction7">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала/Внесение_изменений_в_штатную_книгу">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction35">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction35">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction35">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction35">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction35">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала/Рассмотрение_оценочного_листа_кандидата">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction62">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction62">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction62">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction62">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала/Поиск,_подбор_и_отбор_кандидата">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction29">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction29">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction29">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction29">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction29">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала/Закрытие_вакансии_в_плане_подбора">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction39">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction39">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction39">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction39">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала/Формирование_заявки_на_подбор_сотрудника">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction15">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction15"/>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject2OfFunction15">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction15"/>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction15">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала/Передача_документов_в_бухгалтерию">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction7"/>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction7">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction7"/>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject2OfFunction7">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction7"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала/Подписание_приказа_о_приеме_на_работу">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject2OfFunction61">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction61">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction61">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction61">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction61">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала/Отклонение_кандидатуры">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction33">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction33">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction33">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction33">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подбор_персонала/Оформление_кандидата_на_испытательный_срок">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction13">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction13">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject2OfFunction13">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction13">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction13">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Прохождение_испытательного_срока">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Прохождение_испытательного_срока/Оценка_прохождения_испытательного_срока">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction31">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction31">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction31">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction31">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Прохождение_испытательного_срока/Прекращение_трудовых_отношений">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction15"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction15"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction15"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction15"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Прохождение_испытательного_срока/Продолжение_трудовых_отношений">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction12">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction12">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction12">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction12">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Прохождение_испытательного_срока/Проведение_оценки_сотрудника">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction11">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction11">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction11">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction11">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Прохождение_испытательного_срока/Контроль_за_прохождением_испытательного_срока">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction5">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction5">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction5">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction5">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Перевод_персонала">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Перевод_персонала/Оформление_заявления_с_просьбой_об_увольнении_переводом">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction21">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction21">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction21">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Перевод_персонала/Оформление_документов_об_увольнении_переводом">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction14"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction14"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction14"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Перевод_персонала/Оформление_письма_с_просьбой_о_переводе_сотрудника">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction11"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction11"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction11"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Перевод_персонала/Оформление_документов_о_приеме_на_работу_переводом">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction7"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction7"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction7"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Перевод_персонала/Оформление_заявления_с_просьбой_о_приеме_на_работу_переводом">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction5"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction5"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction5"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Подготовка_статистической_отчетности">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подготовка_статистической_отчетности/Передача_отчета_с_выводами_и_рекомендациями_руководству">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction15"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction15"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction15"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction15"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подготовка_статистической_отчетности/Проведение_анализа_полученных_статданных">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction9">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction9">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction9">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction9">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Подготовка_статистической_отчетности/Сбор_статистических_данных_для_анализа">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction2">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction2">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction2">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction2">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Разработка_должностных_инструкций">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_должностных_инструкций/Разработка_ДИ">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction40">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction40">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction40">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_должностных_инструкций/Утверждение_ДИ">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction32">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction32">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction32">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction32">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_должностных_инструкций/Согласование_проектов_ДИ">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction29"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction29"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction29"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_должностных_инструкций/Разработка_порядка_разработки_ДИ">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role4InFunction16">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction16">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction16">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role3InFunction16">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction16">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction16">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_должностных_инструкций/Ведение_реестра_ДИ">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction13"/>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction13">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction13"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction13"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction13"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_должностных_инструкций/Издание_приказа_о_введении_в_действие_положения">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction10">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction10">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction10">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction10">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_должностных_инструкций/Создание_реестра_ДИ">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction2"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction2"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction2"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction2"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Order_processing">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/xor/XOR1">
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Order_cancelled">
+            <j.0:isPredecessorOf>
+              <rdf:Description rdf:about="http://www.repository.edu/Order_processing/interface#Goods_order">
+                <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+              </rdf:Description>
+            </j.0:isPredecessorOf>
+            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Order_confirmed">
+            <j.0:isPredecessorOf>
+              <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Sign_contract">
+                <j.0:produces>
+                  <rdf:Description rdf:about="http://www.repository.edu/Signed_contract">
+                    <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+                  </rdf:Description>
+                </j.0:produces>
+                <j.0:requires>
+                  <rdf:Description rdf:about="http://www.repository.edu/Confirmed_order">
+                    <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+                  </rdf:Description>
+                </j.0:requires>
+                <j.0:isSupportedBy>
+                  <rdf:Description rdf:about="http://www.repository.edu/CRM">
+                    <j.0:a rdf:resource="http://www.repository.edu/type#ApplicationSystem"/>
+                  </rdf:Description>
+                </j.0:isSupportedBy>
+                <j.0:isPerformedBy>
+                  <rdf:Description rdf:about="http://www.repository.edu/Sales_department">
+                    <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+                  </rdf:Description>
+                </j.0:isPerformedBy>
+                <j.0:isPredecessorOf>
+                  <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Contract_signed">
+                    <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+                  </rdf:Description>
+                </j.0:isPredecessorOf>
+                <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+              </rdf:Description>
+            </j.0:isPredecessorOf>
+            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:a rdf:resource="http://www.repository.edu/type#XOR"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/interface#Goods_order"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Sign_contract"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Check_order">
+        <j.0:produces rdf:resource="http://www.repository.edu/Confirmed_order"/>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/Received_order">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isSupportedBy rdf:resource="http://www.repository.edu/CRM"/>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Warehouse">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Sales_department"/>
+        <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Order_processing/xor/XOR1"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Contract_signed"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Order_cancelled"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Order_confirmed"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Order_received">
+        <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Order_processing/Check_order"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Разработка_положений_о_структурных_подразделениях">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_положений_о_структурных_подразделениях/Издание_приказа_о_введении_в_действие_порядка">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction42">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction42">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction42">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction42">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_положений_о_структурных_подразделениях/Утверждение_положений_о_подразделениях">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction25">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction25">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction25">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_положений_о_структурных_подразделениях/Согласование_проектов_положений_о_подразделениях">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction23">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction23">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction23">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_положений_о_структурных_подразделениях/Ведение_реестра_положений_о_подразделениях">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction17">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction17">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction17">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction17">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction17">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_положений_о_структурных_подразделениях/Разработка_положений_о_подразделениях">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction14"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction14"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_положений_о_структурных_подразделениях/Разработка_порядка_разра-ботки_положений_о_подразделениях">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role4InFunction6">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role3InFunction6">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction6">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction6">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction6">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction6">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_положений_о_структурных_подразделениях/Создание_реестра_положений_о_подразделениях">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction3">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction3">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction3">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction3">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Закупка_ТМЦ">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Закупка_ТМЦ/Доставка_и_размещение_ТМЦ_на_складе">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction56">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction56">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction56">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Закупка_ТМЦ/Оплата_заказа_поставщику">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction55">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction55">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Закупка_ТМЦ/Размещение_заказа_на_закупку_у_поставщика">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction6"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction6"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction6"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Закупка_ТМЦ/Заключение_договора_с_поставщиком">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction5"/>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction5">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction5"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction5"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Закупка_ТМЦ/Согласование_договора_юристами">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction4">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction4">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction4">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Закупка_ТМЦ/Подготовка_договора_с_поставщиком">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction3"/>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject3OfFunction3">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction3">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction3"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction3"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.repository.edu/Product_purchase">
     <j.0:isComposedBy>
       <rdf:Description rdf:about="http://www.repository.edu/Product_purchase/Goods_received">
@@ -99,6 +1113,550 @@
     <j.0:isComposedBy rdf:resource="http://www.repository.edu/Product_purchase/Sign_contract"/>
     <j.0:isComposedBy rdf:resource="http://www.repository.edu/Product_purchase/Place_order"/>
     <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Определение_категории_сотрудников">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction68">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction68">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction68">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction68">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Формирование_бюджета_затрат_на_персонал">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction73">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction73">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction73">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Рассмотрение_отчета_с_результатами_анализа_СМОТ">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction32"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction32"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction32"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Подготовка_положения_о_СМОТ">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction47">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject4OfFunction47">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject3OfFunction47">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction47">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction47">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction47">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction47">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Определение_системы_дополнительного_стимулирования">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction18">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction18">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction18">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction18">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Согласование_и_утверждение_положения_о_СМОТ">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction58">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction58">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction58">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Определение_критериев_оценки_деятельности_подразделений">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction48">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction48">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction48">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction48">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Разработка_нормативов_по_труду">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction11"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction11"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction11"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction11"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Анализ_СМОТ">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction77">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction77">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction77">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction77">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Внедрение_СМОТ">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction69">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction69">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction69">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction69">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Разработка_матрицы_формирования_дохода_по_категориям">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction75">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction75">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction75">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Разработка_системы_мотивации_и_оплаты_труда/Утверждение_бюджета_затрат_на_персонал">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction60">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction60">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction60">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction60">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Goods_order">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Goods_order/and/AND2">
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Goods_supplied">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:a rdf:resource="http://www.repository.edu/type#AND"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Receive_goods">
+        <j.0:isSupportedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/WM">
+            <j.0:a rdf:resource="http://www.repository.edu/type#ApplicationSystem"/>
+          </rdf:Description>
+        </j.0:isSupportedBy>
+        <j.0:isSupportedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/SRM">
+            <j.0:a rdf:resource="http://www.repository.edu/type#ApplicationSystem"/>
+          </rdf:Description>
+        </j.0:isSupportedBy>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Warehouse"/>
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Goods_received">
+            <j.0:isPredecessorOf>
+              <rdf:Description rdf:about="http://www.repository.edu/Goods_order/and/AND1">
+                <j.0:isPredecessorOf>
+                  <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Verify_invoice">
+                    <j.0:isPerformedBy>
+                      <rdf:Description rdf:about="http://www.repository.edu/Accounting_department">
+                        <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+                      </rdf:Description>
+                    </j.0:isPerformedBy>
+                    <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Goods_order/and/AND2"/>
+                    <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+                  </rdf:Description>
+                </j.0:isPredecessorOf>
+                <j.0:isPredecessorOf>
+                  <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Store_goods">
+                    <j.0:isSupportedBy rdf:resource="http://www.repository.edu/WM"/>
+                    <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Warehouse"/>
+                    <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Goods_order/and/AND2"/>
+                    <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+                  </rdf:Description>
+                </j.0:isPredecessorOf>
+                <j.0:a rdf:resource="http://www.repository.edu/type#AND"/>
+              </rdf:Description>
+            </j.0:isPredecessorOf>
+            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Goods_supplied"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Goods_order/interface#Order_processing">
+        <j.0:isPredecessorOf>
+          <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Out_of_stock">
+            <j.0:isPredecessorOf>
+              <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Place_order">
+                <j.0:isSupportedBy rdf:resource="http://www.repository.edu/SRM"/>
+                <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Supply_department"/>
+                <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Goods_order/Receive_goods"/>
+                <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+              </rdf:Description>
+            </j.0:isPredecessorOf>
+            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+          </rdf:Description>
+        </j.0:isPredecessorOf>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Goods_received"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Out_of_stock"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Store_goods"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Verify_invoice"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Place_order"/>
+    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/and/AND1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Разработка_программы_обучения_сотрудника">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction2"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction2"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction2"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction2"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Разработка_плана_обучения_сотрудников_на_год">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction48"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction48"/>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role3InFunction48">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction48"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction48"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Анализ_рынка_и_выбор_поставщиков_услуг_по_обучению">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction66">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction66">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction66">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction66">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction66">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Анализ_возможности_проведения_обучения_своими_силами">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction55">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction55">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction55">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction55"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction55"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Организация_прохождения_сотрудниками_обучения">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction32"/>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject2OfFunction32">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction32"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction32"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction32"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Подготовка_сводного_отчета_по_источникам_обучения">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject2OfFunction47"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction47"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction47"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction47"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction47"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Регистрация_результатов_обучения">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction59">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction59">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction59">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction59">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Анализ_эффективности_обучения">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction1">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction1">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction1">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction1">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Разработка_плана_и_бюджета_обучения">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role3InFunction51">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction51">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction51">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction51">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction51">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Обучение_персонала/Определение_потребности_сотрудников_в_обучении">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction18"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction18"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction18"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction18"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.repository.edu/Software_release">
     <j.0:isComposedBy>
@@ -222,170 +1780,473 @@
     <j.0:isComposedBy rdf:resource="http://www.repository.edu/Software_release/Plan"/>
     <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.repository.edu/Order_processing">
+  <rdf:Description rdf:about="http://www.repository.edu/Создание_накладной">
     <j.0:isComposedBy>
-      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/xor/XOR1">
-        <j.0:isPredecessorOf>
-          <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Order_cancelled">
-            <j.0:isPredecessorOf>
-              <rdf:Description rdf:about="http://www.repository.edu/Order_processing/interface#Goods_order">
-                <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
-              </rdf:Description>
-            </j.0:isPredecessorOf>
-            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
-          </rdf:Description>
-        </j.0:isPredecessorOf>
-        <j.0:isPredecessorOf>
-          <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Order_confirmed">
-            <j.0:isPredecessorOf>
-              <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Sign_contract">
-                <j.0:produces>
-                  <rdf:Description rdf:about="http://www.repository.edu/Signed_contract">
-                    <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
-                  </rdf:Description>
-                </j.0:produces>
-                <j.0:requires>
-                  <rdf:Description rdf:about="http://www.repository.edu/Confirmed_order">
-                    <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
-                  </rdf:Description>
-                </j.0:requires>
-                <j.0:isSupportedBy>
-                  <rdf:Description rdf:about="http://www.repository.edu/CRM">
-                    <j.0:a rdf:resource="http://www.repository.edu/type#ApplicationSystem"/>
-                  </rdf:Description>
-                </j.0:isSupportedBy>
-                <j.0:isPerformedBy>
-                  <rdf:Description rdf:about="http://www.repository.edu/Sales_department">
-                    <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
-                  </rdf:Description>
-                </j.0:isPerformedBy>
-                <j.0:isPredecessorOf>
-                  <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Contract_signed">
-                    <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
-                  </rdf:Description>
-                </j.0:isPredecessorOf>
-                <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
-              </rdf:Description>
-            </j.0:isPredecessorOf>
-            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
-          </rdf:Description>
-        </j.0:isPredecessorOf>
-        <j.0:a rdf:resource="http://www.repository.edu/type#XOR"/>
-      </rdf:Description>
-    </j.0:isComposedBy>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/interface#Goods_order"/>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Sign_contract"/>
-    <j.0:isComposedBy>
-      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Check_order">
-        <j.0:produces rdf:resource="http://www.repository.edu/Confirmed_order"/>
+      <rdf:Description rdf:about="http://www.repository.edu/Создание_накладной/Формирование_накладной_в_ИТ-системе">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction11"/>
         <j.0:requires>
-          <rdf:Description rdf:about="http://www.repository.edu/Received_order">
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject3OfFunction11">
             <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
           </rdf:Description>
         </j.0:requires>
-        <j.0:isSupportedBy rdf:resource="http://www.repository.edu/CRM"/>
-        <j.0:isPerformedBy>
-          <rdf:Description rdf:about="http://www.repository.edu/Warehouse">
-            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction11">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
           </rdf:Description>
-        </j.0:isPerformedBy>
-        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Sales_department"/>
-        <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Order_processing/xor/XOR1"/>
+        </j.0:requires>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction11"/>
+        <j.0:isSupportedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/SoftwareRole1InFunction11">
+            <j.0:a rdf:resource="http://www.repository.edu/type#ApplicationSystem"/>
+          </rdf:Description>
+        </j.0:isSupportedBy>
         <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
       </rdf:Description>
     </j.0:isComposedBy>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Contract_signed"/>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Order_cancelled"/>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Order_processing/Order_confirmed"/>
     <j.0:isComposedBy>
-      <rdf:Description rdf:about="http://www.repository.edu/Order_processing/Order_received">
-        <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Order_processing/Check_order"/>
-        <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+      <rdf:Description rdf:about="http://www.repository.edu/Создание_накладной/Расчет_суммы_накладной">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction2"/>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction2">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction2"/>
+        <j.0:isSupportedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/SoftwareRole1InFunction2">
+            <j.0:a rdf:resource="http://www.repository.edu/type#ApplicationSystem"/>
+          </rdf:Description>
+        </j.0:isSupportedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
       </rdf:Description>
     </j.0:isComposedBy>
     <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.repository.edu/Goods_order">
+  <rdf:Description rdf:about="http://www.repository.edu/Потребительское_кредитование">
     <j.0:isComposedBy>
-      <rdf:Description rdf:about="http://www.repository.edu/Goods_order/and/AND2">
-        <j.0:isPredecessorOf>
-          <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Goods_supplied">
-            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
+      <rdf:Description rdf:about="http://www.repository.edu/Потребительское_кредитование/Погашение_и_закрытие_кредита">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction34">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
           </rdf:Description>
-        </j.0:isPredecessorOf>
-        <j.0:a rdf:resource="http://www.repository.edu/type#AND"/>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction34">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
       </rdf:Description>
     </j.0:isComposedBy>
     <j.0:isComposedBy>
-      <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Receive_goods">
-        <j.0:isSupportedBy>
-          <rdf:Description rdf:about="http://www.repository.edu/WM">
-            <j.0:a rdf:resource="http://www.repository.edu/type#ApplicationSystem"/>
-          </rdf:Description>
-        </j.0:isSupportedBy>
-        <j.0:isSupportedBy>
-          <rdf:Description rdf:about="http://www.repository.edu/SRM">
-            <j.0:a rdf:resource="http://www.repository.edu/type#ApplicationSystem"/>
-          </rdf:Description>
-        </j.0:isSupportedBy>
-        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Warehouse"/>
-        <j.0:isPredecessorOf>
-          <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Goods_received">
-            <j.0:isPredecessorOf>
-              <rdf:Description rdf:about="http://www.repository.edu/Goods_order/and/AND1">
-                <j.0:isPredecessorOf>
-                  <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Verify_invoice">
-                    <j.0:isPerformedBy>
-                      <rdf:Description rdf:about="http://www.repository.edu/Accounting_department">
-                        <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
-                      </rdf:Description>
-                    </j.0:isPerformedBy>
-                    <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Goods_order/and/AND2"/>
-                    <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
-                  </rdf:Description>
-                </j.0:isPredecessorOf>
-                <j.0:isPredecessorOf>
-                  <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Store_goods">
-                    <j.0:isSupportedBy rdf:resource="http://www.repository.edu/WM"/>
-                    <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Warehouse"/>
-                    <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Goods_order/and/AND2"/>
-                    <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
-                  </rdf:Description>
-                </j.0:isPredecessorOf>
-                <j.0:a rdf:resource="http://www.repository.edu/type#AND"/>
-              </rdf:Description>
-            </j.0:isPredecessorOf>
-            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
-          </rdf:Description>
-        </j.0:isPredecessorOf>
+      <rdf:Description rdf:about="http://www.repository.edu/Потребительское_кредитование/Оформление_заявки_на_кредит">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction3"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction3"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Потребительское_кредитование/Оценка_заемщика_и_принятие_решения_по_кредиту">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction2"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction2"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction2"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Потребительское_кредитование/Перечисление_денежных_средств_торгующей_организации">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction1"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction1"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction1"/>
         <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
       </rdf:Description>
     </j.0:isComposedBy>
     <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Goods_supplied"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры">
     <j.0:isComposedBy>
-      <rdf:Description rdf:about="http://www.repository.edu/Goods_order/interface#Order_processing">
-        <j.0:isPredecessorOf>
-          <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Out_of_stock">
-            <j.0:isPredecessorOf>
-              <rdf:Description rdf:about="http://www.repository.edu/Goods_order/Place_order">
-                <j.0:isSupportedBy rdf:resource="http://www.repository.edu/SRM"/>
-                <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Supply_department"/>
-                <j.0:isPredecessorOf rdf:resource="http://www.repository.edu/Goods_order/Receive_goods"/>
-                <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
-              </rdf:Description>
-            </j.0:isPredecessorOf>
-            <j.0:a rdf:resource="http://www.repository.edu/type#Event"/>
-          </rdf:Description>
-        </j.0:isPredecessorOf>
-        <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Утверждение_плана_замещения_должности">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction29"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction29"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction29"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
       </rdf:Description>
     </j.0:isComposedBy>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Goods_received"/>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Out_of_stock"/>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Store_goods"/>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Verify_invoice"/>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/Place_order"/>
-    <j.0:isComposedBy rdf:resource="http://www.repository.edu/Goods_order/and/AND1"/>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Организация_реализации_плана_развития_приемников">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction8">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role3InFunction8">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction8">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction8">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction8">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Разработка_плана_замещения_должности">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction76">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction76">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction76">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Утверждение_плана_высвобождения_от_должности">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction20">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction20">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction20">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Определение_потребности_в_развитии_приемников">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction61"/>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role3InFunction61">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction61"/>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction61">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction61"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Согласование_проекта_плана_высвобождения_от_должности">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction60"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction60"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction60"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction60"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Оценка_готовности_приемников_к_должности">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role3InFunction32">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction32"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction32"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction32"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction32"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Утверждение_отчета_о_подборе_кандидатов_в_резерв">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction37">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction37">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction37">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Определение_требований_к_руководителю">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction5"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction5"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject2OfFunction5"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction5"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction5"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Подбор_кандидатов_в_резерв">
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction53">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction53">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction53">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction53">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Адаптация_приемника_к_новой_должности">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction13"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction13"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction13"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction13"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Разработка_плана_высвобождения_от_должности">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction75"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction75"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction75"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_карьеры/Определение_ключевых_должностей">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction40"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction40"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction40"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Увольнение_персонала">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Увольнение_персонала/Оформление_заявления_об_увольнении">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction34">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction34"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction34"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Увольнение_персонала/Подготовка_приказа_об_увольнении_по_собственному_желанию">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction20"/>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role2InFunction20">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction20"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction20"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Увольнение_персонала/Согласование_заявления_об_увольнении">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction17"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction17"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction17"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction17"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Увольнение_персонала/Подготовка_пакета_документов_на_увольнение">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject2OfFunction15">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction15"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction15"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction15"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction15"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Увольнение_персонала/Подготовка_приказа_о_нарушении_условий_трудового_договора">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction12"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction12"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction12"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction12"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Планирование_персонала">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_персонала/Составление_плана_подбора_персонала">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction29"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction29"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction29"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_персонала/Подготовка_СЗ_на_подбор_персонала">
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction24">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction24">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction24">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_персонала/Утверждение_плана_подбора_персонала">
+        <j.0:requires>
+          <rdf:Description rdf:about="http://www.repository.edu/InputObject1OfFunction19">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:requires>
+        <j.0:produces>
+          <rdf:Description rdf:about="http://www.repository.edu/OutputObject1OfFunction19">
+            <j.0:a rdf:resource="http://www.repository.edu/type#Information"/>
+          </rdf:Description>
+        </j.0:produces>
+        <j.0:isPerformedBy>
+          <rdf:Description rdf:about="http://www.repository.edu/Role1InFunction19">
+            <j.0:a rdf:resource="http://www.repository.edu/type#OrganizationalUnit"/>
+          </rdf:Description>
+        </j.0:isPerformedBy>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_персонала/Выявление_потребности_в_персонале">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction17"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction17"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction17"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction17"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_персонала/Утверждение_изменений_в_штатную_книги">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction16"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction16"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction16"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction16"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_персонала/Согласование_СЗ_на_подбор_персонала">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction15"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction15"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction15"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction15"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Планирование_персонала/Внесение_изменений_в_штатную_книгу">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction3"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction3"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction3"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction3"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.repository.edu/Начисление_заработной_платы">
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Начисление_заработной_платы/Согласование_ведомости_по_оплате_труда">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction16"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction16"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction16"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction16"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Начисление_заработной_платы/Сбор_информации_для_начисления_заработной_платы">
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role2InFunction15"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction15"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction15"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction15"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Начисление_заработной_платы/Формирование_ведомости_по_оплате_труда">
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction12"/>
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction12"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction12"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:isComposedBy>
+      <rdf:Description rdf:about="http://www.repository.edu/Начисление_заработной_платы/Передача_ведомости_в_финансовый_отдел">
+        <j.0:requires rdf:resource="http://www.repository.edu/InputObject1OfFunction1"/>
+        <j.0:produces rdf:resource="http://www.repository.edu/OutputObject1OfFunction1"/>
+        <j.0:isPerformedBy rdf:resource="http://www.repository.edu/Role1InFunction1"/>
+        <j.0:a rdf:resource="http://www.repository.edu/type#Function"/>
+      </rdf:Description>
+    </j.0:isComposedBy>
+    <j.0:a rdf:resource="http://www.repository.edu/type#Process"/>
   </rdf:Description>
 </rdf:RDF>
