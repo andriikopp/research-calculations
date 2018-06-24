@@ -7,6 +7,7 @@ import edu.kopp.phd.model.flow.*;
 import edu.kopp.phd.model.flow.Process;
 import edu.kopp.phd.service.AnalysisService;
 import edu.kopp.phd.service.ControlFlowService;
+import edu.kopp.phd.service.SimilarityService;
 import edu.kopp.phd.service.ValidationService;
 import edu.kopp.phd.util.FileUtils;
 
@@ -28,12 +29,7 @@ public class PortalView {
     private ControlFlowService controlFlowService;
     private ValidationService validationService;
     private AnalysisService analysisService;
-
-    public PortalView(ControlFlowService controlFlowService, ValidationService validationService, AnalysisService analysisService) {
-        this.controlFlowService = controlFlowService;
-        this.validationService = validationService;
-        this.analysisService = analysisService;
-    }
+    private SimilarityService similarityService;
 
     public void deployPortal() {
         for (Process process : controlFlowService.getAllProcesses()) {
@@ -47,7 +43,8 @@ public class PortalView {
                     .replace("${analysis}", getEvaluationLayout(processName))
                     .replace("${functionsMetrics}", getFunctionsMetricsLayout(processName))
                     .replace("${nodesArray}", controlFlowService.getJSONNodesRepresentationByProcessName(processName))
-                    .replace("${edgesArray}", controlFlowService.getJSONEdgesRepresentationByProcessName(processName)));
+                    .replace("${edgesArray}", controlFlowService.getJSONEdgesRepresentationByProcessName(processName))
+                    .replace("${similarModels}", getSimilarModelsLayout(process)));
         }
 
         FileUtils.writeFile(PROCESSES_PATH + "index" + HTML_FILE, FileUtils.readFile(TEMPLATE_INDEX,
@@ -209,5 +206,37 @@ public class PortalView {
         }
 
         return home;
+    }
+
+    private String getSimilarModelsLayout(Process process) {
+        String layout = "";
+
+        for (Map.Entry<Process, Double> entry : similarityService.getSimilarProcessesByProcessPattern(process)) {
+            String processName = entry.getKey().getResource().getLocalName();
+
+            layout += "<a href=\"" + processName + HTML_FILE + "\">" + processName + "</a>" +
+                    " <span class=\"badge badge-light\">" + String.format("%.2f", entry.getValue()) + "</span><br/>";
+        }
+
+        if (layout.isEmpty())
+            layout = "No similar models";
+
+        return layout;
+    }
+
+    public void setControlFlowService(ControlFlowService controlFlowService) {
+        this.controlFlowService = controlFlowService;
+    }
+
+    public void setValidationService(ValidationService validationService) {
+        this.validationService = validationService;
+    }
+
+    public void setAnalysisService(AnalysisService analysisService) {
+        this.analysisService = analysisService;
+    }
+
+    public void setSimilarityService(SimilarityService similarityService) {
+        this.similarityService = similarityService;
     }
 }
