@@ -41,6 +41,7 @@ public class PortalView {
                     .replace("${epcWarnings}", getEPCWarningsLayout(processName))
                     .replace("${arisWarnings}", getARISWarningsLayout(processName))
                     .replace("${analysis}", getEvaluationLayout(processName))
+                    .replace("${recommendations}", getRecommendationsLayout(processName))
                     .replace("${functionsMetrics}", getFunctionsMetricsLayout(processName))
                     .replace("${nodesArray}", controlFlowService.getJSONNodesRepresentationByProcessName(processName))
                     .replace("${edgesArray}", controlFlowService.getJSONEdgesRepresentationByProcessName(processName))
@@ -150,6 +151,35 @@ public class PortalView {
         }
     }
 
+    private String getRecommendationsLayout(String processName) {
+        try {
+            String recommendations = "Process doesn't have any shortcomings";
+
+            double metric = analysisService.getAggregatedIndicatorByProcessName(processName);
+
+            if (metric < 0)
+                recommendations = "There are shortcomings caused by modeling mistakes or \"bottlenecks\" that exist in organization activities:\n" +
+                        "<ul>\n" +
+                        "<li>Unassigned organizational units that perform process functions</li>\n" +
+                        "<li>\"Useless\" functions that don't require and/or produce any material or information objects</li>\n" +
+                        "<li>Not automated manual operations</li>\n" +
+                        "</ul>";
+            else if (metric > 0)
+                recommendations = "There might be \"bottlenecks\" in organization activities:\n" +
+                        "<ul>\n" +
+                        "<li>Organizational gaps when functions are carried out by several organizational units</li>\n" +
+                        "<li>Information gaps when functions are supported by several application systems</li>\n" +
+                        "</ul>";
+
+            return "<div class=\"card\">" +
+                    "   <div class=\"card-header\">Recommendations</div>" +
+                    "   <div class=\"card-body\">" + recommendations + "</div>" +
+                    "</div>";
+        } catch (Exception err) {
+            return "N/A";
+        }
+    }
+
     private String getHomeLayout() {
         String home = "";
 
@@ -215,7 +245,7 @@ public class PortalView {
             String processName = entry.getKey().getResource().getLocalName();
 
             layout += "<a href=\"" + processName + HTML_FILE + "\">" + processName + "</a>" +
-                    " <span class=\"badge badge-light\">" + String.format("%.2f", entry.getValue()) + "</span><br/>";
+                    " <span class=\"badge badge-light\">" + String.format("%.0f", entry.getValue() * 100) + "%</span><br/>";
         }
 
         if (layout.isEmpty())
