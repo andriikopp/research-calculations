@@ -214,8 +214,12 @@ public class PortalView {
 
             home += "<div class=\"card bg-light mb-3\">\n" +
                     "   <div class=\"card-body\">\n" +
-                    "       <h5 class=\"card-title\"><a href=\"" + processName + HTML_FILE + "\">" + processName + "</a></h5>\n" +
-                    "       <table class=\"table\">\n" +
+                    "       <h5 class=\"card-title dropright\">" +
+                    "           <button class=\"btn btn-info btn-sm dropdown-toggle\" type=\"button\" " +
+                    "               onclick=\"processInfo('" + processName + "');\"></button>" +
+                    "           <a href=\"" + processName + HTML_FILE + "\">" + processName + "</a>" +
+                    "       </h5>\n" +
+                    "       <table class=\"table\" id=\"" + processName + "\" style=\"display:none;\">\n" +
                     "           <tr>\n" +
                     "               <td>Function View</td>\n" +
                     "               <td>Organization View</td>\n" +

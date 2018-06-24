@@ -11,5 +11,15 @@
         <div class="container-fluid mt-3 mb-3">
             ${processes}
         </div>
+        <script>
+            function processInfo(id) {
+                var infoPane = document.getElementById(id);
+
+                if (infoPane.style.display === "none")
+                    infoPane.style.display = "block";
+                else
+                    infoPane.style.display = "none";
+            }
+        </script>
     </body>
 </html>
