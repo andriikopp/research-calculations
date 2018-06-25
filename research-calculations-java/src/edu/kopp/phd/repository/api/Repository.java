@@ -20,6 +20,12 @@ public interface Repository {
 
     XOrGateway createXOrGateway(Process process);
 
+    AndGateway createAndGateway(String id, Process process);
+
+    OrGateway createOrGateway(String id, Process process);
+
+    XOrGateway createXOrGateway(String id, Process process);
+
     Process createProcess(String name);
 
     Process createProcessInterface(String name, Process process);

@@ -144,6 +144,42 @@ public class RDFRepository implements Repository {
     }
 
     @Override
+    public AndGateway createAndGateway(String id, Process process) {
+        Resource subject = model.createResource(NS_REPOSITORY + process.getResource().getLocalName() + "/and/AND"
+                + id);
+
+        model.add(model.createStatement(subject, a, andGateway));
+
+        model.add(model.createStatement(process.getResource(), isComposedBy, subject));
+
+        return new AndGateway(subject);
+    }
+
+    @Override
+    public OrGateway createOrGateway(String id, Process process) {
+        Resource subject = model.createResource(NS_REPOSITORY + process.getResource().getLocalName() + "/or/OR"
+                + id);
+
+        model.add(model.createStatement(subject, a, orGateway));
+
+        model.add(model.createStatement(process.getResource(), isComposedBy, subject));
+
+        return new OrGateway(subject);
+    }
+
+    @Override
+    public XOrGateway createXOrGateway(String id, Process process) {
+        Resource subject = model.createResource(NS_REPOSITORY + process.getResource().getLocalName() + "/xor/XOR"
+                + id);
+
+        model.add(model.createStatement(subject, a, xOrGateway));
+
+        model.add(model.createStatement(process.getResource(), isComposedBy, subject));
+
+        return new XOrGateway(subject);
+    }
+
+    @Override
     public Process createProcess(String name) {
         Resource subject = model.createResource(NS_REPOSITORY + name.replaceAll("\\s+", "_"));
 
