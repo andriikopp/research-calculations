@@ -45,6 +45,7 @@ public class RDFRepository implements Repository {
     private Resource organizationalUnit;
     private Resource position;
     private Resource applicationSystem;
+    private Resource businessObject;
     private Resource material;
     private Resource information;
 
@@ -71,6 +72,7 @@ public class RDFRepository implements Repository {
         organizationalUnit = model.createResource(NS_REPOSITORY_TYPE + "OrganizationalUnit");
         position = model.createResource(NS_REPOSITORY_TYPE + "Position");
         applicationSystem = model.createResource(NS_REPOSITORY_TYPE + "ApplicationSystem");
+        businessObject = model.createResource(NS_REPOSITORY_TYPE + "BusinessObject");
         material = model.createResource(NS_REPOSITORY_TYPE + "Material");
         information = model.createResource(NS_REPOSITORY_TYPE + "Information");
     }
@@ -228,6 +230,15 @@ public class RDFRepository implements Repository {
     }
 
     @Override
+    public BusinessObject createBusinessObject(String name) {
+        Resource subject = model.createResource(NS_REPOSITORY + name.replaceAll("\\s+", "_"));
+
+        model.add(model.createStatement(subject, a, businessObject));
+
+        return new BusinessObject(subject);
+    }
+
+    @Override
     public Material createMaterial(String name) {
         Resource subject = model.createResource(NS_REPOSITORY + name.replaceAll("\\s+", "_"));
 
@@ -249,6 +260,21 @@ public class RDFRepository implements Repository {
     public void createControlFlow(FlowObject preceding, FlowObject... subsequent) {
         for (FlowObject flowObject : subsequent)
             model.add(model.createStatement(preceding.getResource(), isPredecessorOf, flowObject.getResource()));
+    }
+
+    @Override
+    public void createResourceFlow(OrganizationalUnit organizationalUnit, Function function) {
+        model.add(model.createStatement(function.getResource(), isPerformedBy, organizationalUnit.getResource()));
+    }
+
+    @Override
+    public void createOutputFlow(Function function, BusinessObject businessObject) {
+        model.add(model.createStatement(function.getResource(), produces, businessObject.getResource()));
+    }
+
+    @Override
+    public void createInputFlow(BusinessObject businessObject, Function function) {
+        model.add(model.createStatement(function.getResource(), requires, businessObject.getResource()));
     }
 
     @Override

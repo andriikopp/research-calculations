@@ -36,11 +36,19 @@ public interface Repository {
 
     ApplicationSystem createApplicationSystem(String name);
 
+    BusinessObject createBusinessObject(String name);
+
     Material createMaterial(String name);
 
     Information createInformation(String name);
 
     void createControlFlow(FlowObject preceding, FlowObject... subsequent);
+
+    void createResourceFlow(OrganizationalUnit organizationalUnit, Function function);
+
+    void createOutputFlow(Function function, BusinessObject businessObject);
+
+    void createInputFlow(BusinessObject businessObject, Function function);
 
     void assignOrganizationalUnits(Function function, OrganizationalUnit... organizationalUnits);
 
