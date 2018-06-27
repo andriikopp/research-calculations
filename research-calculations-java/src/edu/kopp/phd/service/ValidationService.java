@@ -12,10 +12,6 @@ public class ValidationService {
 
     private ControlFlowService controlFlowService;
 
-    public ValidationService(ControlFlowService controlFlowService) {
-        this.controlFlowService = controlFlowService;
-    }
-
     public Set<FlowObject> getStartNodesByProcessName(String processName) {
         Process process = new Process(repository.getModel().createResource(RDFRepository.NS_REPOSITORY +
                 processName.replaceAll("\\s+", "_")));
@@ -207,5 +203,9 @@ public class ValidationService {
         }
 
         return coherentNodes;
+    }
+
+    public void setControlFlowService(ControlFlowService controlFlowService) {
+        this.controlFlowService = controlFlowService;
     }
 }

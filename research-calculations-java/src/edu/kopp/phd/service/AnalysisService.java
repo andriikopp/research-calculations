@@ -1,6 +1,8 @@
 package edu.kopp.phd.service;
 
 import edu.kopp.phd.model.flow.Function;
+import edu.kopp.phd.view.PortalView;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -9,11 +11,9 @@ public class AnalysisService {
     public static final double SEQUENTIAL_WEIGHT = 0.83;
     public static final double COMMUNICATION_WEIGHT = 0.67;
 
-    private ControlFlowService controlFlowService;
+    private static final Logger LOGGER = Logger.getLogger(AnalysisService.class);
 
-    public AnalysisService(ControlFlowService controlFlowService) {
-        this.controlFlowService = controlFlowService;
-    }
+    private ControlFlowService controlFlowService;
 
     public List<String> getFunctionErrorsByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
@@ -58,6 +58,15 @@ public class AnalysisService {
 
             indicators.put("Agg.", aggregatedFunctionIndicator);
 
+            LOGGER.info(String.format("FunctionEvaluation;%s;%s;%.4f;%.4f;%.4f;%.4f;%.4f",
+                    function.getResource().getLocalName(),
+                    processName,
+                    indicators.get("Org."),
+                    indicators.get("In."),
+                    indicators.get("Out."),
+                    indicators.get("App."),
+                    indicators.get("Agg.")));
+
             functionIndicators.put(function, indicators);
         }
 
@@ -81,6 +90,8 @@ public class AnalysisService {
             for (double value : aggregatedFunctionIndicators)
                 aggregatedIndicator += value;
 
+        LOGGER.info(String.format("ProcessEvaluation;%s;%.4f", processName, aggregatedIndicator));
+
         return aggregatedIndicator;
     }
 
@@ -99,5 +110,9 @@ public class AnalysisService {
             return 1;
 
         return 0;
+    }
+
+    public void setControlFlowService(ControlFlowService controlFlowService) {
+        this.controlFlowService = controlFlowService;
     }
 }

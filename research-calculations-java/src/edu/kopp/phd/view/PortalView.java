@@ -11,14 +11,15 @@ import edu.kopp.phd.service.SimilarityService;
 import edu.kopp.phd.service.ValidationService;
 import edu.kopp.phd.util.FileUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 import java.nio.charset.Charset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Set;
 
 public class PortalView {
-    public static final String PROCESSES_PATH = "portal/processes/";
+    public static final String PROCESSES_PATH = "portal/pages/";
 
     public static final String TEMPLATE_PROCESS = "portal/templates/tmpl_process.html";
     public static final String TEMPLATE_INDEX = "portal/templates/tmpl_index.html";
@@ -30,17 +31,26 @@ public class PortalView {
 
     private static final Logger LOGGER = Logger.getLogger(PortalView.class);
 
-    private ControlFlowService controlFlowService;
+    private ControlFlowService controlFlowService = new ControlFlowService();
+
     private ValidationService validationService;
     private AnalysisService analysisService;
     private SimilarityService similarityService;
 
     public void deployPortal() {
+        String updatedDate = getUpdatedDateLayout();
+
+        FileUtils.writeFile(PROCESSES_PATH + "index" + HTML_FILE, FileUtils.readFile(TEMPLATE_INDEX,
+                Charset.defaultCharset())
+                .replace("${updatedDate}", updatedDate)
+                .replace("${processes}", getHomeLayout()));
+
         for (Process process : controlFlowService.getAllProcesses()) {
             String processName = process.getResource().getLocalName();
 
             FileUtils.writeFile(PROCESSES_PATH + processName + HTML_FILE, FileUtils.readFile(TEMPLATE_PROCESS,
                     Charset.defaultCharset())
+                    .replace("${updatedDate}", updatedDate)
                     .replace("${processName}", processName)
                     .replace("${epcWarnings}", getEPCWarningsLayout(processName))
                     .replace("${arisWarnings}", getARISWarningsLayout(processName))
@@ -51,10 +61,10 @@ public class PortalView {
                     .replace("${edgesArray}", controlFlowService.getJSONEdgesRepresentationByProcessName(processName))
                     .replace("${similarModels}", getSimilarModelsLayout(process)));
         }
+    }
 
-        FileUtils.writeFile(PROCESSES_PATH + "index" + HTML_FILE, FileUtils.readFile(TEMPLATE_INDEX,
-                Charset.defaultCharset())
-                .replace("${processes}", getHomeLayout()));
+    private String getUpdatedDateLayout() {
+        return ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME);
     }
 
     private String getEPCWarningsLayout(String processName) {
@@ -276,7 +286,7 @@ public class PortalView {
                 String processName = entry.getKey().getResource().getLocalName();
 
                 layout += "<a href=\"" + processName + HTML_FILE + "\">" + processName + "</a>" +
-                        " <span class=\"badge badge-light\">" + String.format("%.0f", entry.getValue() * 100) + "%</span><br/>";
+                        " <span class=\"badge badge-light\">Closeness: " + String.format("%.2f", entry.getValue()) + "</span><br/>";
             }
 
             if (layout.isEmpty())
@@ -290,19 +300,21 @@ public class PortalView {
         }
     }
 
-    public void setControlFlowService(ControlFlowService controlFlowService) {
-        this.controlFlowService = controlFlowService;
-    }
-
     public void setValidationService(ValidationService validationService) {
+        validationService.setControlFlowService(controlFlowService);
+
         this.validationService = validationService;
     }
 
     public void setAnalysisService(AnalysisService analysisService) {
+        analysisService.setControlFlowService(controlFlowService);
+
         this.analysisService = analysisService;
     }
 
     public void setSimilarityService(SimilarityService similarityService) {
+        similarityService.setControlFlowService(controlFlowService);
+
         this.similarityService = similarityService;
     }
 }
