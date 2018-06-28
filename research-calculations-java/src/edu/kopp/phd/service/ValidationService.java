@@ -173,7 +173,9 @@ public class ValidationService {
                             process.getResource().getLocalName() + "/or") ||
                         flowObject.getResource().getURI().contains((RDFRepository.NS_REPOSITORY +
                                 process.getResource().getLocalName() + "/xor")))
-                    invalidEvents.add(event);
+                    if (countPrecedingByURI(flowObject.getResource().getURI()) == 1 &&
+                            countSubsequentByURI(flowObject.getResource().getURI()) >= 1)
+                        invalidEvents.add(event);
 
         return invalidEvents;
     }
@@ -203,6 +205,38 @@ public class ValidationService {
         }
 
         return coherentNodes;
+    }
+
+    private int countPrecedingByURI(String uri) {
+        int preceding = 0;
+
+        StmtIterator iterator = repository.getModel().listStatements();
+
+        while (iterator.hasNext()) {
+            Statement statement = iterator.nextStatement();
+
+            if (statement.getPredicate().equals(repository.getIsPredecessorOf()) &&
+                    ((Resource) statement.getObject()).getURI().equals(uri))
+                preceding++;
+        }
+
+        return preceding;
+    }
+
+    private int countSubsequentByURI(String uri) {
+        int subsequent = 0;
+
+        StmtIterator iterator = repository.getModel().listStatements();
+
+        while (iterator.hasNext()) {
+            Statement statement = iterator.nextStatement();
+
+            if (statement.getSubject().getURI().equals(uri) &&
+                    statement.getPredicate().equals(repository.getIsPredecessorOf()))
+                subsequent++;
+        }
+
+        return subsequent;
     }
 
     public void setControlFlowService(ControlFlowService controlFlowService) {
