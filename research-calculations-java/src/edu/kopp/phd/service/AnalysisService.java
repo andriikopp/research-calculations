@@ -1,7 +1,10 @@
 package edu.kopp.phd.service;
 
+import edu.kopp.phd.model.flow.Event;
 import edu.kopp.phd.model.flow.Function;
-import edu.kopp.phd.view.PortalView;
+import edu.kopp.phd.model.flow.Gateway;
+import edu.kopp.phd.model.flow.Process;
+import edu.kopp.phd.repository.RDFRepository;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -13,7 +16,10 @@ public class AnalysisService {
 
     private static final Logger LOGGER = Logger.getLogger(AnalysisService.class);
 
+    private RDFRepository repository = RDFRepository.getInstance();
+
     private ControlFlowService controlFlowService;
+    private ValidationService validationService;
 
     public List<String> getFunctionErrorsByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
@@ -95,6 +101,49 @@ public class AnalysisService {
         return aggregatedIndicator;
     }
 
+    public double getCSCCoefficientByProcessName(String processName) {
+        Process processByName = new Process(repository.getModel().createResource(RDFRepository.NS_REPOSITORY +
+                processName.replaceAll("\\s+", "_")));
+
+        double allNodes = repository.retrieveProcess(processByName).size();
+        double visitedNodes = allNodes - validationService.validateNodesCoherenceByProcessName(processName).size();
+
+        double coeff = visitedNodes / allNodes - 1.0;
+
+        coeff += ((teta(validationService.getStartNodesByProcessName(processName).size() - 1.0) - 1.0) +
+                (teta(validationService.getEndNodesByProcessName(processName).size() - 1.0) - 1.0)) / 2.0;
+
+        List<Event> events = controlFlowService.getDetailedEventsByProcessName(processName);
+
+        for (Event event : events)
+            coeff += (teta(1.0 - event.getPreceding().size() * event.getSubsequent().size()) - 1.0)
+                    / (double) events.size();
+
+        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
+
+        for (Function function : functions)
+            coeff -= Math.abs(sgn(function.getPreceding().size() * function.getSubsequent().size() - 1.0))
+                    / (double) functions.size();
+
+        List<Process> processes = controlFlowService.getDetailedProcessesByProcessName(processName);
+
+        for (Process process : processes)
+            coeff -= (Math.abs(sgn(Math.min(process.getPreceding().size(), process.getSubsequent().size()))) +
+                    Math.abs(sgn(Math.max(process.getPreceding().size(), process.getSubsequent().size()) - 1.0)))
+                    / (2.0 * (double) processes.size());
+
+        List<Gateway> gateways = controlFlowService.getDetailedGatewaysByProcessName(processName);
+
+        for (Gateway gateway : gateways)
+            coeff += ((teta(Math.max(gateway.getPreceding().size(), gateway.getSubsequent().size()) - 2.0) - 1.0) -
+                    Math.abs(sgn(Math.min(gateway.getPreceding().size(), gateway.getSubsequent().size()) - 1.0)))
+                    / (2.0 * (double) gateways.size());
+
+        LOGGER.info(String.format("ModelEvaluation;%s;%.4f", processName, coeff));
+
+        return coeff;
+    }
+
     private double sgn(double value) {
         if (value < 0)
             return  -1;
@@ -114,5 +163,9 @@ public class AnalysisService {
 
     public void setControlFlowService(ControlFlowService controlFlowService) {
         this.controlFlowService = controlFlowService;
+    }
+
+    public void setValidationService(ValidationService validationService) {
+        this.validationService = validationService;
     }
 }

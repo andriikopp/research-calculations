@@ -53,6 +53,7 @@ public class PortalView {
                     .replace("${updatedDate}", updatedDate)
                     .replace("${processName}", processName)
                     .replace("${epcWarnings}", getEPCWarningsLayout(processName))
+                    .replace("${cscCoeff}", getCSCCoeffLayout(processName))
                     .replace("${arisWarnings}", getARISWarningsLayout(processName))
                     .replace("${analysis}", getEvaluationLayout(processName))
                     .replace("${recommendations}", getRecommendationsLayout(processName))
@@ -108,6 +109,25 @@ public class PortalView {
                 warnings = "No warnings";
 
             return warnings;
+        } catch (Exception err) {
+            LOGGER.error(err.getMessage(), err);
+
+            return "N/A";
+        }
+    }
+
+    private String getCSCCoeffLayout(String processName) {
+        try {
+            String state = "success";
+
+            double metric = analysisService.getCSCCoefficientByProcessName(processName);
+
+            if (metric < 0)
+                state = "danger";
+
+            return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
+                    String.format("%.2f", metric) +
+                    "</div>";
         } catch (Exception err) {
             LOGGER.error(err.getMessage(), err);
 
@@ -308,6 +328,7 @@ public class PortalView {
 
     public void setAnalysisService(AnalysisService analysisService) {
         analysisService.setControlFlowService(controlFlowService);
+        analysisService.setValidationService(validationService);
 
         this.analysisService = analysisService;
     }
