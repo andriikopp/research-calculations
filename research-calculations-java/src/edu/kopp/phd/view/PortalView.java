@@ -122,7 +122,7 @@ public class PortalView {
 
             double metric = analysisService.getCSCCoefficientByProcessName(processName);
 
-            if (metric < 0)
+            if (metric > 0)
                 state = "danger";
 
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +

@@ -53,12 +53,12 @@ public class FunctionEnvironmentWeightedSimilarityMethod implements SimilarityMe
         double functionsSimilarity = setSimilarity(processFunctions, patternFunctions);
 
         double similarity = functionsSimilarity +
-                AnalysisService.FUNCTIONAL_WEIGHT * orgUnitsSimilarity +
-                AnalysisService.COMMUNICATION_WEIGHT * appSystemsSimilarity +
-                AnalysisService.SEQUENTIAL_WEIGHT * (inputsSimilarity + outputsSimilarity);
+                AnalysisService.UNITS_WEIGHT * orgUnitsSimilarity +
+                AnalysisService.APPLICATIONS_WEIGHT * appSystemsSimilarity +
+                AnalysisService.OBJECTS_WEIGHT * (inputsSimilarity + outputsSimilarity);
 
-        similarity /= (1.0 + AnalysisService.FUNCTIONAL_WEIGHT + AnalysisService.COMMUNICATION_WEIGHT +
-            2.0 * AnalysisService.SEQUENTIAL_WEIGHT);
+        similarity /= (1.0 + AnalysisService.UNITS_WEIGHT + AnalysisService.APPLICATIONS_WEIGHT +
+            2.0 * AnalysisService.OBJECTS_WEIGHT);
 
         LOGGER.info(String.format("Similarity;%s;%s;%.4f;%.4f;%.4f;%.4f;%.4f;%.4f",
                 process.getResource().getLocalName(),
