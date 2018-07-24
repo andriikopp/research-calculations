@@ -13,6 +13,10 @@ public class AnalysisService {
     public static final double OBJECTS_WEIGHT = 1.0;
     public static final double APPLICATIONS_WEIGHT = 0.67;
 
+    public static final double PROCESS_FLOW_OBJECTS_WEIGHT = 0.5;
+    public static final double AND_GATEWAYS_WEIGHT = 0.33;
+    public static final double OR_XOR_GATEWAYS_WEIGHT = 0.17;
+
     private static final Logger LOGGER = Logger.getLogger(AnalysisService.class);
 
     private ControlFlowService controlFlowService;
@@ -99,7 +103,10 @@ public class AnalysisService {
     }
 
     public double getCSCCoefficientByProcessName(String processName) {
-        double coeff = (1.0 - (validationService.validateNodesCoherenceByProcessName(processName).size() == 0 ? 1 : 0)) +
+                // Nodes coherence validation.
+        double coeff = validationService.validateNodesCoherenceByProcessName(processName).size() +
+
+                // Start and end nodes validation.
                 (1.0 - (validationService.getStartNodesByProcessName(processName).size() >= 1 &&
                         validationService.getEndNodesByProcessName(processName).size() >= 1 ? 1 : 0));
 

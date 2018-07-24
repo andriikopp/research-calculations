@@ -3,6 +3,7 @@ package edu.kopp.phd.service.similarity.api;
 import bp.retrieve.similarity.Similarity;
 import edu.kopp.phd.model.flow.Process;
 import edu.kopp.phd.repository.RDFRepository;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.log4j.Logger;
 
@@ -18,8 +19,9 @@ public interface SimilarityMethod {
     double calculateSimilarityMeasure(Process process, Process pattern);
 
     default double setSimilarity(Set<String> first, Set<String> second) {
+        // If both sets are empty define Jaccard index J(first, second) = 1
         if (first.isEmpty() && second.isEmpty())
-            return 0;
+            return 1.0;
 
         return (double) setIntersection(first, second).size() /
                 (double) setUnion(first, second).size();
@@ -41,5 +43,14 @@ public interface SimilarityMethod {
                 processStatements.add(statement);
 
         return processStatements;
+    }
+
+    default RDFNode getNodeTypeByLabel(String label, Process process) {
+        for (Statement statement : getProcessStatements(process))
+            if (statement.getSubject().getLocalName().equals(label) &&
+                    statement.getPredicate().equals(REPOSITORY.getA()))
+                return statement.getObject();
+
+        return null;
     }
 }

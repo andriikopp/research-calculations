@@ -446,4 +446,6 @@ public class RDFRepository implements Repository {
     public Resource getInformation() {
         return information;
     }
+
+    public Resource getBusinessObject() { return businessObject; }
 }

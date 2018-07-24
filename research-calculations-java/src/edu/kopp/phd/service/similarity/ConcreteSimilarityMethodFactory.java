@@ -1,7 +1,7 @@
 package edu.kopp.phd.service.similarity;
 
 import edu.kopp.phd.service.similarity.api.SimilarityMethod;
-import edu.kopp.phd.service.similarity.impl.FunctionEnvironmentWeightedSimilarityMethod;
+import edu.kopp.phd.service.similarity.impl.RDFWeightedSimilarityMethod;
 
 public class ConcreteSimilarityMethodFactory implements SimilarityMethodFactory {
 
@@ -11,6 +11,6 @@ public class ConcreteSimilarityMethodFactory implements SimilarityMethodFactory 
 
     @Override
     public SimilarityMethod getSimilarityMethod() {
-        return new FunctionEnvironmentWeightedSimilarityMethod();
+        return new RDFWeightedSimilarityMethod();
     }
 }

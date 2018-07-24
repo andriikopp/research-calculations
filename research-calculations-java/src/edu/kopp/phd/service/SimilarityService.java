@@ -30,7 +30,7 @@ public class SimilarityService {
 
         similarProcesses.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 
-        return FuzzyClassifierMeansSimilarityTool.applyFuzzyClassification(similarProcesses);
+        return similarProcesses;
     }
 
     public void setControlFlowService(ControlFlowService controlFlowService) {
