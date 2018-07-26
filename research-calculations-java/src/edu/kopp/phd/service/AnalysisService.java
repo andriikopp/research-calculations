@@ -104,7 +104,7 @@ public class AnalysisService {
 
     public double getCSCCoefficientByProcessName(String processName) {
                 // Nodes coherence validation.
-        double coeff = validationService.validateNodesCoherenceByProcessName(processName).size() +
+        double coeff = sgn(validationService.validateNodesCoherenceByProcessName(processName).size()) +
 
                 // Start and end nodes validation.
                 (1.0 - (validationService.getStartNodesByProcessName(processName).size() >= 1 &&
