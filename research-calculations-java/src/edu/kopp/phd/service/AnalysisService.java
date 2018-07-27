@@ -83,6 +83,9 @@ public class AnalysisService {
     public double getAggregatedIndicatorByProcessName(String processName) {
         Map<Function, Map<String, Double>> functionIndicators = getFunctionIndicatorsByProcessName(processName);
 
+        if (functionIndicators.isEmpty())
+            return 0;
+
         List<Double> aggregatedFunctionIndicators = new ArrayList<>();
 
         for (Map<String, Double> indicators : functionIndicators.values())
