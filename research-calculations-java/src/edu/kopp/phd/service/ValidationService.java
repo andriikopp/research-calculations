@@ -154,8 +154,8 @@ public class ValidationService {
         Set<Gateway> invalidGateways = new HashSet<>();
 
         for (Gateway gateway : controlFlowService.getDetailedGatewaysByProcessName(processName))
-            if (!((gateway.getPreceding().size() == 1 && gateway.getSubsequent().size() >= 1) ||
-                    (gateway.getPreceding().size() >= 1 && gateway.getSubsequent().size() == 1)))
+            if (!((gateway.getPreceding().size() == 1 && gateway.getSubsequent().size() > 1) ||
+                    (gateway.getPreceding().size() > 1 && gateway.getSubsequent().size() == 1)))
                 invalidGateways.add(gateway);
 
         return invalidGateways;
