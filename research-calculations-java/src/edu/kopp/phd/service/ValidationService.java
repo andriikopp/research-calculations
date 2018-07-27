@@ -3,6 +3,8 @@ package edu.kopp.phd.service;
 import edu.kopp.phd.model.flow.*;
 import edu.kopp.phd.model.flow.Process;
 import edu.kopp.phd.repository.RDFRepository;
+import edu.kopp.phd.service.similarity.ConcreteSimilarityMethodFactory;
+import edu.kopp.phd.service.similarity.api.SimilarityMethod;
 import org.apache.jena.rdf.model.*;
 
 import java.util.*;
@@ -129,6 +131,25 @@ public class ValidationService {
         return invalidEvents;
     }
 
+    public Set<Event> getEventsThatArePrecedingForAnotherEventsByProcessName(String processName) {
+        Set<Event> invalidEvents = new HashSet<>();
+
+        SimilarityMethod similarityMethod = ConcreteSimilarityMethodFactory.createInstance().getSimilarityMethod();
+
+        Process process = new Process(repository.getModel().createResource(RDFRepository.NS_REPOSITORY +
+                processName.replaceAll("\\s+", "_")));
+
+        for (Event event : controlFlowService.getDetailedEventsByProcessName(processName))
+            for (FlowObject subsequent : event.getSubsequent()) {
+                String label = subsequent.getResource().getLocalName();
+
+                if (similarityMethod.getNodeTypeByLabel(label, process).equals(repository.getEvent()))
+                    invalidEvents.add(event);
+            }
+
+        return invalidEvents;
+    }
+
     public Set<Function> validateFunctionsByProcessName(String processName) {
         Set<Function> invalidFunctions = new HashSet<>();
 
@@ -178,7 +199,7 @@ public class ValidationService {
                         flowObject.getResource().getURI().contains((RDFRepository.NS_REPOSITORY +
                                 process.getResource().getLocalName() + "/xor")))
                     if (countPrecedingByURI(flowObject.getResource().getURI()) == 1 &&
-                            countSubsequentByURI(flowObject.getResource().getURI()) >= 1)
+                            countSubsequentByURI(flowObject.getResource().getURI()) > 1)
                         invalidEvents.add(event);
 
         return invalidEvents;

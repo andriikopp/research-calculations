@@ -85,6 +85,11 @@ public class PortalView {
             if (!invalidEvents.isEmpty())
                 warnings += WARNING_SIGN + " Invalid events: " + invalidEvents.toString() + NEXT_LINE;
 
+            invalidEvents = validationService.getEventsThatArePrecedingForAnotherEventsByProcessName(processName);
+
+            if (!invalidEvents.isEmpty())
+                warnings += WARNING_SIGN + " Invalid sequence of events: " + invalidEvents.toString() + NEXT_LINE;
+
             Set<Function> invalidFunctions = validationService.validateFunctionsByProcessName(processName);
 
             if (!invalidFunctions.isEmpty())
