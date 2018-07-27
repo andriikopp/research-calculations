@@ -106,8 +106,13 @@ public class AnalysisService {
     }
 
     public double getCSCCoefficientByProcessName(String processName) {
-                // Nodes coherence validation.
+        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
+
+        // Nodes coherence validation.
         double coeff = sgn(validationService.validateNodesCoherenceByProcessName(processName).size()) +
+
+                // EPC diagram should has at least one function.
+                (1.0 - sgn(functions.size())) +
 
                 // Start and end nodes validation.
                 (1.0 - (validationService.getStartNodesByProcessName(processName).size() >= 1 &&
@@ -117,8 +122,6 @@ public class AnalysisService {
 
         for (Event event : events)
             coeff += 1.0 - (event.getPreceding().size() <= 1 && event.getSubsequent().size() <= 1 ? 1 : 0);
-
-        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
 
         for (Function function : functions)
             coeff += 1.0 - (function.getPreceding().size() == 1 && function.getSubsequent().size() == 1 ? 1 : 0);
@@ -136,6 +139,8 @@ public class AnalysisService {
                     (gateway.getPreceding().size() > 1 && gateway.getSubsequent().size() == 1) ? 1 : 0);
 
         coeff += validationService.validateEventsAndGatewaysConnectionsByProcessName(processName).size();
+
+        coeff += validationService.getEventsThatArePrecedingForAnotherEventsByProcessName(processName).size();
 
         LOGGER.info(String.format("ModelEvaluation;%s;%.4f", processName, coeff));
 
