@@ -139,6 +139,10 @@ public class ValidationService {
         return invalidFunctions;
     }
 
+    public boolean processDoesNotHaveAtLeastOneFunction(String processName) {
+        return controlFlowService.getDetailedFunctionsByProcessName(processName).isEmpty();
+    }
+
     public Set<Process> validateProcessesByProcessName(String processName) {
         Set<Process> invalidProcesses = new HashSet<>();
 

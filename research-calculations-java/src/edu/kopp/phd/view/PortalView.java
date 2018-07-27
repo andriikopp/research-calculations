@@ -90,6 +90,9 @@ public class PortalView {
             if (!invalidFunctions.isEmpty())
                 warnings += WARNING_SIGN + " Invalid functions: " + invalidFunctions.toString() + NEXT_LINE;
 
+            if (validationService.processDoesNotHaveAtLeastOneFunction(processName))
+                warnings += WARNING_SIGN + " Process doesn't have at least one function" + NEXT_LINE;
+
             Set<Process> invalidProcessInterfaces = validationService.validateProcessesByProcessName(processName);
 
             if (!invalidProcessInterfaces.isEmpty())
