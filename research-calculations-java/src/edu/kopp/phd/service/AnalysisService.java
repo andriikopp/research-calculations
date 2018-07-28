@@ -112,6 +112,25 @@ public class AnalysisService {
         return aggregatedIndicator;
     }
 
+    public double getWeightedBalanceCoefficientByProcessName(String processName) {
+        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
+
+        double sum = 0;
+        double max = 0;
+
+        for (Function function : functions) {
+            double functionValue = UNITS_WEIGHT * function.getOrganizationalUnits().size() +
+                    OBJECTS_WEIGHT * function.getInputs().size() +
+                    OBJECTS_WEIGHT * function.getOutputs().size() +
+                    APPLICATIONS_WEIGHT * function.getApplicationSystems().size();
+
+            if (functionValue > max)
+                max = functionValue;
+        }
+
+        return Math.abs((1.0 / (double) functions.size()) * sum - max);
+    }
+
     public double getCSCCoefficientByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
 

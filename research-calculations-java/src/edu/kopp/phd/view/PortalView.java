@@ -136,7 +136,7 @@ public class PortalView {
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
                     String.format("%.2f", analysisService.getWeightedProcessFlowCoefficient()) +
                     NEXT_LINE +
-                    String.format("%.0f error(s)", metric) +
+                    String.format("Errors: %.0f", metric) +
                     "</div>";
         } catch (Exception err) {
             LOGGER.error(err.getMessage(), err);
@@ -199,6 +199,7 @@ public class PortalView {
             String state = "success";
 
             double metric = analysisService.getAggregatedIndicatorByProcessName(processName);
+            double balance = analysisService.getWeightedBalanceCoefficientByProcessName(processName);
 
             if (metric < 0)
                 state = "danger";
@@ -208,7 +209,7 @@ public class PortalView {
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
                     String.format("%.2f", metric) +
                     NEXT_LINE +
-                    String.format("Balance: %.2f", 0.0) +
+                    String.format("Balance: %.2f", balance) +
                     "</div>";
         } catch (Exception err) {
             LOGGER.error(err.getMessage(), err);
