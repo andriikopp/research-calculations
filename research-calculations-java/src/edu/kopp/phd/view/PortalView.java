@@ -27,6 +27,8 @@ public class PortalView {
     public static final String HTML_FILE = ".html";
 
     public static final String WARNING_SIGN = "<span class=\"badge badge-warning\">!</span>";
+    public static final String ERROR_SIGN = "<span class=\"badge badge-danger\">!</span>";
+
     public static final String NEXT_LINE = "<br/>";
 
     private static final Logger LOGGER = Logger.getLogger(PortalView.class);
@@ -75,46 +77,46 @@ public class PortalView {
             Set<FlowObject> unreachableNodes = validationService.validateNodesCoherenceByProcessName(processName);
 
             if (!unreachableNodes.isEmpty())
-                warnings += WARNING_SIGN + " Unreachable nodes: " + unreachableNodes.toString() + NEXT_LINE;
+                warnings += ERROR_SIGN + " Unreachable nodes: " + unreachableNodes.toString() + NEXT_LINE;
 
             if (!validationService.validateStartEndNodesByProcessName(processName))
-                warnings += WARNING_SIGN + " Process doesn't have at least one start and end node" + NEXT_LINE;
+                warnings += ERROR_SIGN + " Process doesn't have at least one start and end node" + NEXT_LINE;
 
             Set<Event> invalidEvents = validationService.validateEventsByProcessName(processName);
 
             if (!invalidEvents.isEmpty())
-                warnings += WARNING_SIGN + " Invalid events: " + invalidEvents.toString() + NEXT_LINE;
+                warnings += ERROR_SIGN + " Invalid events: " + invalidEvents.toString() + NEXT_LINE;
 
             invalidEvents = validationService.getEventsThatArePrecedingForAnotherEventsByProcessName(processName);
 
             if (!invalidEvents.isEmpty())
-                warnings += WARNING_SIGN + " Invalid sequence of events: " + invalidEvents.toString() + NEXT_LINE;
+                warnings += ERROR_SIGN + " Invalid sequence of events: " + invalidEvents.toString() + NEXT_LINE;
 
             Set<Function> invalidFunctions = validationService.validateFunctionsByProcessName(processName);
 
             if (!invalidFunctions.isEmpty())
-                warnings += WARNING_SIGN + " Invalid functions: " + invalidFunctions.toString() + NEXT_LINE;
+                warnings += ERROR_SIGN + " Invalid functions: " + invalidFunctions.toString() + NEXT_LINE;
 
             if (validationService.processDoesNotHaveAtLeastOneFunction(processName))
-                warnings += WARNING_SIGN + " Process doesn't have at least one function" + NEXT_LINE;
+                warnings += ERROR_SIGN + " Process doesn't have at least one function" + NEXT_LINE;
 
             Set<Process> invalidProcessInterfaces = validationService.validateProcessesByProcessName(processName);
 
             if (!invalidProcessInterfaces.isEmpty())
-                warnings += WARNING_SIGN + " Invalid process interfaces: " + invalidProcessInterfaces.toString() + NEXT_LINE;
+                warnings += ERROR_SIGN + " Invalid process interfaces: " + invalidProcessInterfaces.toString() + NEXT_LINE;
 
             Set<Gateway> invalidGateways = validationService.validateGatewaysByProcessName(processName);
 
             if (!invalidGateways.isEmpty())
-                warnings += WARNING_SIGN + " Invalid gateways: " + invalidGateways.toString() + NEXT_LINE;
+                warnings += ERROR_SIGN + " Invalid gateways: " + invalidGateways.toString() + NEXT_LINE;
 
             Set<Event> eventDecisions = validationService.validateEventsAndGatewaysConnectionsByProcessName(processName);
 
             if (!eventDecisions.isEmpty())
-                warnings += WARNING_SIGN + " Events that make decisions: " + eventDecisions.toString() + NEXT_LINE;
+                warnings += ERROR_SIGN + " Events that make decisions: " + eventDecisions.toString() + NEXT_LINE;
 
             if (warnings.isEmpty())
-                warnings = "No warnings";
+                warnings = "No errors";
 
             return warnings;
         } catch (Exception err) {
@@ -149,11 +151,14 @@ public class PortalView {
         try {
             String warnings = "";
 
-            for (String warning : analysisService.getFunctionErrorsByProcessName(processName))
+            for (String error : analysisService.getFunctionErrorsByProcessName(processName))
+                warnings += ERROR_SIGN + " " + error + NEXT_LINE;
+
+            for (String warning : analysisService.getFunctionWarningsByProcessName(processName))
                 warnings += WARNING_SIGN + " " + warning + NEXT_LINE;
 
             if (warnings.isEmpty())
-                warnings = "No warnings";
+                warnings = "No warnings or errors";
 
             return warnings;
         } catch (Exception err) {

@@ -48,6 +48,22 @@ public class AnalysisService {
         return functionErrors;
     }
 
+    public List<String> getFunctionWarningsByProcessName(String processName) {
+        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
+
+        List<String> functionErrors = new ArrayList<>();
+
+        for (Function function : functions) {
+            if (function.getOrganizationalUnits().size() > 1)
+                functionErrors.add(String.format("Function '%s' is carried out by several organizational units", function));
+
+            if (function.getApplicationSystems().size() > 1)
+                functionErrors.add(String.format("Function '%s' is supported by several application systems", function));
+        }
+
+        return functionErrors;
+    }
+
     public Map<Function, Map<String, Double>> getFunctionIndicatorsByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
 
