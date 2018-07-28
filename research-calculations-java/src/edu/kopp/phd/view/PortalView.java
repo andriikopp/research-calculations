@@ -206,6 +206,9 @@ public class PortalView {
             double metric = analysisService.getAggregatedIndicatorByProcessName(processName);
             double balance = analysisService.getWeightedBalanceCoefficientByProcessName(processName);
 
+            int warnings = analysisService.getFunctionWarningsByProcessName(processName).size();
+            int errors = analysisService.getFunctionErrorsByProcessName(processName).size();
+
             if (metric < 0)
                 state = "danger";
             else if (metric > 0)
@@ -213,6 +216,10 @@ public class PortalView {
 
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
                     String.format("%.2f", metric) +
+                    NEXT_LINE +
+                    String.format("Warnings: %d", warnings) +
+                    NEXT_LINE +
+                    String.format("Errors: %d", errors) +
                     NEXT_LINE +
                     String.format("Balance: %.2f", balance) +
                     "</div>";
