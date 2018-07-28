@@ -4,6 +4,9 @@ import edu.kopp.phd.model.flow.Event;
 import edu.kopp.phd.model.flow.Function;
 import edu.kopp.phd.model.flow.Gateway;
 import edu.kopp.phd.model.flow.Process;
+import edu.kopp.phd.repository.RDFRepository;
+import edu.kopp.phd.service.similarity.ConcreteSimilarityMethodFactory;
+import edu.kopp.phd.service.similarity.api.SimilarityMethod;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -19,8 +22,12 @@ public class AnalysisService {
 
     private static final Logger LOGGER = Logger.getLogger(AnalysisService.class);
 
+    private RDFRepository repository = RDFRepository.getInstance();
+
     private ControlFlowService controlFlowService;
     private ValidationService validationService;
+
+    private double weightedProcessFlowCoefficient;
 
     public List<String> getFunctionErrorsByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
@@ -118,6 +125,9 @@ public class AnalysisService {
                 (1.0 - (validationService.getStartNodesByProcessName(processName).size() >= 1 &&
                         validationService.getEndNodesByProcessName(processName).size() >= 1 ? 1 : 0));
 
+        // Weighted validation coefficient.
+        double wCoeff = 0;
+
         List<Event> events = controlFlowService.getDetailedEventsByProcessName(processName);
 
         for (Event event : events)
@@ -132,17 +142,44 @@ public class AnalysisService {
             coeff += 1.0 - ((process.getPreceding().size() == 1 && process.getSubsequent().size() == 0) ||
                     (process.getPreceding().size() == 0 && process.getSubsequent().size() == 1) ? 1 : 0);
 
+        // Before connectors.
+        wCoeff = PROCESS_FLOW_OBJECTS_WEIGHT * coeff;
+
+        SimilarityMethod similarityMethod = ConcreteSimilarityMethodFactory.createInstance().getSimilarityMethod();
+
+        Process process = new Process(repository.getModel().createResource(RDFRepository.NS_REPOSITORY +
+                processName.replaceAll("\\s+", "_")));
+
         List<Gateway> gateways = controlFlowService.getDetailedGatewaysByProcessName(processName);
 
-        for (Gateway gateway : gateways)
+        for (Gateway gateway : gateways) {
             coeff += 1.0 - ((gateway.getPreceding().size() == 1 && gateway.getSubsequent().size() > 1) ||
                     (gateway.getPreceding().size() > 1 && gateway.getSubsequent().size() == 1) ? 1 : 0);
+
+            // Connectors segregation.
+            if (similarityMethod.getNodeTypeByLabel(gateway.getResource().getLocalName(), process).
+                    equals(repository.getAndGateway()))
+                wCoeff += AND_GATEWAYS_WEIGHT * (1.0 - ((gateway.getPreceding().size() == 1 && gateway.getSubsequent().size() > 1) ||
+                        (gateway.getPreceding().size() > 1 && gateway.getSubsequent().size() == 1) ? 1 : 0));
+            else
+                wCoeff += OR_XOR_GATEWAYS_WEIGHT * (1.0 - ((gateway.getPreceding().size() == 1 && gateway.getSubsequent().size() > 1) ||
+                        (gateway.getPreceding().size() > 1 && gateway.getSubsequent().size() == 1) ? 1 : 0));
+        }
 
         coeff += validationService.validateEventsAndGatewaysConnectionsByProcessName(processName).size();
 
         coeff += validationService.getEventsThatArePrecedingForAnotherEventsByProcessName(processName).size();
 
-        LOGGER.info(String.format("ModelEvaluation;%s;%.4f", processName, coeff));
+        wCoeff += PROCESS_FLOW_OBJECTS_WEIGHT * validationService.validateEventsAndGatewaysConnectionsByProcessName(
+                processName).size();
+
+        wCoeff += PROCESS_FLOW_OBJECTS_WEIGHT * validationService.getEventsThatArePrecedingForAnotherEventsByProcessName(
+                processName).size();
+
+        weightedProcessFlowCoefficient = wCoeff;
+
+        LOGGER.info(String.format("ModelEvaluationCSC;%s;%.4f", processName, coeff));
+        LOGGER.info(String.format("ModelEvaluationWCSC;%s;%.4f", processName, weightedProcessFlowCoefficient));
 
         return coeff;
     }
@@ -170,5 +207,9 @@ public class AnalysisService {
 
     public void setValidationService(ValidationService validationService) {
         this.validationService = validationService;
+    }
+
+    public double getWeightedProcessFlowCoefficient() {
+        return weightedProcessFlowCoefficient;
     }
 }

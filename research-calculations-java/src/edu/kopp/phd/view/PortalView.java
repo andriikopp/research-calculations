@@ -134,7 +134,9 @@ public class PortalView {
                 state = "danger";
 
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
-                    String.format("%.2f", metric) +
+                    String.format("%.2f", analysisService.getWeightedProcessFlowCoefficient()) +
+                    NEXT_LINE +
+                    String.format("%.0f error(s)", metric) +
                     "</div>";
         } catch (Exception err) {
             LOGGER.error(err.getMessage(), err);
@@ -205,6 +207,8 @@ public class PortalView {
 
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
                     String.format("%.2f", metric) +
+                    NEXT_LINE +
+                    String.format("Balance: %.2f", 0.0) +
                     "</div>";
         } catch (Exception err) {
             LOGGER.error(err.getMessage(), err);
