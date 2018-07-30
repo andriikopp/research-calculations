@@ -40,9 +40,6 @@ public class AnalysisService {
 
             if (!(function.getInputs().size() >= 1 && function.getOutputs().size() >= 1))
                 functionErrors.add(String.format("Function '%s' doesn't have any inputs/outputs", function));
-
-            if (!(function.getApplicationSystems().size() >= 1))
-                functionErrors.add(String.format("Function '%s' doesn't have any application systems", function));
         }
 
         return functionErrors;
@@ -51,17 +48,20 @@ public class AnalysisService {
     public List<String> getFunctionWarningsByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
 
-        List<String> functionErrors = new ArrayList<>();
+        List<String> functionWarnings = new ArrayList<>();
 
         for (Function function : functions) {
+            if (!(function.getApplicationSystems().size() >= 1))
+                functionWarnings.add(String.format("Function '%s' doesn't have any application systems", function));
+
             if (function.getOrganizationalUnits().size() > 1)
-                functionErrors.add(String.format("Function '%s' is carried out by several organizational units", function));
+                functionWarnings.add(String.format("Function '%s' is carried out by several organizational units", function));
 
             if (function.getApplicationSystems().size() > 1)
-                functionErrors.add(String.format("Function '%s' is supported by several application systems", function));
+                functionWarnings.add(String.format("Function '%s' is supported by several application systems", function));
         }
 
-        return functionErrors;
+        return functionWarnings;
     }
 
     public Map<Function, Map<String, Double>> getFunctionIndicatorsByProcessName(String processName) {
@@ -75,7 +75,7 @@ public class AnalysisService {
             indicators.put("Org.", UNITS_WEIGHT * sgn(function.getOrganizationalUnits().size() - 1));
             indicators.put("In.", OBJECTS_WEIGHT * (sgn(function.getInputs().size()) - 1));
             indicators.put("Out.", OBJECTS_WEIGHT * (sgn(function.getOutputs().size()) - 1));
-            indicators.put("App.", APPLICATIONS_WEIGHT * sgn(function.getApplicationSystems().size() - 1));
+            indicators.put("App.", APPLICATIONS_WEIGHT * Math.abs(sgn(function.getApplicationSystems().size() - 1)));
 
             double aggregatedFunctionIndicator = 0;
 
