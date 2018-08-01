@@ -147,6 +147,45 @@ public class AnalysisService {
         return Math.abs((1.0 / (double) functions.size()) * sum - max);
     }
 
+    public double getOrganizationalUnitsDensityByProcessName(String processName) {
+        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
+
+        double density = 0;
+
+        for (Function function : functions)
+            density += function.getOrganizationalUnits().size();
+
+        density /= (double) (functions.size() * (functions.size() - 1));
+
+        return density;
+    }
+
+    public double getInputAndOutputObjectsDensityByProcessName(String processName) {
+        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
+
+        double density = 0;
+
+        for (Function function : functions)
+            density += function.getInputs().size() + function.getOutputs().size();
+
+        density /= (double) (functions.size() * (functions.size() - 1));
+
+        return density;
+    }
+
+    public double getApplicationSystemsDensityByProcessName(String processName) {
+        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
+
+        double density = 0;
+
+        for (Function function : functions)
+            density += function.getApplicationSystems().size();
+
+        density /= (double) (functions.size() * (functions.size() - 1));
+
+        return density;
+    }
+
     public double getCSCCoefficientByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
 

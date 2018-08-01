@@ -30,6 +30,10 @@ public class PortalView {
     public static final String ERROR_SIGN = "<span class=\"badge badge-danger\">!</span>";
 
     public static final String NEXT_LINE = "<br/>";
+    public static final String LINE = "<hr/>";
+
+    public static final String REDUNDANT = "Redundant";
+    public static final String REQUIRED = "Required";
 
     private static final Logger LOGGER = Logger.getLogger(PortalView.class);
 
@@ -132,6 +136,21 @@ public class PortalView {
 
             double metric = analysisService.getCSCCoefficientByProcessName(processName);
 
+            // EPC model optimization results.
+            int fixUnreachableNodes = validationService.validateNodesCoherenceByProcessName(processName).size();
+
+            int addStartNode = validationService.getStartNodesByProcessName(processName).isEmpty() ? 1 : 0;
+            int addEndNode = validationService.getEndNodesByProcessName(processName).isEmpty() ? 1 : 0;
+            int addFunction = validationService.processDoesNotHaveAtLeastOneFunction(processName) ? 1 : 0;
+
+            int fixEvents = validationService.validateEventsByProcessName(processName).size();
+            int fixFunctions = validationService.validateFunctionsByProcessName(processName).size();
+            int fixProcesses = validationService.validateProcessesByProcessName(processName).size();
+            int fixConnectors = validationService.validateGatewaysByProcessName(processName).size();
+
+            int fixInvalidConnections = validationService.validateEventsAndGatewaysConnectionsByProcessName(processName).size();
+            int fixSequencesOfEvents = validationService.getEventsThatArePrecedingForAnotherEventsByProcessName(processName).size();
+
             if (metric > 0)
                 state = "danger";
 
@@ -139,7 +158,29 @@ public class PortalView {
                     String.format("%.2f", analysisService.getWeightedProcessFlowCoefficient()) +
                     NEXT_LINE +
                     String.format("Errors: %.0f", metric) +
-                    "</div>";
+                    LINE +
+                    "<small>" +
+                    // Detail errors.
+                    String.format("Unreachable nodes: %d", fixUnreachableNodes) +
+                    NEXT_LINE +
+                    String.format("Missing functions: %d", addFunction) +
+                    NEXT_LINE +
+                    String.format("Missing start nodes: %d", addStartNode) +
+                    NEXT_LINE +
+                    String.format("Missing end nodes: %d", addEndNode) +
+                    NEXT_LINE +
+                    String.format("Invalid events: %d", fixEvents) +
+                    NEXT_LINE +
+                    String.format("Invalid functions: %d", fixFunctions) +
+                    NEXT_LINE +
+                    String.format("Invalid process interfaces: %d", fixProcesses) +
+                    NEXT_LINE +
+                    String.format("Invalid gateways: %d", fixConnectors) +
+                    NEXT_LINE +
+                    String.format("Events making decisions: %d", fixInvalidConnections) +
+                    NEXT_LINE +
+                    String.format("Sequences of events: %d", fixSequencesOfEvents) +
+                    "</small></div>";
         } catch (Exception err) {
             LOGGER.error(err.getMessage(), err);
 
@@ -183,8 +224,23 @@ public class PortalView {
                 else if (metric > 0)
                     state = "warning";
 
+                // ARIS environment optimization results.
+                int fixOrgUnits = 1 - entry.getKey().getOrganizationalUnits().size();
+                int fixInputs = 1 - entry.getKey().getInputs().size();
+                int fixOutputs = 1 - entry.getKey().getOutputs().size();
+                int fixAppSystems = 1 - entry.getKey().getApplicationSystems().size();
+
                 functionsMetrics += "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
                         "Evaluation of the function '" + entry.getKey().getResource().getLocalName() + "' is " + String.format("%.2f", metric) +
+                        LINE +
+                        // Detail recommendations.
+                        String.format("%s organizational units: %d", fixOrgUnits < 0 ? REDUNDANT : REQUIRED, fixOrgUnits) +
+                        NEXT_LINE +
+                        String.format("%s inputs: %d", fixInputs < 0 ? REDUNDANT : REQUIRED, fixInputs) +
+                        NEXT_LINE +
+                        String.format("%s outputs: %d", fixOutputs < 0 ? REDUNDANT : REQUIRED, fixOutputs) +
+                        NEXT_LINE +
+                        String.format("%s application systems: %d", fixAppSystems < 0 ? REDUNDANT : REQUIRED, fixAppSystems) +
                         "</div>";
             }
 
@@ -220,9 +276,19 @@ public class PortalView {
                     String.format("Warnings: %d", warnings) +
                     NEXT_LINE +
                     String.format("Errors: %d", errors) +
-                    NEXT_LINE +
+                    LINE +
+                    "<small>" +
                     String.format("Balance: %.2f", balance) +
-                    "</div>";
+                    NEXT_LINE +
+                    String.format("Organizational units density: %.2f",
+                            analysisService.getOrganizationalUnitsDensityByProcessName(processName)) +
+                    NEXT_LINE +
+                    String.format("Input/output objects density: %.2f",
+                            analysisService.getInputAndOutputObjectsDensityByProcessName(processName)) +
+                    NEXT_LINE +
+                    String.format("Application systems density: %.2f",
+                            analysisService.getApplicationSystemsDensityByProcessName(processName)) +
+                    "</small></div>";
         } catch (Exception err) {
             LOGGER.error(err.getMessage(), err);
 
