@@ -265,6 +265,9 @@ public class PortalView {
             int warnings = analysisService.getFunctionWarningsByProcessName(processName).size();
             int errors = analysisService.getFunctionErrorsByProcessName(processName).size();
 
+            int[] details = analysisService
+                    .getDetailedEvaluationOfFunctionsWarningsAndErrorsByProcessName(processName);
+
             if (metric < 0)
                 state = "danger";
             else if (metric > 0)
@@ -288,6 +291,26 @@ public class PortalView {
                     NEXT_LINE +
                     String.format("Application systems density: %.2f",
                             analysisService.getApplicationSystemsDensityByProcessName(processName)) +
+                    // Detail errors and warnings.
+                    LINE +
+                    "<b>Functions Evaluation</b>" +
+                    NEXT_LINE +
+                    String.format("Unassigned organizational units: %d", details[0]) +
+                    NEXT_LINE +
+                    String.format("Redundant organizational units: %d", details[1]) +
+                    NEXT_LINE +
+                    String.format("Unassigned input objects: %d", details[2]) +
+                    NEXT_LINE +
+                    String.format("Unassigned output objects: %d", details[3]) +
+                    NEXT_LINE +
+                    String.format("Redundant input objects: %d", details[4]) +
+                    NEXT_LINE +
+                    String.format("Redundant output objects: %d", details[5]) +
+                    NEXT_LINE +
+                    String.format("Unassigned application systems: %d", details[6]) +
+                    NEXT_LINE +
+                    String.format("Redundant application systems: %d", details[7]) +
+                    NEXT_LINE +
                     "</small></div>";
         } catch (Exception err) {
             LOGGER.error(err.getMessage(), err);

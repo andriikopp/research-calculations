@@ -147,6 +147,33 @@ public class AnalysisService {
         return Math.abs((1.0 / (double) functions.size()) * sum - max);
     }
 
+    public int[] getDetailedEvaluationOfFunctionsWarningsAndErrorsByProcessName(String processName) {
+        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
+
+        int unassignedOrgUnits = (int) functions.stream()
+                .filter(function -> function.getOrganizationalUnits().size() < 1).count();
+        int redundantOrgUnits = (int) functions.stream()
+                .filter(function -> function.getOrganizationalUnits().size() > 1).count();
+
+        int unassignedInputs = (int) functions.stream()
+                .filter(function -> function.getInputs().size() < 1).count();
+        int unassignedOutputs = (int) functions.stream()
+                .filter(function -> function.getOutputs().size() < 1).count();
+
+        int redundantInputs = (int) functions.stream()
+                .filter(function -> function.getInputs().size() > 1).count();
+        int redundantOutputs = (int) functions.stream()
+                .filter(function -> function.getOutputs().size() > 1).count();
+
+        int unassignedAppSystems = (int) functions.stream()
+                .filter(function -> function.getApplicationSystems().size() < 1).count();
+        int redundantAppSystems = (int) functions.stream()
+                .filter(function -> function.getApplicationSystems().size() > 1).count();
+
+        return new int[]{unassignedOrgUnits, redundantOrgUnits, unassignedInputs, unassignedOutputs,
+                redundantInputs, redundantOutputs, unassignedAppSystems, redundantAppSystems};
+    }
+
     public double getOrganizationalUnitsDensityByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
 
