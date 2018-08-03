@@ -330,11 +330,11 @@ public class PortalView {
                         "<ul>\n" +
                         "<li>Unassigned organizational units that perform process functions</li>\n" +
                         "<li>\"Useless\" functions that don't require and/or produce any material or information objects</li>\n" +
-                        "<li>Not automated manual operations</li>\n" +
                         "</ul>";
             else if (metric > 0)
                 recommendations = "There might be \"bottlenecks\" in organization activities:\n" +
                         "<ul>\n" +
+                        "<li>Not automated manual operations</li>\n" +
                         "<li>Organizational gaps when functions are carried out by several organizational units</li>\n" +
                         "<li>Information gaps when functions are supported by several application systems</li>\n" +
                         "</ul>";
