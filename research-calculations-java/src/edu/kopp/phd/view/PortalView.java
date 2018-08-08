@@ -286,8 +286,11 @@ public class PortalView {
                     String.format("Organizational units density: %.2f",
                             analysisService.getOrganizationalUnitsDensityByProcessName(processName)) +
                     NEXT_LINE +
-                    String.format("Input/output objects density: %.2f",
-                            analysisService.getInputAndOutputObjectsDensityByProcessName(processName)) +
+                    String.format("Input objects density: %.2f",
+                            analysisService.getInputObjectsDensityByProcessName(processName)) +
+                    NEXT_LINE +
+                    String.format("Output objects density: %.2f",
+                            analysisService.getOutputObjectsDensityByProcessName(processName)) +
                     NEXT_LINE +
                     String.format("Application systems density: %.2f",
                             analysisService.getApplicationSystemsDensityByProcessName(processName)) +

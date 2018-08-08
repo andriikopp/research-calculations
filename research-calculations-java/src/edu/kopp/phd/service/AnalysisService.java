@@ -124,6 +124,7 @@ public class AnalysisService {
                 aggregatedIndicator += value;
 
         LOGGER.info(String.format("ProcessEvaluation;%s;%.4f", processName, aggregatedIndicator));
+        LOGGER.info(String.format("Size;%s;%d", processName, functionIndicators.size()));
 
         return aggregatedIndicator;
     }
@@ -187,13 +188,26 @@ public class AnalysisService {
         return density;
     }
 
-    public double getInputAndOutputObjectsDensityByProcessName(String processName) {
+    public double getInputObjectsDensityByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
 
         double density = 0;
 
         for (Function function : functions)
-            density += function.getInputs().size() + function.getOutputs().size();
+            density += function.getInputs().size();
+
+        density /= (double) (functions.size() * (functions.size() - 1));
+
+        return density;
+    }
+
+    public double getOutputObjectsDensityByProcessName(String processName) {
+        List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
+
+        double density = 0;
+
+        for (Function function : functions)
+            density += function.getOutputs().size();
 
         density /= (double) (functions.size() * (functions.size() - 1));
 
