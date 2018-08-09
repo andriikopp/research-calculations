@@ -47,7 +47,7 @@ public interface SimilarityMethod {
 
     default RDFNode getNodeTypeByLabel(String label, Process process) {
         for (Statement statement : getProcessStatements(process))
-            if (statement.getSubject().getLocalName().equals(label) &&
+            if (statement.getSubject().getLocalName().equalsIgnoreCase(label) &&
                     statement.getPredicate().equals(REPOSITORY.getA()))
                 return statement.getObject();
 

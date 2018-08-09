@@ -61,7 +61,7 @@ public class RDFDefaultSimilarityMethod implements SimilarityMethod {
             if (statement.getSubject().getLocalName().equals(subjectName)) {
                 String pair = String.format("(%s,%s)",
                         statement.getPredicate().getLocalName(),
-                        ((Resource) statement.getObject()).getLocalName());
+                        ((Resource) statement.getObject()).getLocalName().toLowerCase());
 
                 processTypesBySubject.add(pair);
             }
@@ -75,7 +75,7 @@ public class RDFDefaultSimilarityMethod implements SimilarityMethod {
         for (Statement statement : getProcessStatements(process))
             if (statement.getSubject().getLocalName().equals(subjectName) &&
                     !statement.getPredicate().equals(REPOSITORY.getA()))
-                processObjectsBySubject.add(((Resource) statement.getObject()).getLocalName());
+                processObjectsBySubject.add(((Resource) statement.getObject()).getLocalName().toLowerCase());
 
         return processObjectsBySubject;
     }
@@ -86,7 +86,7 @@ public class RDFDefaultSimilarityMethod implements SimilarityMethod {
         for (Statement statement : getProcessStatements(process))
             if (statement.getSubject().getLocalName().equals(subjectName) &&
                     statement.getPredicate().equals(REPOSITORY.getA()))
-                processDomainsBySubject.add(((Resource) statement.getObject()).getLocalName());
+                processDomainsBySubject.add(((Resource) statement.getObject()).getLocalName().toLowerCase());
 
         return processDomainsBySubject;
     }
@@ -96,7 +96,7 @@ public class RDFDefaultSimilarityMethod implements SimilarityMethod {
 
         for (Statement statement : getProcessStatements(process))
             if (statement.getSubject().getLocalName().equals(subjectName))
-                processPredicatesBySubject.add(statement.getPredicate().getLocalName());
+                processPredicatesBySubject.add(statement.getPredicate().getLocalName().toLowerCase());
 
         return processPredicatesBySubject;
     }
@@ -105,7 +105,7 @@ public class RDFDefaultSimilarityMethod implements SimilarityMethod {
         Set<String> processSubjects = new HashSet<>();
 
         for (Statement statement : getProcessStatements(process))
-            processSubjects.add(statement.getSubject().getLocalName());
+            processSubjects.add(statement.getSubject().getLocalName().toLowerCase());
 
         return processSubjects;
     }
