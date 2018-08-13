@@ -34,11 +34,14 @@ public class AnalysisService {
         List<String> functionErrors = new ArrayList<>();
 
         for (Function function : functions) {
-            if (!(function.getOrganizationalUnits().size() >= 1))
+            if (function.getOrganizationalUnits().size() < 1)
                 functionErrors.add(String.format("Function '%s' doesn't have any organizational units", function));
 
-            if (!(function.getInputs().size() >= 1 && function.getOutputs().size() >= 1))
-                functionErrors.add(String.format("Function '%s' doesn't have any inputs/outputs", function));
+            if (function.getInputs().size() < 1)
+                functionErrors.add(String.format("Function '%s' doesn't have any inputs", function));
+
+            if (function.getOutputs().size() < 1)
+                functionErrors.add(String.format("Function '%s' doesn't have any outputs", function));
         }
 
         return functionErrors;
@@ -50,7 +53,7 @@ public class AnalysisService {
         List<String> functionWarnings = new ArrayList<>();
 
         for (Function function : functions) {
-            if (!(function.getApplicationSystems().size() >= 1))
+            if (function.getApplicationSystems().size() < 1)
                 functionWarnings.add(String.format("Function '%s' doesn't have any application systems", function));
 
             if (function.getOrganizationalUnits().size() > 1)
