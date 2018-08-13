@@ -62,7 +62,6 @@ public class PortalView {
                     .replace("${cscCoeff}", getCSCCoeffLayout(processName))
                     .replace("${arisWarnings}", getARISWarningsLayout(processName))
                     .replace("${analysis}", getEvaluationLayout(processName))
-                    .replace("${recommendations}", getRecommendationsLayout(processName))
                     .replace("${functionsMetrics}", getFunctionsMetricsLayout(processName))
                     .replace("${nodesArray}", controlFlowService.getJSONNodesRepresentationByProcessName(processName))
                     .replace("${edgesArray}", controlFlowService.getJSONEdgesRepresentationByProcessName(processName))
@@ -151,15 +150,25 @@ public class PortalView {
             int fixInvalidConnections = validationService.validateEventsAndGatewaysConnectionsByProcessName(processName).size();
             int fixSequencesOfEvents = validationService.getEventsThatArePrecedingForAnotherEventsByProcessName(processName).size();
 
+            double size = analysisService.getSizeByProcessName(processName);
+            double density = analysisService.getDensityByProcessName(processName);
+            double cnc = analysisService.getCNCByProcessName(processName);
+
             if (metric > 0)
                 state = "danger";
 
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
-                    String.format("%.2f", analysisService.getWeightedProcessFlowCoefficient()) +
-                    NEXT_LINE +
                     String.format("Errors: %.0f", metric) +
                     LINE +
                     "<small>" +
+                    String.format("Size: %.0f", size) +
+                    NEXT_LINE +
+                    String.format("Density: %.2f", density) +
+                    NEXT_LINE +
+                    String.format("Connectivity: %.2f", cnc) +
+                    LINE +
+                    "<b>Details</b>" +
+                    NEXT_LINE +
                     // Detail errors.
                     String.format("Unreachable nodes: %d", fixUnreachableNodes) +
                     NEXT_LINE +
@@ -213,16 +222,14 @@ public class PortalView {
         try {
             String functionsMetrics = "";
 
-            for (Map.Entry<Function, Map<String, Double>> entry : analysisService.getFunctionIndicatorsByProcessName(processName)
+            for (Map.Entry<Function, Map<String, Double>> entry : analysisService.getSimplifiedFunctionIndicatorsByProcessName(processName)
                     .entrySet()) {
                 String state = "success";
 
                 double metric = entry.getValue().get("Agg.");
 
-                if (metric < 0)
+                if (metric > 0)
                     state = "danger";
-                else if (metric > 0)
-                    state = "warning";
 
                 // ARIS environment optimization results.
                 int fixOrgUnits = 1 - entry.getKey().getOrganizationalUnits().size();
@@ -259,8 +266,10 @@ public class PortalView {
         try {
             String state = "success";
 
-            double metric = analysisService.getAggregatedIndicatorByProcessName(processName);
-            double balance = analysisService.getWeightedBalanceCoefficientByProcessName(processName);
+            double metric = analysisService.getSimplifiedIndicatorByProcessName(processName);
+
+            double balance = analysisService.getBalanceCoefficientByProcessName(processName);
+            double wbalance = analysisService.getWeightedBalanceCoefficientByProcessName(processName);
 
             int warnings = analysisService.getFunctionWarningsByProcessName(processName).size();
             int errors = analysisService.getFunctionErrorsByProcessName(processName).size();
@@ -268,20 +277,20 @@ public class PortalView {
             int[] details = analysisService
                     .getDetailedEvaluationOfFunctionsWarningsAndErrorsByProcessName(processName);
 
-            if (metric < 0)
+            if (metric > 0)
                 state = "danger";
-            else if (metric > 0)
-                state = "warning";
 
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
-                    String.format("%.2f", metric) +
+                    String.format("Shortcomings: %.0f", metric) +
                     NEXT_LINE +
-                    String.format("Warnings: %d", warnings) +
+                    String.format("Process design violations: %d", warnings) +
                     NEXT_LINE +
-                    String.format("Errors: %d", errors) +
+                    String.format("Process mapping violations: %d", errors) +
                     LINE +
                     "<small>" +
                     String.format("Balance: %.2f", balance) +
+                    NEXT_LINE +
+                    String.format("Weighted balance: %.2f", wbalance) +
                     NEXT_LINE +
                     String.format("Organizational units density: %.2f",
                             analysisService.getOrganizationalUnitsDensityByProcessName(processName)) +
@@ -296,7 +305,7 @@ public class PortalView {
                             analysisService.getApplicationSystemsDensityByProcessName(processName)) +
                     // Detail errors and warnings.
                     LINE +
-                    "<b>Functions Evaluation</b>" +
+                    "<b>Details</b>" +
                     NEXT_LINE +
                     String.format("Unassigned organizational units: %d", details[0]) +
                     NEXT_LINE +
@@ -315,37 +324,6 @@ public class PortalView {
                     String.format("Redundant application systems: %d", details[7]) +
                     NEXT_LINE +
                     "</small></div>";
-        } catch (Exception err) {
-            LOGGER.error(err.getMessage(), err);
-
-            return "N/A";
-        }
-    }
-
-    private String getRecommendationsLayout(String processName) {
-        try {
-            String recommendations = "Process doesn't have any shortcomings";
-
-            double metric = analysisService.getAggregatedIndicatorByProcessName(processName);
-
-            if (metric < 0)
-                recommendations = "There are shortcomings caused by modeling mistakes or \"bottlenecks\" that exist in organization activities:\n" +
-                        "<ul>\n" +
-                        "<li>Unassigned organizational units that perform process functions</li>\n" +
-                        "<li>\"Useless\" functions that don't require and/or produce any material or information objects</li>\n" +
-                        "</ul>";
-            else if (metric > 0)
-                recommendations = "There might be \"bottlenecks\" in organization activities:\n" +
-                        "<ul>\n" +
-                        "<li>Not automated manual operations</li>\n" +
-                        "<li>Organizational gaps when functions are carried out by several organizational units</li>\n" +
-                        "<li>Information gaps when functions are supported by several application systems</li>\n" +
-                        "</ul>";
-
-            return "<div class=\"card\">" +
-                    "   <div class=\"card-header\">Recommendations</div>" +
-                    "   <div class=\"card-body\">" + recommendations + "</div>" +
-                    "</div>";
         } catch (Exception err) {
             LOGGER.error(err.getMessage(), err);
 
@@ -418,6 +396,9 @@ public class PortalView {
     private String getSimilarModelsLayout(Process process) {
         try {
             String layout = "";
+
+            if (similarityService == null)
+                return "Similarity search is disabled";
 
             for (Map.Entry<Process, Double> entry : similarityService.getSimilarProcessesByProcessPattern(process)) {
                 String processName = entry.getKey().getResource().getLocalName();
