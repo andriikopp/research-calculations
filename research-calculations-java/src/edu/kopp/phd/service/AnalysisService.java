@@ -3,6 +3,7 @@ package edu.kopp.phd.service;
 import edu.kopp.phd.model.flow.*;
 import edu.kopp.phd.model.flow.Process;
 import edu.kopp.phd.repository.RDFRepository;
+import edu.kopp.phd.service.beans.AnalysisResult;
 import edu.kopp.phd.service.similarity.ConcreteSimilarityMethodFactory;
 import edu.kopp.phd.service.similarity.api.SimilarityMethod;
 import org.apache.jena.rdf.model.Statement;
@@ -27,6 +28,22 @@ public class AnalysisService {
     private ValidationService validationService;
 
     private double weightedProcessFlowCoefficient;
+
+    private static Map<String, AnalysisResult> analysisResults;
+
+    static {
+        analysisResults = new HashMap<String, AnalysisResult>() {
+            @Override
+            public String toString() {
+                String result = "";
+
+                for (Entry<String, AnalysisResult> entry : entrySet())
+                    result += entry.getKey() + "\t" + entry.getValue().toString();
+
+                return result;
+            }
+        };
+    }
 
     public List<String> getFunctionErrorsByProcessName(String processName) {
         List<Function> functions = controlFlowService.getDetailedFunctionsByProcessName(processName);
@@ -183,6 +200,8 @@ public class AnalysisService {
                     OBJECTS_WEIGHT * function.getOutputs().size() +
                     APPLICATIONS_WEIGHT * function.getApplicationSystems().size();
 
+            sum += functionValue;
+
             if (functionValue > max)
                 max = functionValue;
         }
@@ -200,6 +219,8 @@ public class AnalysisService {
             double functionValue = function.getOrganizationalUnits().size() +
                     function.getInputs().size() + function.getOutputs().size() +
                     function.getApplicationSystems().size();
+
+            sum += functionValue;
 
             if (functionValue > max)
                 max = functionValue;
@@ -424,5 +445,9 @@ public class AnalysisService {
     @Deprecated
     public double getWeightedProcessFlowCoefficient() {
         return weightedProcessFlowCoefficient;
+    }
+
+    public static Map<String, AnalysisResult> getAnalysisResults() {
+        return analysisResults;
     }
 }

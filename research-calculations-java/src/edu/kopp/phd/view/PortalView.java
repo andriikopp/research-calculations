@@ -9,6 +9,7 @@ import edu.kopp.phd.service.AnalysisService;
 import edu.kopp.phd.service.ControlFlowService;
 import edu.kopp.phd.service.SimilarityService;
 import edu.kopp.phd.service.ValidationService;
+import edu.kopp.phd.service.beans.AnalysisResult;
 import edu.kopp.phd.util.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -53,6 +54,8 @@ public class PortalView {
 
         for (Process process : controlFlowService.getAllProcesses()) {
             String processName = process.getResource().getLocalName();
+
+            analysisService.getAnalysisResults().put(processName, new AnalysisResult());
 
             FileUtils.writeFile(PROCESSES_PATH + processName + HTML_FILE, FileUtils.readFile(TEMPLATE_PROCESS,
                     Charset.defaultCharset())
@@ -154,8 +157,13 @@ public class PortalView {
             double density = analysisService.getDensityByProcessName(processName);
             double cnc = analysisService.getCNCByProcessName(processName);
 
+            analysisService.getAnalysisResults().get(processName).setSize((int) size);
+            analysisService.getAnalysisResults().get(processName).setConnectivity(cnc);
+
             if (metric > 0)
                 state = "danger";
+
+            analysisService.getAnalysisResults().get(processName).setErrors(metric);
 
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
                     String.format("Errors: %.0f", metric) +
@@ -269,7 +277,7 @@ public class PortalView {
             double metric = analysisService.getSimplifiedIndicatorByProcessName(processName);
 
             double balance = analysisService.getBalanceCoefficientByProcessName(processName);
-            double wbalance = analysisService.getWeightedBalanceCoefficientByProcessName(processName);
+            double weightedBalance = analysisService.getWeightedBalanceCoefficientByProcessName(processName);
 
             int warnings = analysisService.getFunctionWarningsByProcessName(processName).size();
             int errors = analysisService.getFunctionErrorsByProcessName(processName).size();
@@ -279,6 +287,9 @@ public class PortalView {
 
             if (metric > 0)
                 state = "danger";
+
+            analysisService.getAnalysisResults().get(processName).setBalance(balance);
+            analysisService.getAnalysisResults().get(processName).setShortcomings(metric);
 
             return "<div class=\"alert alert-" + state + "\" role=\"alert\">" +
                     String.format("Shortcomings: %.0f", metric) +
@@ -290,7 +301,7 @@ public class PortalView {
                     "<small>" +
                     String.format("Balance: %.2f", balance) +
                     NEXT_LINE +
-                    String.format("Weighted balance: %.2f", wbalance) +
+                    String.format("Weighted balance: %.2f", weightedBalance) +
                     NEXT_LINE +
                     String.format("Organizational units density: %.2f",
                             analysisService.getOrganizationalUnitsDensityByProcessName(processName)) +
