@@ -2,4 +2,7 @@ research-calculations-web/
 research-calculations-cs/pmmining/bin
 research-calculations-cs/pmmining/obj
 
+research-calculations-python/.idea
+research-calculations-python/venv
+
 *.lnk
