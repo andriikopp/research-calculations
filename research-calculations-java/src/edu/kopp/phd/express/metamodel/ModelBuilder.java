@@ -14,7 +14,7 @@ public class ModelBuilder {
     }
 
     public ModelBuilder event(int pre, int sub) {
-        model.getNodes().add(new Event(pre, sub));
+        model.getNodes().add(new Event(model.nextNodeLabel(), pre, sub));
 
         return this;
     }
@@ -31,6 +31,12 @@ public class ModelBuilder {
         return this;
     }
 
+    public ModelBuilder function(int pre, int sub) {
+        model.getNodes().add(new Function(model.nextNodeLabel(), pre, sub));
+
+        return this;
+    }
+
     public ModelBuilder function(String label, int pre, int sub) {
         model.getNodes().add(new Function(label, pre, sub));
 
@@ -43,13 +49,13 @@ public class ModelBuilder {
         return this;
     }
 
-    public ModelBuilder function(String label, int pre, int sub, int in, int out) {
-        model.getNodes().add(new Function(label, pre, sub, in, out));
+    public ModelBuilder pinterface(int pre, int sub) {
+        model.getNodes().add(new ProcessInterface(model.nextNodeLabel(), pre, sub));
 
         return this;
     }
 
-    public ModelBuilder processInterface(String label, int pre, int sub) {
+    public ModelBuilder pinterface(String label, int pre, int sub) {
         model.getNodes().add(new ProcessInterface(label, pre, sub));
 
         return this;
@@ -91,20 +97,44 @@ public class ModelBuilder {
         return this;
     }
 
-    public ModelBuilder dataStore(String label, int in, int out) {
-        model.getNodes().add(new DataStore(label, in, out));
+    public ModelBuilder dstore(int pre, int sub) {
+        model.getNodes().add(new DataStore(model.nextNodeLabel(), pre, sub));
 
         return this;
     }
 
-    public ModelBuilder externalEntity(String label, int pre, int sub) {
+    public ModelBuilder dstore(String label, int pre, int sub) {
+        model.getNodes().add(new DataStore(label, pre, sub));
+
+        return this;
+    }
+
+    public ModelBuilder xentity(int pre, int sub) {
+        model.getNodes().add(new ExternalEntity(model.nextNodeLabel(), pre, sub));
+
+        return this;
+    }
+
+    public ModelBuilder xentity(String label, int pre, int sub) {
         model.getNodes().add(new ExternalEntity(label, pre, sub));
 
         return this;
     }
 
-    public ModelBuilder dataFlow(String label, boolean connectsStoreEntity) {
-        model.getNodes().add(new DataFlow(label, connectsStoreEntity));
+    public ModelBuilder dflow(boolean fromActivity, boolean toActivity) {
+        int from = fromActivity ? 1 : 0;
+        int to = toActivity ? 1 : 0;
+
+        model.getNodes().add(new DataFlow(model.nextNodeLabel(), from, to));
+
+        return this;
+    }
+
+    public ModelBuilder dflow(String label, boolean fromActivity, boolean toActivity) {
+        int from = fromActivity ? 1 : 0;
+        int to = toActivity ? 1 : 0;
+
+        model.getNodes().add(new DataFlow(label, from, to));
 
         return this;
     }

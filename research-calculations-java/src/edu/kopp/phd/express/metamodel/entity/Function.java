@@ -6,9 +6,6 @@ public class Function extends Node {
     private int outputs;
     private int applicationSystems;
 
-    private int dataStoreInputFlow;
-    private int dataStoreOutputFlow;
-
     public Function(String label, int preceding, int subsequent) {
         super(label, preceding, subsequent);
     }
@@ -19,12 +16,6 @@ public class Function extends Node {
         this.inputs = inputs;
         this.outputs = outputs;
         this.applicationSystems = applicationSystems;
-    }
-
-    public Function(String label, int preceding, int subsequent, int dataStoreInputFlow, int dataStoreOutputFlow) {
-        super(label, preceding, subsequent);
-        this.dataStoreInputFlow = dataStoreInputFlow;
-        this.dataStoreOutputFlow = dataStoreOutputFlow;
     }
 
     @Override
@@ -38,9 +29,7 @@ public class Function extends Node {
         if (organizationalUnits != function.organizationalUnits) return false;
         if (inputs != function.inputs) return false;
         if (outputs != function.outputs) return false;
-        if (applicationSystems != function.applicationSystems) return false;
-        if (dataStoreInputFlow != function.dataStoreInputFlow) return false;
-        return dataStoreOutputFlow == function.dataStoreOutputFlow;
+        return applicationSystems == function.applicationSystems;
     }
 
     @Override
@@ -50,8 +39,6 @@ public class Function extends Node {
         result = 31 * result + inputs;
         result = 31 * result + outputs;
         result = 31 * result + applicationSystems;
-        result = 31 * result + dataStoreInputFlow;
-        result = 31 * result + dataStoreOutputFlow;
         return result;
     }
 
@@ -62,8 +49,6 @@ public class Function extends Node {
                 ", inputs=" + inputs +
                 ", outputs=" + outputs +
                 ", applicationSystems=" + applicationSystems +
-                ", dataStoreInputFlow=" + dataStoreInputFlow +
-                ", dataStoreOutputFlow=" + dataStoreOutputFlow +
                 '}';
     }
 
@@ -97,21 +82,5 @@ public class Function extends Node {
 
     public void setApplicationSystems(int applicationSystems) {
         this.applicationSystems = applicationSystems;
-    }
-
-    public int getDataStoreInputFlow() {
-        return dataStoreInputFlow;
-    }
-
-    public void setDataStoreInputFlow(int dataStoreInputFlow) {
-        this.dataStoreInputFlow = dataStoreInputFlow;
-    }
-
-    public int getDataStoreOutputFlow() {
-        return dataStoreOutputFlow;
-    }
-
-    public void setDataStoreOutputFlow(int dataStoreOutputFlow) {
-        this.dataStoreOutputFlow = dataStoreOutputFlow;
     }
 }

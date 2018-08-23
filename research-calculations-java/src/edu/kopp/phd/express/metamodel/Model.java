@@ -15,6 +15,10 @@ public class Model {
         this.nodes = new ArrayList<>();
     }
 
+    public String nextNodeLabel() {
+        return "Node-" + String.valueOf(nodes.size() + 1);
+    }
+
     public String getName() {
         return name;
     }

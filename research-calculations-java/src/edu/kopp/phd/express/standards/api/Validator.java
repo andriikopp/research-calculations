@@ -73,44 +73,36 @@ public interface Validator {
 
     default int countEventSequences(Model model) {
         return (int) model.getNodes().stream().filter(node ->
-                (node instanceof Event) && ((Event) node).isPrecedeEvent()).count();
+                (node instanceof Event) && ((Event) node).isPrecedesEvent()).count();
     }
 
     default int countEventDecisions(Model model) {
         return (int) model.getNodes().stream().filter(node ->
-                (node instanceof Event) && ((Event) node).isPrecedeOrXorSplit()).count();
+                (node instanceof Event) && ((Event) node).isMakesDecision()).count();
     }
 
-    default int countValidFunctionDataFlows(Model model) {
+    default int countValidDFFunctions(Model model) {
         return (int) model.getNodes().stream().filter(node ->
-                (node instanceof Function) && (((Function) node).getDataStoreInputFlow() >= 1 &&
-                        ((Function) node).getDataStoreOutputFlow() >= 1)).count();
+                (node instanceof Function) && (((Function) node).getPreceding() >= 1 &&
+                        ((Function) node).getSubsequent() >= 1)).count();
     }
 
-    default int countValidDataStoreFlows(Model model) {
+    default int countValidDataStores(Model model) {
         return (int) model.getNodes().stream().filter(node ->
-                (node instanceof DataStore) && (((DataStore) node).getFunctionInputFlow() >= 1 &&
-                        ((DataStore) node).getFunctionOutputFlow() >= 1)).count();
-    }
-
-    default int countValidDataFunctions(Model model) {
-        return (int) model.getNodes().stream().filter(node ->
-                (node instanceof Function) && (((Function) node).getInputs() >= 1 &&
-                        ((Function) node).getOutputs() >= 1)).count();
+                (node instanceof DataStore) && (((DataStore) node).getPreceding() >= 1 &&
+                        ((DataStore) node).getSubsequent() >= 1)).count();
     }
 
     default int countValidExternalEntities(Model model) {
         return (int) model.getNodes().stream().filter(node ->
                 (node instanceof ExternalEntity) &&
-                        ((((ExternalEntity) node).getPreceding() >= 1 &&
-                                ((ExternalEntity) node).getSubsequent() == 0) ||
-                                (((ExternalEntity) node).getPreceding() == 0 &&
-                                        ((ExternalEntity) node).getSubsequent() >= 1)
-                        )).count();
+                        (((ExternalEntity) node).getPreceding() >= 1 ||
+                                ((ExternalEntity) node).getSubsequent() >= 1)).count();
     }
 
-    default int countStoreEntityDataFlows(Model model) {
+    default int countInvalidDataFlows(Model model) {
         return (int) model.getNodes().stream().filter(node ->
-                (node instanceof DataFlow) && ((DataFlow) node).isConnectsStoreEntity()).count();
+                (node instanceof DataFlow) && (((DataFlow) node).getPreceding() != 1 &&
+                        ((DataFlow) node).getSubsequent() != 1)).count();
     }
 }

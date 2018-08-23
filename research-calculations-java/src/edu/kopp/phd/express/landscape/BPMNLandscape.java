@@ -47,21 +47,59 @@ public class BPMNLandscape extends Landscape {
         /* Booking Process */
         {
             getGovernanceLog().getLandscape().add(ModelBuilder.model("Booking Process")
-
+                    .event(0, 1)
+                    .function("Receive book request", 1, 1)
+                    .function("Get book status", 2, 1)
+                    .xor(1, 2)
+                    .function("On loan reply", 1, 1)
+                    .function("Checkout book", 1, 1)
+                    .function("Checkout reply", 1, 1)
+                    .or(1, 3)
+                    .event("Hold book", 1, 1)
+                    .event("Decline hold", 1, 1)
+                    .event("1 week", 1, 1)
+                    .function("Request hold", 1, 1)
+                    .function("Cancel request",2, 1)
+                    .function("Hold reply", 1, 1)
+                    .event(2, 0)
                     .finish());
         }
 
         /* Logistics */
         {
             getGovernanceLog().getLandscape().add(ModelBuilder.model("Logistics")
-
+                    .event("Start", 0, 1)
+                    .function("Buy request", 1, 1)
+                    .function("Check credit", 1, 1)
+                    .xor("Check customer known",1, 2)
+                    .function("Customer not known", 1, 1)
+                    .function("Credit rating", 1, 1)
+                    .xor("Evaluate credit rating", 1, 2)
+                    .function("Insufficient credit", 1, 1)
+                    .function("Deliver goods", 1, 1)
+                    .function("Acknowledge delivery details", 1, 1)
+                    .function("Buy confirmed", 1, 1)
+                    .xor(2, 1)
+                    .function("Account not found", 1, 1)
+                    .xor(2, 1)
+                    .event("End", 1, 0)
                     .finish());
         }
 
         /* Order Process */
         {
             getGovernanceLog().getLandscape().add(ModelBuilder.model("Order Process")
-
+                    .event(0, 1)
+                    .function("Quotation handling", 1, 1)
+                    .function("Approve order", 1, 1)
+                    .xor(1, 2)
+                    .event(1, 0)
+                    .and(1, 2)
+                    .function("Order handling", 1, 1)
+                    .function("Order handling", 1, 1)
+                    .and(2, 1)
+                    .function("Review order", 1, 1)
+                    .event(1, 0)
                     .finish());
         }
     }
