@@ -17,7 +17,14 @@ public class DataFlowGovernanceLog extends GovernanceLog {
             int size = model.getNodes().size();
             int evaluation = validator.validate(model);
 
-            System.out.printf("%s\t%d\t%d\n", model.getName(), size, evaluation);
+            int invalidActivities = validator.countFunctions(model) - validator.countValidDFFunctions(model);
+            int invalidDataStores = validator.countDataStores(model) - validator.countValidDataStores(model);
+            int invalidExternalEntities = validator.countExternalEntities(model) - validator.countValidExternalEntities(model);
+            int invalidDataFlows = validator.countInvalidDataFlows(model);
+
+            System.out.printf("%s\t%d\t%d\t%d\t%d\t%d\t%d\n",
+                    model.getName(), size, evaluation,
+                    invalidActivities, invalidDataStores, invalidExternalEntities, invalidDataFlows);
         }
     }
 }
