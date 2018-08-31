@@ -5,7 +5,9 @@ import edu.kopp.phd.express.metamodel.entity.*;
 
 public interface Validator {
 
-    int validate(Model model);
+    double validate(Model model);
+
+    default void ignoreRegulations() { }
 
     default int sgn(int value) {
         return value > 0 ? 1 : 0;
@@ -104,5 +106,30 @@ public interface Validator {
         return (int) model.getNodes().stream().filter(node ->
                 (node instanceof DataFlow) && (((DataFlow) node).getPreceding() != 1 &&
                         ((DataFlow) node).getSubsequent() != 1)).count();
+    }
+
+    default int countValidOrgFunctions(Model model) {
+        return (int) model.getNodes().stream().filter(node ->
+                (node instanceof Function) && ((Function) node).getOrganizationalUnits() == 1).count();
+    }
+
+    default int countValidInFunctions(Model model) {
+        return (int) model.getNodes().stream().filter(node ->
+                (node instanceof Function) && ((Function) node).getInputs() >= 1).count();
+    }
+
+    default int countValidOutFunctions(Model model) {
+        return (int) model.getNodes().stream().filter(node ->
+                (node instanceof Function) && ((Function) node).getOutputs() >= 1).count();
+    }
+
+    default int countValidRegFunctions(Model model) {
+        return (int) model.getNodes().stream().filter(node ->
+                (node instanceof Function) && ((Function) node).getRegulations() >= 1).count();
+    }
+
+    default int countValidAppFunctions(Model model) {
+        return (int) model.getNodes().stream().filter(node ->
+                (node instanceof Function) && ((Function) node).getApplicationSystems() == 1).count();
     }
 }

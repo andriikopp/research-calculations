@@ -15,7 +15,7 @@ public class DataFlowGovernanceLog extends GovernanceLog {
     public void analyze() {
         for (Model model : getLandscape()) {
             int size = model.getNodes().size();
-            int evaluation = validator.validate(model);
+            int evaluation = (int) validator.validate(model);
 
             int invalidActivities = validator.countFunctions(model) - validator.countValidDFFunctions(model);
             int invalidDataStores = validator.countDataStores(model) - validator.countValidDataStores(model);

@@ -3,6 +3,7 @@ package edu.kopp.phd.express.metamodel.entity;
 public class Function extends Node {
     private int organizationalUnits;
     private int inputs;
+    private int regulations;
     private int outputs;
     private int applicationSystems;
 
@@ -10,10 +11,11 @@ public class Function extends Node {
         super(label, preceding, subsequent);
     }
 
-    public Function(String label, int preceding, int subsequent, int organizationalUnits, int inputs, int outputs, int applicationSystems) {
+    public Function(String label, int preceding, int subsequent, int organizationalUnits, int inputs, int regulations, int outputs, int applicationSystems) {
         super(label, preceding, subsequent);
         this.organizationalUnits = organizationalUnits;
         this.inputs = inputs;
+        this.regulations = regulations;
         this.outputs = outputs;
         this.applicationSystems = applicationSystems;
     }
@@ -28,6 +30,7 @@ public class Function extends Node {
 
         if (organizationalUnits != function.organizationalUnits) return false;
         if (inputs != function.inputs) return false;
+        if (regulations != function.regulations) return false;
         if (outputs != function.outputs) return false;
         return applicationSystems == function.applicationSystems;
     }
@@ -37,6 +40,7 @@ public class Function extends Node {
         int result = super.hashCode();
         result = 31 * result + organizationalUnits;
         result = 31 * result + inputs;
+        result = 31 * result + regulations;
         result = 31 * result + outputs;
         result = 31 * result + applicationSystems;
         return result;
@@ -47,6 +51,7 @@ public class Function extends Node {
         return "Function{" +
                 "organizationalUnits=" + organizationalUnits +
                 ", inputs=" + inputs +
+                ", regulations=" + regulations +
                 ", outputs=" + outputs +
                 ", applicationSystems=" + applicationSystems +
                 '}';
@@ -66,6 +71,14 @@ public class Function extends Node {
 
     public void setInputs(int inputs) {
         this.inputs = inputs;
+    }
+
+    public int getRegulations() {
+        return regulations;
+    }
+
+    public void setRegulations(int regulations) {
+        this.regulations = regulations;
     }
 
     public int getOutputs() {

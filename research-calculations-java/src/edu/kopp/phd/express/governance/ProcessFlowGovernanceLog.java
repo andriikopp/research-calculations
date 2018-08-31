@@ -15,7 +15,7 @@ public class ProcessFlowGovernanceLog extends GovernanceLog {
     public void analyze() {
         for (Model model : getLandscape()) {
             int size = model.getNodes().size();
-            int evaluation = validator.validate(model);
+            int evaluation = (int) validator.validate(model);
 
             int missingFunctions = validator.countFunctions(model) < 1 ? 1 : 0;
             int missingStartNodes = validator.countStartNodes(model) < 1 ? 1 : 0;
