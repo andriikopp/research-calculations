@@ -15,6 +15,10 @@ public class ProcessFlowGovernanceLog extends GovernanceLog {
     public void analyze() {
         for (Model model : getLandscape()) {
             int size = model.getNodes().size();
+            double density = model.density();
+            double connectivity = model.connectivity();
+            double balance = model.balance();
+
             int evaluation = (int) validator.validate(model);
 
             int missingFunctions = validator.countFunctions(model) < 1 ? 1 : 0;
@@ -24,8 +28,11 @@ public class ProcessFlowGovernanceLog extends GovernanceLog {
             int invalidFunctions = validator.countFunctions(model) - validator.countValidFunctions(model);
             int invalidConnectors = validator.countConnectors(model) - validator.countValidConnectors(model);
 
-            System.out.printf("%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
-                    model.getName(), size, evaluation,
+            System.out.printf("%s\t%d\t%.2f\t%.2f\t%.2f\t" +
+                            "%d\t" +
+                            "%d\t%d\t%d\t%d\t%d\t%d\n",
+                    model.getName(), size, density, connectivity, balance,
+                    evaluation,
                     missingFunctions, missingStartNodes, missingEndNodes, invalidEvents, invalidFunctions, invalidConnectors);
         }
     }
