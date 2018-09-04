@@ -31,6 +31,12 @@ public class ModelBuilder {
         return this;
     }
 
+    public ModelBuilder event(int pre, int sub, boolean sequence, boolean decision) {
+        model.getNodes().add(new Event(model.nextNodeLabel(), pre, sub, sequence, decision));
+
+        return this;
+    }
+
     public ModelBuilder function(int pre, int sub) {
         model.getNodes().add(new Function(model.nextNodeLabel(), pre, sub));
 
@@ -43,8 +49,14 @@ public class ModelBuilder {
         return this;
     }
 
-    public ModelBuilder function(String label, int pre, int sub, int org, int in, int out, int app) {
-        model.getNodes().add(new Function(label, pre, sub, org, in, out, app));
+    public ModelBuilder function(String label, int pre, int sub, int org, int in, int reg, int out, int app) {
+        model.getNodes().add(new Function(label, pre, sub, org, in, reg, out, app));
+
+        return this;
+    }
+
+    public ModelBuilder function(int pre, int sub, int org, int in, int reg, int out, int app) {
+        model.getNodes().add(new Function(model.nextNodeLabel(), pre, sub, org, in, reg, out, app));
 
         return this;
     }
