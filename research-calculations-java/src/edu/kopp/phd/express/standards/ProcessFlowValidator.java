@@ -6,7 +6,7 @@ import edu.kopp.phd.express.standards.api.Validator;
 public class ProcessFlowValidator implements Validator {
 
     @Override
-    public int validate(Model model) {
+    public double validate(Model model) {
         return (1 - sgn(countFunctions(model))) +
                 (1 - sgn(countStartNodes(model))) + (1 - sgn(countEndNodes(model))) +
                 (countEvents(model) - countValidEvents(model)) +

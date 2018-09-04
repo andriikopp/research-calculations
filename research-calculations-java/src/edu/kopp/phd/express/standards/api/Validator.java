@@ -14,7 +14,8 @@ public interface Validator {
     }
 
     default int countFunctions(Model model) {
-        return (int) model.getNodes().stream().filter(node -> node instanceof Function).count();
+        return (int) model.getNodes().stream().filter(node ->
+                node instanceof Function).count();
     }
 
     default int countEvents(Model model) {
