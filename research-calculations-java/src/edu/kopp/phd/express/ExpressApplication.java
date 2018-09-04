@@ -8,7 +8,7 @@ public class ExpressApplication {
 
     public static void main(String[] args) {
         System.out.println("ARIS");
-        new ARISLandscape().getGovernanceLog().analyze();
+        new ARISLandscape().getGovernanceLog().processEnvironment().analyze();
 
         System.out.println("BPMN");
         new BPMNLandscape().getGovernanceLog().analyze();

@@ -36,4 +36,8 @@ public class ProcessFlowGovernanceLog extends GovernanceLog {
                     missingFunctions, missingStartNodes, missingEndNodes, invalidEvents, invalidFunctions, invalidConnectors);
         }
     }
+
+    public Validator getValidator() {
+        return validator;
+    }
 }

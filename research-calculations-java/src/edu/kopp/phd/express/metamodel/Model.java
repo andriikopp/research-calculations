@@ -31,21 +31,21 @@ public class Model {
     }
 
     public double density() {
-        double size = nodes.size();
+        double size = countNodes();
         double arcs = countArcs();
 
         return arcs / (size * (size - 1));
     }
 
     public double connectivity() {
-        double size = nodes.size();
+        double size = countNodes();
         double arcs = countArcs();
 
         return arcs / size;
     }
 
     public double balance() {
-        double size = nodes.size();
+        double size = countNodes();
 
         double sum = 0;
         double max = 0;
@@ -54,12 +54,14 @@ public class Model {
             if (node instanceof Function) {
                 Function function = (Function) node;
 
-                double arcs = function.getPreceding() + function.getSubsequent();
+                double arcs = 0;
 
                 if (isEnvironmentEnabled) {
                     arcs = function.getOrganizationalUnits() + function.getInputs() +
                             function.getRegulations() + function.getOutputs() +
                             function.getApplicationSystems();
+                } else {
+                    arcs = function.getPreceding() + function.getSubsequent();
                 }
 
                 if (arcs > max) {
@@ -73,18 +75,26 @@ public class Model {
         return Math.abs(sum / size - max);
     }
 
-    private double countArcs() {
+    public double countNodes() {
+        if (isEnvironmentEnabled) {
+            return nodes.stream().filter(node -> node instanceof Function).count();
+        }
+
+        return nodes.size();
+    }
+
+    public double countArcs() {
         double arcs = 0;
 
         for (Node node : nodes) {
-            arcs += node.getPreceding() + node.getSubsequent();
-
             if (isEnvironmentEnabled && node instanceof Function) {
                 Function function = (Function) node;
 
                 arcs += function.getOrganizationalUnits() + function.getInputs() +
                         function.getRegulations() + function.getOutputs() +
                         function.getApplicationSystems();
+            } else {
+                arcs += node.getPreceding() + node.getSubsequent();
             }
         }
 

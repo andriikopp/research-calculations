@@ -239,7 +239,7 @@ public class PortalView {
                 if (metric > 0)
                     state = "danger";
 
-                // ARIS environment optimization results.
+                // ARIS processEnvironment optimization results.
                 int fixOrgUnits = 1 - entry.getKey().getOrganizationalUnits().size();
                 int fixInputs = 1 - entry.getKey().getInputs().size();
                 int fixOutputs = 1 - entry.getKey().getOutputs().size();

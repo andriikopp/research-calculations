@@ -3,40 +3,43 @@ package edu.kopp.phd.express.governance;
 import edu.kopp.phd.express.metamodel.Model;
 import edu.kopp.phd.express.metamodel.entity.Function;
 import edu.kopp.phd.express.standards.ProcessEnvironmentValidator;
-import edu.kopp.phd.express.standards.ProcessFlowValidator;
 import edu.kopp.phd.express.standards.api.Validator;
 
-public class ARISGovernanceLog extends GovernanceLog {
-    private Validator processEnvironmentValidator;
-    private Validator processFlowValidator;
+public class ARISGovernanceLog extends ProcessFlowGovernanceLog {
+    private Validator validator;
+
+    private boolean isEnvironmentEnabled;
 
     public ARISGovernanceLog() {
-        this.processEnvironmentValidator = new ProcessEnvironmentValidator();
-        this.processFlowValidator = new ProcessFlowValidator();
+        this.validator = new ProcessEnvironmentValidator();
     }
 
     @Override
     public void analyze() {
-        processEnvironmentValidator.ignoreRegulations();
+        validator.ignoreRegulations();
 
         for (Model model : getLandscape()) {
-            int size = model.getNodes().size();
+            if (isEnvironmentEnabled) {
+                model.enableEnvironment();
+            }
+
+            int size = (int) model.countNodes();
             double density = model.density();
             double connectivity = model.connectivity();
             double balance = model.balance();
 
-            double processFlowEvaluation = processFlowValidator.validate(model);
-            double processEnvironmentEvaluation = processEnvironmentValidator.validate(model);
+            double processFlowEvaluation = getValidator().validate(model);
+            double processEnvironmentEvaluation = validator.validate(model);
 
-            int missingFunctions = processFlowValidator.countFunctions(model) < 1 ? 1 : 0;
-            int missingStartNodes = processFlowValidator.countStartNodes(model) < 1 ? 1 : 0;
-            int missingEndNodes = processFlowValidator.countEndNodes(model) < 1 ? 1 : 0;
-            int invalidEvents = processFlowValidator.countEvents(model) - processFlowValidator.countValidEvents(model);
-            int invalidFunctions = processFlowValidator.countFunctions(model) - processFlowValidator.countValidFunctions(model);
-            int invalidConnectors = processFlowValidator.countConnectors(model) - processFlowValidator.countValidConnectors(model);
-            int invalidProcessInterfaces = processFlowValidator.countProcessInterfaces(model) - processFlowValidator.countValidProcessInterfaces(model);
-            int eventsMakeDecisions = processFlowValidator.countEventDecisions(model);
-            int sequencesOfEvents = processFlowValidator.countEventSequences(model);
+            int missingFunctions = getValidator().countFunctions(model) < 1 ? 1 : 0;
+            int missingStartNodes = getValidator().countStartNodes(model) < 1 ? 1 : 0;
+            int missingEndNodes = getValidator().countEndNodes(model) < 1 ? 1 : 0;
+            int invalidEvents = getValidator().countEvents(model) - getValidator().countValidEvents(model);
+            int invalidFunctions = getValidator().countFunctions(model) - getValidator().countValidFunctions(model);
+            int invalidConnectors = getValidator().countConnectors(model) - getValidator().countValidConnectors(model);
+            int invalidProcessInterfaces = getValidator().countProcessInterfaces(model) - getValidator().countValidProcessInterfaces(model);
+            int eventsMakeDecisions = getValidator().countEventDecisions(model);
+            int sequencesOfEvents = getValidator().countEventSequences(model);
 
             int undefinedResponsibilities = countUndefinedResponsibilities(model);
             int organizationalGaps = countOrganizationalGaps(model);
@@ -58,6 +61,13 @@ public class ARISGovernanceLog extends GovernanceLog {
                     undefinedResponsibilities, organizationalGaps, undefinedInputs, undefinedOutputs,
                         redundantInputs, redundantOutputs, unautomatedActivities, informationalGaps);
         }
+    }
+
+    @Override
+    public GovernanceLog processEnvironment() {
+        isEnvironmentEnabled = true;
+
+        return this;
     }
 
     private int countUndefinedResponsibilities(Model model) {
