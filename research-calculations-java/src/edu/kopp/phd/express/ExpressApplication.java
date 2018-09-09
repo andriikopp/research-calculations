@@ -10,6 +10,9 @@ public class ExpressApplication {
         System.out.println("ARIS");
         new ARISLandscape().getGovernanceLog().processEnvironment().analyze();
 
+        System.out.println("eEPC");
+        new ARISLandscape().getGovernanceLog().analyze();
+
         System.out.println("BPMN");
         new BPMNLandscape().getGovernanceLog().analyze();
 
