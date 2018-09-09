@@ -1,11 +1,14 @@
 package edu.kopp.phd.express.governance;
 
+import edu.kopp.phd.express.governance.plan.ModelFeatures;
+import edu.kopp.phd.express.governance.plan.similarity.patterns.ARISeEPCSearchPatterns;
+import edu.kopp.phd.express.governance.plan.similarity.patterns.ProcessEnvironmentSearchPatterns;
 import edu.kopp.phd.express.metamodel.Model;
 import edu.kopp.phd.express.metamodel.entity.Function;
 import edu.kopp.phd.express.standards.ProcessEnvironmentValidator;
 import edu.kopp.phd.express.standards.api.Validator;
 
-public class ARISGovernanceLog extends ProcessFlowGovernanceLog {
+public class ARISGovernanceLog extends BPMNGovernanceLog {
     private Validator validator;
 
     private boolean isEnvironmentEnabled;
@@ -57,9 +60,25 @@ public class ARISGovernanceLog extends ProcessFlowGovernanceLog {
                     model.getName(), size, density, connectivity, balance,
                     processFlowEvaluation, processEnvironmentEvaluation,
                     missingFunctions, missingStartNodes, missingEndNodes, invalidEvents, invalidFunctions, invalidConnectors,
-                        invalidProcessInterfaces, eventsMakeDecisions, sequencesOfEvents,
+                    invalidProcessInterfaces, eventsMakeDecisions, sequencesOfEvents,
                     undefinedResponsibilities, organizationalGaps, undefinedInputs, undefinedOutputs,
-                        redundantInputs, redundantOutputs, unautomatedActivities, informationalGaps);
+                    redundantInputs, redundantOutputs, unautomatedActivities, informationalGaps);
+
+            if (isEnvironmentEnabled) {
+                getPlan().getModelFeaturesList().add(new ModelFeatures(model,
+                        new int[]{undefinedResponsibilities, organizationalGaps, undefinedInputs, undefinedOutputs,
+                                redundantInputs, redundantOutputs, unautomatedActivities, informationalGaps}));
+            } else {
+                getPlan().getModelFeaturesList().add(new ModelFeatures(model,
+                        new int[]{missingFunctions, missingStartNodes, missingEndNodes, invalidEvents, invalidFunctions, invalidConnectors,
+                                invalidProcessInterfaces, eventsMakeDecisions, sequencesOfEvents}));
+            }
+        }
+
+        if (isEnvironmentEnabled) {
+            getPlan().plan(ProcessEnvironmentSearchPatterns.INSTANCE);
+        } else {
+            getPlan().plan(ARISeEPCSearchPatterns.INSTANCE);
         }
     }
 
