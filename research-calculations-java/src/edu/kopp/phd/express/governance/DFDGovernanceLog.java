@@ -1,13 +1,15 @@
 package edu.kopp.phd.express.governance;
 
+import edu.kopp.phd.express.governance.plan.ModelFeatures;
+import edu.kopp.phd.express.governance.plan.similarity.patterns.DFDSearchPatterns;
 import edu.kopp.phd.express.metamodel.Model;
 import edu.kopp.phd.express.standards.DataFlowValidator;
 import edu.kopp.phd.express.standards.api.Validator;
 
-public class DataFlowGovernanceLog extends GovernanceLog {
+public class DFDGovernanceLog extends GovernanceLog {
     private Validator validator;
 
-    public DataFlowGovernanceLog() {
+    public DFDGovernanceLog() {
         this.validator = new DataFlowValidator();
     }
 
@@ -32,6 +34,11 @@ public class DataFlowGovernanceLog extends GovernanceLog {
                     model.getName(), size, density, connectivity, balance,
                     evaluation,
                     invalidActivities, invalidDataStores, invalidExternalEntities, invalidDataFlows);
+
+            getPlan().getModelFeaturesList().add(new ModelFeatures(model,
+                    new int[]{invalidActivities, invalidDataStores, invalidExternalEntities, invalidDataFlows}));
         }
+
+        getPlan().plan(DFDSearchPatterns.INSTANCE);
     }
 }

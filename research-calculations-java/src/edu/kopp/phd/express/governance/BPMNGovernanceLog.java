@@ -1,13 +1,15 @@
 package edu.kopp.phd.express.governance;
 
+import edu.kopp.phd.express.governance.plan.ModelFeatures;
+import edu.kopp.phd.express.governance.plan.similarity.patterns.BPMNSearchPatterns;
 import edu.kopp.phd.express.metamodel.Model;
 import edu.kopp.phd.express.standards.ProcessFlowValidator;
 import edu.kopp.phd.express.standards.api.Validator;
 
-public class ProcessFlowGovernanceLog extends GovernanceLog {
+public class BPMNGovernanceLog extends GovernanceLog {
     private Validator validator;
 
-    public ProcessFlowGovernanceLog() {
+    public BPMNGovernanceLog() {
         this.validator = new ProcessFlowValidator();
     }
 
@@ -34,7 +36,12 @@ public class ProcessFlowGovernanceLog extends GovernanceLog {
                     model.getName(), size, density, connectivity, balance,
                     evaluation,
                     missingFunctions, missingStartNodes, missingEndNodes, invalidEvents, invalidFunctions, invalidConnectors);
+
+            getPlan().getModelFeaturesList().add(new ModelFeatures(model,
+                    new int[]{missingFunctions, missingStartNodes, missingEndNodes, invalidEvents, invalidFunctions, invalidConnectors}));
         }
+
+        getPlan().plan(BPMNSearchPatterns.INSTANCE);
     }
 
     public Validator getValidator() {
