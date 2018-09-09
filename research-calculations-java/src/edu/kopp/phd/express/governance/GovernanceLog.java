@@ -1,5 +1,6 @@
 package edu.kopp.phd.express.governance;
 
+import edu.kopp.phd.express.governance.plan.GovernancePlan;
 import edu.kopp.phd.express.metamodel.Model;
 
 import java.util.ArrayList;
@@ -7,9 +8,11 @@ import java.util.List;
 
 public abstract class GovernanceLog {
     private List<Model> landscape;
+    private GovernancePlan plan;
 
     public GovernanceLog() {
         this.landscape = new ArrayList<>();
+        this.plan = new GovernancePlan(new ArrayList<>());
     }
 
     public abstract void analyze();
@@ -35,5 +38,13 @@ public abstract class GovernanceLog {
 
     public void setLandscape(List<Model> landscape) {
         this.landscape = landscape;
+    }
+
+    public GovernancePlan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(GovernancePlan plan) {
+        this.plan = plan;
     }
 }
