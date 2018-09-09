@@ -1,12 +1,12 @@
 package edu.kopp.phd.express.landscape;
 
-import edu.kopp.phd.express.governance.ProcessFlowGovernanceLog;
+import edu.kopp.phd.express.governance.BPMNGovernanceLog;
 import edu.kopp.phd.express.metamodel.ModelBuilder;
 
 public class BPMNLandscape extends Landscape {
 
     public BPMNLandscape() {
-        super(new ProcessFlowGovernanceLog());
+        super(new BPMNGovernanceLog());
     }
 
     /* Conceptdraw */

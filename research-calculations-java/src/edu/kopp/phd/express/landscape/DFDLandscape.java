@@ -1,12 +1,12 @@
 package edu.kopp.phd.express.landscape;
 
-import edu.kopp.phd.express.governance.DataFlowGovernanceLog;
+import edu.kopp.phd.express.governance.DFDGovernanceLog;
 import edu.kopp.phd.express.metamodel.ModelBuilder;
 
 public class DFDLandscape extends Landscape {
 
     public DFDLandscape() {
-        super(new DataFlowGovernanceLog());
+        super(new DFDGovernanceLog());
     }
 
     /* Conceptdraw */
