@@ -9,7 +9,7 @@ public interface Validator {
 
     default void ignoreRegulations() { }
 
-    default int sgn(int value) {
+    default double sgn(double value) {
         return value > 0 ? 1 : 0;
     }
 

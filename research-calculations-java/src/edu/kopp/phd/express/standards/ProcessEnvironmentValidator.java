@@ -20,11 +20,11 @@ public class ProcessEnvironmentValidator implements Validator {
 
     @Override
     public double validate(Model model) {
-        return org * (countFunctions(model) - countValidOrgFunctions(model)) +
-                in * (countFunctions(model) - countValidInFunctions(model)) +
-                reg * (countFunctions(model) - countValidRegFunctions(model)) +
-                out * (countFunctions(model) - countValidOutFunctions(model)) +
-                app * (countFunctions(model) - countValidAppFunctions(model));
+        return (countFunctions(model) - countValidOrgFunctions(model)) +
+                (countFunctions(model) - countValidInFunctions(model)) +
+                sgn(reg) * (countFunctions(model) - countValidRegFunctions(model)) +
+                (countFunctions(model) - countValidOutFunctions(model)) +
+                (countFunctions(model) - countValidAppFunctions(model));
     }
 
     @Override
