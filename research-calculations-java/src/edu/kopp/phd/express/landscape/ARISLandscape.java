@@ -13,7 +13,7 @@ public class ARISLandscape extends Landscape {
     {
         /* Image Processing */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Image Processing")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Image Processing (Conceptdraw)")
                     .event(0, 1)
                     .function(1, 1)
                     .xor(2, 1)
@@ -40,7 +40,7 @@ public class ARISLandscape extends Landscape {
 
         /* Login and Registration */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Login and Registration")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Login and Registration (Conceptdraw)")
                     .event(0, 1)
                     .function(1, 1)
                     .xor(1, 2)
@@ -83,7 +83,7 @@ public class ARISLandscape extends Landscape {
 
         /* Main Process */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Main Process")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Main Process (Conceptdraw)")
                     .event(0, 1)
                     .function(1, 1, 1, 0, 0, 0, 1)
                     .xor(1, 2)
@@ -100,7 +100,7 @@ public class ARISLandscape extends Landscape {
 
         /* Order Processing */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Order Processing")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Order Processing (Conceptdraw)")
                     .event(0, 1)
                     .function(1, 1, 1, 1, 0, 0, 1)
                     .event(1, 1)
@@ -115,7 +115,7 @@ public class ARISLandscape extends Landscape {
 
         /* Wikipedia Editing */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Wikipedia Editing")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Wikipedia Editing (Conceptdraw)")
                     .event(0, 1)
                     .function(1, 1)
                     .xor(1, 2)
@@ -142,7 +142,7 @@ public class ARISLandscape extends Landscape {
     {
         /* Asset Management */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Asset Management")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Asset Management (EDraw)")
                     .event(0, 1)
                     .event(0, 1)
                     .function(1, 1, 1, 5, 0, 1, 0)
@@ -161,7 +161,7 @@ public class ARISLandscape extends Landscape {
 
         /* Online Sales */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Online Sales")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Online Sales (EDraw)")
                     .function(0, 1, 1, 0, 0, 0, 0)
                     .event(1, 1)
                     .function(1, 1, 1, 0, 0, 0, 0)
@@ -177,7 +177,7 @@ public class ARISLandscape extends Landscape {
 
         /* Order Book */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Order Book")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Order Book (EDraw)")
                     .event(0, 1)
                     .function(1, 1, 1, 0, 0, 3, 0)
                     .event(1, 1)
@@ -201,7 +201,7 @@ public class ARISLandscape extends Landscape {
 
         /* Product Development */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Product Development")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Product Development (EDraw)")
                     .event(0, 1)
                     .function(1, 1, 1, 1, 0, 0, 0)
                     .event(1, 1)
@@ -218,7 +218,7 @@ public class ARISLandscape extends Landscape {
 
         /* Product Order */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Product Order")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Product Order (EDraw)")
                     .event(0, 1)
                     .function(1, 1, 0, 1, 0, 0, 0)
                     .xor(1, 2)
@@ -247,7 +247,7 @@ public class ARISLandscape extends Landscape {
 
         /* Repair */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Repair")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Repair (EDraw)")
                     .event(0, 1)
                     .function(1, 1)
                     .xor(1, 3)
@@ -281,7 +281,7 @@ public class ARISLandscape extends Landscape {
 
         /* Stocktaking */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Stocktaking")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Stocktaking (EDraw)")
                     .event(0, 1, false, true)
                     .xor(1, 2)
                     .event(1, 1)
@@ -304,7 +304,7 @@ public class ARISLandscape extends Landscape {
     {
         /* Asset Management */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Asset Management")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Asset Management (MyDraw)")
                     .event(0, 1)
                     .event(0, 1)
                     .function(1, 1, 1, 5, 0, 1, 0)
@@ -323,7 +323,7 @@ public class ARISLandscape extends Landscape {
 
         /* Loan Application */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Loan Application")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Loan Application (MyDraw)")
                     .event(0, 1, false, true)
                     .xor(1, 2)
                     .event(1, 1, false, true)
@@ -346,7 +346,7 @@ public class ARISLandscape extends Landscape {
 
         /* Login and Registration */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Login and Registration")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Login and Registration (MyDraw)")
                     .event(0, 1)
                     .function(1, 1)
                     .xor(1, 2)
@@ -389,7 +389,7 @@ public class ARISLandscape extends Landscape {
 
         /* Order Book */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Order Book")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Order Book (MyDraw)")
                     .event(0, 1)
                     .function(1, 1, 1, 0, 0, 3, 0)
                     .event(1, 1)
@@ -413,7 +413,7 @@ public class ARISLandscape extends Landscape {
 
         /* Product Development */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Product Development")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Product Development (MyDraw)")
                     .event(0, 1)
                     .function(1, 1, 1, 1, 0, 0, 0)
                     .event(1, 1)
@@ -430,7 +430,7 @@ public class ARISLandscape extends Landscape {
 
         /* Product Order */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Product Order")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Product Order (MyDraw)")
                     .event(0, 1)
                     .function(1, 1, 0, 1, 0, 0, 0)
                     .xor(1, 2)
@@ -459,7 +459,7 @@ public class ARISLandscape extends Landscape {
 
         /* Repair */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Repair")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Repair (MyDraw)")
                     .event(0, 1)
                     .function(1, 1)
                     .xor(1, 3)
@@ -493,7 +493,7 @@ public class ARISLandscape extends Landscape {
 
         /* Stocktaking */
         {
-            getGovernanceLog().getLandscape().add(ModelBuilder.model("Stocktaking")
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Stocktaking (MyDraw)")
                     .event(0, 1, false, true)
                     .xor(1, 2)
                     .event(1, 1)
