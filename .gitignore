@@ -6,3 +6,6 @@ research-calculations-python/.idea
 research-calculations-python/venv
 
 *.lnk
+
+# Ignore R history
+research-calculations-r/.Rhistory
