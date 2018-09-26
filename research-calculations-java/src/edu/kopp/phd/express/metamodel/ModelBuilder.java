@@ -97,6 +97,28 @@ public class ModelBuilder {
         return this;
     }
 
+    public ModelBuilder function(ProcessEnvironment environment) {
+        model.getNodes().add(new Function(model.nextNodeLabel(), 0, 0,
+                environment.getOrganizationalUnits(),
+                environment.getInputs(),
+                environment.getRegulations(),
+                environment.getOutputs(),
+                environment.getApplicationSystems()));
+
+        return this;
+    }
+
+    public ModelBuilder function(String label, ProcessEnvironment environment) {
+        model.getNodes().add(new Function(label, 0, 0,
+                environment.getOrganizationalUnits(),
+                environment.getInputs(),
+                environment.getRegulations(),
+                environment.getOutputs(),
+                environment.getApplicationSystems()));
+
+        return this;
+    }
+
     public static ProcessEnvironment environment(int org, int in, int reg, int out, int app) {
         return new ProcessEnvironment(org, in, reg, out, app);
     }
