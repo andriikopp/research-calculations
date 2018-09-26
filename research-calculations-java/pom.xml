@@ -3,8 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>research-calculations-java</groupId>
 	<artifactId>research-calculations-java</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>research-calculations-java</name>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>repository</module>
+    </modules>
+    <name>research-calculations-java</name>
 	<description>Research calculations made during PhD study.</description>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
