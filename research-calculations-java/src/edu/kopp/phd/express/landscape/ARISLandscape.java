@@ -94,7 +94,7 @@ public class ARISLandscape extends Landscape {
                     .event(1, 1)
                     .function(1, 1, 1, 0, 0, 0, 0)
                     .event(1, 1)
-                    .pinterface(1, 0)
+                    .processInterface(1, 0)
                     .finish());
         }
 
@@ -236,7 +236,7 @@ public class ARISLandscape extends Landscape {
                     .event(1, 1)
                     .event(1, 1)
                     .function(1, 1)
-                    .pinterface(1, 1)
+                    .processInterface(1, 1)
                     .event(1, 1)
                     .event(1, 1)
                     .or(2, 1)
@@ -331,14 +331,14 @@ public class ARISLandscape extends Landscape {
                     .xor(1, 2)
                     .event(1, 1)
                     .event(1, 1)
-                    .pinterface(1, 1)
+                    .processInterface(1, 1)
                     .xor(1, 1)
                     .xor(1, 2)
                     .event(1, 1)
                     .event(1, 1)
                     .xor(3, 1)
-                    .pinterface(1, 1)
-                    .pinterface(1, 1)
+                    .processInterface(1, 1)
+                    .processInterface(1, 1)
                     .event(1, 0)
                     .event(1, 0)
                     .finish());
