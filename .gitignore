@@ -9,3 +9,4 @@ research-calculations-python/venv
 
 # Ignore R history
 research-calculations-r/.Rhistory
+research-calculations-r/.RData
