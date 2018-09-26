@@ -19,8 +19,6 @@ public class ARISGovernanceLog extends BPMNGovernanceLog {
 
     @Override
     public void analyze() {
-        validator.ignoreRegulations();
-
         for (Model model : getLandscape()) {
             if (isEnvironmentEnabled) {
                 model.enableEnvironment();
@@ -80,6 +78,13 @@ public class ARISGovernanceLog extends BPMNGovernanceLog {
         } else {
             getPlan().plan(ARISeEPCSearchPatterns.INSTANCE);
         }
+    }
+
+    @Override
+    public GovernanceLog ignoreRegulations() {
+        validator.ignoreRegulations();
+
+        return this;
     }
 
     @Override

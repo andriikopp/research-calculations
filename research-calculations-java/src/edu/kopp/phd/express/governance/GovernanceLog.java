@@ -17,6 +17,11 @@ public abstract class GovernanceLog {
 
     public abstract void analyze();
 
+    public GovernanceLog ignoreRegulations() {
+        // STUB
+        return this;
+    }
+
     public GovernanceLog processEnvironment() {
         // STUB
         return this;

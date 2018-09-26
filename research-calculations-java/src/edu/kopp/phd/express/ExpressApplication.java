@@ -8,7 +8,7 @@ public class ExpressApplication {
 
     public static void main(String[] args) {
         System.out.println("ARIS");
-        new ARISLandscape().getGovernanceLog().processEnvironment().analyze();
+        new ARISLandscape().getGovernanceLog().processEnvironment().ignoreRegulations().analyze();
 
         System.out.println("eEPC");
         new ARISLandscape().getGovernanceLog().analyze();
