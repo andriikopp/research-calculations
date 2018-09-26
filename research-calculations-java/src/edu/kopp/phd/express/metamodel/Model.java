@@ -98,7 +98,7 @@ public class Model {
             }
         }
 
-        return arcs;
+        return arcs / 2.0;
     }
 
     public String getName() {
