@@ -17,6 +17,36 @@ public class BusinessModel extends GenericModel {
         super(name, granularity);
     }
 
+    public void createSequenceFlow(Resource predecessor, Resource node) {
+        getStatements().createStatement(predecessor, isPredecessorOf, node);
+    }
+
+    public void createSequenceFlow(Resource predecessor, Resource... nodes) {
+        for (Resource resource : nodes) {
+            createSequenceFlow(predecessor, resource);
+        }
+    }
+
+    public void createInput(Resource node, Resource input) {
+        getStatements().createStatement(node, requires, input);
+    }
+
+    public void createOutput(Resource node, Resource output) {
+        getStatements().createStatement(node, produces, output);
+    }
+
+    public void createInput(Resource node, Resource... inputs) {
+        for (Resource resource : inputs) {
+            createInput(node, resource);
+        }
+    }
+
+    public void createOutput(Resource node, Resource... outputs) {
+        for (Resource resource : outputs) {
+            createOutput(node, resource);
+        }
+    }
+
     public void createResponsible(Resource function, Resource unit) {
         getStatements().createStatement(function, isPerformedBy, unit);
     }

@@ -31,7 +31,7 @@ public class DataFlowModel extends GenericModel {
         }
     }
 
-    public void createOutputs(Resource node, Resource... outputs) {
+    public void createOutput(Resource node, Resource... outputs) {
         for (Resource resource : outputs) {
             createOutput(node, resource);
         }

@@ -174,6 +174,38 @@ public class GenericModel {
         isRegulatedBy = statements.createProperty(NS_PROPERTY + "isRegulatedBy");
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GenericModel that = (GenericModel) o;
+
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (granularity != null ? !granularity.equals(that.granularity) : that.granularity != null) return false;
+        if (relations != null ? !relations.equals(that.relations) : that.relations != null) return false;
+        return statements != null ? statements.equals(that.statements) : that.statements == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (granularity != null ? granularity.hashCode() : 0);
+        result = 31 * result + (relations != null ? relations.hashCode() : 0);
+        result = 31 * result + (statements != null ? statements.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GenericModel{" +
+                "name='" + name + '\'' +
+                ", granularity='" + granularity + '\'' +
+                ", relations=" + relations +
+                ", statements=" + statements +
+                '}';
+    }
+
     // Getters and setters section.
     public String getName() {
         return name;
