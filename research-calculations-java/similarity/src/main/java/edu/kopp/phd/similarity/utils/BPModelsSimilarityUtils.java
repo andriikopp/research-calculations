@@ -1,10 +1,7 @@
 package main.java.edu.kopp.phd.similarity.utils;
 
 import main.java.edu.kopp.phd.repository.domain.model.GenericModel;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.ResIterator;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.rdf.model.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,7 +16,7 @@ public final class BPModelsSimilarityUtils {
 
         Set<String> subjectsUnion = setsUnion(firstStatements.keySet(), secondStatements.keySet());
 
-        double value = weight / (double) subjectsUnion.size();
+        double value = 0;
 
         for (String subject : subjectsUnion) {
             Set<String> firstObjects = firstStatements.get(subject);
@@ -29,7 +26,7 @@ public final class BPModelsSimilarityUtils {
                     secondObjects == null ? new HashSet<>() : secondObjects);
         }
 
-        return value;
+        return (weight / (double) subjectsUnion.size()) * value;
     }
 
     public static double setsSimilarity(Set<String> first, Set<String> second) {
@@ -63,7 +60,7 @@ public final class BPModelsSimilarityUtils {
                 Set<String> subsequents = new HashSet<>();
 
                 for (StmtIterator stmt = resource.listProperties(property); stmt.hasNext(); ) {
-                    subsequents.add(getLabel(model, stmt.nextStatement().getObject().asResource()));
+                    subsequents.add(getLabel(model, stmt.nextStatement().getObject()));
                 }
 
                 flowObjects.put(getLabel(model, resource), subsequents);
@@ -73,12 +70,16 @@ public final class BPModelsSimilarityUtils {
         return flowObjects;
     }
 
-    private static String getLabel(GenericModel model, Resource resource) {
+    private static String getLabel(GenericModel model, RDFNode node) {
         for (StmtIterator iterator = model.getStatements().listStatements(); iterator.hasNext(); ) {
-            Resource subject = iterator.nextStatement().getSubject();
+            Statement statement = iterator.nextStatement();
 
-            if (subject.equals(resource)) {
-                return subject.getProperty(model.getHasLabel()).getObject().asLiteral().getString();
+            if (statement.getSubject().equals(node)) {
+                return statement.getSubject().getProperty(model.getHasLabel()).getObject().asLiteral().getString();
+            }
+
+            if (statement.getPredicate().equals(model.getA()) && statement.getObject().equals(node)) {
+                return statement.getObject().asLiteral().getString();
             }
         }
 
