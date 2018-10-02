@@ -7,23 +7,26 @@ import org.apache.jena.rdf.model.Resource;
  *
  * @author Andrii Kopp
  */
-public class ControlFlowModel extends GenericModel {
+public abstract class ControlFlowModel extends GenericModel {
 
-    public ControlFlowModel(String name) {
-        super(name);
+    protected ControlFlowModel(String name, String process) {
+        super(name, process);
     }
 
-    public ControlFlowModel(String name, String granularity) {
-        super(name, granularity);
+    protected ControlFlowModel(String name, String process, String granularity) {
+        super(name, process, granularity);
     }
 
-    public void createSequenceFlow(Resource predecessor, Resource node) {
-        getStatements().createStatement(predecessor, isPredecessorOf, node);
+    public ControlFlowModel createSequenceFlow(Resource predecessor, Resource node) {
+        getStatements().add(getStatements().createStatement(predecessor, isPredecessorOf, node));
+        return this;
     }
 
-    public void createSequenceFlow(Resource predecessor, Resource... nodes) {
+    public ControlFlowModel createSequenceFlow(Resource predecessor, Resource... nodes) {
         for (Resource resource : nodes) {
-            createSequenceFlow(predecessor, resource);
+            getStatements().add(getStatements().createStatement(predecessor, isPredecessorOf, resource));
         }
+
+        return this;
     }
 }

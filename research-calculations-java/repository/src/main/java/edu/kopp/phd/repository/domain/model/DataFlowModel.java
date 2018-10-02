@@ -7,33 +7,39 @@ import org.apache.jena.rdf.model.Resource;
  *
  * @author Andrii Kopp
  */
-public class DataFlowModel extends GenericModel {
+public abstract class DataFlowModel extends GenericModel {
 
-    public DataFlowModel(String name) {
-        super(name);
+    protected DataFlowModel(String name, String process) {
+        super(name, process);
     }
 
-    public DataFlowModel(String name, String granularity) {
-        super(name, granularity);
+    protected DataFlowModel(String name, String process, String granularity) {
+        super(name, process, granularity);
     }
 
-    public void createInput(Resource node, Resource input) {
-        getStatements().createStatement(node, requires, input);
+    public DataFlowModel createInput(Resource node, Resource input) {
+        getStatements().add(getStatements().createStatement(node, requires, input));
+        return this;
     }
 
-    public void createOutput(Resource node, Resource output) {
-        getStatements().createStatement(node, produces, output);
+    public DataFlowModel createOutput(Resource node, Resource output) {
+        getStatements().add(getStatements().createStatement(node, produces, output));
+        return this;
     }
 
-    public void createInput(Resource node, Resource... inputs) {
+    public DataFlowModel createInput(Resource node, Resource... inputs) {
         for (Resource resource : inputs) {
-            createInput(node, resource);
+            getStatements().add(getStatements().createStatement(node, requires, resource));
         }
+
+        return this;
     }
 
-    public void createOutput(Resource node, Resource... outputs) {
+    public DataFlowModel createOutput(Resource node, Resource... outputs) {
         for (Resource resource : outputs) {
-            createOutput(node, resource);
+            getStatements().add(getStatements().createStatement(node, produces, resource));
         }
+
+        return this;
     }
 }

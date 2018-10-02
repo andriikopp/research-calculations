@@ -7,73 +7,91 @@ import org.apache.jena.rdf.model.Resource;
  *
  * @author Andrii Kopp
  */
-public class BusinessModel extends GenericModel {
+public abstract class BusinessModel extends GenericModel {
 
-    public BusinessModel(String name) {
-        super(name);
+    protected BusinessModel(String name, String process) {
+        super(name, process);
     }
 
-    public BusinessModel(String name, String granularity) {
-        super(name, granularity);
+    protected BusinessModel(String name, String process, String granularity) {
+        super(name, process, granularity);
     }
 
-    public void createSequenceFlow(Resource predecessor, Resource node) {
-        getStatements().createStatement(predecessor, isPredecessorOf, node);
+    public BusinessModel createSequenceFlow(Resource predecessor, Resource node) {
+        getStatements().add(getStatements().createStatement(predecessor, isPredecessorOf, node));
+        return this;
     }
 
-    public void createSequenceFlow(Resource predecessor, Resource... nodes) {
+    public BusinessModel createSequenceFlow(Resource predecessor, Resource... nodes) {
         for (Resource resource : nodes) {
-            createSequenceFlow(predecessor, resource);
+            getStatements().add(getStatements().createStatement(predecessor, isPredecessorOf, resource));
         }
+
+        return this;
     }
 
-    public void createInput(Resource node, Resource input) {
-        getStatements().createStatement(node, requires, input);
+    public BusinessModel createInput(Resource node, Resource input) {
+        getStatements().add(getStatements().createStatement(node, requires, input));
+        return this;
     }
 
-    public void createOutput(Resource node, Resource output) {
-        getStatements().createStatement(node, produces, output);
+    public BusinessModel createOutput(Resource node, Resource output) {
+        getStatements().add(getStatements().createStatement(node, produces, output));
+        return this;
     }
 
-    public void createInput(Resource node, Resource... inputs) {
+    public BusinessModel createInput(Resource node, Resource... inputs) {
         for (Resource resource : inputs) {
-            createInput(node, resource);
+            getStatements().add(getStatements().createStatement(node, requires, resource));
         }
+
+        return this;
     }
 
-    public void createOutput(Resource node, Resource... outputs) {
+    public BusinessModel createOutput(Resource node, Resource... outputs) {
         for (Resource resource : outputs) {
-            createOutput(node, resource);
+            getStatements().add(getStatements().createStatement(node, produces, resource));
         }
+
+        return this;
     }
 
-    public void createResponsible(Resource function, Resource unit) {
-        getStatements().createStatement(function, isPerformedBy, unit);
+    public BusinessModel createResponsible(Resource function, Resource unit) {
+        getStatements().add(getStatements().createStatement(function, isPerformedBy, unit));
+        return this;
     }
 
-    public void createSupport(Resource function, Resource system) {
-        getStatements().createStatement(function, isSupportedBy, system);
+    public BusinessModel createSupport(Resource function, Resource system) {
+        getStatements().add(getStatements().createStatement(function, isSupportedBy, system));
+        return this;
     }
 
-    public void createRule(Resource function, Resource regulation) {
-        getStatements().createStatement(function, isRegulatedBy, regulation);
+    public BusinessModel createRule(Resource function, Resource regulation) {
+        getStatements().add(getStatements().createStatement(function, isRegulatedBy, regulation));
+        return this;
     }
 
-    public void createResponsible(Resource function, Resource... units) {
+    public BusinessModel createResponsible(Resource function, Resource... units) {
         for (Resource resource : units) {
-            createResponsible(function, resource);
+            getStatements().add(getStatements().createStatement(function, isPerformedBy, resource));
         }
+
+        return this;
     }
 
-    public void createSupport(Resource function, Resource... systems) {
+    public BusinessModel createSupport(Resource function, Resource... systems) {
         for (Resource resource : systems) {
-            createSupport(function, resource);
+            getStatements().add(getStatements().createStatement(function, isSupportedBy, resource));
         }
+
+        return this;
     }
 
-    public void createRule(Resource function, Resource... regulations) {
+    public BusinessModel createRule(Resource function, Resource... regulations) {
         for (Resource resource : regulations) {
-            createRule(function, resource);
+            getStatements().add(getStatements().createStatement(function, isRegulatedBy, resource));
         }
+
+        return this;
     }
 }

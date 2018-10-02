@@ -1,9 +1,6 @@
 package main.java.edu.kopp.phd.repository.domain.model;
 
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.*;
 
 import java.util.*;
 
@@ -13,8 +10,9 @@ import java.util.*;
  *
  * @author Andrii Kopp
  */
-public class GenericModel {
+public abstract class GenericModel {
     private String name;
+    private Resource process;
     private String granularity;
 
     // Mapping relations between similar business process models.
@@ -24,9 +22,10 @@ public class GenericModel {
     private Model statements;
 
     // Namespaces of the corresponding resources, properties, and types.
-    public static final String NS_RESOURCE = "http://www.repository.edu/resource#";
-    public static final String NS_PROPERTY = "http://www.repository.edu/relation#";
-    public static final String NS_TYPE = "http://www.repository.edu/type#";
+    public static final String NS = "http://www.bpmodel.edu/";
+    public static final String NS_RESOURCE = NS + "resource#";
+    public static final String NS_PROPERTY = NS + "relation#";
+    public static final String NS_TYPE = NS + "type#";
 
     // Prepared properties that should be used to form RDF statements.
     protected Property a;
@@ -37,130 +36,188 @@ public class GenericModel {
     protected Property requires;
     protected Property produces;
     protected Property isRegulatedBy;
+    protected Property hasLabel;
 
-    public GenericModel(String name) {
+    // Properties to serialize models using Apache Jena TDB.
+    protected Property nameIs;
+    protected Property processIs;
+    protected Property granularityIs;
+
+    // Counts resources of a certain model.
+    private int resourceCounter = 1;
+
+    protected GenericModel(String name, String process) {
         this.name = name;
         this.relations = new HashMap<>();
         this.statements = ModelFactory.createDefaultModel();
+        this.process = statements.createResource(NS_RESOURCE + trimURI(process));
 
         initProperties();
+        initModel();
     }
 
-    public GenericModel(String name, String granularity) {
+    protected GenericModel(String name, String process, String granularity) {
         this.name = name;
         this.granularity = granularity;
         this.relations = new HashMap<>();
         this.statements = ModelFactory.createDefaultModel();
+        this.process = statements.createResource(NS_RESOURCE + trimURI(process));
 
         initProperties();
+        initModel();
     }
 
     public Resource createStartEvent(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "startEvent");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "startEvent"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createIntermediateEvent(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "intermediateEvent");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "intermediateEvent"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createEndEvent(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "endEvent");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "endEvent"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createAndSplitGateway(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "andSplit");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "andSplit"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createAndJoinGateway(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "andJoin");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "andJoin"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createOrSplitGateway(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "orSplit");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "orSplit"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createOrJoinGateway(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "orJoin");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "orJoin"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createXorSplitGateway(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "xorSplit");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "xorSplit"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createXorJoinGateway(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "xorJoin");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "xorJoin"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createFunction(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "function");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "function"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createProcess(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "process");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "process"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createDataStore(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "dataStore");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "dataStore"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createExternalEntity(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "externalEntity");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "externalEntity"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createDepartment(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "department");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "department"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createPosition(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "position");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "position"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createApplicationSystem(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "applicationSystem");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "applicationSystem"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createBusinessObject(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "businessObject");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "businessObject"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createDataFlow(String name) {
-        Resource resource = statements.createResource(NS_RESOURCE + name);
-        statements.createStatement(resource, a, NS_TYPE + "dataFlow");
+        Resource resource = statements.createResource(getURI());
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "dataFlow"));
+        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
+    }
+
+    /**
+     * Used to return the instance of a current model.
+     *
+     * @return
+     */
+    public GenericModel finish() {
+        return this;
     }
 
     private void initProperties() {
@@ -172,6 +229,31 @@ public class GenericModel {
         requires = statements.createProperty(NS_PROPERTY + "requires");
         produces = statements.createProperty(NS_PROPERTY + "produces");
         isRegulatedBy = statements.createProperty(NS_PROPERTY + "isRegulatedBy");
+        hasLabel = statements.createProperty(NS_PROPERTY + "hasLabel");
+
+        nameIs = statements.createProperty(NS_PROPERTY + "nameIs");
+        processIs = statements.createProperty(NS_PROPERTY + "processIs");
+        granularityIs = statements.createProperty(NS_PROPERTY + "granularityIs");
+    }
+
+    private void initModel() {
+        Resource model = statements.createResource(NS_RESOURCE + "model");
+        statements.add(statements.createStatement(model, nameIs, name));
+        statements.add(statements.createStatement(model, processIs, process));
+
+        if (granularity != null) {
+            statements.add(statements.createStatement(model, granularityIs, granularity));
+        }
+    }
+
+    private String getURI() {
+        String identifier = NS_RESOURCE + "n" + resourceCounter;
+        resourceCounter++;
+        return identifier;
+    }
+
+    private String trimURI(String value) {
+        return value.replaceAll("\\s+", "_");
     }
 
     @Override
@@ -215,6 +297,14 @@ public class GenericModel {
         this.name = name;
     }
 
+    public Resource getProcess() {
+        return process;
+    }
+
+    public void setProcess(Resource process) {
+        this.process = process;
+    }
+
     public String getGranularity() {
         return granularity;
     }
@@ -237,5 +327,42 @@ public class GenericModel {
 
     public void setStatements(Model statements) {
         this.statements = statements;
+    }
+
+    // Getters for properties.
+    public Property getA() {
+        return a;
+    }
+
+    public Property getIsPredecessorOf() {
+        return isPredecessorOf;
+    }
+
+    public Property getIsComposedOf() {
+        return isComposedOf;
+    }
+
+    public Property getIsPerformedBy() {
+        return isPerformedBy;
+    }
+
+    public Property getIsSupportedBy() {
+        return isSupportedBy;
+    }
+
+    public Property getRequires() {
+        return requires;
+    }
+
+    public Property getProduces() {
+        return produces;
+    }
+
+    public Property getIsRegulatedBy() {
+        return isRegulatedBy;
+    }
+
+    public Property getHasLabel() {
+        return hasLabel;
     }
 }
