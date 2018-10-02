@@ -104,50 +104,50 @@ public abstract class GenericModel {
         return resource;
     }
 
-    public Resource createAndSplitGateway(String name) {
+    public Resource createAndSplitGateway() {
         Resource resource = statements.createResource(getURI());
         statements.add(statements.createStatement(resource, a, NS_TYPE + "andSplit"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, "andSplit"));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createAndJoinGateway(String name) {
+    public Resource createAndJoinGateway() {
         Resource resource = statements.createResource(getURI());
         statements.add(statements.createStatement(resource, a, NS_TYPE + "andJoin"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, "andJoin"));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createOrSplitGateway(String name) {
+    public Resource createOrSplitGateway() {
         Resource resource = statements.createResource(getURI());
         statements.add(statements.createStatement(resource, a, NS_TYPE + "orSplit"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, "orSplit"));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createOrJoinGateway(String name) {
+    public Resource createOrJoinGateway() {
         Resource resource = statements.createResource(getURI());
         statements.add(statements.createStatement(resource, a, NS_TYPE + "orJoin"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, "orJoin"));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createXorSplitGateway(String name) {
+    public Resource createXorSplitGateway() {
         Resource resource = statements.createResource(getURI());
         statements.add(statements.createStatement(resource, a, NS_TYPE + "xorSplit"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, "xorSplit"));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createXorJoinGateway(String name) {
+    public Resource createXorJoinGateway() {
         Resource resource = statements.createResource(getURI());
         statements.add(statements.createStatement(resource, a, NS_TYPE + "xorJoin"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, "xorJoin"));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
