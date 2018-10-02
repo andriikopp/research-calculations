@@ -8,6 +8,7 @@ import main.java.edu.kopp.phd.repository.domain.model.ControlFlowModel;
  * @author Andrii Kopp
  */
 public class BPMNModel extends ControlFlowModel {
+    public static final String NOTATION = "BPMN";
 
     private BPMNModel(String name, String process) {
         super(name, process);
@@ -15,6 +16,12 @@ public class BPMNModel extends ControlFlowModel {
 
     private BPMNModel(String name, String process, String granularity) {
         super(name, process, granularity);
+    }
+
+    @Override
+    public BPMNModel start() {
+        setupNotation(NOTATION);
+        return this;
     }
 
     public static BPMNModel createModel(String name, String process) {

@@ -12,6 +12,7 @@ import java.util.*;
  */
 public abstract class GenericModel {
     private String name;
+    private Resource model;
     private Resource process;
     private String granularity;
 
@@ -42,9 +43,12 @@ public abstract class GenericModel {
     protected Property nameIs;
     protected Property processIs;
     protected Property granularityIs;
+    protected Property notationIs;
 
     // Counts resources of a certain model.
     private int resourceCounter = 1;
+
+    private boolean isNotationDefined;
 
     protected GenericModel(String name, String process) {
         this.name = name;
@@ -212,11 +216,21 @@ public abstract class GenericModel {
     }
 
     /**
+     * Create model using this and only this method.
+     * This method defines business process modeling notation
+     */
+    public abstract GenericModel start();
+
+    /**
      * Used to return the instance of a current model.
      *
      * @return
      */
     public GenericModel finish() {
+        if (!isNotationDefined) {
+            throw new RuntimeException("Use start() method to define model properly!");
+        }
+
         return this;
     }
 
@@ -234,10 +248,11 @@ public abstract class GenericModel {
         nameIs = statements.createProperty(NS_PROPERTY + "nameIs");
         processIs = statements.createProperty(NS_PROPERTY + "processIs");
         granularityIs = statements.createProperty(NS_PROPERTY + "granularityIs");
+        notationIs = statements.createProperty(NS_PROPERTY + "notationIs");
     }
 
     private void initModel() {
-        Resource model = statements.createResource(NS_RESOURCE + "model");
+        model = statements.createResource(NS_RESOURCE + "model");
         statements.add(statements.createStatement(model, nameIs, name));
         statements.add(statements.createStatement(model, processIs, process));
 
@@ -254,6 +269,11 @@ public abstract class GenericModel {
 
     private String trimURI(String value) {
         return value.replaceAll("\\s+", "_");
+    }
+
+    protected void setupNotation(String notation) {
+        statements.add(statements.createStatement(model, notationIs, notation));
+        isNotationDefined = true;
     }
 
     @Override
@@ -295,6 +315,14 @@ public abstract class GenericModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Resource getModel() {
+        return model;
+    }
+
+    public void setModel(Resource model) {
+        this.model = model;
     }
 
     public Resource getProcess() {
