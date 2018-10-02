@@ -152,9 +152,9 @@ public abstract class GenericModel {
         return resource;
     }
 
-    public Resource createFunction(String name) {
+    public Resource createActivity(String name) {
         Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "function"));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + "activity"));
         statements.add(statements.createStatement(resource, hasLabel, name));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
