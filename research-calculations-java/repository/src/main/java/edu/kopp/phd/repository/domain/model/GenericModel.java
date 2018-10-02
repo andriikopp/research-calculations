@@ -50,6 +50,7 @@ public abstract class GenericModel {
     protected Property processIs;
     protected Property granularityIs;
     protected Property notationIs;
+    protected Property categoryIs;
 
     // Counts resources of a certain model.
     private int resourceCounter = 1;
@@ -62,10 +63,9 @@ public abstract class GenericModel {
         this.statements = ModelFactory.createDefaultModel();
         this.process = statements.createResource(NS_RESOURCE + trimURI(process.getName()));
 
-        process.getModels().add(this);
-
         initProperties();
         initModel();
+        initProcess(process);
     }
 
     protected GenericModel(String name, GenericProcess process, Granularity granularity) {
@@ -75,10 +75,9 @@ public abstract class GenericModel {
         this.statements = ModelFactory.createDefaultModel();
         this.process = statements.createResource(NS_RESOURCE + trimURI(process.getName()));
 
-        process.getModels().add(this);
-
         initProperties();
         initModel();
+        initProcess(process);
     }
 
     public Resource createStartEvent(String name) {
@@ -259,6 +258,7 @@ public abstract class GenericModel {
         processIs = statements.createProperty(NS_PROPERTY + "processIs");
         granularityIs = statements.createProperty(NS_PROPERTY + "granularityIs");
         notationIs = statements.createProperty(NS_PROPERTY + "notationIs");
+        categoryIs = statements.createProperty(NS_PROPERTY + "categoryIs");
     }
 
     private void initModel() {
@@ -269,6 +269,11 @@ public abstract class GenericModel {
         if (granularity != null) {
             statements.add(statements.createStatement(model, granularityIs, granularity.getName()));
         }
+    }
+
+    private void initProcess(GenericProcess process) {
+        statements.add(statements.createStatement(this.process, a, NS_TYPE + "process"));
+        statements.add(statements.createStatement(this.process, categoryIs, process.getCategory().getName()));
     }
 
     private String getURI() {
