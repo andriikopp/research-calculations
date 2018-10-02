@@ -16,6 +16,11 @@
             <artifactId>repository</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>research-calculations-java</groupId>
+            <artifactId>similarity</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     
 </project>
