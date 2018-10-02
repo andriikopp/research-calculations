@@ -7,6 +7,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>repository</module>
+        <module>gateway</module>
     </modules>
     <name>research-calculations-java</name>
 	<description>Research calculations made during PhD study.</description>
