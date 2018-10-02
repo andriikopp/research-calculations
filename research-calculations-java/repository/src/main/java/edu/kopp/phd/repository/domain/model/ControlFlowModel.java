@@ -1,5 +1,7 @@
 package main.java.edu.kopp.phd.repository.domain.model;
 
+import main.java.edu.kopp.phd.repository.domain.granularity.api.Granularity;
+import main.java.edu.kopp.phd.repository.domain.process.GenericProcess;
 import org.apache.jena.rdf.model.Resource;
 
 /**
@@ -9,11 +11,11 @@ import org.apache.jena.rdf.model.Resource;
  */
 public abstract class ControlFlowModel extends GenericModel {
 
-    protected ControlFlowModel(String name, String process) {
+    protected ControlFlowModel(String name, GenericProcess process) {
         super(name, process);
     }
 
-    protected ControlFlowModel(String name, String process, String granularity) {
+    protected ControlFlowModel(String name, GenericProcess process, Granularity granularity) {
         super(name, process, granularity);
     }
 

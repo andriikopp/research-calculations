@@ -1,6 +1,8 @@
 package main.java.edu.kopp.phd.repository.domain.model.notation;
 
+import main.java.edu.kopp.phd.repository.domain.granularity.api.Granularity;
 import main.java.edu.kopp.phd.repository.domain.model.DataFlowModel;
+import main.java.edu.kopp.phd.repository.domain.process.GenericProcess;
 
 /**
  * DFD business process model representation.
@@ -8,11 +10,11 @@ import main.java.edu.kopp.phd.repository.domain.model.DataFlowModel;
 public class DFDModel extends DataFlowModel {
     public static final String NOTATION = "DFD";
 
-    private DFDModel(String name, String process) {
+    private DFDModel(String name, GenericProcess process) {
         super(name, process);
     }
 
-    private DFDModel(String name, String process, String granularity) {
+    private DFDModel(String name, GenericProcess process, Granularity granularity) {
         super(name, process, granularity);
     }
 
@@ -22,11 +24,11 @@ public class DFDModel extends DataFlowModel {
         return this;
     }
 
-    public static DFDModel createModel(String name, String process) {
+    public static DFDModel createModel(String name, GenericProcess process) {
         return new DFDModel(name, process);
     }
 
-    public static DFDModel createModel(String name, String process, String granularity) {
+    public static DFDModel createModel(String name, GenericProcess process, Granularity granularity) {
         return new DFDModel(name, process, granularity);
     }
 }

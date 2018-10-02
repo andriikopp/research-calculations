@@ -1,8 +1,14 @@
 package main.java.edu.kopp.phd.repository.domain.model;
 
-import org.apache.jena.rdf.model.*;
+import main.java.edu.kopp.phd.repository.domain.granularity.api.Granularity;
+import main.java.edu.kopp.phd.repository.domain.process.GenericProcess;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Definition of a business process model.
@@ -14,7 +20,7 @@ public abstract class GenericModel {
     private String name;
     private Resource model;
     private Resource process;
-    private String granularity;
+    private Granularity granularity;
 
     // Mapping relations between similar business process models.
     private Map<GenericModel, Double> relations;
@@ -50,22 +56,22 @@ public abstract class GenericModel {
 
     private boolean isNotationDefined;
 
-    protected GenericModel(String name, String process) {
+    protected GenericModel(String name, GenericProcess process) {
         this.name = name;
         this.relations = new HashMap<>();
         this.statements = ModelFactory.createDefaultModel();
-        this.process = statements.createResource(NS_RESOURCE + trimURI(process));
+        this.process = statements.createResource(NS_RESOURCE + trimURI(process.getName()));
 
         initProperties();
         initModel();
     }
 
-    protected GenericModel(String name, String process, String granularity) {
+    protected GenericModel(String name, GenericProcess process, Granularity granularity) {
         this.name = name;
         this.granularity = granularity;
         this.relations = new HashMap<>();
         this.statements = ModelFactory.createDefaultModel();
-        this.process = statements.createResource(NS_RESOURCE + trimURI(process));
+        this.process = statements.createResource(NS_RESOURCE + trimURI(process.getName()));
 
         initProperties();
         initModel();
@@ -257,7 +263,7 @@ public abstract class GenericModel {
         statements.add(statements.createStatement(model, processIs, process));
 
         if (granularity != null) {
-            statements.add(statements.createStatement(model, granularityIs, granularity));
+            statements.add(statements.createStatement(model, granularityIs, granularity.getName()));
         }
     }
 
@@ -333,11 +339,11 @@ public abstract class GenericModel {
         this.process = process;
     }
 
-    public String getGranularity() {
+    public Granularity getGranularity() {
         return granularity;
     }
 
-    public void setGranularity(String granularity) {
+    public void setGranularity(Granularity granularity) {
         this.granularity = granularity;
     }
 

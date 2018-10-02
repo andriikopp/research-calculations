@@ -1,6 +1,8 @@
 package main.java.edu.kopp.phd.repository.domain.model.notation;
 
+import main.java.edu.kopp.phd.repository.domain.granularity.api.Granularity;
 import main.java.edu.kopp.phd.repository.domain.model.BusinessModel;
+import main.java.edu.kopp.phd.repository.domain.process.GenericProcess;
 
 /**
  * ARIS eEPC business process model representation.
@@ -8,11 +10,11 @@ import main.java.edu.kopp.phd.repository.domain.model.BusinessModel;
 public class ARISeEPCModel extends BusinessModel {
     public static final String NOTATION = "ARISeEPC";
 
-    private ARISeEPCModel(String name, String process) {
+    private ARISeEPCModel(String name, GenericProcess process) {
         super(name, process);
     }
 
-    private ARISeEPCModel(String name, String process, String granularity) {
+    private ARISeEPCModel(String name, GenericProcess process, Granularity granularity) {
         super(name, process, granularity);
     }
 
@@ -22,11 +24,11 @@ public class ARISeEPCModel extends BusinessModel {
         return this;
     }
 
-    public static ARISeEPCModel createModel(String name, String process) {
+    public static ARISeEPCModel createModel(String name, GenericProcess process) {
         return new ARISeEPCModel(name, process);
     }
 
-    public static ARISeEPCModel createModel(String name, String process, String granularity) {
+    public static ARISeEPCModel createModel(String name, GenericProcess process, Granularity granularity) {
         return new ARISeEPCModel(name, process, granularity);
     }
 }
