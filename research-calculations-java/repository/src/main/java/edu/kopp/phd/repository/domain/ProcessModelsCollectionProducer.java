@@ -1,5 +1,6 @@
-package main.java.edu.kopp.phd.repository.dao;
+package main.java.edu.kopp.phd.repository.domain;
 
+import main.java.edu.kopp.phd.repository.dao.InMemoryProcessModelsCollection;
 import main.java.edu.kopp.phd.repository.dao.api.ProcessModelsCollection;
 
 /**
