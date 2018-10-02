@@ -62,6 +62,8 @@ public abstract class GenericModel {
         this.statements = ModelFactory.createDefaultModel();
         this.process = statements.createResource(NS_RESOURCE + trimURI(process.getName()));
 
+        process.getModels().add(this);
+
         initProperties();
         initModel();
     }
@@ -72,6 +74,8 @@ public abstract class GenericModel {
         this.relations = new HashMap<>();
         this.statements = ModelFactory.createDefaultModel();
         this.process = statements.createResource(NS_RESOURCE + trimURI(process.getName()));
+
+        process.getModels().add(this);
 
         initProperties();
         initModel();
