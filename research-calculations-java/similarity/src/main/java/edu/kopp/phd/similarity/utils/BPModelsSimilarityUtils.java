@@ -55,34 +55,15 @@ public final class BPModelsSimilarityUtils {
 
         for (ResIterator iterator = model.getStatements().listSubjects(); iterator.hasNext(); ) {
             Resource resource = iterator.nextResource();
+            Set<String> subsequents = new HashSet<>();
 
-            if (resource.hasProperty(model.getHasLabel())) {
-                Set<String> subsequents = new HashSet<>();
-
-                for (StmtIterator stmt = resource.listProperties(property); stmt.hasNext(); ) {
-                    subsequents.add(getLabel(model, stmt.nextStatement().getObject()));
-                }
-
-                flowObjects.put(getLabel(model, resource), subsequents);
+            for (StmtIterator stmt = resource.listProperties(property); stmt.hasNext(); ) {
+                subsequents.add(stmt.nextStatement().getObject().toString());
             }
+
+            flowObjects.put(resource.toString(), subsequents);
         }
 
         return flowObjects;
-    }
-
-    private static String getLabel(GenericModel model, RDFNode node) {
-        for (StmtIterator iterator = model.getStatements().listStatements(); iterator.hasNext(); ) {
-            Statement statement = iterator.nextStatement();
-
-            if (statement.getSubject().equals(node)) {
-                return statement.getSubject().getProperty(model.getHasLabel()).getObject().asLiteral().getString();
-            }
-
-            if (statement.getPredicate().equals(model.getA()) && statement.getObject().equals(node)) {
-                return statement.getObject().asLiteral().getString();
-            }
-        }
-
-        return null;
     }
 }
