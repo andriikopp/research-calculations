@@ -80,146 +80,182 @@ public abstract class GenericModel {
         initProcess(process);
     }
 
-    public Resource createStartEvent(String name) {
-        Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "startEvent"));
+    // Names of resource types.
+    private static final String START_EVENT = "startEvent";
+    private static final String END_EVENT = "endEvent";
+    private static final String INTERMEDIATE_EVENT = "intermediateEvent";
+
+    private static final String AND_SPLIT = "andSplit";
+    private static final String AND_JOIN = "andJoin";
+    private static final String OR_SPLIT = "orSplit";
+    private static final String OR_JOIN = "orJoin";
+    private static final String XOR_SPLIT = "xorSplit";
+    private static final String XOR_JOIN = "xorJoin";
+
+    public Resource createStartEvent(String label) {
+        Resource resource = statements.createResource(getURI(label));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + START_EVENT));
+        statements.add(statements.createStatement(resource, hasLabel, label));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
+        return resource;
+    }
+
+    public Resource createStartEvent() {
+        Resource resource = statements.createResource(getURI(START_EVENT));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + START_EVENT));
+        statements.add(statements.createStatement(resource, hasLabel, START_EVENT));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
+        return resource;
+    }
+
+    public Resource createIntermediateEvent(String label) {
+        Resource resource = statements.createResource(getURI(label));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + INTERMEDIATE_EVENT));
+        statements.add(statements.createStatement(resource, hasLabel, label));
+        statements.add(statements.createStatement(process, isComposedOf, resource));
+        return resource;
+    }
+
+    public Resource createIntermediateEvent() {
+        Resource resource = statements.createResource(getURI(INTERMEDIATE_EVENT));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + INTERMEDIATE_EVENT));
         statements.add(statements.createStatement(resource, hasLabel, name));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createIntermediateEvent(String name) {
-        Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "intermediateEvent"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+    public Resource createEndEvent(String label) {
+        Resource resource = statements.createResource(getURI(label));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + END_EVENT));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createEndEvent(String name) {
-        Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "endEvent"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+    public Resource createEndEvent() {
+        Resource resource = statements.createResource(getURI(END_EVENT));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + END_EVENT));
+        statements.add(statements.createStatement(resource, hasLabel, END_EVENT));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createAndSplitGateway() {
-        Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "andSplit"));
-        statements.add(statements.createStatement(resource, hasLabel, "andSplit"));
+        Resource resource = statements.createResource(getURI(AND_SPLIT));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + AND_SPLIT));
+        statements.add(statements.createStatement(resource, hasLabel, AND_SPLIT));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createAndJoinGateway() {
-        Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "andJoin"));
-        statements.add(statements.createStatement(resource, hasLabel, "andJoin"));
+        Resource resource = statements.createResource(getURI(AND_JOIN));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + AND_JOIN));
+        statements.add(statements.createStatement(resource, hasLabel, AND_JOIN));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createOrSplitGateway() {
-        Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "orSplit"));
-        statements.add(statements.createStatement(resource, hasLabel, "orSplit"));
+        Resource resource = statements.createResource(getURI(OR_SPLIT));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + OR_SPLIT));
+        statements.add(statements.createStatement(resource, hasLabel, OR_SPLIT));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createOrJoinGateway() {
-        Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "orJoin"));
-        statements.add(statements.createStatement(resource, hasLabel, "orJoin"));
+        Resource resource = statements.createResource(getURI(OR_JOIN));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + OR_JOIN));
+        statements.add(statements.createStatement(resource, hasLabel, OR_JOIN));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createXorSplitGateway() {
-        Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "xorSplit"));
-        statements.add(statements.createStatement(resource, hasLabel, "xorSplit"));
+        Resource resource = statements.createResource(getURI(XOR_SPLIT));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + XOR_SPLIT));
+        statements.add(statements.createStatement(resource, hasLabel, XOR_SPLIT));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
     public Resource createXorJoinGateway() {
-        Resource resource = statements.createResource(getURI());
-        statements.add(statements.createStatement(resource, a, NS_TYPE + "xorJoin"));
-        statements.add(statements.createStatement(resource, hasLabel, "xorJoin"));
+        Resource resource = statements.createResource(getURI(XOR_JOIN));
+        statements.add(statements.createStatement(resource, a, NS_TYPE + XOR_JOIN));
+        statements.add(statements.createStatement(resource, hasLabel, XOR_JOIN));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createActivity(String name) {
-        Resource resource = statements.createResource(getURI());
+    public Resource createActivity(String label) {
+        Resource resource = statements.createResource(getURI(label));
         statements.add(statements.createStatement(resource, a, NS_TYPE + "activity"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createProcess(String name) {
-        Resource resource = statements.createResource(getURI());
+    public Resource createProcess(String label) {
+        Resource resource = statements.createResource(getURI(label));
         statements.add(statements.createStatement(resource, a, NS_TYPE + "process"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createDataStore(String name) {
-        Resource resource = statements.createResource(getURI());
+    public Resource createDataStore(String label) {
+        Resource resource = statements.createResource(getURI(label));
         statements.add(statements.createStatement(resource, a, NS_TYPE + "dataStore"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createExternalEntity(String name) {
-        Resource resource = statements.createResource(getURI());
+    public Resource createExternalEntity(String label) {
+        Resource resource = statements.createResource(getURI(label));
         statements.add(statements.createStatement(resource, a, NS_TYPE + "externalEntity"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createDepartment(String name) {
-        Resource resource = statements.createResource(getURI());
+    public Resource createDepartment(String label) {
+        Resource resource = statements.createResource(getURI(label));
         statements.add(statements.createStatement(resource, a, NS_TYPE + "department"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createPosition(String name) {
-        Resource resource = statements.createResource(getURI());
+    public Resource createPosition(String label) {
+        Resource resource = statements.createResource(getURI(label));
         statements.add(statements.createStatement(resource, a, NS_TYPE + "position"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createApplicationSystem(String name) {
-        Resource resource = statements.createResource(getURI());
+    public Resource createApplicationSystem(String label) {
+        Resource resource = statements.createResource(getURI(label));
         statements.add(statements.createStatement(resource, a, NS_TYPE + "applicationSystem"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createBusinessObject(String name) {
-        Resource resource = statements.createResource(getURI());
+    public Resource createBusinessObject(String label) {
+        Resource resource = statements.createResource(getURI(label));
         statements.add(statements.createStatement(resource, a, NS_TYPE + "businessObject"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
 
-    public Resource createDataFlow(String name) {
-        Resource resource = statements.createResource(getURI());
+    public Resource createDataFlow(String label) {
+        Resource resource = statements.createResource(getURI(label));
         statements.add(statements.createStatement(resource, a, NS_TYPE + "dataFlow"));
-        statements.add(statements.createStatement(resource, hasLabel, name));
+        statements.add(statements.createStatement(resource, hasLabel, label));
         statements.add(statements.createStatement(process, isComposedOf, resource));
         return resource;
     }
@@ -280,6 +316,10 @@ public abstract class GenericModel {
         String identifier = NS_RESOURCE + "n" + resourceCounter;
         resourceCounter++;
         return identifier;
+    }
+
+    private String getURI(String name) {
+        return NS_RESOURCE + trimURI(name);
     }
 
     private String trimURI(String value) {
