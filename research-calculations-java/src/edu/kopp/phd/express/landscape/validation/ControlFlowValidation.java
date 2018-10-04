@@ -158,6 +158,91 @@ public class ControlFlowValidation extends Landscape {
                     .event(1, 0)
                     .finish());
         }
+
+        /* Test 65 */
+        {
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Test 65")
+                    .event(0, 1)
+                    .function(1, 1)
+                    .function(1, 1)
+                    .event(1, 0)
+                    .event(0, 1)
+                    .function(1, 1)
+                    .event(1, 0)
+                    .finish());
+        }
+
+        /* Test 68 */
+        {
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Test 68")
+                    .event(0, 1)
+                    .and(1, 2)
+                    .function(1, 1)
+                    .function(1, 1)
+                    .or(2, 1)
+                    .event(1, 0)
+                    .finish());
+        }
+
+        /* Test 69 */
+        {
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Test 69")
+                    .event(0, 1)
+                    .and(1, 2)
+                    .function(1, 1)
+                    .function(1, 1)
+                    .xor(2, 1)
+                    .event(1, 0)
+                    .finish());
+        }
+
+        /* Test 70 */
+        {
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Test 70")
+                    .event(0, 1)
+                    .or(1, 2)
+                    .function(1, 1)
+                    .function(1, 1)
+                    .and(2, 1)
+                    .event(1, 0)
+                    .finish());
+        }
+
+        /* Test 71 */
+        {
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Test 71")
+                    .event(0, 1)
+                    .or(1, 2)
+                    .function(1, 1)
+                    .function(1, 1)
+                    .xor(2, 1)
+                    .event(1, 0)
+                    .finish());
+        }
+
+        /* Test 72 */
+        {
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Test 72")
+                    .event(0, 1)
+                    .xor(1, 2)
+                    .function(1, 1)
+                    .function(1, 1)
+                    .and(2, 1)
+                    .event(1, 0)
+                    .finish());
+        }
+
+        /* Test 73 */
+        {
+            getGovernanceLog().getLandscape().add(ModelBuilder.model("Test 73")
+                    .event(0, 1)
+                    .xor(1, 2)
+                    .function(1, 1)
+                    .function(1, 1)
+                    .or(2, 1)
+                    .event(1, 0)
+                    .finish());
+        }
     }
 
     /* Correct */
