@@ -30,6 +30,18 @@ public class Model {
         isEnvironmentEnabled = false;
     }
 
+    public List<Function> getFunctions() {
+        List<Function> functions = new ArrayList<>();
+
+        for (Node node : nodes) {
+            if (node instanceof Function) {
+                functions.add((Function) node);
+            }
+        }
+
+        return functions;
+    }
+
     public double density() {
         double size = countNodes();
         double arcs = countArcs();
@@ -99,6 +111,26 @@ public class Model {
         }
 
         return arcs / 2.0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Model model = (Model) o;
+
+        if (isEnvironmentEnabled != model.isEnvironmentEnabled) return false;
+        if (name != null ? !name.equals(model.name) : model.name != null) return false;
+        return nodes != null ? nodes.equals(model.nodes) : model.nodes == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (nodes != null ? nodes.hashCode() : 0);
+        result = 31 * result + (isEnvironmentEnabled ? 1 : 0);
+        return result;
     }
 
     public String getName() {
