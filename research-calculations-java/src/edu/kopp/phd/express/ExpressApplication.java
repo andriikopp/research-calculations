@@ -5,14 +5,15 @@ import edu.kopp.phd.express.landscape.BPMNLandscape;
 import edu.kopp.phd.express.landscape.DFDLandscape;
 import edu.kopp.phd.express.metamodel.Model;
 import edu.kopp.phd.express.search.ModelSimilarity;
+import edu.kopp.phd.express.search.accuracy.SizeBasedAccuracy;
+import edu.kopp.phd.express.search.accuracy.api.IAccuracy;
 
 import java.util.*;
 
 public class ExpressApplication {
+    private static Map<Model, String> allModels = new LinkedHashMap<>();
 
-    public static void compareModels() {
-        Map<Model, String> allModels = new LinkedHashMap<>();
-
+    public static void loadAllModels() {
         for (Model model : new ARISLandscape().getGovernanceLog().getLandscape()) {
             allModels.put(model, "ARISeEPC");
         }
@@ -24,34 +25,9 @@ public class ExpressApplication {
         for (Model model : new DFDLandscape().getGovernanceLog().getLandscape()) {
             allModels.put(model, "DFD");
         }
-
-        for (Map.Entry<Model, String> first : allModels.entrySet()) {
-            System.out.printf("%s\t", first.getKey().getName());
-
-            for (Map.Entry<Model, String> second : allModels.entrySet()) {
-                System.out.printf("%.2f\t", ModelSimilarity.similarity(first.getKey(), second.getKey(),
-                        ModelSimilarity.getCompareWeights(first.getValue(), second.getValue())));
-            }
-
-            System.out.println();
-        }
-
-        System.out.println("Quality");
-
-        for (Map.Entry<Model, String> first : allModels.entrySet()) {
-            for (Map.Entry<Model, String> second : allModels.entrySet()) {
-                System.out.printf("%s\t%s\t%.2f\t%.2f\t%.2f\n",
-                        first.getKey().getName(),
-                        second.getKey().getName(),
-                        ModelSimilarity.similarity(first.getKey(), second.getKey(),
-                                ModelSimilarity.getCompareWeights(first.getValue(), second.getValue())),
-                        first.getKey().connectivity(),
-                        second.getKey().connectivity());
-            }
-        }
     }
 
-    public static void main(String[] args) {
+    public static void validateModels() {
         System.out.println("ARIS");
         new ARISLandscape().getGovernanceLog().processEnvironment().ignoreRegulations().analyze();
 
@@ -63,8 +39,28 @@ public class ExpressApplication {
 
         System.out.println("DFD");
         new DFDLandscape().getGovernanceLog().analyze();
+    }
 
+    public static void compareModels(IAccuracy accuracyImpl) {
         System.out.println("Pairwise comparison");
-        compareModels();
+
+        for (Map.Entry<Model, String> first : allModels.entrySet()) {
+            for (Map.Entry<Model, String> second : allModels.entrySet()) {
+                System.out.printf("%s\t%s\t%.2f\t%s\n",
+                        first.getKey().getName(),
+                        second.getKey().getName(),
+                        ModelSimilarity.similarity(first.getKey(), second.getKey(),
+                                ModelSimilarity.getCompareWeights(first.getValue(), second.getValue())),
+                        accuracyImpl.getPreDefinedSimilarity(first.getKey(), second.getKey()));
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        loadAllModels();
+
+        validateModels();
+
+        compareModels(new SizeBasedAccuracy());
     }
 }
