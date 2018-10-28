@@ -4,14 +4,39 @@ import edu.kopp.phd.express.landscape.ARISLandscape;
 import edu.kopp.phd.express.landscape.BPMNLandscape;
 import edu.kopp.phd.express.landscape.DFDLandscape;
 import edu.kopp.phd.express.metamodel.Model;
+import edu.kopp.phd.express.metamodel.ModelBuilder;
 import edu.kopp.phd.express.search.ModelSimilarity;
+import edu.kopp.phd.express.search.ProcessControlFlowPatternMatching;
 import edu.kopp.phd.express.search.accuracy.SizeBasedAccuracy;
 import edu.kopp.phd.express.search.accuracy.api.IAccuracy;
+import edu.kopp.phd.express.search.utils.VectorSimilarity;
 
 import java.util.*;
 
 public class ExpressApplication {
     private static Map<Model, String> allModels = new LinkedHashMap<>();
+
+    private static Model[] patterns = {
+            ModelBuilder.model("PATTERN 1 [Missing End Event]")
+                    .function(1, 0)
+                    .finish(),
+            ModelBuilder.model("PATTERN 2 [Missing Split Gateway]")
+                    .function(1, 2)
+                    .finish(),
+            ModelBuilder.model("PATTERN 3 [Missing Start Event]")
+                    .function(0, 1)
+                    .finish(),
+            ModelBuilder.model("PATTERN 4 [Missing Join Gateway]")
+                    .function(2, 1)
+                    .finish(),
+
+            ModelBuilder.model("PATTERN 1 & 4")
+                    .function(2, 0)
+                    .finish(),
+            ModelBuilder.model("PATTERN 2 & 3")
+                    .function(0, 2)
+                    .finish()
+    };
 
     public static void loadAllModels() {
         for (Model model : new ARISLandscape().getGovernanceLog().getLandscape()) {
@@ -56,11 +81,37 @@ public class ExpressApplication {
         }
     }
 
+    public static void patternMatching() {
+        System.out.println("Pattern matching (control flow)");
+
+        for (Map.Entry<Model, String> first : allModels.entrySet()) {
+            if (first.getValue().equals("BPMN") || first.getValue().equals("ARISeEPC")) {
+                double[] modelImage = new double[patterns.length];
+
+                int patternNum = 0;
+
+                for (Model pattern : patterns) {
+                    modelImage[patternNum] = ProcessControlFlowPatternMatching.match(first.getKey(), pattern);
+                    patternNum++;
+                }
+
+                double evaluation = VectorSimilarity.similarity(modelImage, new double[]{0, 0, 0, 0, 0, 0});
+
+                System.out.printf("%s\t%s\t%.2f\n",
+                        first.getKey().getName(),
+                        Arrays.toString(modelImage),
+                        evaluation);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         loadAllModels();
 
         validateModels();
 
         compareModels(new SizeBasedAccuracy());
+
+        patternMatching();
     }
 }
