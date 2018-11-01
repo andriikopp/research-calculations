@@ -94,6 +94,8 @@ public class ExpressApplication {
         System.out.println("Relaxed validation");
 
         for (Map.Entry<Model, String> model : allModels.entrySet()) {
+            model.getKey().enableEnvironment();
+
             System.out.printf("%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%s\n",
                     model.getKey().getName(),
                     model.getKey().countNodes(),

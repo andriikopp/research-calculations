@@ -1,7 +1,6 @@
 package edu.kopp.phd.express.metamodel;
 
-import edu.kopp.phd.express.metamodel.entity.Function;
-import edu.kopp.phd.express.metamodel.entity.Node;
+import edu.kopp.phd.express.metamodel.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +97,10 @@ public class Model {
 
     public double countNodes() {
         if (isEnvironmentEnabled) {
-            return nodes.stream().filter(node -> node instanceof Function).count();
+            return nodes.stream().filter(node -> node instanceof Function ||
+                node instanceof ProcessInterface ||
+                node instanceof DataStore ||
+                node instanceof ExternalEntity).count();
         }
 
         return nodes.size();
