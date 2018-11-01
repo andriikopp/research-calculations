@@ -56,6 +56,10 @@ public class Model {
         double size = countNodes();
         double arcs = countArcs();
 
+        if (size <= 1) {
+            return 0;
+        }
+
         return arcs / (size * (size - 1));
     }
 
@@ -63,11 +67,19 @@ public class Model {
         double size = countNodes();
         double arcs = countArcs();
 
+        if (size < 1) {
+            return 0;
+        }
+
         return arcs / size;
     }
 
     public double balance() {
         double size = countNodes();
+
+        if (size < 1) {
+            return 0;
+        }
 
         double sum = 0;
         double max = 0;
@@ -97,10 +109,7 @@ public class Model {
 
     public double countNodes() {
         if (isEnvironmentEnabled) {
-            return nodes.stream().filter(node -> node instanceof Function ||
-                node instanceof ProcessInterface ||
-                node instanceof DataStore ||
-                node instanceof ExternalEntity).count();
+            return nodes.stream().filter(node -> node instanceof Function).count();
         }
 
         return nodes.size();
