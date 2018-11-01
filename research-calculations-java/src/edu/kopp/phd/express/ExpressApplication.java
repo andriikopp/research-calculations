@@ -3,8 +3,14 @@ package edu.kopp.phd.express;
 import edu.kopp.phd.express.landscape.ARISLandscape;
 import edu.kopp.phd.express.landscape.BPMNLandscape;
 import edu.kopp.phd.express.landscape.DFDLandscape;
+import edu.kopp.phd.express.landscape.validation.ARISEnvironmentValidation;
+import edu.kopp.phd.express.landscape.validation.ControlFlowValidation;
+import edu.kopp.phd.express.landscape.validation.DataFlowValidation;
+import edu.kopp.phd.express.landscape.validation.IDEF0EnvironmentValidation;
 import edu.kopp.phd.express.metamodel.Model;
 import edu.kopp.phd.express.metamodel.ModelBuilder;
+import edu.kopp.phd.express.metamodel.RelaxedImprovement;
+import edu.kopp.phd.express.metamodel.RelaxedValidation;
 import edu.kopp.phd.express.search.ModelSimilarity;
 import edu.kopp.phd.express.search.ProcessControlFlowPatternMatching;
 import edu.kopp.phd.express.search.accuracy.SizeBasedAccuracy;
@@ -52,6 +58,24 @@ public class ExpressApplication {
         }
     }
 
+    public static void loadValidationModels() {
+        for (Model model : new ControlFlowValidation().getGovernanceLog().getLandscape()) {
+            allModels.put(model, "BPMN");
+        }
+
+        for (Model model : new DataFlowValidation().getGovernanceLog().getLandscape()) {
+            allModels.put(model, "DFD");
+        }
+
+        for (Model model : new ARISEnvironmentValidation().getGovernanceLog().getLandscape()) {
+            allModels.put(model, "ARISeEPC");
+        }
+
+        for (Model model : new IDEF0EnvironmentValidation().getGovernanceLog().getLandscape()) {
+            allModels.put(model, "IDEF0");
+        }
+    }
+
     public static void validateModels() {
         System.out.println("ARIS");
         new ARISLandscape().getGovernanceLog().processEnvironment().ignoreRegulations().analyze();
@@ -64,6 +88,29 @@ public class ExpressApplication {
 
         System.out.println("DFD");
         new DFDLandscape().getGovernanceLog().analyze();
+    }
+
+    public static void validateModelsRelaxed() {
+        System.out.println("Relaxed validation");
+
+        for (Map.Entry<Model, String> model : allModels.entrySet()) {
+            System.out.printf("%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%s\n",
+                    model.getKey().getName(),
+                    model.getKey().countNodes(),
+                    model.getKey().density(),
+                    model.getKey().connectivity(),
+                    model.getKey().balance(),
+                    RelaxedValidation.validate(model.getKey(), model.getValue(), true),
+                    model.getKey().hasIssues() ? "yes" : "no");
+        }
+    }
+
+    public static void improveModelsRelaxed() {
+        System.out.println("Relaxed improvement");
+
+        for (Map.Entry<Model, String> model : allModels.entrySet()) {
+            RelaxedImprovement.improve(model.getKey(), model.getValue());
+        }
     }
 
     public static void compareModels(IAccuracy accuracyImpl) {
@@ -108,7 +155,13 @@ public class ExpressApplication {
     public static void main(String[] args) {
         loadAllModels();
 
+        loadValidationModels();
+
         validateModels();
+
+        validateModelsRelaxed();
+
+        improveModelsRelaxed();
 
         compareModels(new SizeBasedAccuracy());
 
