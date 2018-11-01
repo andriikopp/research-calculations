@@ -13,6 +13,8 @@ public class Model {
 
     private boolean isEnvironmentEnabled;
 
+    private boolean hasIssues;
+
     public Model(String name) {
         this.name = name;
         this.nodes = new ArrayList<>();
@@ -28,6 +30,15 @@ public class Model {
 
     public void ignoreEnvironment() {
         isEnvironmentEnabled = false;
+    }
+
+    public Model issues() {
+        hasIssues = true;
+        return this;
+    }
+
+    public boolean hasIssues() {
+        return this.hasIssues;
     }
 
     public List<Function> getFunctions() {
@@ -66,14 +77,12 @@ public class Model {
             if (node instanceof Function) {
                 Function function = (Function) node;
 
-                double arcs = 0;
+                double arcs = function.getPreceding() + function.getSubsequent();
 
                 if (isEnvironmentEnabled) {
-                    arcs = function.getOrganizationalUnits() + function.getInputs() +
+                    arcs += function.getOrganizationalUnits() + function.getInputs() +
                             function.getRegulations() + function.getOutputs() +
                             function.getApplicationSystems();
-                } else {
-                    arcs = function.getPreceding() + function.getSubsequent();
                 }
 
                 if (arcs > max) {
@@ -99,12 +108,16 @@ public class Model {
         double arcs = 0;
 
         for (Node node : nodes) {
-            if (isEnvironmentEnabled && node instanceof Function) {
-                Function function = (Function) node;
+            if (isEnvironmentEnabled) {
+                if (node instanceof Function) {
+                    Function function = (Function) node;
 
-                arcs += function.getOrganizationalUnits() + function.getInputs() +
-                        function.getRegulations() + function.getOutputs() +
-                        function.getApplicationSystems();
+                    arcs += node.getPreceding() + node.getSubsequent();
+
+                    arcs += function.getOrganizationalUnits() + function.getInputs() +
+                            function.getRegulations() + function.getOutputs() +
+                            function.getApplicationSystems();
+                }
             } else {
                 arcs += node.getPreceding() + node.getSubsequent();
             }
