@@ -20,7 +20,7 @@ public class DataFlowValidation extends Landscape {
                     .dataStore(1, 2)
                     .function(1, 2)
                     .externalEntity(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 16 */
@@ -31,7 +31,7 @@ public class DataFlowValidation extends Landscape {
                     .dataStore(2, 1)
                     .function(1, 2)
                     .externalEntity(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 17 */
@@ -41,7 +41,7 @@ public class DataFlowValidation extends Landscape {
                     .function(1, 2)
                     .dataStore(1, 0)
                     .externalEntity(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 18 */
@@ -51,7 +51,7 @@ public class DataFlowValidation extends Landscape {
                     .function(2, 1)
                     .dataStore(0, 1)
                     .externalEntity(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 19 */
@@ -61,7 +61,7 @@ public class DataFlowValidation extends Landscape {
                     .function(2, 0)
                     .dataStore(0, 1)
                     .externalEntity(0, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 20 */
@@ -73,7 +73,7 @@ public class DataFlowValidation extends Landscape {
                     .function(1, 1)
                     .function(1, 2)
                     .externalEntity(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 21 */
@@ -85,7 +85,7 @@ public class DataFlowValidation extends Landscape {
                     .dataStore(1, 2)
                     .dataFlowBetweenOtherEntities()
                     .externalEntity(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 22 */
@@ -96,7 +96,7 @@ public class DataFlowValidation extends Landscape {
                     .externalEntity(1, 1)
                     .dataFlowBetweenOtherEntities()
                     .externalEntity(1, 0)
-                    .finish());
+                    .finish().issues());
         }
     }
 

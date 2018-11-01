@@ -19,7 +19,7 @@ public class ControlFlowValidation extends Landscape {
                     .xor(1, 2)
                     .xor(2, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 2 */
@@ -28,7 +28,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(0, 1)
                     .function(1, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 3 */
@@ -37,7 +37,7 @@ public class ControlFlowValidation extends Landscape {
                     .event(0, 1)
                     .function(1, 1)
                     .function(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 4 */
@@ -47,7 +47,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .function(1, 1)
                     .event(2, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 5 */
@@ -57,7 +57,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(2, 1)
                     .xor(1, 2)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 6 */
@@ -67,7 +67,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 2)
                     .function(1, 0)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 7 */
@@ -77,7 +77,7 @@ public class ControlFlowValidation extends Landscape {
                     .xor(1, 1)
                     .function(1, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 8 */
@@ -90,7 +90,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .event(1, 0)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 9 */
@@ -103,7 +103,7 @@ public class ControlFlowValidation extends Landscape {
                     .event(0, 1)
                     .function(1, 1)
                     .event(0, 1)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 10 */
@@ -113,7 +113,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .processInterface(1, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 11 */
@@ -123,7 +123,7 @@ public class ControlFlowValidation extends Landscape {
                     .and(1, 2)
                     .function(1, 1)
                     .processInterface(2, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 12 */
@@ -135,7 +135,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .processInterface(1, 0)
                     .processInterface(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 13 */
@@ -146,7 +146,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .processInterface(1, 0)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 14 */
@@ -156,7 +156,7 @@ public class ControlFlowValidation extends Landscape {
                     .event(1, 1)
                     .processInterface(1, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 65 */
@@ -169,7 +169,7 @@ public class ControlFlowValidation extends Landscape {
                     .event(0, 1)
                     .function(1, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 68 */
@@ -181,7 +181,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .or(2, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 69 */
@@ -193,7 +193,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .xor(2, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 70 */
@@ -205,7 +205,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .and(2, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 71 */
@@ -217,7 +217,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .xor(2, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 72 */
@@ -229,7 +229,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .and(2, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 73 */
@@ -241,7 +241,7 @@ public class ControlFlowValidation extends Landscape {
                     .function(1, 1)
                     .or(2, 1)
                     .event(1, 0)
-                    .finish());
+                    .finish().issues());
         }
     }
 

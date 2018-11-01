@@ -18,7 +18,7 @@ public class IDEF0EnvironmentValidation extends Landscape {
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
                     .function(ModelBuilder.environment(0, 1, 1, 1, 0))
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 30 */
@@ -27,7 +27,7 @@ public class IDEF0EnvironmentValidation extends Landscape {
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
                     .function(ModelBuilder.environment(1, 0, 1, 1, 1))
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 31 */
@@ -36,7 +36,7 @@ public class IDEF0EnvironmentValidation extends Landscape {
                     .function(ModelBuilder.environment(1, 1, 1, 0, 1))
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 32 */
@@ -45,7 +45,7 @@ public class IDEF0EnvironmentValidation extends Landscape {
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
                     .function(ModelBuilder.environment(1, 1, 0, 1, 1))
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 66 */
@@ -53,7 +53,7 @@ public class IDEF0EnvironmentValidation extends Landscape {
             getGovernanceLog().getLandscape().add(ModelBuilder.model("Test 66")
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 67 */
@@ -66,7 +66,7 @@ public class IDEF0EnvironmentValidation extends Landscape {
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
                     .function(ModelBuilder.environment(1, 1, 1, 1, 1))
-                    .finish());
+                    .finish().issues());
         }
     }
 

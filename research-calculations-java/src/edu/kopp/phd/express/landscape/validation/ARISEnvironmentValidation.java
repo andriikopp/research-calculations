@@ -19,7 +19,7 @@ public class ARISEnvironmentValidation extends Landscape {
                     .function(1, 1, ModelBuilder.environment(0, 1, 0, 1, 1))
                     .function(1, 1, ModelBuilder.environment(1, 1, 0, 1, 1))
                     .event(0, 1)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 24 */
@@ -29,7 +29,7 @@ public class ARISEnvironmentValidation extends Landscape {
                     .function(1, 1, ModelBuilder.environment(1, 1, 0, 1, 1))
                     .function(1, 1, ModelBuilder.environment(2, 1, 0, 1, 1))
                     .event(0, 1)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 25 */
@@ -39,7 +39,7 @@ public class ARISEnvironmentValidation extends Landscape {
                     .function(1, 1, ModelBuilder.environment(1, 0, 0, 1, 1))
                     .function(1, 1, ModelBuilder.environment(1, 1, 0, 1, 1))
                     .event(0, 1)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 26 */
@@ -49,7 +49,7 @@ public class ARISEnvironmentValidation extends Landscape {
                     .function(1, 1, ModelBuilder.environment(1, 1, 0, 1, 1))
                     .function(1, 1, ModelBuilder.environment(1, 1, 0, 0, 1))
                     .event(0, 1)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 27 */
@@ -59,7 +59,7 @@ public class ARISEnvironmentValidation extends Landscape {
                     .function(1, 1, ModelBuilder.environment(1, 1, 0, 1, 1))
                     .function(1, 1, ModelBuilder.environment(1, 1, 0, 1, 0))
                     .event(0, 1)
-                    .finish());
+                    .finish().issues());
         }
 
         /* Test 28 */
@@ -69,7 +69,7 @@ public class ARISEnvironmentValidation extends Landscape {
                     .function(1, 1, ModelBuilder.environment(1, 1, 0, 1, 1))
                     .function(1, 1, ModelBuilder.environment(1, 1, 0, 1, 2))
                     .event(0, 1)
-                    .finish());
+                    .finish().issues());
         }
     }
 
