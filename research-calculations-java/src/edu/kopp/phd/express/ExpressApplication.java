@@ -3,10 +3,7 @@ package edu.kopp.phd.express;
 import edu.kopp.phd.express.landscape.ARISLandscape;
 import edu.kopp.phd.express.landscape.BPMNLandscape;
 import edu.kopp.phd.express.landscape.DFDLandscape;
-import edu.kopp.phd.express.landscape.validation.ARISEnvironmentValidation;
-import edu.kopp.phd.express.landscape.validation.ControlFlowValidation;
-import edu.kopp.phd.express.landscape.validation.DataFlowValidation;
-import edu.kopp.phd.express.landscape.validation.IDEF0EnvironmentValidation;
+import edu.kopp.phd.express.landscape.validation.*;
 import edu.kopp.phd.express.metamodel.Model;
 import edu.kopp.phd.express.metamodel.ModelBuilder;
 import edu.kopp.phd.express.metamodel.RelaxedImprovement;
@@ -72,6 +69,33 @@ public class ExpressApplication {
         }
 
         for (Model model : new IDEF0EnvironmentValidation().getGovernanceLog().getLandscape()) {
+            allModels.put(model, "IDEF0");
+        }
+    }
+
+    public static void loadRandomValidationModels() {
+        for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
+                RandomValidationSetGenerator.CF_DEFECTS)) {
+            allModels.put(model, "BPMN");
+        }
+
+        for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
+                RandomValidationSetGenerator.DF_DEFECTS)) {
+            allModels.put(model, "DFD");
+        }
+
+        for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
+                RandomValidationSetGenerator.HR_DEFECTS)) {
+            allModels.put(model, "IDEF0");
+        }
+
+        for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
+                RandomValidationSetGenerator.IO_DEFECTS)) {
+            allModels.put(model, "IDEF0");
+        }
+
+        for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
+                RandomValidationSetGenerator.NHR_DEFECTS)) {
             allModels.put(model, "IDEF0");
         }
     }
@@ -158,6 +182,8 @@ public class ExpressApplication {
         loadAllModels();
 
         loadValidationModels();
+
+        loadRandomValidationModels();
 
         validateModels();
 
