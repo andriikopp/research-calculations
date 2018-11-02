@@ -15,7 +15,7 @@ public class WeightedBalanceAnalysis {
 
         model.enableEnvironment();
 
-        double size = model.countNodes();
+        double size = model.getFunctions().size();
 
         double sum = 0;
         double max = 0;
