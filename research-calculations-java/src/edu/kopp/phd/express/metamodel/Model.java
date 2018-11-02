@@ -75,7 +75,7 @@ public class Model {
     }
 
     public double balance() {
-        double size = countNodes();
+        double size = getFunctions().size();
 
         if (size < 1) {
             return 0;
@@ -108,33 +108,21 @@ public class Model {
     }
 
     public double countNodes() {
-        if (isEnvironmentEnabled) {
-            return nodes.stream().filter(node -> node instanceof Function).count();
-        }
-
         return nodes.size();
     }
 
     public double countArcs() {
+        return getSumOfArcsRelatedToNodes() / 2.0;
+    }
+
+    private double getSumOfArcsRelatedToNodes() {
         double arcs = 0;
 
         for (Node node : nodes) {
-            if (isEnvironmentEnabled) {
-                if (node instanceof Function) {
-                    Function function = (Function) node;
-
-                    arcs += node.getPreceding() + node.getSubsequent();
-
-                    arcs += function.getOrganizationalUnits() + function.getInputs() +
-                            function.getRegulations() + function.getOutputs() +
-                            function.getApplicationSystems();
-                }
-            } else {
-                arcs += node.getPreceding() + node.getSubsequent();
-            }
+            arcs += node.getPreceding() + node.getSubsequent();
         }
 
-        return arcs / 2.0;
+        return arcs;
     }
 
     @Override
