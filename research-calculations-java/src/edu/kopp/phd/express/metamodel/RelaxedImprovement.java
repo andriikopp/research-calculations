@@ -11,12 +11,12 @@ public class RelaxedImprovement {
 
         System.out.println(model.getName());
 
-        System.out.printf("AS-IS Defect density\t%.2f\n", RelaxedValidation.validate(model, type, false));
-        System.out.printf("AS-IS Weighted balance\t%.2f\n", WeightedBalanceAnalysis.analyze(model, type));
+        System.out.printf("Before ND\t%.2f\n", RelaxedValidation.validate(model, type, false));
+        System.out.printf("Before WB\t%.2f\n", WeightedBalanceAnalysis.analyze(model, type));
 
         for (Function function : model.getFunctions()) {
             int dPre = (int) (Math.max(attributes[0], attributes[1]) * (1 - function.getPreceding()));
-            int dSub = (int) (Math.max(attributes[1], attributes[1]) * (1 - function.getSubsequent()));
+            int dSub = (int) (Math.max(attributes[0], attributes[1]) * (1 - function.getSubsequent()));
 
             int dOrg = (int) (attributes[2] * (1 - function.getOrganizationalUnits()));
 
@@ -45,7 +45,7 @@ public class RelaxedImprovement {
                     dApp);
         }
 
-        System.out.printf("TO-BE Defect density\t%.2f\n", RelaxedValidation.validate(model, type, false));
-        System.out.printf("TO-BE Weighted balance\t%.2f\n", WeightedBalanceAnalysis.analyze(model, type));
+        System.out.printf("After ND\t%.2f\n", RelaxedValidation.validate(model, type, false));
+        System.out.printf("After WB\t%.2f\n", WeightedBalanceAnalysis.analyze(model, type));
     }
 }

@@ -120,9 +120,10 @@ public class ExpressApplication {
         for (Map.Entry<Model, String> model : allModels.entrySet()) {
             model.getKey().enableEnvironment();
 
-            System.out.printf("%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%s\n",
+            System.out.printf("%s\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%s\n",
                     model.getKey().getName(),
                     model.getKey().countNodes(),
+                    model.getKey().getFunctions().size(),
                     model.getKey().density(),
                     model.getKey().connectivity(),
                     model.getKey().balance(),
