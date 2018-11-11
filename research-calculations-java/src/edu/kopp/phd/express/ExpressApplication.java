@@ -4,14 +4,19 @@ import edu.kopp.phd.express.landscape.ARISLandscape;
 import edu.kopp.phd.express.landscape.BPMNLandscape;
 import edu.kopp.phd.express.landscape.DFDLandscape;
 import edu.kopp.phd.express.landscape.validation.*;
-import edu.kopp.phd.express.metamodel.*;
+import edu.kopp.phd.express.metamodel.Model;
+import edu.kopp.phd.express.metamodel.RelaxedImprovement;
+import edu.kopp.phd.express.metamodel.RelaxedValidation;
+import edu.kopp.phd.express.metamodel.WeightedBalanceAnalysis;
 import edu.kopp.phd.express.metamodel.entity.*;
 import edu.kopp.phd.express.search.ModelSimilarity;
 import edu.kopp.phd.express.search.PatternMatching;
+import edu.kopp.phd.express.search.accuracy.ConnectivityBasedAccuracy;
+import edu.kopp.phd.express.search.accuracy.DensityBasedAccuracy;
 import edu.kopp.phd.express.search.accuracy.SizeBasedAccuracy;
-import edu.kopp.phd.express.search.accuracy.api.IAccuracy;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ExpressApplication {
     private static Map<Model, String> allModels = new LinkedHashMap<>();
@@ -157,17 +162,21 @@ public class ExpressApplication {
         }
     }
 
-    public static void compareModels(IAccuracy accuracyImpl) {
+    public static void compareModels() {
         System.out.println("Pairwise comparison");
 
         for (Map.Entry<Model, String> first : allModels.entrySet()) {
             for (Map.Entry<Model, String> second : allModels.entrySet()) {
-                System.out.printf("%s\t%s\t%.2f\t%s\n",
+                double similarity = ModelSimilarity.similarity(first.getKey(), second.getKey(),
+                        ModelSimilarity.getCompareWeights(first.getValue(), second.getValue()));
+
+                System.out.printf("%s\t%s\t%.2f\t%s\t%s\t%s\n",
                         first.getKey().getName(),
                         second.getKey().getName(),
-                        ModelSimilarity.similarity(first.getKey(), second.getKey(),
-                                ModelSimilarity.getCompareWeights(first.getValue(), second.getValue())),
-                        accuracyImpl.getPreDefinedSimilarity(first.getKey(), second.getKey()));
+                        similarity,
+                        new SizeBasedAccuracy().getPreDefinedSimilarity(first.getKey(), second.getKey()),
+                        new DensityBasedAccuracy().getPreDefinedSimilarity(first.getKey(), second.getKey()),
+                        new ConnectivityBasedAccuracy().getPreDefinedSimilarity(first.getKey(), second.getKey()));
             }
         }
     }
@@ -211,7 +220,7 @@ public class ExpressApplication {
 
         improveModelsRelaxed();
 
-        compareModels(new SizeBasedAccuracy());
+        compareModels();
 
         patternMatching();
     }
