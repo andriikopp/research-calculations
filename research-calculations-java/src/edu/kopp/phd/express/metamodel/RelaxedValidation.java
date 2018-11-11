@@ -31,7 +31,9 @@ public class RelaxedValidation {
         double MSG = getMissingSplitGateway(model).size();
         double MJG = getMissingJoinGateway(model).size();
 
-        double MDF = getMissingDataFlow(model).size();
+        double BHS = getBlackHoleSituations(model).size();
+        double MS = getMiracleSituations(model).size();
+        double GHS = getGrayHoleSituations(model).size();
 
         double UR = getUndefinedResponsibility(model).size();
         double RA = getResponsibilityAmbiguity(model).size();
@@ -42,9 +44,9 @@ public class RelaxedValidation {
         double AA = getAutomationAmbiguity(model).size();
 
         if (log) {
-            System.out.printf("%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t",
+            System.out.printf("%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t",
                     attributes[0] * MSE, attributes[0] * MEE, attributes[0] * MSG, attributes[0] * MJG,
-                    attributes[1] * MDF,
+                    attributes[1] * BHS, attributes[1] * MS, attributes[1] * GHS,
                     attributes[2] * UR, attributes[2] * RA,
                     attributes[3] * UIO,
                     attributes[4] * UT, attributes[4] * AA);
@@ -52,7 +54,7 @@ public class RelaxedValidation {
 
         double defectDensity
                 = attributes[0] * (MSE + MEE + MSG + MJG)
-                + attributes[1] * MDF
+                + attributes[1] * (BHS + MS + GHS)
                 + attributes[2] * (UR + RA)
                 + attributes[3] * UIO
                 + attributes[4] * (UT + AA);
@@ -108,11 +110,35 @@ public class RelaxedValidation {
         return functions;
     }
 
-    private static List<Function> getMissingDataFlow(Model model) {
+    private static List<Function> getBlackHoleSituations(Model model) {
         List<Function> functions = new ArrayList<>();
 
         for (Function function : model.getFunctions()) {
-            if (function.getPreceding() == 0 || function.getSubsequent() == 0) {
+            if (function.getSubsequent() == 0) {
+                functions.add(function);
+            }
+        }
+
+        return functions;
+    }
+
+    private static List<Function> getMiracleSituations(Model model) {
+        List<Function> functions = new ArrayList<>();
+
+        for (Function function : model.getFunctions()) {
+            if (function.getPreceding() == 0) {
+                functions.add(function);
+            }
+        }
+
+        return functions;
+    }
+
+    private static List<Function> getGrayHoleSituations(Model model) {
+        List<Function> functions = new ArrayList<>();
+
+        for (Function function : model.getFunctions()) {
+            if (function.getSubsequent() > function.getPreceding()) {
                 functions.add(function);
             }
         }

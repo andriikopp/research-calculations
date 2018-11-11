@@ -66,7 +66,8 @@ public class ModelSimilarity {
         Map<String, Double> firstVec = new HashMap<>();
 
         for (int i = 0; i < first.getNodes().size(); i++) {
-            String key = "<" + first.getNodes().get(i).getPreceding() + "," +
+            String key = "<" + first.getNodes().get(i).getClass() + "," +
+                    first.getNodes().get(i).getPreceding() + "," +
                     first.getNodes().get(i).getSubsequent() + ">";
 
             if (firstVec.containsKey(key)) {
@@ -80,7 +81,8 @@ public class ModelSimilarity {
         Map<String, Double> secondVec = new HashMap<>();
 
         for (int i = 0; i < second.getNodes().size(); i++) {
-            String key = "<" + second.getNodes().get(i).getPreceding() + "," +
+            String key = "<" + second.getNodes().get(i).getClass() + "," +
+                    second.getNodes().get(i).getPreceding() + "," +
                     second.getNodes().get(i).getSubsequent() + ">";
 
             if (secondVec.containsKey(key)) {

@@ -20,25 +20,45 @@ public class RandomValidationSetGenerator {
             new Function("MJG", 2, 1),
 
             new Event("CF-ERR-1", 0, 0),
+            new Event("CF-ERR-2", 1, 2),
+            new Event("CF-ERR-3", 2, 1),
+            new Event("CF-ERR-4", 2, 2),
 
-            new Connector("CF-ERR-2", 1, 1, null),
-            new Connector("CF-ERR-3", 0, 1, null),
-            new Connector("CF-ERR-4", 1, 0, null),
-            new Connector("CF-ERR-2", 2, 2, null),
+            new Connector("CF-ERR-5", 1, 1, null),
+            new Connector("CF-ERR-6", 0, 1, null),
+            new Connector("CF-ERR-7", 1, 0, null),
+            new Connector("CF-ERR-8", 2, 2, null),
 
-            new ProcessInterface("CF-ERR-3", 1, 1)
+            new ProcessInterface("CF-ERR-9", 1, 1),
+            new ProcessInterface("CF-ERR-10", 0, 0),
+
+            /* Extra */
+            new Event("XCF-ERR-1", 0, 2),
+            new Event("XCF-ERR-2", 2, 0),
+
+            new Connector("XCF-ERR-3", 0, 2, null),
+            new Connector("XCF-ERR-4", 2, 0, null),
+
+            new ProcessInterface("XCF-ERR-5", 2, 2)
     };
 
     public static final Node[] DF_DEFECTS = {
-            new Function("MDF-1", 0, 1),
-            new Function("MDF-2", 1, 0),
-            new Function("MDF-3", 0, 0),
+            new Function("MS", 0, 1),
+            new Function("BHS", 1, 0),
+            new Function("GHS", 1, 2),
 
             new DataStore("DF-ERR-1", 0, 1),
             new DataStore("DF-ERR-2", 1, 0),
             new DataStore("DF-ERR-3", 0, 0),
 
-            new ExternalEntity("DF-ERR-4", 0, 0)
+            new ExternalEntity("DF-ERR-4", 0, 0),
+            new ExternalEntity("DF-ERR-5", 1, 1),
+
+            /* Extra */
+            new DataStore("XDF-ERR-1", 0, 2),
+            new DataStore("XDF-ERR-2", 2, 0),
+
+            new ExternalEntity("XDF-ERR-3", 2, 2)
     };
 
     public static final Function[] HR_DEFECTS = {
@@ -54,7 +74,7 @@ public class RandomValidationSetGenerator {
 
     public static final Function[] NHR_DEFECTS = {
             new Function("UT", 1, 1, 1, 1, 1, 1, 0),
-            new Function("UIO", 1, 1, 1, 1, 1, 1, 2)
+            new Function("AA", 1, 1, 1, 1, 1, 1, 2)
     };
 
     public static final Function[] NO_DEFECTS = {

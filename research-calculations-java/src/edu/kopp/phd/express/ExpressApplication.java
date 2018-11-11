@@ -4,41 +4,57 @@ import edu.kopp.phd.express.landscape.ARISLandscape;
 import edu.kopp.phd.express.landscape.BPMNLandscape;
 import edu.kopp.phd.express.landscape.DFDLandscape;
 import edu.kopp.phd.express.landscape.validation.*;
-import edu.kopp.phd.express.metamodel.Model;
-import edu.kopp.phd.express.metamodel.ModelBuilder;
-import edu.kopp.phd.express.metamodel.RelaxedImprovement;
-import edu.kopp.phd.express.metamodel.RelaxedValidation;
+import edu.kopp.phd.express.metamodel.*;
+import edu.kopp.phd.express.metamodel.entity.*;
 import edu.kopp.phd.express.search.ModelSimilarity;
-import edu.kopp.phd.express.search.ProcessControlFlowPatternMatching;
+import edu.kopp.phd.express.search.PatternMatching;
 import edu.kopp.phd.express.search.accuracy.SizeBasedAccuracy;
 import edu.kopp.phd.express.search.accuracy.api.IAccuracy;
-import edu.kopp.phd.express.search.utils.VectorSimilarity;
 
 import java.util.*;
 
 public class ExpressApplication {
     private static Map<Model, String> allModels = new LinkedHashMap<>();
 
-    private static Model[] patterns = {
-            ModelBuilder.model("PATTERN 1 [Missing End Event]")
-                    .function(1, 0)
-                    .finish(),
-            ModelBuilder.model("PATTERN 2 [Missing Split Gateway]")
-                    .function(1, 2)
-                    .finish(),
-            ModelBuilder.model("PATTERN 3 [Missing Start Event]")
-                    .function(0, 1)
-                    .finish(),
-            ModelBuilder.model("PATTERN 4 [Missing Join Gateway]")
-                    .function(2, 1)
-                    .finish(),
+    private static Node[] fault = {
+            new Event("CF-ERR-1", 0, 0),
+            new Event("CF-ERR-2", 1, 2),
+            new Event("CF-ERR-3", 2, 1),
+            new Event("CF-ERR-4", 2, 2),
 
-            ModelBuilder.model("PATTERN 1 & 4")
-                    .function(2, 0)
-                    .finish(),
-            ModelBuilder.model("PATTERN 2 & 3")
-                    .function(0, 2)
-                    .finish()
+            new Connector("CF-ERR-5", 1, 1, null),
+            new Connector("CF-ERR-6", 0, 1, null),
+            new Connector("CF-ERR-7", 1, 0, null),
+            new Connector("CF-ERR-8", 2, 2, null),
+
+            new ProcessInterface("CF-ERR-9", 1, 1),
+            new ProcessInterface("CF-ERR-10", 0, 0),
+
+            new DataStore("DF-ERR-1", 0, 1),
+            new DataStore("DF-ERR-2", 1, 0),
+            new DataStore("DF-ERR-3", 0, 0),
+
+            new ExternalEntity("DF-ERR-4", 0, 0),
+            new ExternalEntity("DF-ERR-5", 1, 1)
+    };
+
+    private static Node[] correct = {
+            new Event("NDF-5", 0, 1),
+            new Event("NDF-6", 1, 0),
+            new Event("NDF-7", 1, 1),
+
+            new Connector("NDF-8", 1, 2, null),
+            new Connector("NDF-9", 2, 1, null),
+
+            new ProcessInterface("NDF-10", 0, 1),
+            new ProcessInterface("NDF-11", 1, 0),
+
+            new Function("NDF-12", 1, 1),
+
+            new DataStore("NDF-13", 1, 1),
+
+            new ExternalEntity("NDF-14", 0, 1),
+            new ExternalEntity("NDF-15", 1, 0)
     };
 
     public static void loadAllModels() {
@@ -120,14 +136,15 @@ public class ExpressApplication {
         for (Map.Entry<Model, String> model : allModels.entrySet()) {
             model.getKey().enableEnvironment();
 
-            System.out.printf("%s\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%s\n",
+            System.out.printf("%s\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%s\n",
                     model.getKey().getName(),
                     model.getKey().countNodes(),
                     model.getKey().getFunctions().size(),
                     model.getKey().density(),
                     model.getKey().connectivity(),
                     model.getKey().balance(),
-                    RelaxedValidation.validate(model.getKey(), model.getValue(), true),
+                    RelaxedValidation.validate(model.getKey(), model.getValue(), false),
+                    WeightedBalanceAnalysis.analyze(model.getKey(), model.getValue()),
                     model.getKey().hasIssues() ? "yes" : "no");
         }
     }
@@ -156,26 +173,28 @@ public class ExpressApplication {
     }
 
     public static void patternMatching() {
-        System.out.println("Pattern matching (control flow)");
+        System.out.println("Pattern matching & Machine learning");
 
-        for (Map.Entry<Model, String> first : allModels.entrySet()) {
-            if (first.getValue().equals("BPMN") || first.getValue().equals("ARISeEPC")) {
-                double[] modelImage = new double[patterns.length];
+        PatternMatching.train(fault, correct);
 
-                int patternNum = 0;
+        for (Map.Entry<Model, String> model : allModels.entrySet()) {
+            model.getKey().enableEnvironment();
 
-                for (Model pattern : patterns) {
-                    modelImage[patternNum] = ProcessControlFlowPatternMatching.match(first.getKey(), pattern);
-                    patternNum++;
-                }
+            double numberOfDefects = RelaxedValidation.validate(model.getKey(), model.getValue(), false);
+            double foundByPatternMatching = PatternMatching.match(model.getKey());
 
-                double evaluation = VectorSimilarity.similarity(modelImage, new double[]{0, 0, 0, 0, 0, 0});
-
-                System.out.printf("%s\t%s\t%.2f\n",
-                        first.getKey().getName(),
-                        Arrays.toString(modelImage),
-                        evaluation);
-            }
+            System.out.printf("%s\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%s\n",
+                    model.getKey().getName(),
+                    model.getKey().countNodes(),
+                    model.getKey().getFunctions().size(),
+                    model.getKey().density(),
+                    model.getKey().connectivity(),
+                    model.getKey().balance(),
+                    numberOfDefects,
+                    foundByPatternMatching,
+                    numberOfDefects + foundByPatternMatching,
+                    WeightedBalanceAnalysis.analyze(model.getKey(), model.getValue()),
+                    model.getKey().hasIssues() ? "yes" : "no");
         }
     }
 
