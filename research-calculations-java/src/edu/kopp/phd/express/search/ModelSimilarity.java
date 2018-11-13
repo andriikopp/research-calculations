@@ -10,16 +10,16 @@ import java.util.Set;
 
 public class ModelSimilarity {
     public static final double[] BPMNvsBPMN = {0.5, 0.5, 0, 0, 0, 0};
-    public static final double[] BPMNvsDFD = {1, 0, 0, 0, 0, 0};
-    public static final double[] BPMNvsARISeEPC = {0.5, 0.5, 0, 0, 0, 0};
-    public static final double[] BPMNvsIDEF0 = {1, 0, 0, 0, 0, 0};
+    public static final double[] BPMNvsDFD = {0.5, 0, 0, 0, 0, 0};
+    public static final double[] BPMNvsARISeEPC = {0.2, 0.2, 0, 0, 0, 0};
+    public static final double[] BPMNvsIDEF0 = {0.2, 0, 0, 0, 0, 0};
 
-    public static final double[] DFDvsDFD = {0.5, 0, 0, 0, 0.5, 0};
-    public static final double[] DFDvsARISeEPC = {0.5, 0, 0, 0, 0.5, 0};
-    public static final double[] DFDvsIDEF0 = {0.5, 0, 0, 0, 0.5, 0};
+    public static final double[] DFDvsDFD = {0.5, 0.5, 0, 0, 0, 0};
+    public static final double[] DFDvsARISeEPC = {0.2, 0, 0, 0, 0, 0};
+    public static final double[] DFDvsIDEF0 = {0.2, 0, 0, 0, 0, 0};
 
     public static final double[] ARISeEPCvsARISeEPC = {0.2, 0.2, 0.2, 0.2, 0.2, 0};
-    public static final double[] ARISeEPCvsIDEF0 = {0.25, 0, 0.25, 0.25, 0.25, 0};
+    public static final double[] ARISeEPCvsIDEF0 = {0.2, 0, 0.2, 0.2, 0.2, 0};
 
     public static final double[] IDEF0vsIDEF0 = {0.2, 0, 0.2, 0.2, 0.2, 0.2};
 
@@ -42,13 +42,18 @@ public class ModelSimilarity {
     }
 
     public static double[] getCompareWeights(String first, String second) {
-        for (Map.Entry<String, double[]> entry : COMPARE_MAPPING.entrySet()) {
-            if (entry.getKey().contains(first) && entry.getKey().contains(second)) {
-                return entry.getValue();
-            }
-        }
+        double[] weightsFirstAttempt = COMPARE_MAPPING.get(first + "vs" + second);
+        double[] weightsSecondAttempt = COMPARE_MAPPING.get(second + "vs" + first);
 
-        throw new RuntimeException("Invalid notations!");
+        if (weightsFirstAttempt == null) {
+            if (weightsSecondAttempt == null) {
+                throw new RuntimeException("Invalid notations!");
+            } else {
+                return weightsSecondAttempt;
+            }
+        } else {
+            return weightsFirstAttempt;
+        }
     }
 
     public static double similarity(Model first, Model second, double[] weights) {

@@ -11,9 +11,6 @@ import edu.kopp.phd.express.metamodel.WeightedBalanceAnalysis;
 import edu.kopp.phd.express.metamodel.entity.*;
 import edu.kopp.phd.express.search.ModelSimilarity;
 import edu.kopp.phd.express.search.PatternMatching;
-import edu.kopp.phd.express.search.accuracy.ConnectivityBasedAccuracy;
-import edu.kopp.phd.express.search.accuracy.DensityBasedAccuracy;
-import edu.kopp.phd.express.search.accuracy.SizeBasedAccuracy;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -170,13 +167,13 @@ public class ExpressApplication {
                 double similarity = ModelSimilarity.similarity(first.getKey(), second.getKey(),
                         ModelSimilarity.getCompareWeights(first.getValue(), second.getValue()));
 
-                System.out.printf("%s\t%s\t%.2f\t%s\t%s\t%s\n",
-                        first.getKey().getName(),
-                        second.getKey().getName(),
-                        similarity,
-                        new SizeBasedAccuracy().getPreDefinedSimilarity(first.getKey(), second.getKey()),
-                        new DensityBasedAccuracy().getPreDefinedSimilarity(first.getKey(), second.getKey()),
-                        new ConnectivityBasedAccuracy().getPreDefinedSimilarity(first.getKey(), second.getKey()));
+                // Show only duplicates.
+                if (similarity == 1 && !first.getKey().getName().equals(second.getKey().getName())) {
+                    System.out.printf("%s\t%s\t%.2f\n",
+                            first.getKey().getName(),
+                            second.getKey().getName(),
+                            similarity);
+                }
             }
         }
     }
