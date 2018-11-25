@@ -52,6 +52,54 @@ public class Model {
         return functions;
     }
 
+    public List<Connector> getConnectors() {
+        List<Connector> connectors = new ArrayList<>();
+
+        for (Node node : nodes) {
+            if (node instanceof Connector) {
+                connectors.add((Connector) node);
+            }
+        }
+
+        return connectors;
+    }
+
+    public double complexityXor() {
+        try {
+            return getConnectors().stream().filter(connector -> connector.getLogic().equals(Connector.XOR)).count();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+    public double complexityOr() {
+        try {
+            return getConnectors().stream().filter(connector -> connector.getLogic().equals(Connector.OR)).count();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+    public double complexityAnd() {
+        try {
+            return getConnectors().stream().filter(connector -> connector.getLogic().equals(Connector.AND)).count();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+    public List<Event> getEvents() {
+        List<Event> events = new ArrayList<>();
+
+        for (Node node : nodes) {
+            if (node instanceof Event) {
+                events.add((Event) node);
+            }
+        }
+
+        return events;
+    }
+
     public double density() {
         double size = countNodes();
         double arcs = countArcs();
