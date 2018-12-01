@@ -65,19 +65,27 @@ public class Model {
     }
 
     public double complexityXor() {
-        try {
-            return getConnectors().stream().filter(connector -> connector.getLogic().equals(Connector.XOR)).count();
-        } catch (NullPointerException e) {
-            return 0;
+        double result = 0;
+
+        for (Connector connector : getConnectors()) {
+            if (connector.getLogic().equals(Connector.XOR)) {
+                result += connector.getSubsequent();
+            }
         }
+
+        return result;
     }
 
     public double complexityOr() {
-        try {
-            return getConnectors().stream().filter(connector -> connector.getLogic().equals(Connector.OR)).count();
-        } catch (NullPointerException e) {
-            return 0;
+        double result = 0;
+
+        for (Connector connector : getConnectors()) {
+            if (connector.getLogic().equals(Connector.OR)) {
+                result += Math.pow(2, connector.getSubsequent()) - 1;
+            }
         }
+
+        return result;
     }
 
     public double complexityAnd() {
