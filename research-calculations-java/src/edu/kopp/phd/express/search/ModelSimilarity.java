@@ -1,6 +1,8 @@
 package edu.kopp.phd.express.search;
 
 import edu.kopp.phd.express.metamodel.Model;
+import edu.kopp.phd.express.metamodel.entity.Function;
+import edu.kopp.phd.express.metamodel.entity.Node;
 import edu.kopp.phd.express.search.utils.VectorSimilarity;
 
 import java.util.HashMap;
@@ -63,6 +65,113 @@ public class ModelSimilarity {
                 weights[3] * appSystemsSimilarity(first, second) +
                 weights[4] * 0.5 * (inputsSimilarity(first, second) + outputsSimilarity(first, second)) +
                 weights[5] * regulationsSimilarity(first, second);
+    }
+
+    interface Arc {
+        int get(Function node);
+    }
+
+    static class In implements Arc {
+        @Override
+        public int get(Function node) {
+            return node.getPreceding();
+        }
+    }
+
+    static class Out implements Arc {
+        @Override
+        public int get(Function node) {
+            return node.getSubsequent();
+        }
+    }
+
+    static class Org implements Arc {
+        @Override
+        public int get(Function node) {
+            return node.getOrganizationalUnits();
+        }
+    }
+
+    static class Req implements Arc {
+        @Override
+        public int get(Function node) {
+            return node.getInputs();
+        }
+    }
+
+    static class Con implements Arc {
+        @Override
+        public int get(Function node) {
+            return node.getRegulations();
+        }
+    }
+
+    static class Prod implements Arc {
+        @Override
+        public int get(Function node) {
+            return node.getOutputs();
+        }
+    }
+
+    static class App implements Arc {
+        @Override
+        public int get(Function node) {
+            return node.getApplicationSystems();
+        }
+    }
+
+    public static double relaxedSimilarity(Model first, Model second) {
+        double sim = 0;
+
+        Arc[] types = { new In(), new Out(), new Org(), new Req(), new Con(), new Prod(), new App() };
+
+        for (Arc type : types) {
+            double value = 0;
+
+            Map<String, Double> firstVec = new HashMap<>();
+
+            for (Function function : first.getFunctions()) {
+                String key = "<" + type.get(function) + ">";
+
+                if (firstVec.containsKey(key)) {
+                    double count = firstVec.get(key) + 1.0;
+                    firstVec.put(key, count);
+                } else {
+                    firstVec.put(key, 1.0);
+                }
+            }
+
+            Map<String, Double> secondVec = new HashMap<>();
+
+            for (Function function : second.getFunctions()) {
+                String key = "<" + type.get(function) + ">";
+
+                if (secondVec.containsKey(key)) {
+                    double count = secondVec.get(key) + 1.0;
+                    secondVec.put(key, count);
+                } else {
+                    secondVec.put(key, 1.0);
+                }
+            }
+
+            if (firstVec.isEmpty() && secondVec.isEmpty()) {
+                return 1.0;
+            }
+
+            Set<String> allKeys = new HashSet<>();
+            allKeys.addAll(firstVec.keySet());
+            allKeys.addAll(secondVec.keySet());
+
+            for (String key : allKeys) {
+                if (firstVec.containsKey(key) && secondVec.containsKey(key)) {
+                    value += VectorSimilarity.similarity(firstVec.get(key), secondVec.get(key));
+                }
+            }
+
+            sim += 2.0 * value / (firstVec.size() + secondVec.size());
+        }
+
+        return sim / (double) types.length;
     }
 
     private static double nodesSimilarity(Model first, Model second) {
