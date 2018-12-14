@@ -14,7 +14,6 @@ import java.util.UUID;
 
 public class XPDLTransformationTool {
     public static final int TASK_TYPE = 2;
-    public static final int GATEWAY_TYPE = 0;
 
     public static int getActivityInputs(WorkflowProcess workflowProcess, Activity activity) {
         int activityInputs = 0;
@@ -191,7 +190,7 @@ public class XPDLTransformationTool {
 
             int activityType = activity.getActivityType();
 
-            if (activityType != GATEWAY_TYPE) {
+            if (activityType == TASK_TYPE) {
                 if (getActivityInputs(workflowProcess, activity) > 1) {
                     String joinGatewayId = UUID.randomUUID().toString();
 
@@ -224,7 +223,7 @@ public class XPDLTransformationTool {
 
             int activityType = activity.getActivityType();
 
-            if (activityType != GATEWAY_TYPE) {
+            if (activityType == TASK_TYPE) {
                 if (getActivityOutputs(workflowProcess, activity) > 1) {
                     String splitGatewayId = UUID.randomUUID().toString();
 
@@ -276,6 +275,6 @@ public class XPDLTransformationTool {
     }
 
     public static void main(String[] args) throws Exception {
-        fixModel("xpdl-models\\ErrorModel03.xpdl", "xpdl-models\\output.xpdl");
+        fixModel("xpdl-models\\MSG.xpdl", "xpdl-models\\output.xpdl");
     }
 }
