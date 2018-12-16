@@ -1,32 +1,27 @@
 var nodesArray = [];
 var edgesArray = [];
 
-var eventColor = '#ff99ff';
-var connectorColor = '#cccccc';
-var processColor = '#ffffff';
+var regularColor = '#ffffff';
 
 var nodesTypes = [
-    { id: 'Start-Event#', label: 'Start-Event', color: eventColor },
-    { id: 'End-Event#', label: 'End-Event', color: eventColor },
-    { id: 'Intermediate-Event#', label: 'Intermediate-Event', color: eventColor },
-    { id: 'Function#', label: 'Function', color: '#99ff99' },
-    { id: 'AND-Split#', label: 'AND-Split', color: connectorColor },
-    { id: 'OR-Split#', label: 'OR-Split', color: connectorColor },
-    { id: 'XOR-Split#', label: 'XOR-Split', color: connectorColor },
-    { id: 'AND-Join#', label: 'AND-Join', color: connectorColor },
-    { id: 'OR-Join#', label: 'OR-Join', color: connectorColor },
-    { id: 'XOR-Join#', label: 'XOR-Join', color: connectorColor },
-    { id: 'Process#', label: 'Process', color: processColor },
-    { id: 'DataStore#', label: 'Data-Store', color: processColor },
-    { id: 'ExternalEntity#', label: 'External-Entity', color: processColor },
-    { id: 'OrganizationalUnit#', label: 'Organizational-Unit', color: '#ffff99' },
-    { id: 'ApplicationSystem#', label: 'Application-System', color: '#99ccff' },
-    { id: 'BusinessObject#', label: 'Business-Object', color: '#ff9999' }
+    { id: 'Start-Event#', label: 'Start-Event', color: regularColor },
+    { id: 'End-Event#', label: 'End-Event', color: regularColor },
+    { id: 'Intermediate-Event#', label: 'Intermediate-Event', color: regularColor },
+    { id: 'Activity#', label: 'Activity', color: regularColor },
+    { id: 'Parallel-Split#', label: 'Parallel-Split', color: regularColor },
+    { id: 'Exclusive-Split#', label: 'Exclusive-Split', color: regularColor },
+    { id: 'Parallel-Join#', label: 'Parallel-Join', color: regularColor },
+    { id: 'Exclusive-Join#', label: 'Exclusive-Join', color: regularColor },
+    { id: 'Data-Store#', label: 'Data-Store', color: regularColor },
+    { id: 'External-Entity#', label: 'External-Entity', color: regularColor },
+    { id: 'Organizational-Unit#', label: 'Organizational-Unit', color: regularColor },
+    { id: 'Application-System#', label: 'Application-System', color: regularColor },
+    { id: 'Business-Object#', label: 'Business-Object', color: regularColor }
 ];
 
 var edgesTypes = [
-    'isPredecessorOf', 'isPerformedBy', 'isSupportedBy', 'requires',
-    'isRegulatedBy', 'produces', 'isComposedOf'
+    'sequenceFlow', 'dataFlow', 'isPerformedBy', 'isSupportedBy', 'requires',
+    'isRegulatedBy', 'produces'
 ];
 
 var labelPattern = /^[a-zA-Z\-_0-9]+$/;
@@ -107,7 +102,7 @@ $('#addNode').click(function() {
         var nodeId = nodeType + nodeLabel;
 
         if (!isNodeExist(nodeId)) {
-            nodesArray.push({id: nodeId, label: nodeLabel, color: getColorByNodeType(nodeType)});
+            nodesArray.push({id: nodeId, label: nodeId, color: getColorByNodeType(nodeType)});
 
             $('#nodeLabel').val('');
 
