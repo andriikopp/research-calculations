@@ -126,8 +126,6 @@ public class ModelSimilarity {
         Arc[] types = { new In(), new Out(), new Org(), new Req(), new Con(), new Prod(), new App() };
 
         for (Arc type : types) {
-            double value = 0;
-
             Map<String, Double> firstVec = new HashMap<>();
 
             for (Function function : first.getFunctions()) {
@@ -162,13 +160,20 @@ public class ModelSimilarity {
             allKeys.addAll(firstVec.keySet());
             allKeys.addAll(secondVec.keySet());
 
+            double intersection = 0;
+            double union = 0;
+
             for (String key : allKeys) {
                 if (firstVec.containsKey(key) && secondVec.containsKey(key)) {
-                    value += VectorSimilarity.similarity(firstVec.get(key), secondVec.get(key));
+                    intersection += Math.min(firstVec.get(key), secondVec.get(key));
+                    union += Math.max(firstVec.get(key), secondVec.get(key));
                 }
             }
 
-            sim += 2.0 * value / (firstVec.size() + secondVec.size());
+            if (union == 0)
+                sim = 0;
+            else
+                sim += intersection / union;
         }
 
         return sim / (double) types.length;
