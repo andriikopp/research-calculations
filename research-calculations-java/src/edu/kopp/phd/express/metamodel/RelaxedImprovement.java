@@ -4,48 +4,101 @@ import edu.kopp.phd.express.metamodel.entity.Function;
 
 public class RelaxedImprovement {
 
-    public static void improve(Model model, String type) {
+    public static double improve(Model model, String type, boolean showDetails) {
         double[] attributes = RelaxedValidation.ATTRIBUTES.get(type);
 
         boolean isRegulationsConsidered = type.equals("IDEF0");
 
-        System.out.println(model.getName());
+        double faultActivities = 0;
 
-        System.out.printf("Before ND\t%.2f\n", RelaxedValidation.validate(model, type, false));
-        System.out.printf("Before WB\t%.2f\n", WeightedBalanceAnalysis.analyze(model, type));
-
-        for (Function function : model.getFunctions()) {
-            int dPre = (int) (Math.max(attributes[0], attributes[1]) * (1 - function.getPreceding()));
-            int dSub = (int) (Math.max(attributes[0], attributes[1]) * (1 - function.getSubsequent()));
-
-            int dOrg = (int) (attributes[2] * (1 - function.getOrganizationalUnits()));
-
-            int dIn = (int) (attributes[3] * (1 - function.getInputs()));
-            int dReg = isRegulationsConsidered ? (int) (attributes[3] * (1 - function.getRegulations())) : 0;
-            int dOut = (int) (attributes[3] * (1 - function.getOutputs()));
-
-            int dApp = (int) (attributes[4] * (1 - function.getApplicationSystems()));
-
-            function.setPreceding(function.getPreceding() + dPre);
-            function.setSubsequent(function.getSubsequent() + dSub);
-
-            function.setOrganizationalUnits(function.getOrganizationalUnits() + dOrg);
-
-            function.setInputs(function.getInputs() + dIn);
-            function.setRegulations(function.getRegulations() + dReg);
-            function.setOutputs(function.getOutputs() + dOut);
-
-            function.setApplicationSystems(function.getApplicationSystems() + dApp);
-
-            System.out.printf("%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
-                    function.getLabel(),
-                    dPre, dSub,
-                    dOrg,
-                    dIn, dReg, dOut,
-                    dApp);
+        if (showDetails) {
+            System.out.println(model.getName());
         }
 
-        System.out.printf("After ND\t%.2f\n", RelaxedValidation.validate(model, type, false));
-        System.out.printf("After WB\t%.2f\n", WeightedBalanceAnalysis.analyze(model, type));
+        for (Function function : model.getFunctions()) {
+            int dPre = (int) attributes[0] * min(
+                    x -> (int) Math.pow((function.getPreceding() + x) - 1, 2),
+                    -function.getPreceding(), 1
+            );
+
+            int dSub = (int) attributes[0] * min(
+                    x -> (int) Math.pow((function.getSubsequent() + x) - 1, 2),
+                    -function.getSubsequent(), 1
+            );
+
+            int dDin = (int) attributes[1] * min(
+                    x -> (int) Math.pow((function.getPreceding() + x) - Math.max(function.getPreceding(), 1), 2),
+                    -function.getPreceding(), 1
+            );
+
+            int dDout = (int) attributes[1] * min(
+                    x -> (int) Math.pow((function.getSubsequent() + x) - Math.max(Math.min(function.getPreceding(),
+                            function.getSubsequent()),1), 2),
+                    -function.getSubsequent(), 1
+            );
+
+            int dOrg = (int) attributes[2] * min(
+                    x -> (int) Math.pow((function.getOrganizationalUnits() + x) -
+                            Math.max(function.getOrganizationalUnits(), 1), 2),
+                    -function.getOrganizationalUnits(), 1
+            );
+
+            int dIn = (int) attributes[2] * min(
+                    x -> (int) Math.pow((function.getInputs() + x) -
+                            Math.max(function.getInputs(), 1), 2),
+                    -function.getInputs(), 1
+            );
+
+            int dReg = isRegulationsConsidered ? (int) attributes[2] * min(
+                    x -> (int) Math.pow((function.getRegulations() + x) -
+                            Math.max(function.getRegulations(), 1), 2),
+                    -function.getRegulations(), 1
+            ) : 0;
+
+            int dOut = (int) attributes[2] * min(
+                    x -> (int) Math.pow((function.getOutputs() + x) -
+                            Math.max(function.getOutputs(), 1), 2),
+                    -function.getOutputs(), 1
+            );
+
+            int dApp = (int) attributes[2] * min(
+                    x -> (int) Math.pow((function.getApplicationSystems() + x) -
+                            Math.max(function.getApplicationSystems(), 1), 2),
+                    -function.getApplicationSystems(), 1
+            );
+
+            faultActivities += (dPre == 0) && (dSub == 0) && (dDin == 0) && (dDout == 0) &&
+                    (dOrg == 0) && (dIn == 0) && (dReg == 0) && (dOut == 0) && (dApp == 0) ? 0 : 1;
+
+            if (showDetails) {
+                System.out.printf("\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+                        function.getLabel(),
+                        dPre, dSub,
+                        dDin, dDout,
+                        dOrg, dIn, dReg, dOut, dApp);
+            }
+        }
+
+        return faultActivities;
+    }
+
+    private static final int min(BalanceFunction balance, int from, int to) {
+        int min = from;
+        int value = balance.function(from);
+
+        for (int x = from + 1; x <= to; x++) {
+            int newValue = balance.function(x);
+
+            if (newValue < value) {
+                value = newValue;
+                min = x;
+            }
+        }
+
+        return min;
+    }
+
+    private interface BalanceFunction {
+        int function(double x);
     }
 }
