@@ -9,6 +9,7 @@
         <module>repository</module>
         <module>gateway</module>
         <module>similarity</module>
+        <module>bpmanalysis</module>
     </modules>
     <name>research-calculations-java</name>
 	<description>Research calculations made during PhD study.</description>
