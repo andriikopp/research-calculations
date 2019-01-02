@@ -64,6 +64,78 @@ public class Model {
         return connectors;
     }
 
+    public List<Connector> getSplitConnectors(String logic) {
+        List<Connector> connectors = new ArrayList<>();
+
+        for (Node node : nodes) {
+            if (node instanceof Connector) {
+                if (((Connector) node).getLogic().equals(logic) &&
+                        (node.getPreceding() == 1 && node.getSubsequent() > 1)) {
+                    connectors.add((Connector) node);
+                }
+            }
+        }
+
+        return connectors;
+    }
+
+    public List<Connector> getJoinConnectors(String logic) {
+        List<Connector> connectors = new ArrayList<>();
+
+        for (Node node : nodes) {
+            if (node instanceof Connector) {
+                if (((Connector) node).getLogic().equals(logic) &&
+                        (node.getPreceding() > 1 && node.getSubsequent() == 1)) {
+                    connectors.add((Connector) node);
+                }
+            }
+        }
+
+        return connectors;
+    }
+
+    public List<Event> getStartEvents() {
+        List<Event> events = new ArrayList<>();
+
+        for (Node node : nodes) {
+            if (node instanceof Event) {
+                if (node.getPreceding() == 0) {
+                    events.add((Event) node);
+                }
+            }
+        }
+
+        return events;
+    }
+
+    public List<Event> getEndEvents() {
+        List<Event> events = new ArrayList<>();
+
+        for (Node node : nodes) {
+            if (node instanceof Event) {
+                if (node.getSubsequent() == 0) {
+                    events.add((Event) node);
+                }
+            }
+        }
+
+        return events;
+    }
+
+    public List<Event> getInternalEvents() {
+        List<Event> events = new ArrayList<>();
+
+        for (Node node : nodes) {
+            if (node instanceof Event) {
+                if (node.getPreceding() > 0 && node.getSubsequent() > 0) {
+                    events.add((Event) node);
+                }
+            }
+        }
+
+        return events;
+    }
+
     public double complexityXor() {
         double result = 0;
 
@@ -94,6 +166,108 @@ public class Model {
         } catch (NullPointerException e) {
             return 0;
         }
+    }
+
+    public double complexitySplitXor() {
+        double result = 0;
+
+        for (Connector connector : getConnectors()) {
+            if (connector.getLogic().equals(Connector.XOR) &&
+                    (connector.getPreceding() == 1 && connector.getSubsequent() > 1)) {
+                result += connector.getSubsequent();
+            }
+        }
+
+        return result;
+    }
+
+    public double complexitySplitOr() {
+        double result = 0;
+
+        for (Connector connector : getConnectors()) {
+            if (connector.getLogic().equals(Connector.OR) &&
+                    (connector.getPreceding() == 1 && connector.getSubsequent() > 1)) {
+                result += Math.pow(2, connector.getSubsequent()) - 1;
+            }
+        }
+
+        return result;
+    }
+
+    public double complexitySplitAnd() {
+        try {
+            return getConnectors().stream().filter(connector -> connector.getLogic().equals(Connector.AND) &&
+                    (connector.getPreceding() == 1 && connector.getSubsequent() > 1)).count();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+    public double complexityJoinXor() {
+        double result = 0;
+
+        for (Connector connector : getConnectors()) {
+            if (connector.getLogic().equals(Connector.XOR) &&
+                    (connector.getPreceding() > 1 && connector.getSubsequent() == 1)) {
+                result += connector.getSubsequent();
+            }
+        }
+
+        return result;
+    }
+
+    public double complexityJoinOr() {
+        double result = 0;
+
+        for (Connector connector : getConnectors()) {
+            if (connector.getLogic().equals(Connector.OR) &&
+                    (connector.getPreceding() > 1 && connector.getSubsequent() == 1)) {
+                result += Math.pow(2, connector.getSubsequent()) - 1;
+            }
+        }
+
+        return result;
+    }
+
+    public double complexityJoinAnd() {
+        try {
+            return getConnectors().stream().filter(connector -> connector.getLogic().equals(Connector.AND) &&
+                    (connector.getPreceding() > 1 && connector.getSubsequent() == 1)).count();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+    public double splitComplexity() {
+        return complexitySplitXor() + complexitySplitOr() + complexitySplitAnd();
+    }
+
+    public double joinComplexity() {
+        return complexityJoinXor() + complexityJoinOr() + complexityJoinAnd();
+    }
+
+    public double numberOfInputs() {
+        double count = 0;
+
+        for (Node node : nodes) {
+            if (node instanceof Function) {
+                count += node.getPreceding();
+            }
+        }
+
+        return count;
+    }
+
+    public double numberOfOutputs() {
+        double count = 0;
+
+        for (Node node : nodes) {
+            if (node instanceof Function) {
+                count += node.getSubsequent();
+            }
+        }
+
+        return count;
     }
 
     public List<Event> getEvents() {
