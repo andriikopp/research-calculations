@@ -4,10 +4,7 @@ import edu.kopp.phd.express.landscape.ARISLandscape;
 import edu.kopp.phd.express.landscape.BPMNLandscape;
 import edu.kopp.phd.express.landscape.DFDLandscape;
 import edu.kopp.phd.express.landscape.validation.*;
-import edu.kopp.phd.express.metamodel.Model;
-import edu.kopp.phd.express.metamodel.RelaxedImprovement;
-import edu.kopp.phd.express.metamodel.RelaxedValidation;
-import edu.kopp.phd.express.metamodel.WeightedBalanceAnalysis;
+import edu.kopp.phd.express.metamodel.*;
 import edu.kopp.phd.express.metamodel.entity.*;
 import edu.kopp.phd.express.search.ModelSimilarity;
 import edu.kopp.phd.express.search.PatternMatching;
@@ -94,6 +91,12 @@ public class ExpressApplication {
     public static void loadRandomValidationModels() {
         for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
                 RandomValidationSetGenerator.CF_DEFECTS)) {
+            allModels.put(model, "CF");
+        }
+
+        /*
+        for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
+                RandomValidationSetGenerator.CF_DEFECTS)) {
             allModels.put(model, "BPMN");
         }
 
@@ -103,19 +106,14 @@ public class ExpressApplication {
         }
 
         for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
-                RandomValidationSetGenerator.HR_DEFECTS)) {
-            allModels.put(model, "IDEF0");
+                RandomValidationSetGenerator.ENV_DEFECTS)) {
+            allModels.put(model, "ARISeEPC");
         }
 
         for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
-                RandomValidationSetGenerator.IO_DEFECTS)) {
+                RandomValidationSetGenerator.ENV_DEFECTS)) {
             allModels.put(model, "IDEF0");
-        }
-
-        for (Model model : RandomValidationSetGenerator.generateModelsWithDefects(
-                RandomValidationSetGenerator.NHR_DEFECTS)) {
-            allModels.put(model, "IDEF0");
-        }
+        }*/
     }
 
     public static void validateModels() {
@@ -138,16 +136,15 @@ public class ExpressApplication {
         for (Map.Entry<Model, String> model : allModels.entrySet()) {
             model.getKey().enableEnvironment();
 
-            System.out.printf("%s\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%s\n",
+            System.out.printf("%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\n",
                     model.getKey().getName(),
                     model.getKey().countNodes(),
-                    model.getKey().getFunctions().size(),
-                    model.getKey().density(),
-                    model.getKey().connectivity(),
-                    model.getKey().balance(),
-                    RelaxedValidation.validate(model.getKey(), model.getValue(), false),
-                    WeightedBalanceAnalysis.analyze(model.getKey(), model.getValue()),
-                    model.getKey().hasIssues() ? "yes" : "no");
+                    PredictionModel.hasErrorsSizeAnalysis(model.getKey()),
+                    PredictionModel.hasErrorsConnectionAnalysis(model.getKey()),
+                    PredictionModel.hasErrorsControlFlowComplexityAnalysis(model.getKey()),
+                    PredictionModel.hasErrorsBalanceAnalysis(model.getKey()),
+                    RelaxedValidation.validate(model.getKey(), model.getValue(), true),
+                    RelaxedImprovement.improve(model.getKey(), model.getValue(), false));
         }
     }
 
@@ -155,7 +152,7 @@ public class ExpressApplication {
         System.out.println("Relaxed improvement");
 
         for (Map.Entry<Model, String> model : allModels.entrySet()) {
-            RelaxedImprovement.improve(model.getKey(), model.getValue());
+            RelaxedImprovement.improve(model.getKey(), model.getValue(), true);
         }
     }
 
@@ -164,16 +161,14 @@ public class ExpressApplication {
 
         for (Map.Entry<Model, String> first : allModels.entrySet()) {
             for (Map.Entry<Model, String> second : allModels.entrySet()) {
-                double similarity = ModelSimilarity.similarity(first.getKey(), second.getKey(),
-                        ModelSimilarity.getCompareWeights(first.getValue(), second.getValue()));
+                double similarity = ModelSimilarity.relaxedSimilarity(first.getKey(), second.getKey());
 
                 // Show only duplicates.
-                if (similarity == 1 && !first.getKey().getName().equals(second.getKey().getName())) {
+                if (similarity == 1 && !first.getKey().getName().equals(second.getKey().getName()))
                     System.out.printf("%s\t%s\t%.2f\n",
                             first.getKey().getName(),
                             second.getKey().getName(),
                             similarity);
-                }
             }
         }
     }
@@ -207,18 +202,18 @@ public class ExpressApplication {
     public static void main(String[] args) {
         loadAllModels();
 
-        loadValidationModels();
+        //loadValidationModels();
 
-        loadRandomValidationModels();
+        //loadRandomValidationModels();
 
-        validateModels();
+        //validateModels();
 
-        validateModelsRelaxed();
+        //validateModelsRelaxed();
 
-        improveModelsRelaxed();
+        //improveModelsRelaxed();
 
         compareModels();
 
-        patternMatching();
+        //patternMatching();
     }
 }
