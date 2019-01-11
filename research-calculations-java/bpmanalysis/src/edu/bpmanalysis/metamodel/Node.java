@@ -104,6 +104,12 @@ public class Node {
         return nodeType;
     }
 
+    public String getDescription() {
+        return String.format("<%s,%d,%d,%d,%d>",
+                nodeType.toString(),
+                input, control, output, mechanism);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
