@@ -5,7 +5,7 @@ import edu.bpmanalysis.collection.tools.Model;
 import edu.bpmanalysis.metamodel.Node;
 
 public class FunctionsBalance implements Balance {
-    private static final int MAX_F = 1;
+    public static final int MAX_F = 1;
 
     @Override
     public double balanceCoefficient(Model model) {

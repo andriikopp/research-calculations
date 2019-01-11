@@ -5,7 +5,7 @@ import edu.bpmanalysis.collection.tools.Model;
 import edu.bpmanalysis.metamodel.Node;
 
 public class ConnectorsBalance implements Balance {
-    private static final int MAX_C = 3;
+    public static final int MAX_C = 3;
 
     @Override
     public double balanceCoefficient(Model model) {
