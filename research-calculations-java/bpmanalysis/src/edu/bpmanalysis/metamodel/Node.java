@@ -100,6 +100,10 @@ public class Node {
         return mechanism;
     }
 
+    public double[] getArcs() {
+        return new double[]{input, control, output, mechanism};
+    }
+
     public NodeType getNodeType() {
         return nodeType;
     }

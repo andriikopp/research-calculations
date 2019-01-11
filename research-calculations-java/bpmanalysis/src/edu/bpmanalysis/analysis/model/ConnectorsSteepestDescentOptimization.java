@@ -36,11 +36,11 @@ public class ConnectorsSteepestDescentOptimization {
                         (2.0 * (ConnectorsBalance.MAX_C + current[i] + changes[i]));
 
                 changes[i] = changes[i] - lambda * 2.0 * (ConnectorsBalance.MAX_C + (current[i] + changes[i]));
-
-                if (Configuration.DEBUG) {
-                    System.out.printf("%d\t%s\t%.2f\n", (i + 1), Arrays.toString(changes), function.value(changes));
-                }
             }
+        }
+
+        if (Configuration.DEBUG) {
+            System.out.printf("%s\t%.2f\n", Arrays.toString(changes), function.value(changes));
         }
 
         return changes;
