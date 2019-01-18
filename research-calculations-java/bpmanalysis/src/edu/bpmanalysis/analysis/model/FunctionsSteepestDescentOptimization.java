@@ -24,7 +24,14 @@ public class FunctionsSteepestDescentOptimization {
 
             for (int i = 0; i < current.length; i++) {
                 for (int j = 0; j < Node.arcTypes.length; j++) {
-                    result += Math.pow((current[i][j] + variables[i][j]) - FunctionsBalance.MAX_F, 2);
+                    double max = FunctionsBalance.MAX_F;
+
+                    if (model.getModelType().equals(Model.ModelType.IDEF0) ||
+                            model.getModelType().equals(Model.ModelType.DFD)) {
+                        max = Math.max(1, Math.min((current[i][j] + variables[i][j]), 3));
+                    }
+
+                    result += Math.pow((current[i][j] + variables[i][j]) - max, 2);
                 }
             }
 
@@ -37,11 +44,18 @@ public class FunctionsSteepestDescentOptimization {
                     continue;
                 }
 
-                if (Math.pow(current[i][j] - FunctionsBalance.MAX_F, 2) > 0) {
-                    double lambda = (current[i][j] + changes[i][j] - FunctionsBalance.MAX_F) /
-                            (2.0 * (FunctionsBalance.MAX_F + current[i][j] + changes[i][j]));
+                double max = FunctionsBalance.MAX_F;
 
-                    changes[i][j] = changes[i][j] - lambda * 2.0 * (FunctionsBalance.MAX_F +
+                if (model.getModelType().equals(Model.ModelType.IDEF0) ||
+                        model.getModelType().equals(Model.ModelType.DFD)) {
+                    max = Math.max(1, Math.min(current[i][j], 3));
+                }
+
+                if (Math.pow(current[i][j] - max, 2) > 0) {
+                    double lambda = (current[i][j] + changes[i][j] - max) /
+                            (2.0 * (max + current[i][j] + changes[i][j]));
+
+                    changes[i][j] = changes[i][j] - lambda * 2.0 * (max +
                             (current[i][j] + changes[i][j]));
                 }
             }

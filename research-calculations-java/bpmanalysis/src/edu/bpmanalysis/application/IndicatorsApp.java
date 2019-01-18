@@ -4,6 +4,7 @@ import edu.bpmanalysis.analysis.IndicatorsUtil;
 import edu.bpmanalysis.collection.BPMNModels;
 import edu.bpmanalysis.collection.DFDModels;
 import edu.bpmanalysis.collection.EPCModels;
+import edu.bpmanalysis.collection.IDEF0Models;
 import edu.bpmanalysis.collection.api.Models;
 import edu.bpmanalysis.collection.tools.Model;
 
@@ -19,6 +20,12 @@ public class IndicatorsApp {
         models = new BPMNModels();
 
         for (Model model : models.importModels()) {
+            IndicatorsUtil.printIndicators(model);
+        }
+
+        models = new IDEF0Models();
+
+        for (Model model : models.loadModels()) {
             IndicatorsUtil.printIndicators(model);
         }
 

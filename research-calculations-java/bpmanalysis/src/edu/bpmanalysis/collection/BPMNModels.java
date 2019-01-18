@@ -2,6 +2,7 @@ package edu.bpmanalysis.collection;
 
 import edu.bpmanalysis.collection.api.Models;
 import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.collection.tools.ModelBuilder;
 import edu.bpmanalysis.metamodel.Node;
 import edu.kopp.phd.express.landscape.BPMNLandscape;
 import edu.kopp.phd.express.metamodel.entity.Connector;
@@ -52,6 +53,32 @@ public class BPMNModels implements Models {
 
             models.add(importedModel);
         }
+
+        return models;
+    }
+
+    @Override
+    public List<Model> loadModels() {
+        List<Model> models = new ArrayList<>();
+
+        models.add(ModelBuilder.selectModel(Model.createBPMNModel("Cab Booking Process"))
+                .addNode(Node.createFunction(0, 1, 0, 0))
+                .addNode(Node.createEvent(1, 0))
+                .addNode(Node.createEvent(0, 1))
+                .addNode(Node.createFunction(1, 1, 0, 0))
+                .addNode(Node.createFunction(1, 1, 0, 0))
+                .addNode(Node.createXORConnector(1, 2))
+                .addNode(Node.createFunction(1, 1, 0, 0))
+                .addNode(Node.createFunction(2, 1, 0, 0))
+                .addNode(Node.createXORConnector(1, 2))
+                .addNode(Node.createEvent(1, 0))
+                .addNode(Node.createFunction(1, 1, 0, 0))
+                .addNode(Node.createEvent(1, 1))
+                .addNode(Node.createEvent(0, 1))
+                .addNode(Node.createFunction(0, 1, 0, 0))
+                .addNode(Node.createFunction(1, 1, 0, 0))
+                .addNode(Node.createEvent(1, 0))
+                .finish());
 
         return models;
     }
