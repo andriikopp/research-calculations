@@ -12,7 +12,7 @@ public class ModelDensity {
     public static double density(double arcs, double size) {
         double maxArcs = size * (size - 1.0);
 
-        return maxArcs > 0 ? (arcs / 2.0) / maxArcs : 0;
+        return ((arcs / 2.0) + 1.0) / (maxArcs + 1.0);
     }
 
     public static double arcs(Model model) {

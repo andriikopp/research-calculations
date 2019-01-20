@@ -1,11 +1,8 @@
 package edu.bpmanalysis.application;
 
-import edu.bpmanalysis.analysis.ConnectorsMismatch;
 import edu.bpmanalysis.analysis.ModelDensity;
-import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.analysis.balance.ConnectorsBalance;
 import edu.bpmanalysis.analysis.balance.FunctionsBalance;
-import edu.bpmanalysis.analysis.balance.api.Balance;
 import edu.bpmanalysis.analysis.model.*;
 import edu.bpmanalysis.collection.BPMNModels;
 import edu.bpmanalysis.collection.DFDModels;
@@ -44,8 +41,11 @@ public class OptimizationApp {
             }
         }
 
+        double connectorsBalance = new ConnectorsBalance().balanceCoefficient(model);
+        double functionsBalance = new FunctionsBalance().balanceCoefficient(model);
+
         double newSize = model.getNodesList().size() + sum(nodesChanges) + sum(routingChanges);
-        double newArcs = ModelDensity.arcs(model) + sum(connectorsChanges) + sum(functionsChanges);
+        double newArcs = ModelDensity.arcs(model) - connectorsBalance - functionsBalance;
 
         System.out.printf("%.2f\t%.2f\n",
                 PredictionModel.understandabilityTime(newSize),
@@ -78,15 +78,11 @@ public class OptimizationApp {
     public static void main(String[] args) {
         Models models = new EPCModels();
 
-        System.out.println("EPC Models Optimization");
-
         for (Model model : models.importModels()) {
             printModelOptimization(model);
         }
 
         models = new BPMNModels();
-
-        System.out.println("BPMN Models Optimization");
 
         for (Model model : models.importModels()) {
             printModelOptimization(model);
@@ -94,15 +90,11 @@ public class OptimizationApp {
 
         models = new IDEF0Models();
 
-        System.out.println("IDEF0 Models Optimization");
-
         for (Model model : models.loadModels()) {
             printModelOptimization(model);
         }
 
         models = new DFDModels();
-
-        System.out.println("DFD Models Optimization");
 
         for (Model model : models.importModels()) {
             printModelOptimization(model);

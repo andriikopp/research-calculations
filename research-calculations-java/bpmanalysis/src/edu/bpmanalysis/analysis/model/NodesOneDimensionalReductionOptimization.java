@@ -23,8 +23,8 @@ public class NodesOneDimensionalReductionOptimization {
 
         RestrictionFunction[] restrictions = {
                 (i, o) -> (1.0 - (i - o) < 0 ? 0 : 1.0) * (i - o),
-                (i, o) -> 1.0,
-                (i, o) -> 1.0,
+                (i, o) -> i - o,
+                (i, o) -> i - o,
                 (i, o) -> -o,
                 (i, o) -> ((i - o) < 0 ? 0 : 1.0) * (i - o)
         };
