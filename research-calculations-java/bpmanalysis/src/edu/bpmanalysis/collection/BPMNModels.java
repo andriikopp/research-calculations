@@ -57,32 +57,6 @@ public class BPMNModels implements Models {
         return models;
     }
 
-    @Override
-    public List<Model> loadModels() {
-        List<Model> models = new ArrayList<>();
-
-        models.add(ModelBuilder.selectModel(Model.createBPMNModel("Cab Booking Process"))
-                .addNode(Node.createFunction(0, 1, 0, 0))
-                .addNode(Node.createEvent(1, 0))
-                .addNode(Node.createEvent(0, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createXORConnector(1, 2))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createFunction(2, 1, 0, 0))
-                .addNode(Node.createXORConnector(1, 2))
-                .addNode(Node.createEvent(1, 0))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createEvent(0, 1))
-                .addNode(Node.createFunction(0, 1, 0, 0))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createEvent(1, 0))
-                .finish());
-
-        return models;
-    }
-
     public static void main(String[] args) {
         Models models = new BPMNModels();
 

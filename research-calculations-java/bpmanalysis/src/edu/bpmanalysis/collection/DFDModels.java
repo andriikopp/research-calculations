@@ -23,35 +23,20 @@ public class DFDModels implements Models {
                     importedModel.getNodesList().add(Node.createFunction(node.getLabel(),
                             node.getPreceding(), node.getSubsequent(),0, 0));
                 }
+
+                if (node instanceof edu.kopp.phd.express.metamodel.entity.DataStore) {
+                    importedModel.getNodesList().add(Node.createDataStore(node.getLabel(),
+                            node.getPreceding(), node.getSubsequent()));
+                }
+
+                if (node instanceof edu.kopp.phd.express.metamodel.entity.ExternalEntity) {
+                    importedModel.getNodesList().add(Node.createExternalEntity(node.getLabel(),
+                            node.getPreceding(), node.getSubsequent()));
+                }
             }
 
             models.add(importedModel);
         }
-
-        return models;
-    }
-
-    @Override
-    public List<Model> loadModels() {
-        List<Model> models = new ArrayList<>();
-
-        models.add(ModelBuilder.selectModel(Model.createDFDModel("Process of Account Receivable"))
-                .addNode(Node.createFunction(2, 2, 0, 0))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createFunction(3, 1, 0, 0))
-                .addNode(Node.createFunction(1, 2, 0, 0))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createFunction(1, 2, 0, 0))
-                .addNode(Node.createFunction(2, 2, 0, 0))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createFunction(2, 1, 0, 0))
-                .addNode(Node.createFunction(2, 1, 0, 0))
-                .addNode(Node.createFunction(0, 1, 0, 0))
-                .addNode(Node.createFunction(0, 2, 0, 0))
-                .addNode(Node.createFunction(1, 2, 0, 0))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createFunction(2, 0, 0, 0))
-                .finish());
 
         return models;
     }

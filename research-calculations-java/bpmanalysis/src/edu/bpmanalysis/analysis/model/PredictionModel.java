@@ -7,7 +7,7 @@ import edu.bpmanalysis.collection.tools.Model;
 public class PredictionModel {
 
     public static double understandabilityTime(Model model) {
-        return understandabilityTime(model.getNodesList().size());
+        return understandabilityTime(ModelDensity.size(model));
     }
 
     public static double modifiabilityTime(Model model) {

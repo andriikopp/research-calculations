@@ -13,7 +13,9 @@ public class Node {
     private NodeType nodeType;
 
     public enum NodeType {
-        FUNCTION, EVENT, XOR_CONNECTOR, OR_CONNECTOR, AND_CONNECTOR
+        FUNCTION, EVENT, XOR_CONNECTOR, OR_CONNECTOR, AND_CONNECTOR,
+        DATA_STORE, EXTERNAL_ENTITY,
+        INPUT_INTERFACE, CONTROL_INTERFACE, OUTPUT_INTERFACE, MECHANISM_INTERFACE
     }
 
     public interface ArcType {
@@ -78,6 +80,54 @@ public class Node {
 
     public static Node createANDConnector(String name, int input, int output) {
         return new Node(name, input, output, 0, 0, NodeType.AND_CONNECTOR);
+    }
+
+    public static Node createDataStore(int input, int output) {
+        return new Node(null, input, output, 0, 0, NodeType.DATA_STORE);
+    }
+
+    public static Node createDataStore(String name, int input, int output) {
+        return new Node(name, input, output, 0, 0, NodeType.DATA_STORE);
+    }
+
+    public static Node createExternalEntity(int input, int output) {
+        return new Node(null, input, output, 0, 0, NodeType.EXTERNAL_ENTITY);
+    }
+
+    public static Node createExternalEntity(String name, int input, int output) {
+        return new Node(name, input, output, 0, 0, NodeType.EXTERNAL_ENTITY);
+    }
+
+    public static Node createInputInterface(int output) {
+        return new Node(null, 0, output, 0, 0, NodeType.INPUT_INTERFACE);
+    }
+
+    public static Node createInputInterface(String name, int output) {
+        return new Node(name, 0, output, 0, 0, NodeType.INPUT_INTERFACE);
+    }
+
+    public static Node createOutputInterface(int input) {
+        return new Node(null, input, 0, 0, 0, NodeType.OUTPUT_INTERFACE);
+    }
+
+    public static Node createOutputInterface(String name, int input) {
+        return new Node(name, input, 0, 0, 0, NodeType.OUTPUT_INTERFACE);
+    }
+
+    public static Node createControlInterface(int output) {
+        return new Node(null, 0, output, 0, 0, NodeType.CONTROL_INTERFACE);
+    }
+
+    public static Node createControlInterface(String name, int output) {
+        return new Node(name, 0, output, 0, 0, NodeType.CONTROL_INTERFACE);
+    }
+
+    public static Node createMechanismInterface(int output) {
+        return new Node(null, 0, output, 0, 0, NodeType.MECHANISM_INTERFACE);
+    }
+
+    public static Node createMechanismInterface(String name, int output) {
+        return new Node(name, 0, output, 0, 0, NodeType.MECHANISM_INTERFACE);
     }
 
     public String getLabel() {

@@ -58,53 +58,6 @@ public class EPCModels implements Models {
         return models;
     }
 
-    @Override
-    public List<Model> loadModels() {
-        List<Model> models = new ArrayList<>();
-
-        models.add(ModelBuilder.selectModel(Model.createEPCModel("Login and Registration Processing"))
-                .addNode(Node.createEvent(0, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createXORConnector(1, 2))
-                .addNode(Node.createEvent(1, 0))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createXORConnector(2, 2))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createXORConnector(3, 2))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createXORConnector(1, 2))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createEvent(1, 0))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createXORConnector(2, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createXORConnector(1, 2))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createANDConnector(1, 2))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createEvent(1, 0))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createEvent(1, 1))
-                .addNode(Node.createFunction(1, 1, 0, 0))
-                .addNode(Node.createEvent(1, 1))
-                .finish());
-
-        return models;
-    }
-
     public static void main(String[] args) {
         Models models = new EPCModels();
 

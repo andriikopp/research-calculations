@@ -1,5 +1,6 @@
 package edu.bpmanalysis.analysis.model;
 
+import edu.bpmanalysis.analysis.ModelDensity;
 import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.analysis.model.function.ArrayFunction;
 import edu.bpmanalysis.collection.tools.Model;
@@ -8,7 +9,7 @@ public class NodesOneDimensionalReductionOptimization {
 
     public static double[] optimization(Model model) {
         double[] current = {
-                model.getNodesList().size(),
+                ModelDensity.size(model),
                 NodesSubsetsUtil.getStartEvents(model).size(),
                 NodesSubsetsUtil.getEndEvents(model).size(),
                 NodesSubsetsUtil.getORRoutingElements(model).size(),
