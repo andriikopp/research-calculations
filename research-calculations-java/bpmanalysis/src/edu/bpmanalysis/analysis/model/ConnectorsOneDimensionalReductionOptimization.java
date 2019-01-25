@@ -10,7 +10,7 @@ import edu.bpmanalysis.metamodel.Node;
 import java.util.Arrays;
 import java.util.List;
 
-public class ConnectorsSteepestDescentOptimization {
+public class ConnectorsOneDimensionalReductionOptimization {
 
     public static double[] optimization(Model model) {
         List<Node> connectors = NodesSubsetsUtil.getConnectors(model);
@@ -31,11 +31,11 @@ public class ConnectorsSteepestDescentOptimization {
         };
 
         for (int i = 0; i < size; i++) {
-            if (Math.pow(current[i] - ConnectorsBalance.MAX_C, 2) > 0) {
-                double lambda = (current[i] + changes[i] - ConnectorsBalance.MAX_C) /
-                        (2.0 * (ConnectorsBalance.MAX_C + current[i] + changes[i]));
+            double old = function.value(changes);
+            changes[i] = ConnectorsBalance.MAX_C - current[i];
 
-                changes[i] = changes[i] - lambda * 2.0 * (ConnectorsBalance.MAX_C + (current[i] + changes[i]));
+            if (function.value(changes) >= old) {
+                changes[i] = 0;
             }
         }
 

@@ -9,7 +9,7 @@ import edu.bpmanalysis.metamodel.Node;
 
 import java.util.List;
 
-public class FunctionsSteepestDescentOptimization {
+public class FunctionsOneDimensionalReductionOptimization {
 
     public static double[][] optimization(Model model) {
         List<Node> functions = NodesSubsetsUtil.getFunctions(model);
@@ -51,12 +51,11 @@ public class FunctionsSteepestDescentOptimization {
                     max = Math.max(1, Math.min(current[i][j], 3));
                 }
 
-                if (Math.pow(current[i][j] - max, 2) > 0) {
-                    double lambda = (current[i][j] + changes[i][j] - max) /
-                            (2.0 * (max + current[i][j] + changes[i][j]));
+                double old = function.value(changes);
+                changes[i][j] = max - current[i][j];
 
-                    changes[i][j] = changes[i][j] - lambda * 2.0 * (max +
-                            (current[i][j] + changes[i][j]));
+                if (function.value(changes) >= old) {
+                    changes[i][j] = 0;
                 }
             }
         }

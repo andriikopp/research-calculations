@@ -1,7 +1,7 @@
 package edu.bpmanalysis.application;
 
-import edu.bpmanalysis.analysis.model.ConnectorsSteepestDescentOptimization;
-import edu.bpmanalysis.analysis.model.FunctionsSteepestDescentOptimization;
+import edu.bpmanalysis.analysis.model.ConnectorsOneDimensionalReductionOptimization;
+import edu.bpmanalysis.analysis.model.FunctionsOneDimensionalReductionOptimization;
 import edu.bpmanalysis.analysis.model.NodesOneDimensionalReductionOptimization;
 import edu.bpmanalysis.analysis.model.RoutingOneDimensionalReductionOptimization;
 import edu.bpmanalysis.collection.BPMNModels;
@@ -19,9 +19,9 @@ public class OptimizationApp {
         System.out.printf("%s\t", model.getName());
 
         double[] nodesChanges = NodesOneDimensionalReductionOptimization.optimization(model);
-        double[] connectorsChanges = ConnectorsSteepestDescentOptimization.optimization(model);
+        double[] connectorsChanges = ConnectorsOneDimensionalReductionOptimization.optimization(model);
         double[][] routingChanges = RoutingOneDimensionalReductionOptimization.optimization(model);
-        double[][] functionsChanges = FunctionsSteepestDescentOptimization.optimization(model);
+        double[][] functionsChanges = FunctionsOneDimensionalReductionOptimization.optimization(model);
 
         System.out.printf("\n\tNodes Optimization\n\t%s\n", Arrays.toString(nodesChanges));
 
