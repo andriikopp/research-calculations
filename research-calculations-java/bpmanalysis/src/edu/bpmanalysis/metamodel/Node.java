@@ -15,7 +15,7 @@ public class Node {
     public enum NodeType {
         FUNCTION, EVENT, XOR_CONNECTOR, OR_CONNECTOR, AND_CONNECTOR,
         DATA_STORE, EXTERNAL_ENTITY,
-        INPUT_INTERFACE, CONTROL_INTERFACE, OUTPUT_INTERFACE, MECHANISM_INTERFACE
+        INPUT_INTERFACE, CONTROL_INTERFACE, OUTPUT_INTERFACE, MECHANISM_INTERFACE, CALL_INTERFACE
     }
 
     public interface ArcType {
@@ -128,6 +128,14 @@ public class Node {
 
     public static Node createMechanismInterface(String name, int output) {
         return new Node(name, 0, output, 0, 0, NodeType.MECHANISM_INTERFACE);
+    }
+
+    public static Node createCallInterface(int input) {
+        return new Node(null, input, 0, 0, 0, NodeType.MECHANISM_INTERFACE);
+    }
+
+    public static Node createCallInterface(String name, int input) {
+        return new Node(name, input, 0, 0, 0, NodeType.MECHANISM_INTERFACE);
     }
 
     public String getLabel() {
