@@ -4,24 +4,22 @@ var edgesArray = [];
 var regularColor = '#ffffff';
 
 var nodesTypes = [
-    { id: 'Start-Event#', label: 'Start-Event', color: regularColor },
-    { id: 'End-Event#', label: 'End-Event', color: regularColor },
-    { id: 'Intermediate-Event#', label: 'Intermediate-Event', color: regularColor },
-    { id: 'Activity#', label: 'Activity', color: regularColor },
-    { id: 'Parallel-Split#', label: 'Parallel-Split', color: regularColor },
-    { id: 'Exclusive-Split#', label: 'Exclusive-Split', color: regularColor },
-    { id: 'Parallel-Join#', label: 'Parallel-Join', color: regularColor },
-    { id: 'Exclusive-Join#', label: 'Exclusive-Join', color: regularColor },
+    { id: 'Event#', label: 'Event', color: regularColor },
+    { id: 'Function#', label: 'Function', color: regularColor },
+    { id: 'AND#', label: 'AND', color: regularColor },
+    { id: 'OR#', label: 'OR', color: regularColor },
+    { id: 'XOR#', label: 'XOR', color: regularColor },
     { id: 'Data-Store#', label: 'Data-Store', color: regularColor },
     { id: 'External-Entity#', label: 'External-Entity', color: regularColor },
-    { id: 'Organizational-Unit#', label: 'Organizational-Unit', color: regularColor },
-    { id: 'Application-System#', label: 'Application-System', color: regularColor },
-    { id: 'Business-Object#', label: 'Business-Object', color: regularColor }
+    { id: 'Input-Interface#', label: 'Input-Interface', color: regularColor },
+    { id: 'Control-Interface#', label: 'Control-Interface', color: regularColor },
+    { id: 'Output-Interface#', label: 'Output-Interface', color: regularColor },
+    { id: 'Mechanism-Interface#', label: 'Mechanism-Interface', color: regularColor }
 ];
 
 var edgesTypes = [
-    'sequenceFlow', 'dataFlow', 'isPerformedBy', 'isSupportedBy', 'requires',
-    'isRegulatedBy', 'produces'
+    'sequenceFlow', 'dataFlow', 'inputArc', 'controlArc', 'outputArc',
+    'mechanismArc'
 ];
 
 var labelPattern = /^[a-zA-Z\-_0-9]+$/;
@@ -205,19 +203,40 @@ function download(content, fileName, contentType) {
 }
 
 $('#save').click(function() {
-    var modelName = prompt('Model name:');
+    var modelName = $("#modelName").val();
+    var modelNotation = $("#modelNotation").val();
+    var modelLevel = $("#modelLevel").val();
+    var modelText = $("#modelText").val();
 
     if (modelName == null || modelName.length == 0 || !labelPattern.test(modelName)) {
-        alert('Invalid file name!');
+        alert('Invalid model name!');
     } else {
         var bpModel = {
             name: modelName,
-            nodes: nodesArray,
-            edges: edgesArray
+            notation: modelNotation,
+            level: modelLevel,
+            graph: {
+                nodes: nodesArray,
+                edges: edgesArray
+            },
+            description: modelText
         };
 
-        download(JSON.stringify(bpModel), modelName + '.json', 'text/plain');
+        $.ajax({
+            type: "POST",
+            url: "/store",
+            dataType: "json",
+            async: false,
+            data: JSON.stringify(bpModel),
+            success: function() {
+                alert(JSON.stringify(bpModel));
+            }
+        });
+
+        // download(JSON.stringify(bpModel), modelName + '.json', 'text/plain');
     }
+
+    return false;
 });
 
 $('#upload').click(function() {
