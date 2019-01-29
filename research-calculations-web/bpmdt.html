@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>BPMDT</title>
+		<link rel="stylesheet" href="css/vis-network.min.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/bmpdt.css" />
+	</head>
+	<body>
+		<h3><kbd>[BPMDT]</kbd> Business Process Models Description Tool</h3>
+		<div class="row">
+			<div class="col-md-8">
+				<p>
+					<div id="modelDescription"></div>
+				</p>
+				<p>
+					<button id="refresh" class="btn btn-info">Refresh Graph</button>
+				</p>
+				<form>
+					<p>
+						<b>Business Process Model Name</b>
+					</p>
+					<p>
+						<input class="form-control" type="text" id="modelName" name="modelName" placeholder="Name" />
+					</p>
+					<p>
+						<b>Business Process Model Notation</b>
+					</p>
+					<p>
+						<select class="form-control" id="modelNotation" name="modelNotation">
+							<option value="BPMN">BPMN</option>
+							<option value="EPC">EPC</option>
+							<option value="IDEF0">IDEF0</option>
+							<option value="DFD">DFD</option>
+						</select>
+					</p>
+					<p>
+						<b>Business Process Model Detail Level</b>
+					</p>
+					<p>
+						<select class="form-control" id="modelLevel" name="modelLevel">
+							<option value="Foundation">Foundation</option>
+							<option value="Common Systems">Common Systems</option>
+							<option value="Industry">Industry</option>
+							<option value="Organization-Specific">Organization-Specific</option>
+						</select>
+					</p>
+					<p>
+						<b>Business Process Model Text Description</b>
+					</p>
+					<p>
+						<textarea id="modelText" name="modelText" class="form-control" rows="4" placeholder="Description"></textarea>
+					</p>
+					<p>
+						<button id="save" class="btn btn-primary">Save Graph</button>
+					</p>
+				</form>
+			</div>
+			<div class="col-md-4">
+				<p>
+					<b>Node</b>
+				</p>
+				<p>
+					<input type="text" id="nodeLabel" class="form-control" placeholder="Label" />
+				</p>
+				<p>
+					<select id="nodeType" class="form-control"></select>
+				</p>
+				<p>
+					<button id="addNode" class="form-control btn btn-success">Add Node</button>
+				</p>
+				<p>
+					<select id="nodeToRemove" class="form-control"></select>
+				</p>
+				<p>
+					<button id="removeNode" class="form-control btn btn-danger">Remove Node</button>
+				</p>
+				<p>
+					<b>Edge</b>
+				</p>
+				<p>
+					<select id="flowFrom" class="form-control"></select>
+				</p>
+				<p>
+					<select id="flowTo" class="form-control"></select>
+				</p>
+				<p>
+					<select id="edgeType" class="form-control"></select>
+				</p>
+				<p>
+					<button id="addFlow" class="form-control btn btn-success">Add Edge</button>
+				</p>
+				<p>
+					<button id="removeFlow" class="form-control btn btn-danger">Remove Edge</button>
+				</p>
+			</div>
+		</div>
+		<!--<p>
+			<textarea id="graphJSON" class="form-control" rows="4" placeholder="JSON-based graph"></textarea>
+		</p>
+		<p>
+			<button id="upload" class="form-control btn btn-success">Upload Graph</button>
+		</p>-->
+		<script src="js/vis.js"></script>
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="app/bpmdt.js"></script>
+	</body>
+</html>
