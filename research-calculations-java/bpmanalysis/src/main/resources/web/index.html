@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>BPMVW</title>
+    <link rel="stylesheet" href="css/vis-network.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bmpdt.css" />
+</head>
+<body>
+    <script src="js/vis.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script>
+        $.getJSON("/models", function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#processModelsList").append('<p>' +
+                    '<div class="card">' +
+                        '<div class="card-body">' +
+                            '<a onclick="loadModel(\'' + data[i].id + '\')" href="#">' +
+                                data[i].name + '</br>' + data[i].timeStamp + '</a>' +
+                        '</div>' +
+                    '</div>' +
+                    '</p>');
+            }
+        });
+
+        function loadModel(id) {
+            $.getJSON("retrieve/" + id, function(data) {
+                var container = document.getElementById('modelDescription');
+
+                var graphData = {
+                    nodes: data.graph.nodes,
+                    edges: data.graph.edges
+                };
+
+                var options = {};
+
+                new vis.Network(container, graphData, options);
+
+                var modelInfo = $("#modelInfo");
+                modelInfo.empty();
+
+                modelInfo.append("<p><b>Business Process Model Name<b></p>");
+                modelInfo.append("<p>" + data.name + "</p>");
+
+                modelInfo.append("<p><b>Business Process Model Notation<b></p>");
+                modelInfo.append("<p>" + data.notation + "</p>");
+
+                modelInfo.append("<p><b>Business Process Model Detail Level<b></p>");
+                modelInfo.append("<p>" + data.level + "</p>");
+
+                modelInfo.append("<p><b>Business Process Model Text Description<b></p>");
+                modelInfo.append("<p>" + data.description + "</p>");
+
+                modelInfo.append('<p>' +
+                    '<button id="analyzeModel" onclick="analyzeModel(\'' + data.id + '\')" ' +
+                        'class="btn btn-primary">Analyze Model</button></p>');
+
+                $("#modelAnalysis").empty();
+            });
+        }
+
+        function analyzeModel(id) {
+            $.getJSON("analyze/" + id, function(data) {
+                var modelAnalysis = $("#modelAnalysis");
+                modelAnalysis.empty();
+
+                if (data.nodesChanges[0] > 0) {
+                    modelAnalysis.append("<p><b>Size:</b> " + data.size + ' <span style="color:green">(+' +
+                        data.nodesChanges[0] + ")</span></p>");
+                } else if (data.nodesChanges[0] < 0) {
+                    modelAnalysis.append("<p><b>Size:</b> " + data.size + ' <span style="color:red">(' +
+                        data.nodesChanges[0] + ")</span></p>");
+                } else {
+                    modelAnalysis.append("<p><b>Size:</b> " + data.size + "</p>");
+                }
+
+                if (data.nodesChanges[4] > 0) {
+                    modelAnalysis.append("<p><b>Functions:</b> " + data.functions + ' <span style="color:green">(+' +
+                        data.nodesChanges[4] + ")</span></p>");
+                } else if (data.nodesChanges[4] < 0) {
+                    modelAnalysis.append("<p><b>Functions:</b> " + data.functions + ' <span style="color:red">(' +
+                        data.nodesChanges[4] + ")</span></p>");
+                } else {
+                    modelAnalysis.append("<p><b>Functions:</b> " + data.functions + "</p>");
+                }
+
+                if (data.connectorsBalance > 0) {
+                    modelAnalysis.append("<p><b>Connectors Balance:</b> " + data.connectorsBalance +
+                        ' <span style="color:red">(invalid)</span></p>');
+                } else {
+                    modelAnalysis.append("<p><b>Connectors Balance:</b> " + data.connectorsBalance + "</p>");
+                }
+
+                if (data.connectorsBalance > 0) {
+                    Object.keys(data.connectorsChanges).forEach(function(key, index) {
+                        modelAnalysis.append('<small><p><b>' + key + ':</b> ' + data.connectorsChanges[key] + '</p></small>');
+                    });
+                }
+
+                if (data.functionsBalance > 0) {
+                    modelAnalysis.append("<p><b>Functions Balance:</b> " + data.functionsBalance +
+                        ' <span style="color:red">(invalid)</span></p>');
+                } else {
+                    modelAnalysis.append("<p><b>Functions Balance:</b> " + data.functionsBalance + "</p>");
+                }
+
+                if (data.functionsBalance > 0) {
+                    Object.keys(data.functionsChanges).forEach(function(key, index) {
+                        modelAnalysis.append('<small><p><b>' + key + ':</b> ' +
+                                data.functionsChanges[key][0] + ' (in), ' +
+                                data.functionsChanges[key][1] + ' (control), ' +
+                                data.functionsChanges[key][2] + ' (out), ' +
+                                data.functionsChanges[key][3] + ' (mechanism)' +
+                            '</p></small>');
+                    });
+                }
+
+                if (data.nodesChanges[1] > 0) {
+                    modelAnalysis.append("<p><b>Start Events:</b> " + data.startEvents + ' <span style="color:green">(+' +
+                        data.nodesChanges[1] + ")</span></p>");
+                } else if (data.nodesChanges[1] < 0) {
+                    modelAnalysis.append("<p><b>Start Events:</b> " + data.startEvents + ' <span style="color:red">(' +
+                        data.nodesChanges[1] + ")</span></p>");
+                } else {
+                    modelAnalysis.append("<p><b>Start Events:</b> " + data.startEvents + "</p>");
+                }
+
+                if (data.nodesChanges[2] > 0) {
+                    modelAnalysis.append("<p><b>End Events:</b> " + data.endEvents + ' <span style="color:green">(+' +
+                        data.nodesChanges[2] + ")</span></p>");
+                } else if (data.nodesChanges[2] < 0) {
+                    modelAnalysis.append("<p><b>End Events:</b> " + data.endEvents + ' <span style="color:red">(' +
+                        data.nodesChanges[2] + ")</span></p>");
+                } else {
+                    modelAnalysis.append("<p><b>End Events:</b> " + data.endEvents + "</p>");
+                }
+
+                if (data.mismatch > 0) {
+                    modelAnalysis.append("<p><b>Connectors Mismatch:</b> " + data.mismatch +
+                        ' <span style="color:red">(invalid)</span></p>');
+                } else {
+                    modelAnalysis.append("<p><b>Connectors Mismatch:</b> " + data.mismatch + "</p>");
+                }
+
+                if (data.mismatch > 0) {
+                    Object.keys(data.routingChanges).forEach(function(key, index) {
+                        modelAnalysis.append('<small><p><b>' + key + ':</b> ' +
+                                data.routingChanges[key][0] + ' (splits), ' +
+                                data.routingChanges[key][1] + ' (joins)' +
+                            '</p></small>');
+                    });
+                }
+
+                if (data.nodesChanges[3] > 0) {
+                    modelAnalysis.append("<p><b>OR Connectors:</b> " + data.orConnectors + ' <span style="color:green">(+' +
+                        data.nodesChanges[3] + ")</span></p>");
+                } else if (data.nodesChanges[3] < 0) {
+                    modelAnalysis.append("<p><b>OR Connectors:</b> " + data.orConnectors + ' <span style="color:red">(' +
+                        data.nodesChanges[3] + ")</span></p>");
+                } else {
+                    modelAnalysis.append("<p><b>OR Connectors:</b> " + data.orConnectors + "</p>");
+                }
+            });
+        }
+    </script>
+    <h3>
+        <kbd>Business Process Models Viewer</kbd>
+        <small><a href="./add.html">Add Model</a></small>
+    </h3>
+    <div class="row">
+        <div class="col-md-4" id="processModelsList">
+            <p>
+                <b>Stored Business Process Models</b>
+            </p>
+        </div>
+        <div class="col-md-8">
+            <p>
+                <div id="modelDescription"></div>
+            </p>
+            <p>
+                <div id="modelInfo"></div>
+            </p>
+            <p>
+                <div id="modelAnalysis"></div>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

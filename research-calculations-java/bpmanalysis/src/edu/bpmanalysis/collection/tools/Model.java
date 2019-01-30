@@ -4,8 +4,10 @@ import edu.bpmanalysis.metamodel.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Model {
+    private String id;
     private String name;
     private ModelType modelType;
     private List<Node> nodesList;
@@ -23,6 +25,7 @@ public class Model {
     }
 
     private Model(String name, ModelType modelType, List<Node> nodesList) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.modelType = modelType;
         this.nodesList = nodesList;
@@ -44,18 +47,6 @@ public class Model {
         return new Model(name, ModelType.IDEF0, new ArrayList<>());
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public ModelType getModelType() {
-        return modelType;
-    }
-
-    public List<Node> getNodesList() {
-        return nodesList;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,6 +54,7 @@ public class Model {
 
         Model model = (Model) o;
 
+        if (id != null ? !id.equals(model.id) : model.id != null) return false;
         if (name != null ? !name.equals(model.name) : model.name != null) return false;
         if (modelType != model.modelType) return false;
         return nodesList != null ? nodesList.equals(model.nodesList) : model.nodesList == null;
@@ -70,7 +62,8 @@ public class Model {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (modelType != null ? modelType.hashCode() : 0);
         result = 31 * result + (nodesList != null ? nodesList.hashCode() : 0);
         return result;
@@ -79,9 +72,42 @@ public class Model {
     @Override
     public String toString() {
         return "Model{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", modelType=" + modelType +
                 ", nodesList=" + nodesList +
                 '}';
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ModelType getModelType() {
+        return modelType;
+    }
+
+    public void setModelType(ModelType modelType) {
+        this.modelType = modelType;
+    }
+
+    public List<Node> getNodesList() {
+        return nodesList;
+    }
+
+    public void setNodesList(List<Node> nodesList) {
+        this.nodesList = nodesList;
     }
 }
