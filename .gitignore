@@ -1,11 +1,13 @@
 research-calculations-cs/pmmining/bin
 research-calculations-cs/pmmining/obj
 
-research-calculations-python/.idea
-research-calculations-python/venv
+research-calculations-python/
 
 *.lnk
 
-# Ignore R history
-research-calculations-r/.Rhistory
-research-calculations-r/.RData
+research-calculations-r/
+
+research-calculations-java/xpdl-models/
+research-calculations-java/processModelsStorage/
+research-calculations-java/bpmanalysis/src/main/resources/web/js
+research-calculations-java/bpmanalysis/src/main/resources/web/css
