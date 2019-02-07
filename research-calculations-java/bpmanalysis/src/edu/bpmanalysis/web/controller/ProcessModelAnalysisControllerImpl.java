@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.similarity.SearchBasedStorage;
 import edu.bpmanalysis.web.controller.api.ProcessModelAnalysisController;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
@@ -57,6 +58,8 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
     @Override
     public void init(ProcessModelRepository repository) {
         this.repository = repository;
+
+        SearchBasedStorage.loadModels(repository);
 
         staticFiles.location("/web");
 

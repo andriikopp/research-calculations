@@ -160,6 +160,12 @@
                 } else {
                     modelAnalysis.append("<p><b>OR Connectors:</b> " + data.orConnectors + "</p>");
                 }
+
+                Object.keys(data.similarModels).forEach(function(key, index) {
+                    modelAnalysis.append('<p>' +
+                        '<a href="#" onclick="loadModel(\'' + key + '\')">' + data.similarModels[key] + '</a>' +
+                        '</p>');
+                });
             });
         }
     </script>

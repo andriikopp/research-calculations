@@ -1,5 +1,6 @@
 package edu.bpmanalysis.web.model;
 
+import edu.bpmanalysis.similarity.SearchBasedStorage;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import io.jsondb.JsonDBTemplate;
@@ -31,5 +32,7 @@ public class ProcessModelRepositoryJsonDB implements ProcessModelRepository {
     @Override
     public void addProcessModel(ProcessModelBean processModelBean) {
         jsonDBTemplate.insert(processModelBean);
+
+        SearchBasedStorage.addModel(processModelBean);
     }
 }
