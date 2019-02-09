@@ -55,6 +55,10 @@
                     '<button id="analyzeModel" onclick="analyzeModel(\'' + data.id + '\')" ' +
                         'class="btn btn-primary">Analyze Model</button></p>');
 
+                modelInfo.append('<p><a href="add.html?id=' + id + '">Update model</a> ' +
+                    '<a href="remove/' + data.id + '" onclick="return confirm(\'Delete this model?\')">' +
+                    'Delete model</a></p>');
+
                 $("#modelAnalysis").empty();
             });
         }
@@ -64,12 +68,18 @@
                 var modelAnalysis = $("#modelAnalysis");
                 modelAnalysis.empty();
 
+                modelAnalysis.append('<div id="rulesViolations"></div>');
+
+                var isModelValid = true;
+
                 if (data.nodesChanges[0] > 0) {
                     modelAnalysis.append("<p><b>Size:</b> " + data.size + ' <span style="color:green">(+' +
                         data.nodesChanges[0] + ")</span></p>");
+                    isModelValid = false;
                 } else if (data.nodesChanges[0] < 0) {
                     modelAnalysis.append("<p><b>Size:</b> " + data.size + ' <span style="color:red">(' +
                         data.nodesChanges[0] + ")</span></p>");
+                    isModelValid = false;
                 } else {
                     modelAnalysis.append("<p><b>Size:</b> " + data.size + "</p>");
                 }
@@ -77,9 +87,11 @@
                 if (data.nodesChanges[4] > 0) {
                     modelAnalysis.append("<p><b>Functions:</b> " + data.functions + ' <span style="color:green">(+' +
                         data.nodesChanges[4] + ")</span></p>");
+                    isModelValid = false;
                 } else if (data.nodesChanges[4] < 0) {
                     modelAnalysis.append("<p><b>Functions:</b> " + data.functions + ' <span style="color:red">(' +
                         data.nodesChanges[4] + ")</span></p>");
+                    isModelValid = false;
                 } else {
                     modelAnalysis.append("<p><b>Functions:</b> " + data.functions + "</p>");
                 }
@@ -87,6 +99,7 @@
                 if (data.connectorsBalance > 0) {
                     modelAnalysis.append("<p><b>Connectors Balance:</b> " + data.connectorsBalance +
                         ' <span style="color:red">(invalid)</span></p>');
+                    isModelValid = false;
                 } else {
                     modelAnalysis.append("<p><b>Connectors Balance:</b> " + data.connectorsBalance + "</p>");
                 }
@@ -100,6 +113,7 @@
                 if (data.functionsBalance > 0) {
                     modelAnalysis.append("<p><b>Functions Balance:</b> " + data.functionsBalance +
                         ' <span style="color:red">(invalid)</span></p>');
+                    isModelValid = false;
                 } else {
                     modelAnalysis.append("<p><b>Functions Balance:</b> " + data.functionsBalance + "</p>");
                 }
@@ -118,9 +132,11 @@
                 if (data.nodesChanges[1] > 0) {
                     modelAnalysis.append("<p><b>Start Events:</b> " + data.startEvents + ' <span style="color:green">(+' +
                         data.nodesChanges[1] + ")</span></p>");
+                    isModelValid = false;
                 } else if (data.nodesChanges[1] < 0) {
                     modelAnalysis.append("<p><b>Start Events:</b> " + data.startEvents + ' <span style="color:red">(' +
                         data.nodesChanges[1] + ")</span></p>");
+                    isModelValid = false;
                 } else {
                     modelAnalysis.append("<p><b>Start Events:</b> " + data.startEvents + "</p>");
                 }
@@ -128,9 +144,11 @@
                 if (data.nodesChanges[2] > 0) {
                     modelAnalysis.append("<p><b>End Events:</b> " + data.endEvents + ' <span style="color:green">(+' +
                         data.nodesChanges[2] + ")</span></p>");
+                    isModelValid = false;
                 } else if (data.nodesChanges[2] < 0) {
                     modelAnalysis.append("<p><b>End Events:</b> " + data.endEvents + ' <span style="color:red">(' +
                         data.nodesChanges[2] + ")</span></p>");
+                    isModelValid = false;
                 } else {
                     modelAnalysis.append("<p><b>End Events:</b> " + data.endEvents + "</p>");
                 }
@@ -138,6 +156,7 @@
                 if (data.mismatch > 0) {
                     modelAnalysis.append("<p><b>Connectors Mismatch:</b> " + data.mismatch +
                         ' <span style="color:red">(invalid)</span></p>');
+                    isModelValid = false;
                 } else {
                     modelAnalysis.append("<p><b>Connectors Mismatch:</b> " + data.mismatch + "</p>");
                 }
@@ -154,18 +173,35 @@
                 if (data.nodesChanges[3] > 0) {
                     modelAnalysis.append("<p><b>OR Connectors:</b> " + data.orConnectors + ' <span style="color:green">(+' +
                         data.nodesChanges[3] + ")</span></p>");
+                    isModelValid = false;
                 } else if (data.nodesChanges[3] < 0) {
                     modelAnalysis.append("<p><b>OR Connectors:</b> " + data.orConnectors + ' <span style="color:red">(' +
                         data.nodesChanges[3] + ")</span></p>");
+                    isModelValid = false;
                 } else {
                     modelAnalysis.append("<p><b>OR Connectors:</b> " + data.orConnectors + "</p>");
                 }
+
+                if (!isModelValid) {
+                    $('#rulesViolations').append('<div class="alert alert-warning" role="alert">' +
+                        'This model might contain errors!</div>');
+                }
+
+                modelAnalysis.append('<div id="similarModels"></div>');
+
+                var duplicatesCounter = 0;
 
                 Object.keys(data.similarModels).forEach(function(key, index) {
                     modelAnalysis.append('<p>' +
                         '<a href="#" onclick="loadModel(\'' + key + '\')">' + data.similarModels[key] + '</a>' +
                         '</p>');
+                    duplicatesCounter++;
                 });
+
+                if (duplicatesCounter > 0) {
+                    $('#similarModels').append('<div class="alert alert-warning" role="alert">' +
+                        'This model might be already stored!</div>');
+                }
             });
         }
     </script>

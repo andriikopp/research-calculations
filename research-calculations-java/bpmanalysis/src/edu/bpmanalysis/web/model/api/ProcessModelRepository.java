@@ -11,4 +11,6 @@ public interface ProcessModelRepository {
     ProcessModelBean getProcessModel(String id);
 
     void addProcessModel(ProcessModelBean processModelBean);
+
+    void deleteProcessModel(String id);
 }

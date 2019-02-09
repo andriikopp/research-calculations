@@ -35,4 +35,12 @@ public class ProcessModelRepositoryJsonDB implements ProcessModelRepository {
 
         SearchBasedStorage.addModel(processModelBean);
     }
+
+    @Override
+    public void deleteProcessModel(String id) {
+        ProcessModelBean processModelBean = new ProcessModelBean();
+        processModelBean.setId(id);
+
+        jsonDBTemplate.remove(processModelBean, ProcessModelBean.class);
+    }
 }

@@ -23,9 +23,19 @@ public class SearchBasedStorage {
         }
     }
 
+    public static void loadModels(List<Model> models) {
+        for (Model model : models) {
+            addModel(model);
+        }
+    }
+
     public static void addModel(ProcessModelBean processModelBean) {
         Model model = ProcessModelAnalysisUtil.transformToModel(processModelBean);
 
+        addModel(model);
+    }
+
+    public static void addModel(Model model) {
         int size = (int) ModelDensity.size(model);
         int arcs = (int) ModelDensity.arcs(model);
 
@@ -52,7 +62,7 @@ public class SearchBasedStorage {
         for (Model storedModel : modelList) {
             double distance = 1.0 - similarity.compare(model, storedModel);
 
-            if (distance == 0) {
+            if (distance == 0 && !model.getId().equals(storedModel.getId())) {
                 duplicateModelsIDs.put(storedModel.getId(), storedModel.getName());
             }
         }

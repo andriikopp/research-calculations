@@ -66,7 +66,7 @@ function renderModel() {
         edges: edgesArray
     };
 
-    $('#graphJSON').val(JSON.stringify(bpModel));
+    // $('#graphJSON').val(JSON.stringify(bpModel));
 }
 
 function updateNodesSelectOptions(id) {
@@ -262,3 +262,28 @@ window.addEventListener("beforeunload", function (e) {
     (e || window.event).returnValue = confirmationMessage; //Gecko + IE
     return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
 });
+
+function get(name) {
+   if (name = (new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
+
+var modelId = get('id');
+
+if (typeof modelId !== "undefined") {
+    $.getJSON("retrieve/" + modelId, function(data) {
+        nodesArray = data.graph.nodes;
+        edgesArray = data.graph.edges;
+
+        updateNodesSelectOptions('#flowFrom');
+        updateNodesSelectOptions('#flowTo');
+        updateNodesSelectOptions('#nodeToRemove');
+
+        renderModel();
+
+        $('#modelName').val(data.name);
+        $('#modelNotation').val(data.notation).change();
+        $('#modelLevel').val(data.level).change();
+        $('#modelText').append(data.description);
+    });
+}

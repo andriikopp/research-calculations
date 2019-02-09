@@ -55,6 +55,15 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
         return new Gson().toJson(processModelAnalysisBean);
     };
 
+    public Route remove = (req, res) -> {
+        String id = req.params(":id");
+
+        repository.deleteProcessModel(id);
+
+        res.redirect("/");
+        return null;
+    };
+
     @Override
     public void init(ProcessModelRepository repository) {
         this.repository = repository;
@@ -68,6 +77,7 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
             get("/retrieve/:id", retrieve);
             post("/store", store);
             get("/analyze/:id", analyze);
+            get("/remove/:id", remove);
         });
     }
 }
