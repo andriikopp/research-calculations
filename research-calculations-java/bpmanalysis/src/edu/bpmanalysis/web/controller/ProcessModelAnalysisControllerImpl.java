@@ -64,6 +64,16 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
         return null;
     };
 
+    public Route save = (req, res) -> {
+        String id = req.params(":id");
+
+        // TODO: store the correct and unique model
+        // TODO: use special models warehouse for this purpose
+
+        res.redirect("/");
+        return null;
+    };
+
     @Override
     public void init(ProcessModelRepository repository) {
         this.repository = repository;
@@ -78,6 +88,7 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
             post("/store", store);
             get("/analyze/:id", analyze);
             get("/remove/:id", remove);
+            get("/save/:id", save);
         });
     }
 }

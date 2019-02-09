@@ -198,6 +198,10 @@
                     duplicatesCounter++;
                 });
 
+                $('#similarModels').append('<p>' +
+                    '<a href="save/' + data.id + '" onclick="return confirm(\'Store this model?\')">' +
+                    'Store model</a></p>');
+
                 if (duplicatesCounter > 0) {
                     $('#similarModels').append('<div class="alert alert-warning" role="alert">' +
                         'This model might be already stored!</div>');
@@ -212,7 +216,7 @@
     <div class="row">
         <div class="col-md-4" id="processModelsList">
             <p>
-                <b>Stored Business Process Models</b>
+                <b>Analyzed Business Process Models</b>
             </p>
         </div>
         <div class="col-md-8">
