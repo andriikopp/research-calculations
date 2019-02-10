@@ -10,7 +10,7 @@ import edu.bpmanalysis.analysis.model.NodesOneDimensionalReductionOptimization;
 import edu.bpmanalysis.analysis.model.RoutingOneDimensionalReductionOptimization;
 import edu.bpmanalysis.collection.tools.Model;
 import edu.bpmanalysis.metamodel.Node;
-import edu.bpmanalysis.similarity.SearchBasedStorage;
+import edu.bpmanalysis.similarity.ProcessModelSimilaritySearchStorage;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphNodeBean;
@@ -179,7 +179,7 @@ public class ProcessModelAnalysisUtil {
 
         if (nodesChanges == null && connectorsChanges == null &&
                 functionsChanges == null && routingChanges == null) {
-            processModelAnalysisBean.setSimilarModels(SearchBasedStorage.findDuplicates(model));
+            processModelAnalysisBean.setSimilarModels(ProcessModelSimilaritySearchStorage.findDuplicates(model));
         }
 
         return processModelAnalysisBean;

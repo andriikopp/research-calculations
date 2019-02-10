@@ -12,7 +12,7 @@ import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import java.util.LinkedList;
 import java.util.*;
 
-public class SearchBasedStorage {
+public class ProcessModelSimilaritySearchStorage {
     private static Table<Integer, Integer, List<Model>> modelTable = HashBasedTable.create();
 
     private static Similarity similarity = new GraphStructureSimilarity();
