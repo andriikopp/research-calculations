@@ -177,10 +177,7 @@ public class ProcessModelAnalysisUtil {
             }
         }
 
-        if (nodesChanges == null && connectorsChanges == null &&
-                functionsChanges == null && routingChanges == null) {
-            processModelAnalysisBean.setSimilarModels(ProcessModelSimilaritySearchStorage.findDuplicates(model));
-        }
+        processModelAnalysisBean.setSimilarModels(ProcessModelSimilaritySearchStorage.findDuplicates(model));
 
         return processModelAnalysisBean;
     }

@@ -7,7 +7,9 @@ import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
 public class WebApp {
 
     public static void main(String[] args) {
-        ProcessModelAnalysisController service = new ProcessModelAnalysisControllerImpl();
-        service.init(new ProcessModelRepositoryJsonDB());
+        ProcessModelAnalysisController controller = new ProcessModelAnalysisControllerImpl();
+        controller.setRepository(new ProcessModelRepositoryJsonDB());
+
+        controller.init();
     }
 }

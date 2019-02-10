@@ -242,20 +242,6 @@ $('#save').click(function() {
     return false;
 });
 
-$('#upload').click(function() {
-    var uploadedGraph = $('#graphJSON').val();
-    var graph = JSON.parse(uploadedGraph);
-
-    nodesArray = graph.nodes;
-    edgesArray = graph.edges;
-
-    updateNodesSelectOptions('#flowFrom');
-    updateNodesSelectOptions('#flowTo');
-    updateNodesSelectOptions('#nodeToRemove');
-
-    renderModel();
-});
-
 window.addEventListener("beforeunload", function (e) {
     var confirmationMessage = 'If you leave before saving, your model will be lost.';
 
