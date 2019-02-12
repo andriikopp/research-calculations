@@ -1,4 +1,4 @@
-package edu.bpmanalysis.similarity.api;
+package edu.bpmanalysis.search.similarity.api;
 
 import edu.bpmanalysis.collection.tools.Model;
 

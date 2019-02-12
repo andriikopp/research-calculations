@@ -1,8 +1,8 @@
-package edu.bpmanalysis.similarity;
+package edu.bpmanalysis.search.similarity;
 
 import edu.bpmanalysis.collection.tools.Model;
 import edu.bpmanalysis.metamodel.Node;
-import edu.bpmanalysis.similarity.api.Similarity;
+import edu.bpmanalysis.search.similarity.api.Similarity;
 
 import java.util.HashMap;
 import java.util.HashSet;

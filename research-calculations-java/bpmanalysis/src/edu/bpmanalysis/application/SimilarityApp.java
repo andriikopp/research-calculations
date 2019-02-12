@@ -5,8 +5,8 @@ import edu.bpmanalysis.collection.DFDModels;
 import edu.bpmanalysis.collection.EPCModels;
 import edu.bpmanalysis.collection.api.Models;
 import edu.bpmanalysis.collection.tools.Model;
-import edu.bpmanalysis.similarity.GraphStructureSimilarity;
-import edu.bpmanalysis.similarity.api.Similarity;
+import edu.bpmanalysis.search.similarity.GraphStructureSimilarity;
+import edu.bpmanalysis.search.similarity.api.Similarity;
 
 import java.util.List;
 

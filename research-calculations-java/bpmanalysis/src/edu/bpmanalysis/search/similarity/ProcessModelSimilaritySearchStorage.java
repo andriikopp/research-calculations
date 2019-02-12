@@ -1,11 +1,11 @@
-package edu.bpmanalysis.similarity;
+package edu.bpmanalysis.search.similarity;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import edu.bpmanalysis.analysis.ModelDensity;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.collection.tools.Model;
-import edu.bpmanalysis.similarity.api.Similarity;
+import edu.bpmanalysis.search.similarity.api.Similarity;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 

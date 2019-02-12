@@ -10,7 +10,7 @@ import edu.bpmanalysis.analysis.model.NodesOneDimensionalReductionOptimization;
 import edu.bpmanalysis.analysis.model.RoutingOneDimensionalReductionOptimization;
 import edu.bpmanalysis.collection.tools.Model;
 import edu.bpmanalysis.metamodel.Node;
-import edu.bpmanalysis.similarity.ProcessModelSimilaritySearchStorage;
+import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphNodeBean;

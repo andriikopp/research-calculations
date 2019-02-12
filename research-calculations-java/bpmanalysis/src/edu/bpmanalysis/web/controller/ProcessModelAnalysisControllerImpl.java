@@ -4,7 +4,8 @@ import com.google.gson.Gson;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.collection.tools.Model;
-import edu.bpmanalysis.similarity.ProcessModelSimilaritySearchStorage;
+import edu.bpmanalysis.search.pattern.ProcessModelPatternMatchingStorage;
+import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
 import edu.bpmanalysis.web.controller.api.ProcessModelAnalysisController;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
@@ -64,9 +65,21 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
         return null;
     };
 
+    public Route search = (req, res) -> {
+        String type = req.params("type");
+        String node = req.params("node");
+
+        return new Gson().toJson(ProcessModelPatternMatchingStorage.match(type + "#" + node));
+    };
+
+    public Route searchAll = (req, res) ->
+            new Gson().toJson(ProcessModelPatternMatchingStorage.match(null));
+
     @Override
     public void init() {
         ProcessModelSimilaritySearchStorage.loadModels(repository);
+
+        ProcessModelPatternMatchingStorage.loadModels(repository);
 
         staticFiles.location("/web");
 
@@ -76,6 +89,8 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
             post("/store", store);
             get("/analyze/:id", analyze);
             get("/remove/:id", remove);
+            get("/search/:type/:node", search);
+            get("/search", searchAll);
         });
     }
 
