@@ -2,6 +2,7 @@ package edu.bpmanalysis.web.controller;
 
 import com.google.gson.Gson;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
+import edu.bpmanalysis.analysis.ProcessModelImportUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.collection.tools.Model;
 import edu.bpmanalysis.search.pattern.ProcessModelPatternMatchingStorage;

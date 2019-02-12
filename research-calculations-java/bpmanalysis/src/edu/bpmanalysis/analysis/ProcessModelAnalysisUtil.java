@@ -123,7 +123,7 @@ public class ProcessModelAnalysisUtil {
             }
         } else {
             if (processModelAnalysisBean.getSize() > 31 || processModelAnalysisBean.getFunctions() < 1 ||
-                    processModelAnalysisBean.getStartEvents() != 1 || processModelAnalysisBean.getStartEvents() != 1 ||
+                    processModelAnalysisBean.getStartEvents() != 1 || processModelAnalysisBean.getEndEvents() != 1 ||
                     processModelAnalysisBean.getOrConnectors() > 0) {
                 nodesChanges = NodesOneDimensionalReductionOptimization.optimization(model);
             } else {
