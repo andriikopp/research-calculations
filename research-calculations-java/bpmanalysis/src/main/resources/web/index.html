@@ -203,7 +203,7 @@
                 if (data.similarModels != null) {
                     Object.keys(data.similarModels).forEach(function(key, index) {
                         modelAnalysis.append('<p>' +
-                            '<a href="#" onclick="loadModel(\'' + key + '\')">' + data.similarModels[key] + '</a>' +
+                            '<a href="#' + key + '" onclick="loadModel(\'' + key + '\')">' + data.similarModels[key] + '</a>' +
                             '</p>');
                         duplicatesCounter++;
                     });
@@ -221,10 +221,11 @@
         <small><a href="./add.html">Add Model</a></small>
     </h3>
     <div class="row">
-        <div class="col-md-4" id="processModelsList">
+        <div class="col-md-4">
             <p>
                 <b>Stored Business Process Models</b>
             </p>
+            <div id="processModelsList" style="height: 600px; overflow-y: scroll;"></div>
         </div>
         <div class="col-md-8">
             <p>
