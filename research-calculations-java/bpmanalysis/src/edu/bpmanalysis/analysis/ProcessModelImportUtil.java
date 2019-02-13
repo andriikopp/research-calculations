@@ -44,7 +44,7 @@ public class ProcessModelImportUtil {
                     ProcessModelBean processModelBean = new ProcessModelBean();
                     processModelBean.setId(UUID.randomUUID().toString());
                     processModelBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
-                    processModelBean.setName(modelInstance.getModel().getModelName());
+                    processModelBean.setName(file.getName());
                     processModelBean.setNotation("BPMN");
                     processModelBean.setLevel("Foundation");
                     processModelBean.setDescription(file.getName());

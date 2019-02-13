@@ -183,7 +183,7 @@
                 }
 
                 if (!isModelValid) {
-                    $('#rulesViolations').append('<div class="alert alert-warning" role="alert">' +
+                    $('#rulesViolations').append('<div class="alert alert-danger" role="danger">' +
                         'This model might contain errors!</div>');
                 }
 
@@ -202,7 +202,7 @@
 
                 if (duplicatesCounter > 0) {
                     $('#similarModels').append('<div class="alert alert-warning" role="alert">' +
-                        'This model might be already stored!</div>');
+                        'There are similar models found!</div>');
                 }
             });
         }
