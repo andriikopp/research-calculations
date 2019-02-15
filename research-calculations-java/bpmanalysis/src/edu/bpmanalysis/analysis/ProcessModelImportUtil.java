@@ -19,16 +19,6 @@ import java.util.*;
 public class ProcessModelImportUtil {
     public static final String PATH_TO_BPMN_MODELS = "processModelsStorage/bpmn/";
 
-    private static Map<String, String> bpmnToInternalNodesMapping = new HashMap<>();
-
-    static {
-        bpmnToInternalNodesMapping.put("startEvent", "event");
-        bpmnToInternalNodesMapping.put("endEvent", "event");
-        bpmnToInternalNodesMapping.put("task", "function");
-        bpmnToInternalNodesMapping.put("exclusiveGateway", "XOR");
-        bpmnToInternalNodesMapping.put("parallelGateway", "AND");
-    }
-
     public static void importModelsFromBPMNDocuments(ProcessModelRepository repository) {
         File folder;
         folder = new File(PATH_TO_BPMN_MODELS);
@@ -120,11 +110,27 @@ public class ProcessModelImportUtil {
     }
 
     private static String getNodeTypeByBPMNType(String type) {
-        if (type.contains("intermediate")) {
+        if (type.toLowerCase().contains("task".toLowerCase())) {
+            return "function";
+        }
+
+        if (type.toLowerCase().contains("event".toLowerCase())) {
             return "event";
         }
 
-        return bpmnToInternalNodesMapping.get(type);
+        if (type.toLowerCase().contains("gateway".toLowerCase())) {
+            if (type.toLowerCase().contains("parallel".toLowerCase())) {
+                return "AND";
+            }
+
+            if (type.toLowerCase().contains("inclusive".toLowerCase())) {
+                return "OR";
+            }
+
+            return "XOR";
+        }
+
+        return null;
     }
 
     private static String getNodeColorById(String nodeId) {

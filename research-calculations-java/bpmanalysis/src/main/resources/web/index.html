@@ -114,9 +114,27 @@
                 }
 
                 if (data.connectorsBalance > 0) {
+                    var connectorsChanges = '<table class="table table-sm"><thead><tr>' +
+                            '<th scope="col">Element</th>' +
+                            '<th scope="col">Degree</th>' +
+                        '</tr></thead><tbody>';
+
+                    var connectorsCount = 0;
+
                     Object.keys(data.connectorsChanges).forEach(function(key, index) {
-                        modelAnalysis.append('<small><p><b>' + key + ':</b> ' + data.connectorsChanges[key] + '</p></small>');
+                        connectorsChanges += '<tr><th scope="row">' + key + '</th>' +
+                            '<td>' + data.connectorsChanges[key] + '</td></tr>';
+
+                        connectorsCount++;
                     });
+
+                    if (connectorsCount > 0) {
+                        modelAnalysis.append(connectorsChanges + '</tbody></table>');
+                    } else {
+                        modelAnalysis.append('<div class="alert alert-info" role="alert">' +
+                            'Recommendations will be provided after nodes issues are fixed' +
+                        '</div>');
+                    }
                 }
 
                 if (data.functionsBalance > 0) {
@@ -128,14 +146,34 @@
                 }
 
                 if (data.functionsBalance > 0) {
+                    var functionsChanges = '<table class="table table-sm"><thead><tr>' +
+                            '<th scope="col">Element</th>' +
+                            '<th scope="col">Inputs</th>' +
+                            '<th scope="col">Controls</th>' +
+                            '<th scope="col">Outputs</th>' +
+                            '<th scope="col">Mechanisms</th>' +
+                        '</tr></thead><tbody>';
+
+                    var functionsCount = 0;
+
                     Object.keys(data.functionsChanges).forEach(function(key, index) {
-                        modelAnalysis.append('<small><p><b>' + key + ':</b> ' +
-                                data.functionsChanges[key][0] + ' (in), ' +
-                                data.functionsChanges[key][1] + ' (control), ' +
-                                data.functionsChanges[key][2] + ' (out), ' +
-                                data.functionsChanges[key][3] + ' (mechanism)' +
-                            '</p></small>');
+                        functionsChanges += '<tr><th scope="row">' + key + '</th>' +
+                                '<td>' + data.functionsChanges[key][0] + '</td>' +
+                                '<td>' + data.functionsChanges[key][1] + '</td>' +
+                                '<td>' + data.functionsChanges[key][2] + '</td>' +
+                                '<td>' + data.functionsChanges[key][3] + '</td>' +
+                            '</tr>';
+
+                        functionsCount++;
                     });
+
+                    if (functionsCount > 0) {
+                        modelAnalysis.append(functionsChanges + '</tbody></table>');
+                    } else {
+                        modelAnalysis.append('<div class="alert alert-info" role="alert">' +
+                            'Recommendations will be provided after nodes issues are fixed' +
+                        '</div>');
+                    }
                 }
 
                 if (data.nodesChanges[1] > 0) {
@@ -171,12 +209,30 @@
                 }
 
                 if (data.mismatch > 0) {
+                    var mismatchChanges = '<table class="table table-sm"><thead><tr>' +
+                            '<th scope="col">Type</th>' +
+                            '<th scope="col">Split</th>' +
+                            '<th scope="col">Join</th>' +
+                        '</tr></thead><tbody>';
+
+                    mismatchCount = 0;
+
                     Object.keys(data.routingChanges).forEach(function(key, index) {
-                        modelAnalysis.append('<small><p><b>' + key + ':</b> ' +
-                                data.routingChanges[key][0] + ' (splits), ' +
-                                data.routingChanges[key][1] + ' (joins)' +
-                            '</p></small>');
+                        mismatchChanges += '<tr><th scope="row">' + key + '</th>' +
+                                '<td>' + data.routingChanges[key][0] + '</td>' +
+                                '<td>' + data.routingChanges[key][1] + '</td>' +
+                            '</tr>';
+
+                        mismatchCount++;
                     });
+
+                    if (mismatchCount > 0) {
+                        modelAnalysis.append(mismatchChanges + '</tbody></table>');
+                    } else {
+                        modelAnalysis.append('<div class="alert alert-info" role="alert">' +
+                            'Recommendations will be provided after nodes issues are fixed' +
+                        '</div>');
+                    }
                 }
 
                 if (data.nodesChanges[3] > 0) {
