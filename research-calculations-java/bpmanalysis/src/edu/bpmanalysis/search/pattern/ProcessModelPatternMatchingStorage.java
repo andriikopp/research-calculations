@@ -12,7 +12,7 @@ import java.util.List;
 public class ProcessModelPatternMatchingStorage {
     private static Model model = ModelFactory.createDefaultModel();
 
-    public static final String URI_PREFIX = "http://bpmanalysis/";
+    public static final String URI_PREFIX = "http://";
 
     public static void loadModels(ProcessModelRepository processModelRepository) {
         for (ProcessModelBean processModelBean : processModelRepository.getProcessModels()) {
@@ -21,27 +21,43 @@ public class ProcessModelPatternMatchingStorage {
     }
 
     public static void addModel(ProcessModelBean processModelBean) {
-        Resource modelSubject = model.createResource(URI_PREFIX + "model#" + processModelBean.getName());
-        Property modelProperty = model.createProperty(URI_PREFIX + "containsOf");
-
         for (ProcessModelGraphEdgeBean processModelGraphEdgeBean : processModelBean.getGraph().getEdges()) {
-            Resource subject = model.createResource(URI_PREFIX + processModelGraphEdgeBean.getFrom());
-            Property property = model.createProperty(URI_PREFIX + processModelGraphEdgeBean.getLabel());
-            Resource object = model.createResource(URI_PREFIX + processModelGraphEdgeBean.getTo());
+            Resource subject = model.createResource(URI_PREFIX +
+                    processModelBean.getId() + "/" + processModelGraphEdgeBean.getFrom());
+            Property property = model.createProperty(URI_PREFIX +
+                    processModelBean.getId() + "/" + processModelGraphEdgeBean.getLabel());
+            Resource object = model.createResource(URI_PREFIX +
+                    processModelBean.getId() + "/" + processModelGraphEdgeBean.getTo());
 
             subject.addProperty(property, object);
-
-            modelSubject.addProperty(modelProperty, subject);
         }
     }
 
-    public static List<ProcessModelPatternMatchingBean> match(String nodeId) {
+    public static List<ProcessModelPatternMatchingBean> search(String modelId, String nodeId) {
+        String[] types = {"function", "AND", "OR", "XOR"};
+
+        List<ProcessModelPatternMatchingBean> beans = new ArrayList<>();
+
+        for (String type : types) {
+            beans.addAll(match(modelId, type + "#" + nodeId));
+        }
+
+        for (ProcessModelPatternMatchingBean bean : beans) {
+            bean.setSubject(bean.getSubject().replace(URI_PREFIX + modelId + "/", ""));
+            bean.setProperty(bean.getProperty().replace(URI_PREFIX + modelId + "/", ""));
+            bean.setObject(bean.getObject().replace(URI_PREFIX + modelId + "/", ""));
+        }
+
+        return beans;
+    }
+
+    public static List<ProcessModelPatternMatchingBean> match(String modelId, String nodeId) {
         Resource subject = null;
         Property property = null;
         Resource object = null;
 
         if (nodeId != null && !nodeId.isEmpty()) {
-            subject = model.createResource(URI_PREFIX + nodeId);
+            subject = model.createResource(URI_PREFIX + modelId + "/" + nodeId);
         }
 
         StmtIterator iterator = model.listStatements(new SimpleSelector(subject, property, object));
@@ -49,7 +65,7 @@ public class ProcessModelPatternMatchingStorage {
         iterateStatements(iterator, patternMatchingBeanList);
 
         subject = null;
-        object = model.createResource(URI_PREFIX + nodeId);
+        object = model.createResource(URI_PREFIX + modelId + "/" + nodeId);
 
         iterator = model.listStatements(new SimpleSelector(subject, property, object));
         iterateStatements(iterator, patternMatchingBeanList);
@@ -57,7 +73,7 @@ public class ProcessModelPatternMatchingStorage {
         return patternMatchingBeanList;
     }
 
-    public static void iterateStatements(StmtIterator iterator, List<ProcessModelPatternMatchingBean> patternMatchingBeanList) {
+    private static void iterateStatements(StmtIterator iterator, List<ProcessModelPatternMatchingBean> patternMatchingBeanList) {
         while (iterator.hasNext()) {
             Statement statement = iterator.nextStatement();
 

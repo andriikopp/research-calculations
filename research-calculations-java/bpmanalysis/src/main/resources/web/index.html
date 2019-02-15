@@ -9,6 +9,7 @@
 <body>
     <script src="js/vis.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script>
         $.getJSON("/models", function(data) {
             for (var i = 0; i < data.length; i++) {
@@ -122,7 +123,9 @@
                     var connectorsCount = 0;
 
                     Object.keys(data.connectorsChanges).forEach(function(key, index) {
-                        connectorsChanges += '<tr><th scope="row">' + key + '</th>' +
+                        connectorsChanges += '<tr><th scope="row">' +
+                            '<a data-toggle="modal" data-target="#exampleModalCenter" href="#" ' +
+                                'onclick="searchForElement(\'' + id + '\', \'' + key + '\')">' + key + '</a></th>' +
                             '<td>' + data.connectorsChanges[key] + '</td></tr>';
 
                         connectorsCount++;
@@ -157,7 +160,9 @@
                     var functionsCount = 0;
 
                     Object.keys(data.functionsChanges).forEach(function(key, index) {
-                        functionsChanges += '<tr><th scope="row">' + key + '</th>' +
+                        functionsChanges += '<tr><th scope="row">' +
+                                '<a data-toggle="modal" data-target="#exampleModalCenter" href="#" ' +
+                                    'onclick="searchForElement(\'' + id + '\', \'' + key + '\')">' + key + '</a></th>' +
                                 '<td>' + data.functionsChanges[key][0] + '</td>' +
                                 '<td>' + data.functionsChanges[key][1] + '</td>' +
                                 '<td>' + data.functionsChanges[key][2] + '</td>' +
@@ -271,6 +276,30 @@
                 }
             });
         }
+
+        function searchForElement(modelId, elementId) {
+            $('#elementSearchResult').empty();
+            $('#searchElementName').empty();
+
+            $.getJSON("search/" + modelId + "/" + escape(elementId), function(data) {
+                $('#searchElementName').append(elementId);
+
+                var searchResult = '';
+
+                for (var i = 0; i < data.length; i++) {
+                    searchResult += '<table class="table table-sm">' +
+                        '<tr><th scope="row">Subject</th>' +
+                        '<td>' + data[i].subject + '</td></tr>' +
+                        '<tr><th scope="row">Predicate</th>' +
+                        '<td>' + data[i].property + '</td></tr>' +
+                        '<tr><th scope="row">Object</th>' +
+                        '<td>' + data[i].object + '</td></tr>' +
+                        '</table>';
+                }
+
+                $('#elementSearchResult').append(searchResult);
+            });
+        }
     </script>
     <h3>
         <kbd>Business Process Models Viewer</kbd>
@@ -293,6 +322,25 @@
             <p>
                 <div id="modelAnalysis"></div>
             </p>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Search element '<span id="searchElementName"></span>'</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="elementSearchResult"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

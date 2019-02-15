@@ -64,7 +64,8 @@ public class ProcessModelImportUtil {
                         if (source.getName() == null) {
                             sourceNodeId = getNodeTypeByBPMNType(sourceType) + "#" + source.getId();
                         } else {
-                            sourceNodeId = getNodeTypeByBPMNType(sourceType) + "#" + source.getName();
+                            sourceNodeId = getNodeTypeByBPMNType(sourceType) + "#" + source.getName()
+                                    .replace("\n", "").replace("\r", "");
                         }
 
                         nodes.add(sourceNodeId);
@@ -72,7 +73,8 @@ public class ProcessModelImportUtil {
                         if (target.getName() == null) {
                             targetNodeId = getNodeTypeByBPMNType(targetType) + "#" + target.getId();
                         } else {
-                            targetNodeId = getNodeTypeByBPMNType(targetType) + "#" + target.getName();
+                            targetNodeId = getNodeTypeByBPMNType(targetType) + "#" + target.getName()
+                                    .replace("\n", "").replace("\r", "");
                         }
 
                         nodes.add(targetNodeId);

@@ -67,14 +67,11 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
     };
 
     public Route search = (req, res) -> {
-        String type = req.params("type");
+        String model = req.params("model");
         String node = req.params("node");
 
-        return new Gson().toJson(ProcessModelPatternMatchingStorage.match(type + "#" + node));
+        return new Gson().toJson(ProcessModelPatternMatchingStorage.search(model, node));
     };
-
-    public Route searchAll = (req, res) ->
-            new Gson().toJson(ProcessModelPatternMatchingStorage.match(null));
 
     @Override
     public void init() {
@@ -90,8 +87,7 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
             post("/store", store);
             get("/analyze/:id", analyze);
             get("/remove/:id", remove);
-            get("/search/:type/:node", search);
-            get("/search", searchAll);
+            get("/search/:model/:node", search);
         });
     }
 
