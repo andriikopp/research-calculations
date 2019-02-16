@@ -284,20 +284,16 @@
             $.getJSON("search/" + modelId + "/" + escape(elementId), function(data) {
                 $('#searchElementName').append(elementId);
 
-                var searchResult = '';
+                var container = document.getElementById('elementSearchResult');
 
-                for (var i = 0; i < data.length; i++) {
-                    searchResult += '<table class="table table-sm">' +
-                        '<tr><th scope="row">Subject</th>' +
-                        '<td>' + data[i].subject + '</td></tr>' +
-                        '<tr><th scope="row">Predicate</th>' +
-                        '<td>' + data[i].property + '</td></tr>' +
-                        '<tr><th scope="row">Object</th>' +
-                        '<td>' + data[i].object + '</td></tr>' +
-                        '</table>';
-                }
+                var graphData = {
+                    nodes: data.graph.nodes,
+                    edges: data.graph.edges
+                };
 
-                $('#elementSearchResult').append(searchResult);
+                var options = {};
+
+                new vis.Network(container, graphData, options);
             });
         }
     </script>
@@ -333,7 +329,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div id="elementSearchResult"></div>
+                            <div id="elementSearchResult" style="height: 300px;"></div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -111,7 +111,7 @@ public class ProcessModelImportUtil {
         }
     }
 
-    private static String getNodeTypeByBPMNType(String type) {
+    public static String getNodeTypeByBPMNType(String type) {
         if (type.toLowerCase().contains("task".toLowerCase())) {
             return "function";
         }
@@ -135,7 +135,7 @@ public class ProcessModelImportUtil {
         return null;
     }
 
-    private static String getNodeColorById(String nodeId) {
+    public static String getNodeColorById(String nodeId) {
         String type = nodeId.split("#")[0];
 
         if (type.equals("function")) {
