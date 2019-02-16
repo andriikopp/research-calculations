@@ -1,4 +1,4 @@
-package edu.bpmanalysis.analysis;
+package edu.bpmanalysis.description;
 
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
@@ -16,8 +16,9 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.util.*;
 
+import static edu.bpmanalysis.config.Configuration.PATH_TO_BPMN_MODELS;
+
 public class ProcessModelImportUtil {
-    public static final String PATH_TO_BPMN_MODELS = "processModelsStorage/bpmn/";
 
     public static void importModelsFromBPMNDocuments(ProcessModelRepository repository) {
         File folder;

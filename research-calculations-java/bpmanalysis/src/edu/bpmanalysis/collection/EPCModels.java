@@ -1,13 +1,12 @@
 package edu.bpmanalysis.collection;
 
 import edu.bpmanalysis.collection.api.Models;
-import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.description.tools.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.bpmanalysis.collection.tools.ModelBuilder;
-import edu.bpmanalysis.metamodel.Node;
+import edu.bpmanalysis.description.tools.Node;
 import edu.kopp.phd.express.landscape.ARISLandscape;
 import edu.kopp.phd.express.metamodel.entity.Connector;
 

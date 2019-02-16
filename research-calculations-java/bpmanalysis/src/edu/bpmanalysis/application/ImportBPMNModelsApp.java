@@ -1,6 +1,6 @@
 package edu.bpmanalysis.application;
 
-import edu.bpmanalysis.analysis.ProcessModelImportUtil;
+import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 

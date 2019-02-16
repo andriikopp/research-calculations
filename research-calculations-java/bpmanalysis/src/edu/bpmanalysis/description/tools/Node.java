@@ -1,4 +1,4 @@
-package edu.bpmanalysis.metamodel;
+package edu.bpmanalysis.description.tools;
 
 import java.util.UUID;
 

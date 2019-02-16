@@ -1,6 +1,4 @@
-package edu.bpmanalysis.collection.tools;
-
-import edu.bpmanalysis.metamodel.Node;
+package edu.bpmanalysis.description.tools;
 
 import java.util.ArrayList;
 import java.util.List;

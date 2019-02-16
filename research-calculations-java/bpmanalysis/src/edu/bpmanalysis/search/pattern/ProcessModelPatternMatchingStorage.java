@@ -1,6 +1,6 @@
 package edu.bpmanalysis.search.pattern;
 
-import edu.bpmanalysis.analysis.ProcessModelImportUtil;
+import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.search.bean.ProcessModelPatternMatchingBean;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;

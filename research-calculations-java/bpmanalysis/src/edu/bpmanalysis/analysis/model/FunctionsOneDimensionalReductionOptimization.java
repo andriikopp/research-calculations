@@ -3,9 +3,9 @@ package edu.bpmanalysis.analysis.model;
 import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.analysis.balance.FunctionsBalance;
 import edu.bpmanalysis.analysis.model.function.MatrixFunction;
-import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.config.Configuration;
-import edu.bpmanalysis.metamodel.Node;
+import edu.bpmanalysis.description.tools.Node;
 
 import java.util.List;
 

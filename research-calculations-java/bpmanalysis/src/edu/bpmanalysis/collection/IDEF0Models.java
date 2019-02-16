@@ -1,9 +1,9 @@
 package edu.bpmanalysis.collection;
 
 import edu.bpmanalysis.collection.api.Models;
-import edu.bpmanalysis.collection.tools.Model;
-import edu.bpmanalysis.collection.tools.ModelBuilder;
-import edu.bpmanalysis.metamodel.Node;
+import edu.bpmanalysis.description.tools.Model;
+import edu.bpmanalysis.description.tools.ModelBuilder;
+import edu.bpmanalysis.description.tools.Node;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;

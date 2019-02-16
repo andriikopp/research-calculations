@@ -1,6 +1,6 @@
 package edu.bpmanalysis.collection.api;
 
-import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.description.tools.Model;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;

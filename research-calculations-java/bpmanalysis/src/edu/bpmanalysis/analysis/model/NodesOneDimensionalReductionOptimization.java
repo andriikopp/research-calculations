@@ -3,7 +3,7 @@ package edu.bpmanalysis.analysis.model;
 import edu.bpmanalysis.analysis.ModelDensity;
 import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.analysis.model.function.ArrayFunction;
-import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.description.tools.Model;
 
 public class NodesOneDimensionalReductionOptimization {
 

@@ -9,7 +9,7 @@ import edu.bpmanalysis.collection.DFDModels;
 import edu.bpmanalysis.collection.EPCModels;
 import edu.bpmanalysis.collection.IDEF0Models;
 import edu.bpmanalysis.collection.api.Models;
-import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.description.tools.Model;
 
 import java.util.Arrays;
 

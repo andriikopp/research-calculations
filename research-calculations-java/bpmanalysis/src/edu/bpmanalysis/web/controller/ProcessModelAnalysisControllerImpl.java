@@ -2,9 +2,8 @@ package edu.bpmanalysis.web.controller;
 
 import com.google.gson.Gson;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
-import edu.bpmanalysis.analysis.ProcessModelImportUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
-import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.pattern.ProcessModelPatternMatchingStorage;
 import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
 import edu.bpmanalysis.web.controller.api.ProcessModelAnalysisController;

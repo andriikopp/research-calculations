@@ -1,8 +1,8 @@
 package edu.bpmanalysis.analysis.balance;
 
 import edu.bpmanalysis.analysis.balance.api.Balance;
-import edu.bpmanalysis.collection.tools.Model;
-import edu.bpmanalysis.metamodel.Node;
+import edu.bpmanalysis.description.tools.Model;
+import edu.bpmanalysis.description.tools.Node;
 
 public class ConnectorsBalance implements Balance {
     public static final int MAX_C = 3;

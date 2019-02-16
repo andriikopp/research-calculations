@@ -1,7 +1,7 @@
 package edu.bpmanalysis.analysis.api;
 
-import edu.bpmanalysis.collection.tools.Model;
-import edu.bpmanalysis.metamodel.Node;
+import edu.bpmanalysis.description.tools.Model;
+import edu.bpmanalysis.description.tools.Node;
 
 import java.util.List;
 

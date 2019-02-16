@@ -4,7 +4,7 @@ import edu.bpmanalysis.collection.BPMNModels;
 import edu.bpmanalysis.collection.DFDModels;
 import edu.bpmanalysis.collection.EPCModels;
 import edu.bpmanalysis.collection.api.Models;
-import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.similarity.GraphStructureSimilarity;
 import edu.bpmanalysis.search.similarity.api.Similarity;
 

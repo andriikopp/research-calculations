@@ -2,7 +2,7 @@ package edu.bpmanalysis.analysis.model;
 
 import edu.bpmanalysis.analysis.ConnectorsMismatch;
 import edu.bpmanalysis.analysis.ModelDensity;
-import edu.bpmanalysis.collection.tools.Model;
+import edu.bpmanalysis.description.tools.Model;
 
 public class PredictionModel {
 

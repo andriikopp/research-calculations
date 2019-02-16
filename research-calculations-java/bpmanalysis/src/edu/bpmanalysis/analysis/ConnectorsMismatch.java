@@ -1,7 +1,7 @@
 package edu.bpmanalysis.analysis;
 
-import edu.bpmanalysis.collection.tools.Model;
-import edu.bpmanalysis.metamodel.Node;
+import edu.bpmanalysis.description.tools.Model;
+import edu.bpmanalysis.description.tools.Node;
 
 public class ConnectorsMismatch {
 
