@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.camunda.bpm.model</groupId>
             <artifactId>camunda-bpmn-model</artifactId>
-            <version>7.1.0-alpha4</version>
+            <version>7.10.0</version>
         </dependency>
     </dependencies>
 
