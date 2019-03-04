@@ -59,11 +59,13 @@ public class ProcessModelSimilaritySearchStorage {
 
         Map<String, String> duplicateModelsIDs = new HashMap<>();
 
-        for (Model storedModel : modelList) {
-            double distance = 1.0 - similarity.compare(model, storedModel);
+        if (modelList != null) {
+            for (Model storedModel : modelList) {
+                double distance = 1.0 - similarity.compare(model, storedModel);
 
-            if (distance == 0 && !model.getId().equals(storedModel.getId())) {
-                duplicateModelsIDs.put(storedModel.getId(), storedModel.getName());
+                if (distance == 0 && !model.getId().equals(storedModel.getId())) {
+                    duplicateModelsIDs.put(storedModel.getId(), storedModel.getName());
+                }
             }
         }
 

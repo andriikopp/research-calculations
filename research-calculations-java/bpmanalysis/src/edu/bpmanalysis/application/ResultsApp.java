@@ -3,6 +3,7 @@ package edu.bpmanalysis.application;
 import edu.bpmanalysis.analysis.IndicatorsUtil;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.description.tools.Model;
+import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
 import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
@@ -24,12 +25,14 @@ public class ResultsApp {
         }
 
         for (Model model : models) {
-            IndicatorsUtil.printIndicators(model);
-        }
+            int duplicates = ProcessModelSimilaritySearchStorage.findDuplicates(model).size();
 
-        for (Model first : models) {
-            for (Model second : models) {
-                SimilarityApp.printSimilarModels(first, second);
+            if (duplicates == 0) {
+                ProcessModelSimilaritySearchStorage.addModel(model);
+
+                IndicatorsUtil.printIndicators(model);
+            } else {
+                System.out.printf("%s\t%d\n", model.getName(), duplicates);
             }
         }
     }
