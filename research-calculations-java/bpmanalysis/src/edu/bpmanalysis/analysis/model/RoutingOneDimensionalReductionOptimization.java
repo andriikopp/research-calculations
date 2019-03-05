@@ -37,23 +37,21 @@ public class RoutingOneDimensionalReductionOptimization {
 
         for (int i = 0; i < size; i++) {
             double old = function.value(changes);
+            double SC = current[i][0];
+            double JC = current[i][1];
 
-            if (current[i][0] < current[i][1]) {
-                changes[i][0] = current[i][1] - current[i][0];
+            changes[i][0] = (JC - SC < 0 ? 0 : 1.0) * (JC - SC);
 
-                if (function.value(changes) >= old) {
-                    changes[i][0] = 0;
-                }
+            if (function.value(changes) >= old) {
+                changes[i][0] = 0;
             }
 
             old = function.value(changes);
 
-            if (current[i][1] < current[i][0]) {
-                changes[i][1] = current[i][0] - current[i][1];
+            changes[i][1] = (SC - JC < 0 ? 0 : 1.0) * (SC - JC);
 
-                if (function.value(changes) >= old) {
-                    changes[i][1] = 0;
-                }
+            if (function.value(changes) >= old) {
+                changes[i][1] = 0;
             }
         }
 

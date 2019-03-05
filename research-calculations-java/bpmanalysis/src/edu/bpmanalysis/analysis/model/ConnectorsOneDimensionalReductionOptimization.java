@@ -32,7 +32,10 @@ public class ConnectorsOneDimensionalReductionOptimization {
 
         for (int i = 0; i < size; i++) {
             double old = function.value(changes);
-            changes[i] = ConnectorsBalance.MAX_C - current[i];
+            final int finalIndex = i;
+            changes[i] = OneDimensionalOptimizationMethod.findMinimum(ConnectorsBalance.MAX_C - current[i],
+                    ConnectorsBalance.MAX_C,
+                    x -> Math.pow((current[finalIndex] + x) - ConnectorsBalance.MAX_C, 2));
 
             if (function.value(changes) >= old) {
                 changes[i] = 0;

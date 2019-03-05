@@ -23,11 +23,16 @@ public class NodesOneDimensionalReductionOptimization {
         double[] changes = new double[size];
 
         RestrictionFunction[] restrictions = {
-                (i, o) -> (1.0 - (i - o) < 0 ? 0 : 1.0) * (i - o),
-                (i, o) -> i - o,
-                (i, o) -> i - o,
-                (i, o) -> -o,
-                (i, o) -> ((i - o) < 0 ? 0 : 1.0) * (i - o)
+                (i, o) -> OneDimensionalOptimizationMethod.findMinimum((1.0 - (i - o) < 0 ? 0 : 1.0) * (i - o),
+                        0, x -> Math.pow((o + x) - i, 2)),
+                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(i - o, 1,
+                        x -> Math.pow((o + x) - i, 2)),
+                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(i - o, 1,
+                        x -> Math.pow((o + x) - i, 2)),
+                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(-o, 0,
+                        x -> Math.pow((o + x) - i, 2)),
+                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(0, ((i - o) < 0 ? 0 : 1.0) * (i - o),
+                        x -> Math.pow((o + x) - i, 2))
         };
 
         ArrayFunction function = (variables) -> {
