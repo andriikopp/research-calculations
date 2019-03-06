@@ -1,30 +1,27 @@
 package edu.bpmanalysis.analysis.model;
 
 import edu.bpmanalysis.analysis.model.function.OneDimensionalFunction;
+import org.apache.commons.math3.analysis.UnivariateFunction;
+import org.apache.commons.math3.exception.NumberIsTooLargeException;
+import org.apache.commons.math3.optim.MaxEval;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.apache.commons.math3.optim.univariate.*;
 
 public class OneDimensionalOptimizationMethod {
-    private static final double GRID = 1.0;
 
-    /**
-     * Passive search method.
-     * @param a - the left bound.
-     * @param b - the right bound.
-     * @param f - the optimized function.
-     * @return arg min for the function.
-     */
     public static double findMinimum(double a, double b, OneDimensionalFunction f) {
-        double minFunction = f.func(a);
-        double minX = a;
+        UnivariateFunction function = x -> f.func(x);
+        UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
 
-        for (double x = a + GRID; x <= b; x++) {
-            double newMinFunction = f.func(x);
+        try {
+            UnivariatePointValuePair optimized = optimizer.optimize(new MaxEval(Integer.MAX_VALUE),
+                    new UnivariateObjectiveFunction(function),
+                    GoalType.MINIMIZE,
+                    new SearchInterval(a, b));
 
-            if (newMinFunction < minFunction) {
-                minX = (int) x;
-                minFunction = newMinFunction;
-            }
+            return Math.round(optimized.getPoint());
+        } catch (NumberIsTooLargeException e) {
+            return 0;
         }
-
-        return (int) minX;
     }
 }
