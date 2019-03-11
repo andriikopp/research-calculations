@@ -14,7 +14,8 @@ public class Node {
 
     public enum NodeType {
         FUNCTION, EVENT, XOR_CONNECTOR, OR_CONNECTOR, AND_CONNECTOR,
-        DATA_STORE, EXTERNAL_ENTITY
+        DATA_STORE, EXTERNAL_ENTITY,
+        INTERFACE_ARC_INPUT, INTERFACE_ARC_OUTPUT, INTERFACE_ARC_CONTROL, INTERFACE_ARC_MECHANISM
     }
 
     public interface ArcType {
@@ -95,6 +96,38 @@ public class Node {
 
     public static Node createExternalEntity(String name, int input, int output) {
         return new Node(name, input, output, 0, 0, NodeType.EXTERNAL_ENTITY);
+    }
+
+    public static Node createInterfaceArcInput(int output) {
+        return new Node(null, 0, output, 0, 0, NodeType.INTERFACE_ARC_INPUT);
+    }
+
+    public static Node createInterfaceArcInput(String name, int output) {
+        return new Node(name, 0, output, 0, 0, NodeType.INTERFACE_ARC_INPUT);
+    }
+
+    public static Node createInterfaceArcOutput(int input) {
+        return new Node(null, input, 0, 0, 0, NodeType.INTERFACE_ARC_OUTPUT);
+    }
+
+    public static Node createInterfaceArcOutput(String name, int input) {
+        return new Node(name, input, 0, 0, 0, NodeType.INTERFACE_ARC_OUTPUT);
+    }
+
+    public static Node createInterfaceArcControl(int output) {
+        return new Node(null, 0, output, 0, 0, NodeType.INTERFACE_ARC_CONTROL);
+    }
+
+    public static Node createInterfaceArcControl(String name, int output) {
+        return new Node(name, 0, output, 0, 0, NodeType.INTERFACE_ARC_CONTROL);
+    }
+
+    public static Node createInterfaceArcMechanism(int output) {
+        return new Node(null, 0, output, 0, 0, NodeType.INTERFACE_ARC_MECHANISM);
+    }
+
+    public static Node createInterfaceArcMechanism(String name, int output) {
+        return new Node(name, 0, output, 0, 0, NodeType.INTERFACE_ARC_MECHANISM);
     }
 
     public String getLabel() {

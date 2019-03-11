@@ -3,6 +3,7 @@ package edu.bpmanalysis.application;
 import edu.bpmanalysis.collection.BPMNModels;
 import edu.bpmanalysis.collection.DFDModels;
 import edu.bpmanalysis.collection.EPCModels;
+import edu.bpmanalysis.collection.IDEF0Models;
 import edu.bpmanalysis.collection.api.Models;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.similarity.GraphStructureSimilarity;
@@ -55,6 +56,17 @@ public class SimilarityApp {
 
         for (Model first : dfdModels) {
             for (Model second : dfdModels) {
+                printSimilarModels(first, second);
+            }
+        }
+
+        models = new IDEF0Models();
+        List<Model> idef0Models = models.loadModels();
+
+        System.out.println("IDEF0 Models Similarity");
+
+        for (Model first : idef0Models) {
+            for (Model second : idef0Models) {
                 printSimilarModels(first, second);
             }
         }
