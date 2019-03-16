@@ -50,7 +50,7 @@ public class GraphStructureSimilarity implements Similarity {
         return min / max;
     }
 
-    private static double count(Map<String, Integer> set, String key) {
+    public static double count(Map<String, Integer> set, String key) {
         return set.get(key) == null ? 0 : set.get(key);
     }
 }

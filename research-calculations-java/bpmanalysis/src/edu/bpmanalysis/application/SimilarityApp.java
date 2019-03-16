@@ -1,15 +1,14 @@
 package edu.bpmanalysis.application;
 
-import edu.bpmanalysis.collection.BPMNModels;
-import edu.bpmanalysis.collection.DFDModels;
-import edu.bpmanalysis.collection.EPCModels;
-import edu.bpmanalysis.collection.IDEF0Models;
-import edu.bpmanalysis.collection.api.Models;
+import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.similarity.GraphStructureSimilarity;
 import edu.bpmanalysis.search.similarity.api.Similarity;
+import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
+import edu.bpmanalysis.web.model.api.ProcessModelRepository;
+import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 
-import java.util.List;
+import java.util.*;
 
 public class SimilarityApp {
     private static Similarity similarity = new GraphStructureSimilarity();
@@ -23,50 +22,52 @@ public class SimilarityApp {
                     second.getName(),
                     value);
         }
+
+        if (value > 0 && value < 1) {
+            System.out.println(first.getName() + " <> " + second.getName() + " = " + value);
+            System.out.println(first.getName());
+
+            Map<String, Integer> firstMS = GraphStructureSimilarity.getMultisetOfElements(first);
+
+            for (Map.Entry<String, Integer> entry : firstMS.entrySet()) {
+                System.out.println(entry.getKey() + "\t" +
+                        GraphStructureSimilarity.count(firstMS, entry.getKey()));
+            }
+
+            System.out.println(second.getName());
+
+            Map<String, Integer> secondMS = GraphStructureSimilarity.getMultisetOfElements(second);
+
+            for (Map.Entry<String, Integer> entry : secondMS.entrySet()) {
+                System.out.println(entry.getKey() + "\t" +
+                        GraphStructureSimilarity.count(secondMS, entry.getKey()));
+            }
+
+            System.out.println(first.getName() + " AND " + second.getName());
+
+            Set<String> union = new HashSet<>(firstMS.keySet());
+            union.addAll(secondMS.keySet());
+
+            for (String element : union) {
+                System.out.println(element + "\t" +
+                        GraphStructureSimilarity.count(firstMS, element) + "\t" +
+                        GraphStructureSimilarity.count(secondMS, element));
+            }
+        }
     }
 
     public static void main(String[] args) {
+        ProcessModelRepository repository = new ProcessModelRepositoryJsonDB();
 
-        Models models = new EPCModels();
-        List<Model> epcModels = models.importModels();
+        List<Model> models = new ArrayList<>();
 
-        System.out.println("EPC Models Similarity");
-
-        for (Model first : epcModels) {
-            for (Model second : epcModels) {
-                printSimilarModels(first, second);
-            }
+        for (ProcessModelBean bean : repository.getProcessModels()) {
+            Model model = ProcessModelAnalysisUtil.transformToModel(bean);
+            models.add(model);
         }
 
-        models = new BPMNModels();
-        List<Model> bpmnModels = models.importModels();
-
-        System.out.println("BPMN Models Similarity");
-
-        for (Model first : bpmnModels) {
-            for (Model second : bpmnModels) {
-                printSimilarModels(first, second);
-            }
-        }
-
-        models = new DFDModels();
-        List<Model> dfdModels = models.importModels();
-
-        System.out.println("DFD Models Similarity");
-
-        for (Model first : dfdModels) {
-            for (Model second : dfdModels) {
-                printSimilarModels(first, second);
-            }
-        }
-
-        models = new IDEF0Models();
-        List<Model> idef0Models = models.loadModels();
-
-        System.out.println("IDEF0 Models Similarity");
-
-        for (Model first : idef0Models) {
-            for (Model second : idef0Models) {
+        for (Model first : models) {
+            for (Model second : models) {
                 printSimilarModels(first, second);
             }
         }
