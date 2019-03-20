@@ -158,6 +158,30 @@ public class Node {
         return nodeType;
     }
 
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setInput(int input) {
+        this.input = input;
+    }
+
+    public void setOutput(int output) {
+        this.output = output;
+    }
+
+    public void setControl(int control) {
+        this.control = control;
+    }
+
+    public void setMechanism(int mechanism) {
+        this.mechanism = mechanism;
+    }
+
+    public void setNodeType(NodeType nodeType) {
+        this.nodeType = nodeType;
+    }
+
     public String getDescription() {
         return String.format("<%s,%d,%d,%d,%d>",
                 nodeType.toString(),
