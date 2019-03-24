@@ -71,4 +71,20 @@ public class ProcessModelSimilaritySearchStorage {
 
         return duplicateModelsIDs;
     }
+
+    public static Table<Integer, Integer, List<Model>> getModelTable() {
+        return modelTable;
+    }
+
+    public static void setModelTable(Table<Integer, Integer, List<Model>> modelTable) {
+        ProcessModelSimilaritySearchStorage.modelTable = modelTable;
+    }
+
+    public static Similarity getSimilarity() {
+        return similarity;
+    }
+
+    public static void setSimilarity(Similarity similarity) {
+        ProcessModelSimilaritySearchStorage.similarity = similarity;
+    }
 }
