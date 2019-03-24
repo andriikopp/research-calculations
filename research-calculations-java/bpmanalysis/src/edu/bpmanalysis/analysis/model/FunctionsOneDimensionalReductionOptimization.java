@@ -28,7 +28,16 @@ public class FunctionsOneDimensionalReductionOptimization {
 
                     if (model.getModelType().equals(Model.ModelType.IDEF0) ||
                             model.getModelType().equals(Model.ModelType.DFD)) {
-                        max = Math.max(1, Math.min((current[i][j] + variables[i][j]), 3));
+                        double necessaryMin;
+
+                        if (model.getModelType().equals(Model.ModelType.IDEF0) && (j == 0)) {
+                            necessaryMin = 0;
+                        } else {
+                            necessaryMin = 1;
+                        }
+
+                        max = Math.max(necessaryMin, Math.min((current[i][j] + variables[i][j]),
+                                FunctionsBalance.MAX_FUNCTIONAL_ARCS));
                     }
 
                     result += Math.pow((current[i][j] + variables[i][j]) - max, 2);
@@ -48,7 +57,16 @@ public class FunctionsOneDimensionalReductionOptimization {
 
                 if (model.getModelType().equals(Model.ModelType.IDEF0) ||
                         model.getModelType().equals(Model.ModelType.DFD)) {
-                    max = Math.max(1, Math.min(current[i][j], 3));
+                    double necessaryMin;
+
+                    if (model.getModelType().equals(Model.ModelType.IDEF0) && (j == 0)) {
+                        necessaryMin = 0;
+                    } else {
+                        necessaryMin = 1;
+                    }
+
+                    max = Math.max(necessaryMin, Math.min(current[i][j],
+                            FunctionsBalance.MAX_FUNCTIONAL_ARCS));
                 }
 
                 double old = function.value(changes);
