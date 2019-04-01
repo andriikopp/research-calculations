@@ -4,10 +4,12 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import edu.bpmanalysis.analysis.ModelDensity;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
+import edu.bpmanalysis.config.Configuration;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.similarity.api.Similarity;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
+import edu.umd.cs.findbugs.annotations.Confidence;
 
 import java.util.LinkedList;
 import java.util.*;
@@ -63,7 +65,8 @@ public class ProcessModelSimilaritySearchStorage {
             for (Model storedModel : modelList) {
                 double distance = 1.0 - similarity.compare(model, storedModel);
 
-                if (distance == 0 && !model.getId().equals(storedModel.getId())) {
+                if (distance <= (1.0 - Configuration.SIMILARITY_THRESHOLD) &&
+                        !model.getId().equals(storedModel.getId())) {
                     duplicateModelsIDs.put(storedModel.getId(), storedModel.getName());
                 }
             }

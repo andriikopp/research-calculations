@@ -10,4 +10,6 @@ public class Configuration {
 
     public static final Index SIMILARITY_INDEX = new JaccardIndex();
 
+    public static final double SIMILARITY_THRESHOLD = 1.0;
+
 }
