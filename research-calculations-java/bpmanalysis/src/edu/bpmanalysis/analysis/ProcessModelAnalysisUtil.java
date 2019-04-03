@@ -98,8 +98,16 @@ public class ProcessModelAnalysisUtil {
         processModelAnalysisBean.setId(model.getId());
         processModelAnalysisBean.setSize((int) ModelDensity.size(model));
         processModelAnalysisBean.setFunctions(NodesSubsetsUtil.getFunctions(model).size());
-        processModelAnalysisBean.setConnectorsBalance(connectorsBalance.balanceCoefficient(model));
-        processModelAnalysisBean.setFunctionsBalance(functionsBalance.balanceCoefficient(model));
+        processModelAnalysisBean.setConnectorsBalance(Double
+                .valueOf(String
+                        .format("%.2f", connectorsBalance.balanceCoefficient(model))
+                )
+        );
+        processModelAnalysisBean.setFunctionsBalance(Double
+                .valueOf(String
+                        .format("%.2f", functionsBalance.balanceCoefficient(model))
+                )
+        );
         processModelAnalysisBean.setStartEvents(NodesSubsetsUtil.getStartEvents(model).size());
         processModelAnalysisBean.setEndEvents(NodesSubsetsUtil.getEndEvents(model).size());
         processModelAnalysisBean.setMismatch(ConnectorsMismatch.mismatch(model));

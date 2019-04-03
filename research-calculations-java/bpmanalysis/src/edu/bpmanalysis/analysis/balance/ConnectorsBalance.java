@@ -11,14 +11,18 @@ public class ConnectorsBalance implements Balance {
     public double balanceCoefficient(Model model) {
         double value = 0;
 
+        double count = 0;
+
         for (Node node : model.getNodesList()) {
             if (node.getNodeType().equals(Node.NodeType.XOR_CONNECTOR) ||
                     node.getNodeType().equals(Node.NodeType.OR_CONNECTOR) ||
                     node.getNodeType().equals(Node.NodeType.AND_CONNECTOR)) {
                 value += Math.abs((node.getInput() + node.getOutput()) - MAX_C);
             }
+
+            count++;
         }
 
-        return value;
+        return value / count;
     }
 }

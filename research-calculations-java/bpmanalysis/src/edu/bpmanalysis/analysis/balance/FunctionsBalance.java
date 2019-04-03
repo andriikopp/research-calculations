@@ -12,6 +12,8 @@ public class FunctionsBalance implements Balance {
     public double balanceCoefficient(Model model) {
         double value = 0;
 
+        double count = 0;
+
         for (Node node : model.getNodesList()) {
             for (int j = 0; j < Node.arcTypes.length; j++) {
                 if (node.getNodeType().equals(Node.NodeType.FUNCTION)) {
@@ -34,8 +36,10 @@ public class FunctionsBalance implements Balance {
                     value += Math.abs(Node.arcTypes[j].get(node) - max);
                 }
             }
+
+            count++;
         }
 
-        return value;
+        return value / count;
     }
 }
