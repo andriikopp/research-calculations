@@ -24,6 +24,10 @@ public class FunctionsOneDimensionalReductionOptimization {
 
             for (int i = 0; i < current.length; i++) {
                 for (int j = 0; j < Node.arcTypes.length; j++) {
+                    if ((j == 2 || j == 3) && model.getArcTypes().length == 2) {
+                        continue;
+                    }
+
                     double max = FunctionsBalance.MAX_F;
 
                     if (model.getModelType().equals(Model.ModelType.IDEF0) ||
@@ -49,7 +53,7 @@ public class FunctionsOneDimensionalReductionOptimization {
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < Node.arcTypes.length; j++) {
-                if ((j == 1 || j == 3) && model.getArcTypes().length == 2) {
+                if ((j == 2 || j == 3) && model.getArcTypes().length == 2) {
                     continue;
                 }
 

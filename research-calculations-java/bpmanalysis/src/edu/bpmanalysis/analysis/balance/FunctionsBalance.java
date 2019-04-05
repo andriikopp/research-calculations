@@ -17,6 +17,10 @@ public class FunctionsBalance implements Balance {
         for (Node node : model.getNodesList()) {
             for (int j = 0; j < Node.arcTypes.length; j++) {
                 if (node.getNodeType().equals(Node.NodeType.FUNCTION)) {
+                    if ((j == 2 || j == 3) && model.getArcTypes().length == 2) {
+                        continue;
+                    }
+
                     double max = MAX_F;
 
                     if (model.getModelType().equals(Model.ModelType.IDEF0) ||

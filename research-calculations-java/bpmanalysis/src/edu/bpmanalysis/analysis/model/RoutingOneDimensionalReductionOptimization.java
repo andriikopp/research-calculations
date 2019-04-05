@@ -40,7 +40,7 @@ public class RoutingOneDimensionalReductionOptimization {
             double SC = current[i][0];
             double JC = current[i][1];
 
-            changes[i][0] = (JC - SC < 0 ? 0 : 1.0) * (JC - SC);
+            changes[i][0] = Math.max(JC - SC, 0);
 
             if (function.value(changes) >= old) {
                 changes[i][0] = 0;
@@ -48,7 +48,7 @@ public class RoutingOneDimensionalReductionOptimization {
 
             old = function.value(changes);
 
-            changes[i][1] = (SC - JC < 0 ? 0 : 1.0) * (SC - JC);
+            changes[i][1] = Math.max(SC - JC, 0);
 
             if (function.value(changes) >= old) {
                 changes[i][1] = 0;
