@@ -8,7 +8,6 @@ var dataColor = '#CCCCFF';
 var processColor = '#66ccff'
 
 var nodesTypes = [
-    // process nodes
     { id: 'event#', label: 'Event', color: '#FF9999' },
     { id: 'function#', label: 'Function', color: '#66FF66' },
     { id: 'AND#', label: 'AND', color: connectorColor },
@@ -16,33 +15,13 @@ var nodesTypes = [
     { id: 'XOR#', label: 'XOR', color: connectorColor },
     { id: 'dataStore#', label: 'Data Store', color: dataColor },
     { id: 'externalEntity#', label: 'External Entity', color: dataColor },
-    { id: 'interface#', label: 'Interface', color: '#E5CCFF' },
-
-    // hierarchy elements
-    { id: 'subProcess#', label: 'Sub-Process', color: processColor },
-
-    // choreography elements
-    { id: 'process#', label: 'Process', color: processColor },
-
-    // organizational structure elements
-    { id: 'orgUnit#', label: 'Organizational Unit', color: '#ffcc66' }
+    { id: 'interface#', label: 'Interface', color: '#E5CCFF' }
 ];
 
 var edgesTypes = [
-    // process arcs
     'sequenceFlow',
     'dataFlow',
-    'inputArc', 'controlArc', 'outputArc', 'mechanismArc',
-
-    // hierarchy arcs
-    'isA',
-    'composedOf',
-
-    // choreography arcs
-    'messageFlow',
-
-    // organizational structure arcs
-    'responsibleFor'
+    'inputArc', 'controlArc', 'outputArc', 'mechanismArc'
 ];
 
 var labelPattern = /^[a-zA-Z\-_0-9\s]+$/;
