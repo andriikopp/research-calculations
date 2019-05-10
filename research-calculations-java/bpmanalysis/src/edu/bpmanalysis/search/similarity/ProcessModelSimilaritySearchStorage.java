@@ -9,9 +9,7 @@ import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.similarity.api.Similarity;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
-import edu.umd.cs.findbugs.annotations.Confidence;
 
-import java.util.LinkedList;
 import java.util.*;
 
 public class ProcessModelSimilaritySearchStorage {
@@ -29,6 +27,18 @@ public class ProcessModelSimilaritySearchStorage {
         for (Model model : models) {
             addModel(model);
         }
+    }
+
+    public static int countDuplicates(List<Model> models) {
+        Set<String> duplicates = new HashSet<>();
+
+        for (Model model : models) {
+            if (!duplicates.contains(model.getId())) {
+                duplicates.addAll(findDuplicates(model).keySet());
+            }
+        }
+
+        return duplicates.size();
     }
 
     public static void addModel(ProcessModelBean processModelBean) {

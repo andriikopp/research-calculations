@@ -10,6 +10,10 @@ import org.apache.commons.math3.optim.univariate.*;
 public class OneDimensionalOptimizationMethod {
 
     public static double findMinimum(double a, double b, OneDimensionalFunction f) {
+        if (Math.abs(a - b) <= 10E-6) {
+            return a;
+        }
+
         UnivariateFunction function = x -> f.func(x);
         UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
 

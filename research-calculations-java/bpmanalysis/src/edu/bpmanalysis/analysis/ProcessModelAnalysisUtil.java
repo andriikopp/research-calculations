@@ -96,6 +96,7 @@ public class ProcessModelAnalysisUtil {
 
         ProcessModelAnalysisBean processModelAnalysisBean = new ProcessModelAnalysisBean();
         processModelAnalysisBean.setId(model.getId());
+        processModelAnalysisBean.setName(model.getName());
         processModelAnalysisBean.setSize((int) ModelDensity.size(model));
         processModelAnalysisBean.setFunctions(NodesSubsetsUtil.getFunctions(model).size());
         processModelAnalysisBean.setConnectorsBalance(Double

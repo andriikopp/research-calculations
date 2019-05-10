@@ -23,15 +23,15 @@ public class NodesOneDimensionalReductionOptimization {
         double[] changes = new double[size];
 
         RestrictionFunction[] restrictions = {
-                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(Math.min(o, i) - o,
-                        0, x -> Math.pow((o + x) - i, 2)),
+                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(i - o, 0,
+                        x -> Math.pow((o + x) - i, 2)),
                 (i, o) -> OneDimensionalOptimizationMethod.findMinimum(i - o, 1,
                         x -> Math.pow((o + x) - i, 2)),
                 (i, o) -> OneDimensionalOptimizationMethod.findMinimum(i - o, 1,
                         x -> Math.pow((o + x) - i, 2)),
                 (i, o) -> OneDimensionalOptimizationMethod.findMinimum(-o, 0,
                         x -> Math.pow((o + x) - i, 2)),
-                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(0, Math.max(o, i) - o,
+                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(0, i - o,
                         x -> Math.pow((o + x) - i, 2))
         };
 
@@ -59,14 +59,17 @@ public class NodesOneDimensionalReductionOptimization {
 
     private static double[] getVectorOfIdealCharacteristics(Model model) {
         if (model.getModelType().equals(Model.ModelType.IDEF0)) {
-            return new double[]{6, 0, 0, 0, 3};
+            return new double[]{Math.min(ModelDensity.size(model), 6), 0, 0, 0,
+                    Math.max(NodesSubsetsUtil.getFunctions(model).size(), 3)};
         }
 
         if (model.getModelType().equals(Model.ModelType.DFD)) {
-            return new double[]{7, 0, 0, 0, 1};
+            return new double[]{Math.min(ModelDensity.size(model), 7), 0, 0, 0,
+                    Math.max(NodesSubsetsUtil.getFunctions(model).size(), 1)};
         }
 
-        return new double[]{31, 1, 1, 0, 1};
+        return new double[]{Math.min(ModelDensity.size(model), 31), 1, 1, 0,
+                Math.max(NodesSubsetsUtil.getFunctions(model).size(), 1)};
     }
 
     private interface RestrictionFunction {

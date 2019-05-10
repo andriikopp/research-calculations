@@ -6,6 +6,8 @@ import java.util.Map;
 public class ProcessModelAnalysisBean {
     private String id;
 
+    private String name;
+
     private int size;
     private int functions;
     private double connectorsBalance;
@@ -38,6 +40,7 @@ public class ProcessModelAnalysisBean {
         if (Double.compare(that.mismatch, mismatch) != 0) return false;
         if (orConnectors != that.orConnectors) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (!Arrays.equals(nodesChanges, that.nodesChanges)) return false;
         if (connectorsChanges != null ? !connectorsChanges.equals(that.connectorsChanges) : that.connectorsChanges != null)
             return false;
@@ -53,6 +56,7 @@ public class ProcessModelAnalysisBean {
         int result;
         long temp;
         result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + size;
         result = 31 * result + functions;
         temp = Double.doubleToLongBits(connectorsBalance);
@@ -76,6 +80,7 @@ public class ProcessModelAnalysisBean {
     public String toString() {
         return "ProcessModelAnalysisBean{" +
                 "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", size=" + size +
                 ", functions=" + functions +
                 ", connectorsBalance=" + connectorsBalance +
@@ -202,5 +207,13 @@ public class ProcessModelAnalysisBean {
 
     public void setSimilarModels(Map<String, String> similarModels) {
         this.similarModels = similarModels;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -6,6 +6,8 @@ import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.pattern.ProcessModelPatternMatchingStorage;
 import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
+import edu.bpmanalysis.web.api.DetailedRepositoryDashboard;
+import edu.bpmanalysis.web.api.SummaryRepositoryDashboard;
 import edu.bpmanalysis.web.controller.api.ProcessModelAnalysisController;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
@@ -87,6 +89,9 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
             get("/analyze/:id", analyze);
             get("/remove/:id", remove);
             get("/search/:model/:node", search);
+
+            get("/api", (req, res) -> new Gson().toJson(new SummaryRepositoryDashboard(repository)));
+            get("/api/detailed", (req, res) -> new Gson().toJson(new DetailedRepositoryDashboard(repository)));
         });
     }
 
