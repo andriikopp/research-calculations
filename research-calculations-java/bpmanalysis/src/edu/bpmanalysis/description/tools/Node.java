@@ -151,7 +151,7 @@ public class Node {
     }
 
     public double[] getArcs() {
-        return new double[]{input, control, output, mechanism};
+        return new double[]{input, output, control, mechanism};
     }
 
     public NodeType getNodeType() {
