@@ -1,9 +1,6 @@
 package edu.bpmanalysis.application;
 
-import edu.bpmanalysis.analysis.model.ConnectorsOneDimensionalReductionOptimization;
-import edu.bpmanalysis.analysis.model.FunctionsOneDimensionalReductionOptimization;
-import edu.bpmanalysis.analysis.model.NodesOneDimensionalReductionOptimization;
-import edu.bpmanalysis.analysis.model.RoutingOneDimensionalReductionOptimization;
+import edu.bpmanalysis.analysis.model.*;
 import edu.bpmanalysis.collection.BPMNModels;
 import edu.bpmanalysis.collection.DFDModels;
 import edu.bpmanalysis.collection.EPCModels;
@@ -38,6 +35,8 @@ public class OptimizationApp {
         for (double[] row : functionsChanges) {
             System.out.printf("\t%s\n", Arrays.toString(row));
         }
+
+        EvaluationUtil.evaluate(model);
     }
 
     public static void main(String[] args) {

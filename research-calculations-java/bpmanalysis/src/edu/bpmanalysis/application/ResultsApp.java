@@ -2,6 +2,7 @@ package edu.bpmanalysis.application;
 
 import edu.bpmanalysis.analysis.IndicatorsUtil;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
+import edu.bpmanalysis.analysis.model.EvaluationUtil;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
 import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
@@ -31,6 +32,7 @@ public class ResultsApp {
                 ProcessModelSimilaritySearchStorage.addModel(model);
 
                 IndicatorsUtil.printIndicators(model);
+                EvaluationUtil.evaluate(model);
             } else {
                 System.out.printf("%s\t%d\n", model.getName(), duplicates);
             }

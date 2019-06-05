@@ -6,7 +6,7 @@ import edu.bpmanalysis.description.tools.Node;
 public class ModelDensity {
 
     public static double density(Model model) {
-        return density(arcs(model), model.getNodesList().size());
+        return density(arcs(model), size(model));
     }
 
     public static double density(double arcs, double size) {
