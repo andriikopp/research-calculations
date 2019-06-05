@@ -24,6 +24,9 @@ public class ProcessModelAnalysisBean {
 
     private Map<String, String> similarModels;
 
+    private double quality;
+    private double hasErrors;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,6 +42,8 @@ public class ProcessModelAnalysisBean {
         if (endEvents != that.endEvents) return false;
         if (Double.compare(that.mismatch, mismatch) != 0) return false;
         if (orConnectors != that.orConnectors) return false;
+        if (Double.compare(that.quality, quality) != 0) return false;
+        if (Double.compare(that.hasErrors, hasErrors) != 0) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (!Arrays.equals(nodesChanges, that.nodesChanges)) return false;
@@ -73,6 +78,10 @@ public class ProcessModelAnalysisBean {
         result = 31 * result + (routingChanges != null ? routingChanges.hashCode() : 0);
         result = 31 * result + (functionsChanges != null ? functionsChanges.hashCode() : 0);
         result = 31 * result + (similarModels != null ? similarModels.hashCode() : 0);
+        temp = Double.doubleToLongBits(quality);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(hasErrors);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
@@ -94,6 +103,8 @@ public class ProcessModelAnalysisBean {
                 ", routingChanges=" + routingChanges +
                 ", functionsChanges=" + functionsChanges +
                 ", similarModels=" + similarModels +
+                ", quality=" + quality +
+                ", hasErrors=" + hasErrors +
                 '}';
     }
 
@@ -103,6 +114,14 @@ public class ProcessModelAnalysisBean {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getSize() {
@@ -209,11 +228,19 @@ public class ProcessModelAnalysisBean {
         this.similarModels = similarModels;
     }
 
-    public String getName() {
-        return name;
+    public double getQuality() {
+        return quality;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setQuality(double quality) {
+        this.quality = quality;
+    }
+
+    public double getHasErrors() {
+        return hasErrors;
+    }
+
+    public void setHasErrors(double hasErrors) {
+        this.hasErrors = hasErrors;
     }
 }

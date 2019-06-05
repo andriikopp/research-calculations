@@ -4,10 +4,7 @@ import edu.bpmanalysis.analysis.balance.ConnectorsBalance;
 import edu.bpmanalysis.analysis.balance.FunctionsBalance;
 import edu.bpmanalysis.analysis.balance.api.Balance;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
-import edu.bpmanalysis.analysis.model.ConnectorsOneDimensionalReductionOptimization;
-import edu.bpmanalysis.analysis.model.FunctionsOneDimensionalReductionOptimization;
-import edu.bpmanalysis.analysis.model.NodesOneDimensionalReductionOptimization;
-import edu.bpmanalysis.analysis.model.RoutingOneDimensionalReductionOptimization;
+import edu.bpmanalysis.analysis.model.*;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.description.tools.Node;
 import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
@@ -187,6 +184,16 @@ public class ProcessModelAnalysisUtil {
         }
 
         processModelAnalysisBean.setSimilarModels(ProcessModelSimilaritySearchStorage.findDuplicates(model));
+
+        double quality = EvaluationUtil.quality(model);
+
+        processModelAnalysisBean.setQuality(Double.valueOf(
+                String.format("%.2f", quality)
+        ));
+
+        processModelAnalysisBean.setHasErrors(Double.valueOf(
+                String.format("%.2f", EvaluationUtil.hasError(quality))
+        ));
 
         return processModelAnalysisBean;
     }
