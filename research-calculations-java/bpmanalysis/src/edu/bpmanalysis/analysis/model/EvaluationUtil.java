@@ -42,8 +42,8 @@ public class EvaluationUtil {
         );
 
         double guideline3 = Math.min(
-                1 - Math.signum(1 - NodesSubsetsUtil.getStartEvents(model).size()),
-                1 - Math.signum(1 - NodesSubsetsUtil.getEndEvents(model).size())
+                1 - Math.signum(Math.abs(1 - NodesSubsetsUtil.getStartEvents(model).size())),
+                1 - Math.signum(Math.abs(1 - NodesSubsetsUtil.getEndEvents(model).size()))
         );
 
         double guideline4 = 1 - Math.signum(ConnectorsMismatch.mismatch(model));

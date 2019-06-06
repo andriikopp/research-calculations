@@ -203,7 +203,13 @@ public class ProcessModelAnalysisUtil {
     }
 
     private static String getNodeLabel(ProcessModelGraphNodeBean nodeBean) {
-        return nodeBean.getId().split("#")[1];
+        String[] nodeLabelComponents = nodeBean.getId().split("#");
+
+        if (nodeLabelComponents.length == 1) {
+            return "";
+        }
+
+        return nodeLabelComponents[1];
     }
 
     private static int getInputs(ProcessModelBean processModelBean, ProcessModelGraphNodeBean nodeBean) {
