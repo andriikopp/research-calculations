@@ -32,7 +32,6 @@ public class ResultsApp {
                 ProcessModelSimilaritySearchStorage.addModel(model);
 
                 IndicatorsUtil.printIndicators(model);
-                EvaluationUtil.evaluate(model);
             } else {
                 System.out.printf("%s\t%d\n", model.getName(), duplicates);
             }

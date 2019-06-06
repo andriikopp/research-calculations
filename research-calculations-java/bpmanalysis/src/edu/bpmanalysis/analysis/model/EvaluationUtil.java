@@ -9,16 +9,6 @@ import edu.bpmanalysis.description.tools.Model;
 
 public class EvaluationUtil {
 
-    public static void evaluate(Model model) {
-        double probability = hasError(quality(model));
-
-        System.out.print(model.getName() + "\t" + probability);
-
-        probability = hasError(1.0);
-
-        System.out.println("\t" + probability);
-    }
-
     public static double quality(Model model) {
         double nodes = ModelDensity.size(model);
         double functions = NodesSubsetsUtil.getFunctions(model).size();
@@ -76,9 +66,5 @@ public class EvaluationUtil {
         }
 
         return quality;
-    }
-
-    public static double hasError(double quality) {
-        return Math.exp(1.0 - quality) / (1.0 + Math.exp(1.0 - quality));
     }
 }

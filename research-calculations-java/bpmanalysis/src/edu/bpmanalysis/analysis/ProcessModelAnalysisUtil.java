@@ -192,7 +192,7 @@ public class ProcessModelAnalysisUtil {
         ));
 
         processModelAnalysisBean.setHasErrors(Double.valueOf(
-                String.format("%.2f", EvaluationUtil.hasError(quality))
+                String.format("%.2f", quality < 1.0 ? 1.0 : 0.0)
         ));
 
         return processModelAnalysisBean;

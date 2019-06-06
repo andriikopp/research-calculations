@@ -35,8 +35,6 @@ public class OptimizationApp {
         for (double[] row : functionsChanges) {
             System.out.printf("\t%s\n", Arrays.toString(row));
         }
-
-        EvaluationUtil.evaluate(model);
     }
 
     public static void main(String[] args) {
