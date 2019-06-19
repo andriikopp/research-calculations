@@ -15,6 +15,14 @@ public class ModelDensity {
         return ((arcs / 2.0) + 1.0) / (maxArcs + 1.0);
     }
 
+    public static double connectivity(Model model) {
+        return connectivity(arcs(model), size(model));
+    }
+
+    public static double connectivity(double arcs, double size) {
+        return (arcs / 2.0) / size;
+    }
+
     public static double size(Model model) {
         double value = 0;
 
