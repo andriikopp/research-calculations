@@ -63,23 +63,27 @@ public class ProcessModelImportUtil {
                         String targetNodeId;
 
                         if (source.getName() == null) {
-                            sourceNodeId = getNodeTypeByBPMNType(sourceType) + "#" + source.getId();
+                            sourceNodeId = getNodeTypeByBPMNType(sourceType) +
+                                    "#_[Id-" + source.getId() + "]";
                         } else {
                             sourceNodeId = getNodeTypeByBPMNType(sourceType) + "#" + source.getName()
                                     .replace("\n", "")
                                     .replace("\r", "")
-                                    .replaceAll("\\s+","_");
+                                    .replaceAll("\\s+", "_") +
+                                    "_[Id-" + source.getId() + "]";
                         }
 
                         nodes.add(sourceNodeId);
 
                         if (target.getName() == null) {
-                            targetNodeId = getNodeTypeByBPMNType(targetType) + "#" + target.getId();
+                            targetNodeId = getNodeTypeByBPMNType(targetType) +
+                                    "#_[Id-" + target.getId() + "]";
                         } else {
                             targetNodeId = getNodeTypeByBPMNType(targetType) + "#" + target.getName()
                                     .replace("\n", "")
                                     .replace("\r", "")
-                                    .replaceAll("\\s+","_");
+                                    .replaceAll("\\s+", "_") +
+                                    "_[Id-" + target.getId() + "]";
                         }
 
                         nodes.add(targetNodeId);
@@ -116,8 +120,17 @@ public class ProcessModelImportUtil {
         }
     }
 
+    public static void cleanRepository() {
+        File jsonModelsFile = new File("processModelsStorage/processModels.json");
+        jsonModelsFile.delete();
+
+        File rdfGraphFile = new File("processModelsStorage/graph.rdf");
+        rdfGraphFile.delete();
+    }
+
     public static String getNodeTypeByBPMNType(String type) {
-        if (type.toLowerCase().contains("task".toLowerCase())) {
+        if (type.toLowerCase().contains("task".toLowerCase()) ||
+                type.toLowerCase().contains("subProcess".toLowerCase())) {
             return "function";
         }
 
