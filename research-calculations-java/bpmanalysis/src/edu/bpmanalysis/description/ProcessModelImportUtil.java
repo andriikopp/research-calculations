@@ -7,7 +7,9 @@ import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphNodeBean;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.instance.FlowElement;
 import org.camunda.bpm.model.bpmn.instance.FlowNode;
+import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.SequenceFlow;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.camunda.bpm.model.xml.type.ModelElementType;
@@ -32,87 +34,106 @@ public class ProcessModelImportUtil {
                 try {
                     BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
 
-                    ProcessModelBean processModelBean = new ProcessModelBean();
-                    processModelBean.setId(UUID.randomUUID().toString());
-                    processModelBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
-                    processModelBean.setName(file.getName());
-                    processModelBean.setNotation("BPMN");
-                    processModelBean.setLevel("Foundation");
-                    processModelBean.setDescription(file.getName());
+                    Collection<ModelElementInstance> processes = modelInstance.getModelElementsByType(
+                            modelInstance.getModel().getType(Process.class)
+                    );
 
-                    ProcessModelGraphBean processModelGraphBean = new ProcessModelGraphBean();
+                    for (ModelElementInstance modelElementInstance : processes) {
+                        Process process = (Process) modelElementInstance;
 
-                    List<ProcessModelGraphNodeBean> nodeBeans = new ArrayList<>();
-                    List<ProcessModelGraphEdgeBean> edgeBeans = new ArrayList<>();
+                        String processName;
 
-                    ModelElementType sequenceFlowType = modelInstance.getModel().getType(SequenceFlow.class);
-                    Collection<ModelElementInstance> sequenceFlowInstances = modelInstance.getModelElementsByType(sequenceFlowType);
-
-                    Set<String> nodes = new HashSet<>();
-
-                    for (ModelElementInstance modelElementInstance : sequenceFlowInstances) {
-                        SequenceFlow sequenceFlow = (SequenceFlow) modelElementInstance;
-
-                        FlowNode source = sequenceFlow.getSource();
-                        FlowNode target = sequenceFlow.getTarget();
-
-                        String sourceType = source.getElementType().getTypeName();
-                        String targetType = target.getElementType().getTypeName();
-
-                        String sourceNodeId;
-                        String targetNodeId;
-
-                        if (source.getName() == null) {
-                            sourceNodeId = getNodeTypeByBPMNType(sourceType) +
-                                    "#_[Id-" + source.getId() + "]";
+                        if (process.getName() == null) {
+                            processName = file.getName();
                         } else {
-                            sourceNodeId = getNodeTypeByBPMNType(sourceType) + "#" + source.getName()
-                                    .replace("\n", "")
-                                    .replace("\r", "")
-                                    .replaceAll("\\s+", "_") +
-                                    "_[Id-" + source.getId() + "]";
+                            processName = process.getName();
                         }
 
-                        nodes.add(sourceNodeId);
+                        processName += "_[Id-" + process.getId() + "]";
 
-                        if (target.getName() == null) {
-                            targetNodeId = getNodeTypeByBPMNType(targetType) +
-                                    "#_[Id-" + target.getId() + "]";
-                        } else {
-                            targetNodeId = getNodeTypeByBPMNType(targetType) + "#" + target.getName()
-                                    .replace("\n", "")
-                                    .replace("\r", "")
-                                    .replaceAll("\\s+", "_") +
-                                    "_[Id-" + target.getId() + "]";
+                        ProcessModelBean processModelBean = new ProcessModelBean();
+                        processModelBean.setId(UUID.randomUUID().toString());
+                        processModelBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
+                        processModelBean.setName(processName);
+                        processModelBean.setNotation("BPMN");
+                        processModelBean.setLevel("Foundation");
+                        processModelBean.setDescription(file.getName());
+
+                        ProcessModelGraphBean processModelGraphBean = new ProcessModelGraphBean();
+
+                        List<ProcessModelGraphNodeBean> nodeBeans = new ArrayList<>();
+                        List<ProcessModelGraphEdgeBean> edgeBeans = new ArrayList<>();
+
+                        ModelElementType sequenceFlowType = modelInstance.getModel().getType(SequenceFlow.class);
+
+                        Set<String> nodes = new HashSet<>();
+
+                        for (FlowElement flowElement : process.getFlowElements()) {
+                            if (flowElement.getElementType().equals(sequenceFlowType)) {
+                                SequenceFlow sequenceFlow = (SequenceFlow) flowElement;
+
+                                FlowNode source = sequenceFlow.getSource();
+                                FlowNode target = sequenceFlow.getTarget();
+
+                                String sourceType = source.getElementType().getTypeName();
+                                String targetType = target.getElementType().getTypeName();
+
+                                String sourceNodeId;
+                                String targetNodeId;
+
+                                if (source.getName() == null) {
+                                    sourceNodeId = getNodeTypeByBPMNType(sourceType) +
+                                            "#_[Id-" + source.getId() + "]";
+                                } else {
+                                    sourceNodeId = getNodeTypeByBPMNType(sourceType) + "#" + source.getName()
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + source.getId() + "]";
+                                }
+
+                                nodes.add(sourceNodeId);
+
+                                if (target.getName() == null) {
+                                    targetNodeId = getNodeTypeByBPMNType(targetType) +
+                                            "#_[Id-" + target.getId() + "]";
+                                } else {
+                                    targetNodeId = getNodeTypeByBPMNType(targetType) + "#" + target.getName()
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + target.getId() + "]";
+                                }
+
+                                nodes.add(targetNodeId);
+
+                                ProcessModelGraphEdgeBean processModelGraphEdgeBean = new ProcessModelGraphEdgeBean();
+                                processModelGraphEdgeBean.setId(UUID.randomUUID().toString());
+                                processModelGraphEdgeBean.setFrom(sourceNodeId);
+                                processModelGraphEdgeBean.setTo(targetNodeId);
+                                processModelGraphEdgeBean.setLabel("sequenceFlow");
+                                processModelGraphEdgeBean.setArrows("to");
+
+                                edgeBeans.add(processModelGraphEdgeBean);
+                            }
                         }
 
-                        nodes.add(targetNodeId);
+                        for (String nodeId : nodes) {
+                            ProcessModelGraphNodeBean processModelGraphNodeBean = new ProcessModelGraphNodeBean();
+                            processModelGraphNodeBean.setId(nodeId);
+                            processModelGraphNodeBean.setLabel(nodeId);
+                            processModelGraphNodeBean.setColor(getNodeColorById(nodeId));
 
-                        ProcessModelGraphEdgeBean processModelGraphEdgeBean = new ProcessModelGraphEdgeBean();
-                        processModelGraphEdgeBean.setId(UUID.randomUUID().toString());
-                        processModelGraphEdgeBean.setFrom(sourceNodeId);
-                        processModelGraphEdgeBean.setTo(targetNodeId);
-                        processModelGraphEdgeBean.setLabel("sequenceFlow");
-                        processModelGraphEdgeBean.setArrows("to");
+                            nodeBeans.add(processModelGraphNodeBean);
+                        }
 
-                        edgeBeans.add(processModelGraphEdgeBean);
+                        processModelGraphBean.setNodes(nodeBeans);
+                        processModelGraphBean.setEdges(edgeBeans);
+
+                        processModelBean.setGraph(processModelGraphBean);
+
+                        repository.addProcessModel(processModelBean);
                     }
-
-                    for (String nodeId : nodes) {
-                        ProcessModelGraphNodeBean processModelGraphNodeBean = new ProcessModelGraphNodeBean();
-                        processModelGraphNodeBean.setId(nodeId);
-                        processModelGraphNodeBean.setLabel(nodeId);
-                        processModelGraphNodeBean.setColor(getNodeColorById(nodeId));
-
-                        nodeBeans.add(processModelGraphNodeBean);
-                    }
-
-                    processModelGraphBean.setNodes(nodeBeans);
-                    processModelGraphBean.setEdges(edgeBeans);
-
-                    processModelBean.setGraph(processModelGraphBean);
-
-                    repository.addProcessModel(processModelBean);
                 } catch (RuntimeException e) {
                     System.err.printf("%s cannot be parsed\n", file.getName());
                 }
