@@ -77,8 +77,10 @@ public class FunctionsOneDimensionalReductionOptimization {
                 final int row = i;
                 final int col = j;
                 final double finalMax = max;
-                changes[i][j] = OneDimensionalOptimizationMethod.findMinimum(max - current[i][j],
-                    max, x -> Math.pow((current[row][col] + x) - finalMax, 2));
+                changes[i][j] = OneDimensionalOptimizationMethod.findMinimum(
+                        -current[i][j],
+                        max - current[i][j],
+                        x -> Math.pow((current[row][col] + x) - finalMax, 2));
 
                 if (function.value(changes) >= old) {
                     changes[i][j] = 0;

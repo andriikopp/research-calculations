@@ -19,21 +19,7 @@ public class NodesOneDimensionalReductionOptimization {
         int size = current.length;
 
         double[] ideal = getVectorOfIdealCharacteristics(model);
-
         double[] changes = new double[size];
-
-        RestrictionFunction[] restrictions = {
-                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(i - o, 0,
-                        x -> Math.pow((o + x) - i, 2)),
-                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(i - o, 1,
-                        x -> Math.pow((o + x) - i, 2)),
-                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(i - o, 1,
-                        x -> Math.pow((o + x) - i, 2)),
-                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(-o, 0,
-                        x -> Math.pow((o + x) - i, 2)),
-                (i, o) -> OneDimensionalOptimizationMethod.findMinimum(0, i - o,
-                        x -> Math.pow((o + x) - i, 2))
-        };
 
         ArrayFunction function = (variables) -> {
             double result = 0;
@@ -47,7 +33,11 @@ public class NodesOneDimensionalReductionOptimization {
 
         for (int i = 0; i < size; i++) {
             double old = function.value(changes);
-            changes[i] = restrictions[i].value(ideal[i], current[i]);
+            final int finalIndex = i;
+            changes[i] = OneDimensionalOptimizationMethod.findMinimum(
+                    -current[i],
+                    ideal[i] - current[i],
+                    x -> Math.pow((current[finalIndex] + x) - ideal[finalIndex], 2));
 
             if (function.value(changes) >= old) {
                 changes[i] = 0;

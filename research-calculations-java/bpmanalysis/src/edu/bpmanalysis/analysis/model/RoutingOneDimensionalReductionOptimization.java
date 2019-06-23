@@ -29,7 +29,8 @@ public class RoutingOneDimensionalReductionOptimization {
             double result = 0;
 
             for (int i = 0; i < size; i++) {
-                result += Math.pow((current[i][0] + variables[i][0]) - (current[i][1] + variables[i][1]), 2);
+                result += Math.pow((current[i][0] + variables[i][0]) - current[i][1], 2);
+                result += Math.pow((current[i][1] + variables[i][1]) - current[i][0], 2);
             }
 
             return result;
@@ -37,10 +38,13 @@ public class RoutingOneDimensionalReductionOptimization {
 
         for (int i = 0; i < size; i++) {
             double old = function.value(changes);
-            double SC = current[i][0];
-            double JC = current[i][1];
+            final int finalIndex = i;
 
-            changes[i][0] = Math.max(JC - SC, 0);
+            changes[i][0] = OneDimensionalOptimizationMethod.findMinimum(
+                    -current[i][0],
+                    current[i][1] - current[i][0],
+                    x -> Math.pow((current[finalIndex][0] + x) - current[finalIndex][1], 2)
+            );
 
             if (function.value(changes) >= old) {
                 changes[i][0] = 0;
@@ -48,7 +52,11 @@ public class RoutingOneDimensionalReductionOptimization {
 
             old = function.value(changes);
 
-            changes[i][1] = Math.max(SC - JC, 0);
+            changes[i][1] = OneDimensionalOptimizationMethod.findMinimum(
+                    -current[i][1],
+                    current[i][0] - current[i][1],
+                    x -> Math.pow((current[finalIndex][1] + x) - current[finalIndex][0], 2)
+            );
 
             if (function.value(changes) >= old) {
                 changes[i][1] = 0;
