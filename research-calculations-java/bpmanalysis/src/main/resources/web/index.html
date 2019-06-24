@@ -16,11 +16,22 @@
                 $("#processModelsList").append('<p>' +
                     '<div class="card" id="' + data[i].id + '">' +
                         '<div class="card-body">' +
-                            '<a onclick="loadModel(\'' + data[i].id + '\')" href="#">' +
+                            '<a onclick="loadModel(\'' + data[i].id + '\')" href="javascript:void(0)">' +
                                 data[i].name + '</br>' + data[i].timeStamp + '</a>' +
                         '</div>' +
                     '</div>' +
                     '</p>');
+            }
+
+            var get = function(name) {
+                if (name = (new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+                    return decodeURIComponent(name[1]);
+            }
+
+            var modelId = get('id');
+
+            if (typeof modelId !== "undefined") {
+                loadModel(modelId);
             }
         });
 
@@ -70,6 +81,28 @@
 
                 $('#' + data.id).css('background-color', 'lightGrey');
                 activeModel = data.id;
+
+                var updateURLParameter = function(url, param, paramVal){
+                    var newAdditionalURL = "";
+                    var tempArray = url.split("?");
+                    var baseURL = tempArray[0];
+                    var additionalURL = tempArray[1];
+                    var temp = "";
+                    if (additionalURL) {
+                        tempArray = additionalURL.split("&");
+                        for (var i=0; i<tempArray.length; i++){
+                            if(tempArray[i].split('=')[0] != param){
+                                newAdditionalURL += temp + tempArray[i];
+                                temp = "&";
+                            }
+                        }
+                    }
+
+                    var rows_txt = temp + "" + param + "=" + paramVal;
+                    return baseURL + "?" + newAdditionalURL + rows_txt;
+                }
+
+                window.history.replaceState('', '', updateURLParameter(window.location.href, "id", data.id));
             });
         }
 

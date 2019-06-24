@@ -67,8 +67,6 @@ function renderModel() {
         nodes: nodesArray,
         edges: edgesArray
     };
-
-    // $('#graphJSON').val(JSON.stringify(bpModel));
 }
 
 function updateNodesSelectOptions(id) {
