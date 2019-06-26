@@ -32,16 +32,19 @@ public class FunctionsOneDimensionalReductionOptimization {
 
                     if (model.getModelType().equals(Model.ModelType.IDEF0) ||
                             model.getModelType().equals(Model.ModelType.DFD)) {
-                        double necessaryMin;
+                        double necessaryMin = 1;
 
                         if (model.getModelType().equals(Model.ModelType.IDEF0) && (j == 0)) {
                             necessaryMin = 0;
-                        } else {
-                            necessaryMin = 1;
                         }
 
-                        max = Math.max(necessaryMin, Math.min((current[i][j] + variables[i][j]),
-                                FunctionsBalance.MAX_FUNCTIONAL_ARCS));
+                        if (model.getModelType().equals(Model.ModelType.DFD) && (j == 1)) {
+                            max = Math.max(necessaryMin, Math.min((current[i][j] + variables[i][j]),
+                                    current[i][0]));
+                        } else {
+                            max = Math.max(necessaryMin, Math.min((current[i][j] + variables[i][j]),
+                                    FunctionsBalance.MAX_FUNCTIONAL_ARCS));
+                        }
                     }
 
                     result += Math.pow((current[i][j] + variables[i][j]) - max, 2);
@@ -61,16 +64,19 @@ public class FunctionsOneDimensionalReductionOptimization {
 
                 if (model.getModelType().equals(Model.ModelType.IDEF0) ||
                         model.getModelType().equals(Model.ModelType.DFD)) {
-                    double necessaryMin;
+                    double necessaryMin = 1;
 
                     if (model.getModelType().equals(Model.ModelType.IDEF0) && (j == 0)) {
                         necessaryMin = 0;
-                    } else {
-                        necessaryMin = 1;
                     }
 
-                    max = Math.max(necessaryMin, Math.min(current[i][j],
-                            FunctionsBalance.MAX_FUNCTIONAL_ARCS));
+                    if (model.getModelType().equals(Model.ModelType.DFD) && (j == 1)) {
+                        max = Math.max(necessaryMin, Math.min(current[i][j],
+                                current[i][0]));
+                    } else {
+                        max = Math.max(necessaryMin, Math.min(current[i][j],
+                                FunctionsBalance.MAX_FUNCTIONAL_ARCS));
+                    }
                 }
 
                 double old = function.value(changes);

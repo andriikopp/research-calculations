@@ -85,7 +85,7 @@ public class ProcessModelPatternMatchingStorage {
             graphEdgeBean.setId(UUID.randomUUID().toString());
             graphEdgeBean.setFrom(bean.getSubject());
             graphEdgeBean.setTo(bean.getObject());
-            graphEdgeBean.setLabel("sequenceFlow");
+            graphEdgeBean.setLabel(bean.getProperty());
             graphEdgeBean.setArrows("to");
             edgeBeans.add(graphEdgeBean);
 

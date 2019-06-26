@@ -185,6 +185,10 @@ public class ProcessModelImportUtil {
             return "#FF9999";
         }
 
+        if (type.equals("externalEntity") || type.equals("dataStore")) {
+            return "#CCCCFF";
+        }
+
         return "#A0A0A0";
     }
 }

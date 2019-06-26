@@ -25,16 +25,19 @@ public class FunctionsBalance implements Balance {
 
                     if (model.getModelType().equals(Model.ModelType.IDEF0) ||
                             model.getModelType().equals(Model.ModelType.DFD)) {
-                        double necessaryMin;
+                        double necessaryMin = 1;
 
                         if (model.getModelType().equals(Model.ModelType.IDEF0) && (j == 0)) {
                             necessaryMin = 0;
-                        } else {
-                            necessaryMin = 1;
                         }
 
-                        max = Math.max(necessaryMin, Math.min(Node.arcTypes[j].get(node),
-                                MAX_FUNCTIONAL_ARCS));
+                        if (model.getModelType().equals(Model.ModelType.DFD) && (j == 1)) {
+                            max = Math.max(necessaryMin, Math.min(Node.arcTypes[j].get(node),
+                                    node.getInput()));
+                        } else {
+                            max = Math.max(necessaryMin, Math.min(Node.arcTypes[j].get(node),
+                                    MAX_FUNCTIONAL_ARCS));
+                        }
                     }
 
                     value += Math.abs(Node.arcTypes[j].get(node) - max);

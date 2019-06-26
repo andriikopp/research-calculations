@@ -5,7 +5,6 @@ var regularColor = '#ffffff';
 
 var connectorColor = '#A0A0A0';
 var dataColor = '#CCCCFF';
-var processColor = '#66ccff'
 
 var nodesTypes = [
     { id: 'event#', label: 'Event', color: '#FF9999' },
