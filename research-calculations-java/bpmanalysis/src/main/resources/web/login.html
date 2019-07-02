@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <h3>Login</h3>
+    <form onsubmit="return login();">
+        <p>User name</p>
+        <p>
+            <input type="text" id="username" required />
+        </p>
+        <p>
+            <input type="password" id="password" required />
+        </p>
+        <p>
+            <input type="submit" name="signin" value="Sign in" />
+        </p>
+    </form>
+    <p id="login-message"></p>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/js.cookie.js"></script>
+    <script src="app/auth.js"></script>
+</body>
+</html>

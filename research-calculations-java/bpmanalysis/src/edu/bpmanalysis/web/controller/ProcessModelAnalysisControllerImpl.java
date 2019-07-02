@@ -10,7 +10,10 @@ import edu.bpmanalysis.web.api.DetailedRepositoryDashboard;
 import edu.bpmanalysis.web.api.SummaryRepositoryDashboard;
 import edu.bpmanalysis.web.controller.api.ProcessModelAnalysisController;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
+import edu.bpmanalysis.web.model.api.UserRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
+import edu.bpmanalysis.web.model.bean.UserBean;
+import org.apache.commons.codec.digest.DigestUtils;
 import spark.Route;
 
 import java.sql.Timestamp;
@@ -22,6 +25,7 @@ import static spark.Spark.*;
 
 public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisController {
     private ProcessModelRepository repository;
+    private UserRepository userRepository;
 
     public Route models = (req, res) -> {
         List<ProcessModelBean> processModels = repository.getProcessModels();
@@ -77,7 +81,6 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
     @Override
     public void init() {
         ProcessModelSimilaritySearchStorage.loadModels(repository);
-
         ProcessModelPatternMatchingStorage.loadModels(repository);
 
         staticFiles.location("/web");
@@ -90,13 +93,46 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
             get("/remove/:id", remove);
             get("/search/:model/:node", search);
 
-            get("/api", (req, res) -> new Gson().toJson(new SummaryRepositoryDashboard(repository)));
-            get("/api/detailed", (req, res) -> new Gson().toJson(new DetailedRepositoryDashboard(repository)));
+            get("/api", (req, res) ->
+                    new Gson().toJson(new SummaryRepositoryDashboard(repository)));
+            get("/api/detailed", (req, res) ->
+                    new Gson().toJson(new DetailedRepositoryDashboard(repository)));
+
+            get("/login/:user/:password", (req, res) -> {
+                String login = req.params("user");
+                String password = req.params("password");
+
+                UserBean userBean = userRepository.getUser(login);
+
+                if (userBean != null &&
+                        DigestUtils.md5Hex(password).toUpperCase().equals(userBean.getPassword())) {
+                    return new Gson().toJson(userBean);
+                }
+
+                return "null";
+            });
+
+            get("/login/:user", (req, res) -> {
+                String login = req.params("user");
+
+                UserBean userBean = userRepository.getUser(login);
+
+                if (userBean == null) {
+                    return "null";
+                }
+
+                return new Gson().toJson(userBean);
+            });
         });
     }
 
     @Override
     public void setRepository(ProcessModelRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }
