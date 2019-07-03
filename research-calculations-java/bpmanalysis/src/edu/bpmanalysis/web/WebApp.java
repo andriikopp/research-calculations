@@ -8,7 +8,6 @@ import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
 import edu.bpmanalysis.web.model.UserRepositoryJsonDB;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.api.UserRepository;
-import edu.bpmanalysis.web.model.bean.UserBean;
 
 public class WebApp {
 
@@ -21,6 +20,9 @@ public class WebApp {
 
         if (Configuration.LOAD_MODELS_BEFORE_START) {
             ProcessModelImportUtil.importModelsFromBPMNDocuments(processModelRepository);
+            ProcessModelImportUtil.importModelsFromEPCDocuments(processModelRepository);
+            ProcessModelImportUtil.importModelsFromIDEF0Documents(processModelRepository);
+            ProcessModelImportUtil.importModelsFromDFDDocuments(processModelRepository);
         }
 
         UserRepository userRepository = new UserRepositoryJsonDB();

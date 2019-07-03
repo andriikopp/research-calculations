@@ -7,10 +7,8 @@ import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphNodeBean;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
-import org.camunda.bpm.model.bpmn.instance.FlowElement;
-import org.camunda.bpm.model.bpmn.instance.FlowNode;
+import org.camunda.bpm.model.bpmn.instance.*;
 import org.camunda.bpm.model.bpmn.instance.Process;
-import org.camunda.bpm.model.bpmn.instance.SequenceFlow;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.camunda.bpm.model.xml.type.ModelElementType;
 
@@ -23,54 +21,335 @@ import static edu.bpmanalysis.config.Configuration.PATH_TO_BPMN_MODELS;
 public class ProcessModelImportUtil {
 
     public static void importModelsFromBPMNDocuments(ProcessModelRepository repository) {
+        parseControlFlowModels("bpmn", repository);
+    }
+
+    public static void importModelsFromEPCDocuments(ProcessModelRepository repository) {
+        parseControlFlowModels("epc", repository);
+    }
+
+    public static void importModelsFromIDEF0Documents(ProcessModelRepository repository) {
         File folder;
         folder = new File(PATH_TO_BPMN_MODELS);
         File[] listOfFiles = folder.listFiles();
 
         for (File file : listOfFiles) {
             if (file.isFile()) {
-                System.out.println(file.getName());
+                String[] splitFileName = file.getName().split("\\.");
+                String fileExtension = splitFileName[splitFileName.length - 1];
 
-                try {
-                    BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
+                if (fileExtension.equals("idef0")) {
+                    System.out.println(file.getName());
 
-                    Collection<ModelElementInstance> processes = modelInstance.getModelElementsByType(
-                            modelInstance.getModel().getType(Process.class)
-                    );
-
-                    for (ModelElementInstance modelElementInstance : processes) {
-                        Process process = (Process) modelElementInstance;
-
-                        String processName;
-
-                        if (process.getName() == null) {
-                            processName = file.getName();
-                        } else {
-                            processName = process.getName();
-                        }
-
-                        processName += "_[Id-" + process.getId() + "]";
+                    try {
+                        BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
 
                         ProcessModelBean processModelBean = new ProcessModelBean();
                         processModelBean.setId(UUID.randomUUID().toString());
                         processModelBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
-                        processModelBean.setName(processName);
-                        processModelBean.setNotation("BPMN");
+                        processModelBean.setName(file.getName());
+                        processModelBean.setNotation("IDEF0");
                         processModelBean.setLevel("Foundation");
                         processModelBean.setDescription(file.getName());
+                        processModelBean.setFileName(file.getName());
 
                         ProcessModelGraphBean processModelGraphBean = new ProcessModelGraphBean();
 
                         List<ProcessModelGraphNodeBean> nodeBeans = new ArrayList<>();
                         List<ProcessModelGraphEdgeBean> edgeBeans = new ArrayList<>();
 
-                        ModelElementType sequenceFlowType = modelInstance.getModel().getType(SequenceFlow.class);
+                        Set<String> nodes = new HashSet<>();
+
+                        ModelElementType taskType = modelInstance.getModel().getType(Task.class);
+
+                        for (ModelElementInstance modelElementInstance : modelInstance.getModelElementsByType(taskType)) {
+                            Task task = (Task) modelElementInstance;
+
+                            Collection<DataInputAssociation> inputs = task.getDataInputAssociations();
+                            Collection<DataOutputAssociation> outputs = task.getDataOutputAssociations();
+
+                            for (DataInputAssociation input : inputs) {
+                                ItemAwareElement itemAwareElement = (ItemAwareElement) input.getSources().toArray()[0];
+                                DataObjectReference dataObjectReference = (DataObjectReference) itemAwareElement;
+
+                                String sourceNodeId;
+                                String targetNodeId;
+
+                                if (dataObjectReference.getName() == null) {
+                                    sourceNodeId = "interface#_[Id-" + dataObjectReference.getId() + "]";
+                                } else {
+                                    sourceNodeId = "interface#" + dataObjectReference.getName()
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + dataObjectReference.getId() + "]";
+                                }
+
+                                nodes.add(sourceNodeId);
+
+                                if (task.getName() == null) {
+                                    targetNodeId = "function#_[Id-" + task.getId() + "]";
+                                } else {
+                                    targetNodeId = "function#" + task.getName()
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + task.getId() + "]";
+                                }
+
+                                nodes.add(targetNodeId);
+
+                                String arrowType = "inputArc";
+
+                                if (dataObjectReference.getName().startsWith("C_")) {
+                                    arrowType = "controlArc";
+                                }
+
+                                if (dataObjectReference.getName().startsWith("M_")) {
+                                    arrowType = "mechanismArc";
+                                }
+
+                                ProcessModelGraphEdgeBean processModelGraphEdgeBean = new ProcessModelGraphEdgeBean();
+                                processModelGraphEdgeBean.setId(UUID.randomUUID().toString());
+                                processModelGraphEdgeBean.setFrom(sourceNodeId);
+                                processModelGraphEdgeBean.setTo(targetNodeId);
+                                processModelGraphEdgeBean.setLabel(arrowType);
+                                processModelGraphEdgeBean.setArrows("to");
+
+                                edgeBeans.add(processModelGraphEdgeBean);
+                            }
+
+                            for (DataOutputAssociation output : outputs) {
+                                DataObjectReference dataObjectReference = (DataObjectReference) output.getTarget();
+
+                                String sourceNodeId;
+                                String targetNodeId;
+
+                                if (dataObjectReference.getName() == null) {
+                                    targetNodeId = "interface#_[Id-" + dataObjectReference.getId() + "]";
+                                } else {
+                                    targetNodeId = "interface#" + dataObjectReference.getName()
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + dataObjectReference.getId() + "]";
+                                }
+
+                                nodes.add(targetNodeId);
+
+                                if (task.getName() == null) {
+                                    sourceNodeId = "function#_[Id-" + task.getId() + "]";
+                                } else {
+                                    sourceNodeId = "function#" + task.getName()
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + task.getId() + "]";
+                                }
+
+                                nodes.add(sourceNodeId);
+
+                                String arrowType = "outputArc";
+
+                                ProcessModelGraphEdgeBean processModelGraphEdgeBean = new ProcessModelGraphEdgeBean();
+                                processModelGraphEdgeBean.setId(UUID.randomUUID().toString());
+                                processModelGraphEdgeBean.setFrom(sourceNodeId);
+                                processModelGraphEdgeBean.setTo(targetNodeId);
+                                processModelGraphEdgeBean.setLabel(arrowType);
+                                processModelGraphEdgeBean.setArrows("to");
+
+                                edgeBeans.add(processModelGraphEdgeBean);
+                            }
+                        }
+
+                        for (String nodeId : nodes) {
+                            ProcessModelGraphNodeBean processModelGraphNodeBean = new ProcessModelGraphNodeBean();
+                            processModelGraphNodeBean.setId(nodeId);
+                            processModelGraphNodeBean.setLabel(nodeId);
+                            processModelGraphNodeBean.setColor(getNodeColorById(nodeId));
+                            nodeBeans.add(processModelGraphNodeBean);
+                        }
+
+                        processModelGraphBean.setNodes(nodeBeans);
+                        processModelGraphBean.setEdges(edgeBeans);
+
+                        processModelBean.setGraph(processModelGraphBean);
+
+                        repository.addProcessModel(processModelBean);
+                    } catch (RuntimeException e) {
+                        System.err.printf("%s cannot be parsed\n", file.getName());
+                    }
+                }
+            }
+        }
+    }
+
+    public static void importModelsFromDFDDocuments(ProcessModelRepository repository) {
+        File folder;
+        folder = new File(PATH_TO_BPMN_MODELS);
+        File[] listOfFiles = folder.listFiles();
+
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                String[] splitFileName = file.getName().split("\\.");
+                String fileExtension = splitFileName[splitFileName.length - 1];
+
+                if (fileExtension.equals("dfd")) {
+                    System.out.println(file.getName());
+
+                    try {
+                        BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
+
+                        ProcessModelBean processModelBean = new ProcessModelBean();
+                        processModelBean.setId(UUID.randomUUID().toString());
+                        processModelBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
+                        processModelBean.setName(file.getName());
+                        processModelBean.setNotation("DFD");
+                        processModelBean.setLevel("Foundation");
+                        processModelBean.setDescription(file.getName());
+                        processModelBean.setFileName(file.getName());
+
+                        ProcessModelGraphBean processModelGraphBean = new ProcessModelGraphBean();
+
+                        List<ProcessModelGraphNodeBean> nodeBeans = new ArrayList<>();
+                        List<ProcessModelGraphEdgeBean> edgeBeans = new ArrayList<>();
 
                         Set<String> nodes = new HashSet<>();
 
-                        for (FlowElement flowElement : process.getFlowElements()) {
-                            if (flowElement.getElementType().equals(sequenceFlowType)) {
-                                SequenceFlow sequenceFlow = (SequenceFlow) flowElement;
+                        ModelElementType taskType = modelInstance.getModel().getType(Task.class);
+
+                        for (ModelElementInstance modelElementInstance : modelInstance.getModelElementsByType(taskType)) {
+                            Task task = (Task) modelElementInstance;
+
+                            Collection<DataInputAssociation> inputs = task.getDataInputAssociations();
+                            Collection<DataOutputAssociation> outputs = task.getDataOutputAssociations();
+
+                            for (DataInputAssociation input : inputs) {
+                                ItemAwareElement itemAwareElement = (ItemAwareElement) input.getSources().toArray()[0];
+
+                                String sourceType = itemAwareElement.getElementType().getTypeName();
+                                String sourceName = null;
+                                String sourceId = null;
+                                String type = null;
+
+                                if (sourceType.equals("dataStoreReference")) {
+                                    DataStoreReference dataStoreReference = (DataStoreReference) itemAwareElement;
+                                    sourceName = dataStoreReference.getName();
+                                    sourceId = dataStoreReference.getId();
+                                    type = "dataStore";
+                                }
+
+                                if (sourceType.equals("dataObjectReference")) {
+                                    DataObjectReference dataObjectReference = (DataObjectReference) itemAwareElement;
+                                    sourceName = dataObjectReference.getName();
+                                    sourceId = dataObjectReference.getId();
+                                    type = "externalEntity";
+                                }
+
+                                String sourceNodeId;
+                                String targetNodeId;
+
+                                if (sourceName == null) {
+                                    sourceNodeId = type + "#_[Id-" + sourceId + "]";
+                                } else {
+                                    sourceNodeId = type + "#" + sourceName
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + sourceId + "]";
+                                }
+
+                                nodes.add(sourceNodeId);
+
+                                if (task.getName() == null) {
+                                    targetNodeId = "function#_[Id-" + task.getId() + "]";
+                                } else {
+                                    targetNodeId = "function#" + task.getName()
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + task.getId() + "]";
+                                }
+
+                                nodes.add(targetNodeId);
+
+                                String arrowType = "dataFlow";
+
+                                ProcessModelGraphEdgeBean processModelGraphEdgeBean = new ProcessModelGraphEdgeBean();
+                                processModelGraphEdgeBean.setId(UUID.randomUUID().toString());
+                                processModelGraphEdgeBean.setFrom(sourceNodeId);
+                                processModelGraphEdgeBean.setTo(targetNodeId);
+                                processModelGraphEdgeBean.setLabel(arrowType);
+                                processModelGraphEdgeBean.setArrows("to");
+
+                                edgeBeans.add(processModelGraphEdgeBean);
+                            }
+
+                            for (DataOutputAssociation output : outputs) {
+                                String targetType = output.getTarget().getElementType().getTypeName();
+                                String targetName = null;
+                                String targetId = null;
+                                String type = null;
+
+                                if (targetType.equals("dataStoreReference")) {
+                                    DataStoreReference dataStoreReference = (DataStoreReference) output.getTarget();
+                                    targetName = dataStoreReference.getName();
+                                    targetId = dataStoreReference.getId();
+                                    type = "dataStore";
+                                }
+
+                                if (targetType.equals("dataObjectReference")) {
+                                    DataObjectReference dataObjectReference = (DataObjectReference) output.getTarget();
+                                    targetName = dataObjectReference.getName();
+                                    targetId = dataObjectReference.getId();
+                                    type = "externalEntity";
+                                }
+
+                                String sourceNodeId;
+                                String targetNodeId;
+
+                                if (targetName == null) {
+                                    targetNodeId = type + "#_[Id-" + targetId + "]";
+                                } else {
+                                    targetNodeId = type + "#" + targetName
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + targetId + "]";
+                                }
+
+                                nodes.add(targetNodeId);
+
+                                if (task.getName() == null) {
+                                    sourceNodeId = "function#_[Id-" + task.getId() + "]";
+                                } else {
+                                    sourceNodeId = "function#" + task.getName()
+                                            .replace("\n", "")
+                                            .replace("\r", "")
+                                            .replaceAll("\\s+", "_") +
+                                            "_[Id-" + task.getId() + "]";
+                                }
+
+                                nodes.add(sourceNodeId);
+
+                                String arrowType = "dataFlow";
+
+                                ProcessModelGraphEdgeBean processModelGraphEdgeBean = new ProcessModelGraphEdgeBean();
+                                processModelGraphEdgeBean.setId(UUID.randomUUID().toString());
+                                processModelGraphEdgeBean.setFrom(sourceNodeId);
+                                processModelGraphEdgeBean.setTo(targetNodeId);
+                                processModelGraphEdgeBean.setLabel(arrowType);
+                                processModelGraphEdgeBean.setArrows("to");
+
+                                edgeBeans.add(processModelGraphEdgeBean);
+                            }
+                        }
+
+                        ModelElementType sequenceFlowType = modelInstance.getModel().getType(SequenceFlow.class);
+
+                        for (ModelElementInstance modelElementInstance : modelInstance.getModelElementsByType(sequenceFlowType)) {
+                            if (modelElementInstance.getElementType().equals(sequenceFlowType)) {
+                                SequenceFlow sequenceFlow = (SequenceFlow) modelElementInstance;
 
                                 FlowNode source = sequenceFlow.getSource();
                                 FlowNode target = sequenceFlow.getTarget();
@@ -111,7 +390,7 @@ public class ProcessModelImportUtil {
                                 processModelGraphEdgeBean.setId(UUID.randomUUID().toString());
                                 processModelGraphEdgeBean.setFrom(sourceNodeId);
                                 processModelGraphEdgeBean.setTo(targetNodeId);
-                                processModelGraphEdgeBean.setLabel("sequenceFlow");
+                                processModelGraphEdgeBean.setLabel("dataFlow");
                                 processModelGraphEdgeBean.setArrows("to");
 
                                 edgeBeans.add(processModelGraphEdgeBean);
@@ -123,7 +402,6 @@ public class ProcessModelImportUtil {
                             processModelGraphNodeBean.setId(nodeId);
                             processModelGraphNodeBean.setLabel(nodeId);
                             processModelGraphNodeBean.setColor(getNodeColorById(nodeId));
-
                             nodeBeans.add(processModelGraphNodeBean);
                         }
 
@@ -133,9 +411,9 @@ public class ProcessModelImportUtil {
                         processModelBean.setGraph(processModelGraphBean);
 
                         repository.addProcessModel(processModelBean);
+                    } catch (RuntimeException e) {
+                        System.err.printf("%s cannot be parsed\n", file.getName());
                     }
-                } catch (RuntimeException e) {
-                    System.err.printf("%s cannot be parsed\n", file.getName());
                 }
             }
         }
@@ -189,6 +467,149 @@ public class ProcessModelImportUtil {
             return "#CCCCFF";
         }
 
+        if (type.equals("interface")) {
+            return "#E5CCFF";
+        }
+
         return "#A0A0A0";
+    }
+
+    private static void parseControlFlowModels(String extension, ProcessModelRepository repository) {
+        File folder;
+        folder = new File(PATH_TO_BPMN_MODELS);
+        File[] listOfFiles = folder.listFiles();
+
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                String[] splitFileName = file.getName().split("\\.");
+                String fileExtension = splitFileName[splitFileName.length - 1];
+
+                if (fileExtension.equals(extension)) {
+                    System.out.println(file.getName());
+
+                    try {
+                        BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
+
+                        Collection<ModelElementInstance> processes = modelInstance.getModelElementsByType(
+                                modelInstance.getModel().getType(Process.class)
+                        );
+
+                        for (ModelElementInstance modelElementInstance : processes) {
+                            Process process = (Process) modelElementInstance;
+
+                            String processName = null;
+
+                            if (extension.equals("bpmn")) {
+                                Collection<ModelElementInstance> participants = modelInstance.getModelElementsByType(
+                                        modelInstance.getModel().getType(Participant.class)
+                                );
+
+                                for (ModelElementInstance instance : participants) {
+                                    Participant participant = (Participant) instance;
+
+                                    if (participant.getProcess().getId().equals(process.getId())) {
+                                        processName = participant.getName();
+                                    }
+                                }
+                            }
+
+                            if (processName == null) {
+                                processName = file.getName();
+                            }
+
+                            if (extension.equals("bpmn")) {
+                                processName += "_[Id-" + process.getId() + "]";
+                            }
+
+                            ProcessModelBean processModelBean = new ProcessModelBean();
+                            processModelBean.setId(UUID.randomUUID().toString());
+                            processModelBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
+                            processModelBean.setName(processName);
+                            processModelBean.setNotation(extension.toUpperCase());
+                            processModelBean.setLevel("Foundation");
+                            processModelBean.setDescription(processName);
+                            processModelBean.setFileName(file.getName());
+
+                            ProcessModelGraphBean processModelGraphBean = new ProcessModelGraphBean();
+
+                            List<ProcessModelGraphNodeBean> nodeBeans = new ArrayList<>();
+                            List<ProcessModelGraphEdgeBean> edgeBeans = new ArrayList<>();
+
+                            ModelElementType sequenceFlowType = modelInstance.getModel().getType(SequenceFlow.class);
+
+                            Set<String> nodes = new HashSet<>();
+
+                            for (FlowElement flowElement : process.getFlowElements()) {
+                                if (flowElement.getElementType().equals(sequenceFlowType)) {
+                                    SequenceFlow sequenceFlow = (SequenceFlow) flowElement;
+
+                                    FlowNode source = sequenceFlow.getSource();
+                                    FlowNode target = sequenceFlow.getTarget();
+
+                                    String sourceType = source.getElementType().getTypeName();
+                                    String targetType = target.getElementType().getTypeName();
+
+                                    String sourceNodeId;
+                                    String targetNodeId;
+
+                                    if (source.getName() == null) {
+                                        sourceNodeId = getNodeTypeByBPMNType(sourceType) +
+                                                "#_[Id-" + source.getId() + "]";
+                                    } else {
+                                        sourceNodeId = getNodeTypeByBPMNType(sourceType) + "#" + source.getName()
+                                                .replace("\n", "")
+                                                .replace("\r", "")
+                                                .replaceAll("\\s+", "_") +
+                                                "_[Id-" + source.getId() + "]";
+                                    }
+
+                                    nodes.add(sourceNodeId);
+
+                                    if (target.getName() == null) {
+                                        targetNodeId = getNodeTypeByBPMNType(targetType) +
+                                                "#_[Id-" + target.getId() + "]";
+                                    } else {
+                                        targetNodeId = getNodeTypeByBPMNType(targetType) + "#" + target.getName()
+                                                .replace("\n", "")
+                                                .replace("\r", "")
+                                                .replaceAll("\\s+", "_") +
+                                                "_[Id-" + target.getId() + "]";
+                                    }
+
+                                    nodes.add(targetNodeId);
+
+                                    ProcessModelGraphEdgeBean processModelGraphEdgeBean = new ProcessModelGraphEdgeBean();
+                                    processModelGraphEdgeBean.setId(UUID.randomUUID().toString());
+                                    processModelGraphEdgeBean.setFrom(sourceNodeId);
+                                    processModelGraphEdgeBean.setTo(targetNodeId);
+                                    processModelGraphEdgeBean.setLabel("sequenceFlow");
+                                    processModelGraphEdgeBean.setArrows("to");
+
+                                    edgeBeans.add(processModelGraphEdgeBean);
+                                }
+                            }
+
+                            for (String nodeId : nodes) {
+                                ProcessModelGraphNodeBean processModelGraphNodeBean = new ProcessModelGraphNodeBean();
+                                processModelGraphNodeBean.setId(nodeId);
+                                processModelGraphNodeBean.setLabel(nodeId);
+                                processModelGraphNodeBean.setColor(getNodeColorById(nodeId));
+
+                                nodeBeans.add(processModelGraphNodeBean);
+                            }
+
+                            processModelGraphBean.setNodes(nodeBeans);
+                            processModelGraphBean.setEdges(edgeBeans);
+
+                            processModelBean.setGraph(processModelGraphBean);
+
+                            repository.addProcessModel(processModelBean);
+                        }
+                    } catch (RuntimeException e) {
+                        System.err.printf("%s cannot be parsed\n", file.getName());
+                    }
+                }
+            }
+        }
     }
 }
