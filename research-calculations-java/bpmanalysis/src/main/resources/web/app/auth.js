@@ -41,7 +41,9 @@ function login() {
 
             window.location.href = '/';
         } else {
-            $('#login-message').text('Invalid user name or password!');
+            var loginMessage = document.getElementById('login-message');
+            loginMessage.innerHTML = '<div class="alert alert-danger" role="alert">' +
+                'Invalid user name or password!</div>';
         }
     });
 
