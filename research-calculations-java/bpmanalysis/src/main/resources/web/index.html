@@ -66,13 +66,22 @@
                 modelInfo.append("<p><b>Business Process Model Text Description<b></p>");
                 modelInfo.append("<p>" + data.description + "</p>");
 
-                modelInfo.append('<p>' +
-                    '<button id="analyzeModel" onclick="analyzeModel(\'' + data.id + '\')" ' +
-                        'class="btn btn-primary">Analyze Model</button></p>');
+                modelInfo.append("<p><b>Business Process Model File<b></p>");
+                modelInfo.append("<p>" + data.fileName + "</p>");
 
+                /*
+                 * Update & Delete buttons
+                 *
                 modelInfo.append('<p><a href="add.html?id=' + id + '">Update model</a> ' +
                     '<a href="remove/' + data.id + '" onclick="return confirm(\'Delete this model?\')">' +
                     'Delete model</a></p>');
+                */
+
+                modelInfo.append('<p><a href="edit.html?id=' + id + '">Edit description</a></p>');
+
+                modelInfo.append('<p>' +
+                    '<button id="analyzeModel" onclick="analyzeModel(\'' + data.id + '\')" ' +
+                        'class="btn btn-primary">Analyze Model</button></p>');
 
                 $("#modelAnalysis").empty();
 
@@ -342,7 +351,7 @@
     </script>
     <h3>
         <small><a href="" id="userLink"></a></small> |
-        <small><a href="./add.html">Add Model</a></small>
+        <!--<small><a href="./add.html">Add Model</a></small>-->
         <small><a href="./login.html">Logout</a></small>
     </h3>
     <div class="row">

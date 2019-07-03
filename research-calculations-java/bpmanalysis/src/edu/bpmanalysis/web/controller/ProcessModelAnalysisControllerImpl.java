@@ -52,6 +52,21 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
         return null;
     };
 
+    public Route edit = (req, res) -> {
+        String json = req.body();
+
+        ProcessModelBean update = new Gson().fromJson(json, ProcessModelBean.class);
+
+        ProcessModelBean processModelBean = repository.getProcessModel(update.getId());
+        processModelBean.setName(update.getName());
+        processModelBean.setLevel(update.getLevel());
+        processModelBean.setDescription(update.getDescription());
+
+        repository.updateProcessModel(processModelBean);
+
+        return null;
+    };
+
     public Route analyze = (req, res) -> {
         String id = req.params(":id");
         ProcessModelBean processModelBean = repository.getProcessModel(id);
@@ -89,6 +104,7 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
             get("/models", models);
             get("/retrieve/:id", retrieve);
             post("/store", store);
+            post("/edit", edit);
             get("/analyze/:id", analyze);
             get("/remove/:id", remove);
             get("/search/:model/:node", search);

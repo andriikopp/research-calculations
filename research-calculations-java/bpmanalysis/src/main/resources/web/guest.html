@@ -66,6 +66,9 @@
                 modelInfo.append("<p><b>Business Process Model Text Description<b></p>");
                 modelInfo.append("<p>" + data.description + "</p>");
 
+                modelInfo.append("<p><b>Business Process Model File<b></p>");
+                modelInfo.append("<p>" + data.fileName + "</p>");
+
                 if (activeModel != null) {
                     $('#' + activeModel).css('background-color', 'white');
                 }
@@ -99,7 +102,7 @@
     </script>
     <h3>
         <small>guest</small> |
-        <small><a href="./add.html">Add Model</a></small>
+        <!--<small><a href="./add.html">Add Model</a></small>-->
         <small><a href="./login.html">Login</a></small>
     </h3>
     <div class="row">

@@ -13,6 +13,21 @@ public class ProcessModelBean {
     private String level;
     private ProcessModelGraphBean graph;
     private String description;
+    private String fileName;
+
+    @Override
+    public String toString() {
+        return "ProcessModelBean{" +
+                "id='" + id + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                ", name='" + name + '\'' +
+                ", notation='" + notation + '\'' +
+                ", level='" + level + '\'' +
+                ", graph=" + graph +
+                ", description='" + description + '\'' +
+                ", fileName='" + fileName + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -27,7 +42,8 @@ public class ProcessModelBean {
         if (notation != null ? !notation.equals(that.notation) : that.notation != null) return false;
         if (level != null ? !level.equals(that.level) : that.level != null) return false;
         if (graph != null ? !graph.equals(that.graph) : that.graph != null) return false;
-        return description != null ? description.equals(that.description) : that.description == null;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        return fileName != null ? fileName.equals(that.fileName) : that.fileName == null;
     }
 
     @Override
@@ -39,20 +55,8 @@ public class ProcessModelBean {
         result = 31 * result + (level != null ? level.hashCode() : 0);
         result = 31 * result + (graph != null ? graph.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (fileName != null ? fileName.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ProcessModelBean{" +
-                "id='" + id + '\'' +
-                ", timeStamp='" + timeStamp + '\'' +
-                ", name='" + name + '\'' +
-                ", notation='" + notation + '\'' +
-                ", level='" + level + '\'' +
-                ", graph=" + graph +
-                ", description='" + description + '\'' +
-                '}';
     }
 
     public String getId() {
@@ -109,5 +113,13 @@ public class ProcessModelBean {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

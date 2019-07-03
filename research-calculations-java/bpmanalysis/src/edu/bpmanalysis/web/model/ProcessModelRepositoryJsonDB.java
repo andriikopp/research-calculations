@@ -40,4 +40,9 @@ public class ProcessModelRepositoryJsonDB implements ProcessModelRepository {
 
         jsonDBTemplate.remove(processModelBean, ProcessModelBean.class);
     }
+
+    @Override
+    public void updateProcessModel(ProcessModelBean processModelBean) {
+        jsonDBTemplate.upsert(processModelBean);
+    }
 }

@@ -13,4 +13,6 @@ public interface ProcessModelRepository {
     void addProcessModel(ProcessModelBean processModelBean);
 
     void deleteProcessModel(String id);
+
+    void updateProcessModel(ProcessModelBean processModelBean);
 }

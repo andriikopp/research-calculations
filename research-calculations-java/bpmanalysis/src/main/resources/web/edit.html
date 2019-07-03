@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <meta charset="UTF-8">
+		<title>Edit Description</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/bmpdt.css" />
+	</head>
+	<body>
+		<h3>
+            <small><a href="" id="userLink"></a></small> |
+            <small><a href="javascript:history.go(-1)">Back</a></small>
+            <small><a href="./login.html">Logout</a></small>
+        </h3>
+		<div class="row">
+			<div class="col-md-8">
+				<form>
+					<input type="hidden" id="modelId" />
+					<p>
+						<b>Business Process Model Name</b>
+					</p>
+					<p>
+						<input class="form-control" type="text" id="modelName" name="modelName" placeholder="Name" />
+					</p>
+					<p>
+						<b>Business Process Model Notation</b>
+					</p>
+					<p>
+						<select class="form-control" id="modelNotation" name="modelNotation" disabled>
+							<option value="BPMN">BPMN</option>
+							<option value="EPC">EPC</option>
+							<option value="IDEF0">IDEF0</option>
+							<option value="DFD">DFD</option>
+						</select>
+					</p>
+					<p>
+						<b>Business Process Model Detail Level</b>
+					</p>
+					<p>
+						<select class="form-control" id="modelLevel" name="modelLevel">
+							<option value="Foundation">Foundation</option>
+							<option value="Common Systems">Common Systems</option>
+							<option value="Industry">Industry</option>
+							<option value="Organization-Specific">Organization-Specific</option>
+						</select>
+					</p>
+					<p>
+						<b>Business Process Model Text Description</b>
+					</p>
+					<p>
+						<textarea id="modelText" name="modelText" class="form-control" rows="4" placeholder="Description"></textarea>
+					</p>
+					<p>
+						<b>Business Process Model File</b>
+					</p>
+					<p>
+						<input class="form-control" type="text" id="modelFile" name="modelFile" placeholder="File" disabled />
+					</p>
+					<p>
+						<button id="save" class="btn btn-primary">Save Changes</button>
+					</p>
+				</form>
+			</div>
+		</div>
+		<script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/js.cookie.js"></script>
+		<script src="app/edit.js"></script>
+        <script src="app/auth.js"></script>
+	</body>
+</html>
