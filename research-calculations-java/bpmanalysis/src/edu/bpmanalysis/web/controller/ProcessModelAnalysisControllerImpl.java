@@ -9,6 +9,8 @@ import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
 import edu.bpmanalysis.web.api.DetailedRepositoryDashboard;
 import edu.bpmanalysis.web.api.SummaryRepositoryDashboard;
 import edu.bpmanalysis.web.controller.api.ProcessModelAnalysisController;
+import edu.bpmanalysis.web.model.AnalysisResultsRepositoryJsonDB;
+import edu.bpmanalysis.web.model.api.AnalysisResultsRepository;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.api.UserRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
@@ -26,9 +28,17 @@ import static spark.Spark.*;
 public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisController {
     private ProcessModelRepository repository;
     private UserRepository userRepository;
+    private AnalysisResultsRepository resultsRepository;
 
     public Route models = (req, res) -> {
         List<ProcessModelBean> processModels = repository.getProcessModels();
+        Collections.reverse(processModels);
+
+        return new Gson().toJson(processModels);
+    };
+
+    public Route results = (req, res) -> {
+        List<ProcessModelAnalysisBean> processModels = resultsRepository.getAnalysisResults(req.cookie("user"));
         Collections.reverse(processModels);
 
         return new Gson().toJson(processModels);
@@ -38,6 +48,12 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
         String id = req.params(":id");
         ProcessModelBean processModelBean = repository.getProcessModel(id);
         return new Gson().toJson(processModelBean);
+    };
+
+    public Route retrieveResults = (req, res) -> {
+        String id = req.params(":id");
+        ProcessModelAnalysisBean processModelAnalysisBean = resultsRepository.getAnalysisResult(id);
+        return new Gson().toJson(processModelAnalysisBean);
     };
 
     public Route store = (req, res) -> {
@@ -74,7 +90,20 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
         Model model = ProcessModelAnalysisUtil.transformToModel(processModelBean);
         ProcessModelAnalysisBean processModelAnalysisBean = ProcessModelAnalysisUtil.analyzeModel(model);
 
-        return new Gson().toJson(processModelAnalysisBean);
+        String result = new Gson().toJson(processModelAnalysisBean);
+
+        processModelAnalysisBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
+        processModelAnalysisBean.setNotation(processModelBean.getNotation());
+        processModelAnalysisBean.setLevel(processModelBean.getLevel());
+        processModelAnalysisBean.setGraph(processModelBean.getGraph());
+        processModelAnalysisBean.setDescription(processModelBean.getDescription());
+        processModelAnalysisBean.setFileName(processModelBean.getFileName());
+
+        processModelAnalysisBean.setUserName(req.cookie("user"));
+
+        resultsRepository.addAnalysisResult(processModelAnalysisBean);
+
+        return result;
     };
 
     public Route remove = (req, res) -> {
@@ -102,7 +131,9 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
 
         path("/", () -> {
             get("/models", models);
+            get("/results", results);
             get("/retrieve/:id", retrieve);
+            get("/retrieveResults/:id", retrieveResults);
             post("/store", store);
             post("/edit", edit);
             get("/analyze/:id", analyze);
@@ -150,5 +181,10 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
     @Override
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public void setResultsRepository(AnalysisResultsRepository resultsRepository) {
+        this.resultsRepository = resultsRepository;
     }
 }

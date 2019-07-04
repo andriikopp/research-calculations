@@ -4,8 +4,10 @@ import edu.bpmanalysis.config.Configuration;
 import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.web.controller.ProcessModelAnalysisControllerImpl;
 import edu.bpmanalysis.web.controller.api.ProcessModelAnalysisController;
+import edu.bpmanalysis.web.model.AnalysisResultsRepositoryJsonDB;
 import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
 import edu.bpmanalysis.web.model.UserRepositoryJsonDB;
+import edu.bpmanalysis.web.model.api.AnalysisResultsRepository;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.api.UserRepository;
 
@@ -29,9 +31,12 @@ public class WebApp {
 
         UserRepository userRepository = new UserRepositoryJsonDB();
 
+        AnalysisResultsRepository resultsRepository = new AnalysisResultsRepositoryJsonDB();
+
         ProcessModelAnalysisController controller = new ProcessModelAnalysisControllerImpl();
         controller.setRepository(processModelRepository);
         controller.setUserRepository(userRepository);
+        controller.setResultsRepository(resultsRepository);
 
         controller.init();
     }
