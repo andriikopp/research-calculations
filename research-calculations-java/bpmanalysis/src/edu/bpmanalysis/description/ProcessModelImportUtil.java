@@ -5,6 +5,7 @@ import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphNodeBean;
+import org.apache.commons.io.FileUtils;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.*;
@@ -13,6 +14,7 @@ import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.camunda.bpm.model.xml.type.ModelElementType;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -419,12 +421,49 @@ public class ProcessModelImportUtil {
         }
     }
 
+    public static void importDiagramImages(String extension) {
+        File folder;
+        folder = new File(PATH_TO_BPMN_MODELS);
+        File[] listOfFiles = folder.listFiles();
+
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                String[] splitFileName = file.getName().split("\\.");
+                String fileExtension = splitFileName[splitFileName.length - 1];
+
+                if (fileExtension.equals(extension)) {
+                    String srcFilePath = PATH_TO_BPMN_MODELS + file.getName();
+                    String destFilePath = "bpmanalysis/src/main/resources/web/images/" + file.getName();
+
+                    File srcFile = new File(srcFilePath);
+                    File destFile = new File(destFilePath);
+
+                    try {
+                        FileUtils.copyFile(srcFile, destFile);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+    }
+
     public static void cleanRepository() {
         File jsonModelsFile = new File("processModelsStorage/processModels.json");
         jsonModelsFile.delete();
 
         File rdfGraphFile = new File("processModelsStorage/graph.rdf");
         rdfGraphFile.delete();
+
+        File imagesFolder = new File("bpmanalysis/src/main/resources/web/images");
+
+        try {
+            FileUtils.deleteDirectory(imagesFolder);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        new File("bpmanalysis/src/main/resources/web/images").mkdirs();
     }
 
     public static String getNodeTypeByBPMNType(String type) {

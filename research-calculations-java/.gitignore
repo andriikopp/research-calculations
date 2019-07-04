@@ -18,6 +18,7 @@ target/
 # BP Models
 models/
 src/main/resources/repository
+bpmanalysis/src/main/resources/web/images
 
 # Future Work
 src/bp/storing/nosql/

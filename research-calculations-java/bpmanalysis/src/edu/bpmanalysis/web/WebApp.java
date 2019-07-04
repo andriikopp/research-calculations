@@ -23,6 +23,8 @@ public class WebApp {
             ProcessModelImportUtil.importModelsFromEPCDocuments(processModelRepository);
             ProcessModelImportUtil.importModelsFromIDEF0Documents(processModelRepository);
             ProcessModelImportUtil.importModelsFromDFDDocuments(processModelRepository);
+
+            ProcessModelImportUtil.importDiagramImages("svg");
         }
 
         UserRepository userRepository = new UserRepositoryJsonDB();

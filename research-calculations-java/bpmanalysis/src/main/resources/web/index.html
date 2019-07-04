@@ -51,6 +51,15 @@
 
                 new vis.Network(container, graphData, options);
 
+                var imageContainer = document.getElementById('modelImage');
+                imageContainer.src = 'images/' + data.fileName + '.svg';
+
+                $('#descriptionLink').show();
+                $('#modelLink').show();
+
+                $('#modelDescription').hide();
+                $('#modelImage').show();
+
                 var modelInfo = $("#modelInfo");
                 modelInfo.empty();
 
@@ -316,7 +325,7 @@
                 if (data.similarModels != null) {
                     Object.keys(data.similarModels).forEach(function(key, index) {
                         modelAnalysis.append('<p>' +
-                            '<a href="#' + key + '" onclick="loadModel(\'' + key + '\')">' + data.similarModels[key] + '</a>' +
+                            '<a target="_blank" href="?id=' + key + '">' + data.similarModels[key] + '</a>' +
                             '</p>');
                         duplicatesCounter++;
                     });
@@ -363,8 +372,33 @@
         </div>
         <div class="col-md-8">
             <p>
+                <a href="javascript:void(0);" onclick="displayModel();" id="modelLink" class="btn btn-secondary btn-sm">Model</a>
+                <a href="javascript:void(0);" onclick="displayGraph();" id="descriptionLink" class="btn btn-secondary btn-sm">Graph</a>
+                <script type="text/javascript">
+                    $('#descriptionLink').hide();
+                    $('#modelLink').hide();
+
+                    function displayModel() {
+                        $('#modelDescription').hide();
+                        $('#modelImage').show();
+                    }
+
+                    function displayGraph() {
+                        $('#modelDescription').show();
+                        $('#modelImage').hide();
+                    }
+                </script>
+            </p>
+            <p>
                 <div id="modelDescription"></div>
             </p>
+            <p>
+                <iframe id="modelImage"></iframe>
+            </p>
+            <script type="text/javascript">
+                $('#modelDescription').hide();
+                $('#modelImage').hide();
+            </script>
             <p>
                 <div id="modelInfo"></div>
             </p>
