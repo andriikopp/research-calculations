@@ -9,6 +9,10 @@ public class ConnectorsBalance implements Balance {
 
     @Override
     public double balanceCoefficient(Model model) {
+        if (model.getNodesList().isEmpty()) {
+            return 0;
+        }
+
         double value = 0;
 
         double count = 0;

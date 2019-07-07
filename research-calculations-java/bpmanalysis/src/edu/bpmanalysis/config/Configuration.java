@@ -6,7 +6,7 @@ import edu.bpmanalysis.search.similarity.api.Index;
 public class Configuration {
     public static final boolean DEBUG = false;
 
-    public static final String PATH_TO_BPMN_MODELS = "processModelsStorage/test/";
+    public static final String PATH_TO_BPMN_MODELS = "processModelsStorage/test_models/";
 
     public static final Index SIMILARITY_INDEX = new JaccardIndex();
 

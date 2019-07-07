@@ -92,6 +92,8 @@ public class ProcessModelAnalysisControllerImpl implements ProcessModelAnalysisC
 
         String result = new Gson().toJson(processModelAnalysisBean);
 
+        processModelAnalysisBean.setId(UUID.randomUUID().toString());
+
         processModelAnalysisBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
         processModelAnalysisBean.setNotation(processModelBean.getNotation());
         processModelAnalysisBean.setLevel(processModelBean.getLevel());
