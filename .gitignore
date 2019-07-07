@@ -13,4 +13,4 @@ research-calculations-java/processModelsStorage/*
 !research-calculations-java/processModelsStorage/users.json
 !research-calculations-java/processModelsStorage/processModels.json
 !research-calculations-java/processModelsStorage/graph.rdf
-!research-calculations-java/processModelsStorage/analysisResults.json
+research-calculations-java/processModelsStorage/analysisResults.json
