@@ -33,6 +33,11 @@ public class AnalysisResultsRepositoryJsonDB implements AnalysisResultsRepositor
     }
 
     @Override
+    public List<ProcessModelAnalysisBean> getAnalysisResults() {
+        return jsonDBTemplate.findAll(ProcessModelAnalysisBean.class);
+    }
+
+    @Override
     public ProcessModelAnalysisBean getAnalysisResult(String id) {
         return jsonDBTemplate.findById(id, ProcessModelAnalysisBean.class);
     }

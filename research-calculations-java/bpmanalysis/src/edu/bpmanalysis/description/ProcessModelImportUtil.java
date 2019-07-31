@@ -449,6 +449,9 @@ public class ProcessModelImportUtil {
     }
 
     public static void cleanRepository() {
+        File jsonResultsFile = new File("processModelsStorage/analysisResults.json");
+        jsonResultsFile.delete();
+
         File jsonModelsFile = new File("processModelsStorage/processModels.json");
         jsonModelsFile.delete();
 

@@ -5,6 +5,7 @@ import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Document(collection = "analysisResults", schemaVersion = "1.0")
@@ -33,6 +34,8 @@ public class ProcessModelAnalysisBean {
     private Map<String, Double> connectorsChanges;
     private Map<String, double[]> routingChanges;
     private Map<String, double[]> functionsChanges;
+
+    private List<String> recommendations;
 
     private Map<String, String> similarModels;
 
@@ -64,6 +67,7 @@ public class ProcessModelAnalysisBean {
                 ", connectorsChanges=" + connectorsChanges +
                 ", routingChanges=" + routingChanges +
                 ", functionsChanges=" + functionsChanges +
+                ", recommendations='" + recommendations + '\'' +
                 ", similarModels=" + similarModels +
                 ", quality=" + quality +
                 ", hasErrors=" + hasErrors +
@@ -103,6 +107,8 @@ public class ProcessModelAnalysisBean {
             return false;
         if (functionsChanges != null ? !functionsChanges.equals(that.functionsChanges) : that.functionsChanges != null)
             return false;
+        if (recommendations != null ? !recommendations.equals(that.recommendations) : that.recommendations != null)
+            return false;
         if (similarModels != null ? !similarModels.equals(that.similarModels) : that.similarModels != null)
             return false;
         return userName != null ? userName.equals(that.userName) : that.userName == null;
@@ -135,6 +141,7 @@ public class ProcessModelAnalysisBean {
         result = 31 * result + (connectorsChanges != null ? connectorsChanges.hashCode() : 0);
         result = 31 * result + (routingChanges != null ? routingChanges.hashCode() : 0);
         result = 31 * result + (functionsChanges != null ? functionsChanges.hashCode() : 0);
+        result = 31 * result + (recommendations != null ? recommendations.hashCode() : 0);
         result = 31 * result + (similarModels != null ? similarModels.hashCode() : 0);
         temp = Double.doubleToLongBits(quality);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
@@ -302,6 +309,14 @@ public class ProcessModelAnalysisBean {
 
     public void setFunctionsChanges(Map<String, double[]> functionsChanges) {
         this.functionsChanges = functionsChanges;
+    }
+
+    public List<String> getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(List<String> recommendations) {
+        this.recommendations = recommendations;
     }
 
     public Map<String, String> getSimilarModels() {

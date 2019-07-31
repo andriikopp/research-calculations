@@ -10,5 +10,7 @@ public interface AnalysisResultsRepository {
 
     List<ProcessModelAnalysisBean> getAnalysisResults(String userName);
 
+    List<ProcessModelAnalysisBean> getAnalysisResults();
+
     ProcessModelAnalysisBean getAnalysisResult(String id);
 }

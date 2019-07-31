@@ -10,21 +10,22 @@ import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class SummaryRepositoryDashboard {
-    int numberOfModels;
-    int duplicateModels;
-    int invalidModels;
-    int correctModels;
+    private int numberOfModels;
+    private int duplicateModels;
+    private int invalidModels;
+    private int correctModels;
 
-    int invalidNodes;
-    int invalidFunctions;
-    int invalidConnectorsBalance;
-    int invalidFunctionsBalance;
-    int invalidStartEvents;
-    int invalidEndEvents;
-    int invalidMatching;
-    int invalidORGateways;
+    private int invalidNodes;
+    private int invalidFunctions;
+    private int invalidConnectorsBalance;
+    private int invalidFunctionsBalance;
+    private int invalidStartEvents;
+    private int invalidEndEvents;
+    private int invalidMatching;
+    private int invalidORGateways;
 
     public SummaryRepositoryDashboard(ProcessModelRepository repository) {
         List<Model> models = new ArrayList<>();
@@ -77,7 +78,9 @@ public class SummaryRepositoryDashboard {
             }
         }
 
-        this.duplicateModels = ProcessModelSimilaritySearchStorage.countDuplicates(models);
+        Set<String> duplicates = ProcessModelSimilaritySearchStorage.getDuplicates(models);
+
+        this.duplicateModels = duplicates.size();
 
         this.numberOfModels = models.size();
         this.correctModels = this.numberOfModels - this.invalidModels;

@@ -29,7 +29,7 @@ public class ProcessModelSimilaritySearchStorage {
         }
     }
 
-    public static int countDuplicates(List<Model> models) {
+    public static Set<String> getDuplicates(List<Model> models) {
         Set<String> duplicates = new HashSet<>();
 
         for (Model model : models) {
@@ -38,7 +38,7 @@ public class ProcessModelSimilaritySearchStorage {
             }
         }
 
-        return duplicates.size();
+        return duplicates;
     }
 
     public static void addModel(ProcessModelBean processModelBean) {
