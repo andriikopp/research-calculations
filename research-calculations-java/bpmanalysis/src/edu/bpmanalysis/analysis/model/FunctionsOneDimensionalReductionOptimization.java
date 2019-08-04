@@ -79,6 +79,9 @@ public class FunctionsOneDimensionalReductionOptimization {
                     }
                 }
 
+                /*
+                 * Do not use numerical optimization
+                 *
                 double old = function.value(changes);
                 final int row = i;
                 final int col = j;
@@ -91,6 +94,10 @@ public class FunctionsOneDimensionalReductionOptimization {
                 if (function.value(changes) >= old) {
                     changes[i][j] = 0;
                 }
+                */
+
+                // Use analytical solution
+                changes[i][j] = max - current[i][j];
             }
         }
 

@@ -32,6 +32,10 @@ public class NodesOneDimensionalReductionOptimization {
         };
 
         for (int i = 0; i < size; i++) {
+
+            /*
+             * Do not use numerical optimization
+             *
             double old = function.value(changes);
             final int finalIndex = i;
             changes[i] = OneDimensionalOptimizationMethod.findMinimum(
@@ -42,6 +46,10 @@ public class NodesOneDimensionalReductionOptimization {
             if (function.value(changes) >= old) {
                 changes[i] = 0;
             }
+            */
+
+            // Use analytical solution
+            changes[i] = ideal[i] - current[i];
         }
 
         return changes;

@@ -31,6 +31,9 @@ public class ConnectorsOneDimensionalReductionOptimization {
         };
 
         for (int i = 0; i < size; i++) {
+            /*
+             * Do not use numerical optimization
+             *
             double old = function.value(changes);
             final int finalIndex = i;
             changes[i] = OneDimensionalOptimizationMethod.findMinimum(
@@ -41,6 +44,10 @@ public class ConnectorsOneDimensionalReductionOptimization {
             if (function.value(changes) >= old) {
                 changes[i] = 0;
             }
+            */
+
+            // Use analytical solution
+            changes[i] = ConnectorsBalance.MAX_C - current[i];
         }
 
         if (Configuration.DEBUG) {

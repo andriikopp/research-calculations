@@ -104,7 +104,7 @@ public class BPMAIApplication {
         descriptionOfNodesChanges.put("function(s)", (int) nodesChanges[4]);
         descriptionOfNodesChanges.put("start event(s)", (int) nodesChanges[1]);
         descriptionOfNodesChanges.put("end event(s)", (int) nodesChanges[2]);
-        descriptionOfNodesChanges.put("routing element(s)", (int) nodesChanges[3]);
+        descriptionOfNodesChanges.put("OR routing element(s)", (int) nodesChanges[3]);
 
         for (Map.Entry<String, Integer> value : descriptionOfNodesChanges.entrySet()) {
             if (value.getValue() != 0) {

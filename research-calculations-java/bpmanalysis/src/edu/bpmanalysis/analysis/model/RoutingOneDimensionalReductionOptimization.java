@@ -37,6 +37,9 @@ public class RoutingOneDimensionalReductionOptimization {
         };
 
         for (int i = 0; i < size; i++) {
+            /*
+             * Do not use numerical optimization
+             *
             double old = function.value(changes);
             final int finalIndex = i;
 
@@ -49,7 +52,14 @@ public class RoutingOneDimensionalReductionOptimization {
             if (function.value(changes) >= old) {
                 changes[i][0] = 0;
             }
+            */
 
+            // Use analytical solution
+            changes[i][0] = current[i][1] - current[i][0];
+
+            /*
+             * Do not use numerical optimization
+             *
             old = function.value(changes);
 
             changes[i][1] = OneDimensionalOptimizationMethod.findMinimum(
@@ -61,6 +71,10 @@ public class RoutingOneDimensionalReductionOptimization {
             if (function.value(changes) >= old) {
                 changes[i][1] = 0;
             }
+            */
+
+            // Use analytical solution
+            changes[i][1] = current[i][0] - current[i][1];
         }
 
         return changes;
