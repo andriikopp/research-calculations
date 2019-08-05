@@ -448,6 +448,28 @@ public class ProcessModelImportUtil {
         }
     }
 
+    public static void importModels() {
+        File folder;
+        folder = new File(PATH_TO_BPMN_MODELS);
+        File[] listOfFiles = folder.listFiles();
+
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                String srcFilePath = PATH_TO_BPMN_MODELS + file.getName();
+                String destFilePath = "bpmanalysis/src/main/resources/web/models/" + file.getName();
+
+                File srcFile = new File(srcFilePath);
+                File destFile = new File(destFilePath);
+
+                try {
+                    FileUtils.copyFile(srcFile, destFile);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
     public static void cleanRepository() {
         File jsonResultsFile = new File("processModelsStorage/analysisResults.json");
         jsonResultsFile.delete();
@@ -462,6 +484,14 @@ public class ProcessModelImportUtil {
 
         try {
             FileUtils.deleteDirectory(imagesFolder);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        File modelsFolder = new File("bpmanalysis/src/main/resources/web/models");
+
+        try {
+            FileUtils.deleteDirectory(modelsFolder);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

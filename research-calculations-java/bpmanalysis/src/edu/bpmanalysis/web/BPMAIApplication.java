@@ -14,9 +14,13 @@ import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
 import edu.bpmanalysis.web.model.api.AnalysisResultsRepository;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
+import edu.bpmanalysis.web.model.bean.ProcessModelGraphNodeBean;
 
+import java.awt.*;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.List;
 
 import static spark.Spark.*;
 
@@ -35,7 +39,7 @@ public class BPMAIApplication {
             ProcessModelImportUtil.importModelsFromIDEF0Documents(processModelRepository);
             ProcessModelImportUtil.importModelsFromDFDDocuments(processModelRepository);
 
-            ProcessModelImportUtil.importDiagramImages("svg");
+            ProcessModelImportUtil.importModels();
         }
 
         ProcessModelSimilaritySearchStorage.loadModels(processModelRepository);
@@ -46,8 +50,6 @@ public class BPMAIApplication {
         for (ProcessModelBean processModelBean : processModelRepository.getProcessModels()) {
             Model model = ProcessModelAnalysisUtil.transformToModel(processModelBean);
             ProcessModelAnalysisBean processModelAnalysisBean = ProcessModelAnalysisUtil.analyzeModel(model);
-
-            processModelAnalysisBean.setId(UUID.randomUUID().toString());
 
             processModelAnalysisBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
             processModelAnalysisBean.setNotation(processModelBean.getNotation());
@@ -68,17 +70,6 @@ public class BPMAIApplication {
             models.add(model);
         }
 
-        System.err.println();
-        System.err.println(
-                "▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
-                "▒█▀▀▄ ▒█▄▄█ ▒█▒█▒█ ▒█▄▄█ ▒█░ 　 ░▒█░░ ▒█░░▒█ ▒█░░▒█ ▒█░░░ \n" +
-                "▒█▄▄█ ▒█░░░ ▒█░░▒█ ▒█░▒█ ▄█▄ 　 ░▒█░░ ▒█▄▄▄█ ▒█▄▄▄█ ▒█▄▄█");
-        System.err.println();
-        System.err.println("Is now served at http://localhost:4567/bpmai/api/");
-        System.err.println("Use /models to access all process models");
-        System.err.println("Use /model/<MODEL_ID> to access a specific process model");
-        System.err.println();
-
         staticFiles.location("/web");
 
         path("/", () -> {
@@ -91,6 +82,23 @@ public class BPMAIApplication {
             get("/bpmai/api/duplicates", (req, res) ->
                     new Gson().toJson(ProcessModelSimilaritySearchStorage.getDuplicates(models)));
         });
+
+        System.err.println();
+        System.err.println(
+                "▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
+                "▒█▀▀▄ ▒█▄▄█ ▒█▒█▒█ ▒█▄▄█ ▒█░ 　 ░▒█░░ ▒█░░▒█ ▒█░░▒█ ▒█░░░ \n" +
+                "▒█▄▄█ ▒█░░░ ▒█░░▒█ ▒█░▒█ ▄█▄ 　 ░▒█░░ ▒█▄▄▄█ ▒█▄▄▄█ ▒█▄▄█");
+        System.err.println();
+        System.err.println("API is now serving at http://localhost:4567/bpmai/api/");
+        System.err.println("Use /models to access all process models");
+        System.err.println("Use /model/<MODEL_ID> to access a specific process model");
+        System.err.println();
+
+        try {
+            Desktop.getDesktop().browse(new URL("http://localhost:4567/bpmai.html").toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static List<String> generateRecommendations(ProcessModelAnalysisBean processModelAnalysisBean) {
