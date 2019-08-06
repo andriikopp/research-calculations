@@ -60,6 +60,8 @@ public class BPMAIApplication {
 
             processModelAnalysisBean.setRecommendations(generateRecommendations(processModelAnalysisBean));
 
+            processModelAnalysisBean.setGraph(ProcessModelPatternMatchingStorage.getGraph(model.getId()).getGraph());
+
             analysisResultsRepository.addAnalysisResult(processModelAnalysisBean);
         }
 

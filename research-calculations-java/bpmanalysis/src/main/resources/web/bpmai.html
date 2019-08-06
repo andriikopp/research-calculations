@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>BPMAI Tool</title>
+    <link rel="stylesheet" href="css/vis-network.min.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
 </head>
 <body style="margin: 2%;">
+    <script src="js/vis.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bpmn-viewer.development.js"></script>
@@ -35,6 +37,7 @@
         });
 
         var activeModel = null;
+        var graphVisible = false;
 
         function loadModel(id) {
             $.getJSON("/bpmai/api/model/" + id, function(data) {
@@ -87,6 +90,8 @@
                 analyzeModel(id);
 
                 drawModel(data);
+
+                drawGraph(data);
             });
         }
 
@@ -108,6 +113,26 @@
 
             xhr.open('GET', '/models/' + data.fileName, true);
             xhr.send(null);
+        }
+
+        function drawGraph(data) {
+            $('#rdfButton').empty();
+            $('#rdfButton').append('<a href="javascript:void(0);" onclick="displayGraph();" id="descriptionLink">Show/hide graph</a><br/>');
+            $('#rdfButton').append('<div id="modelDescription" style="border: 1px solid lightgray; border-radius: 5px; height: 500px;"></div>');
+            $('#modelDescription').hide();
+
+            graphVisible = false;
+
+            var container = document.getElementById('modelDescription');
+
+            var graphData = {
+                nodes: data.graph.nodes,
+                edges: data.graph.edges
+            };
+
+            var options = {};
+
+            new vis.Network(container, graphData, options);
         }
 
         function analyzeModel(id) {
@@ -174,6 +199,20 @@
             <p>
                 <div id="modelInfo"></div>
             </p>
+            <p>
+                <div id="rdfButton"></div>
+            </p>
+            <script type="text/javascript">
+                function displayGraph() {
+                    if (graphVisible) {
+                        $('#modelDescription').hide();
+                        graphVisible = false;
+                    } else {
+                        $('#modelDescription').show();
+                        graphVisible = true;
+                    }
+                }
+            </script>
             <p>
                 <div id="modelAnalysis"></div>
             </p>
