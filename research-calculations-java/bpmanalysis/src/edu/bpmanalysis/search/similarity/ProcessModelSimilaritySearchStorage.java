@@ -34,7 +34,7 @@ public class ProcessModelSimilaritySearchStorage {
 
         for (Model model : models) {
             if (!duplicates.contains(model.getId())) {
-                duplicates.addAll(findDuplicates(model).keySet());
+                duplicates.addAll(findDuplicates(model).values());
             }
         }
 
