@@ -64,6 +64,7 @@ public class BPMAIApplication {
             processModelAnalysisBean.setGraph(ProcessModelPatternMatchingStorage.getGraph(model.getId()).getGraph());
 
             processModelAnalysisBean.setGuidelines(EvaluationUtil.checkGuidelines(model));
+            transformGuidelines(processModelAnalysisBean);
 
             analysisResultsRepository.addAnalysisResult(processModelAnalysisBean);
         }
@@ -103,6 +104,16 @@ public class BPMAIApplication {
             Desktop.getDesktop().browse(new URL("http://localhost:4567/bpmai.html").toURI());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void transformGuidelines(ProcessModelAnalysisBean processModelAnalysisBean) {
+        for (int i = 0; i < processModelAnalysisBean.getGuidelines().length; i++) {
+            double value = processModelAnalysisBean.getGuidelines()[i];
+
+            if (value < 1) {
+                processModelAnalysisBean.getGuidelines()[i] = -1;
+            }
         }
     }
 
