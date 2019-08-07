@@ -3,6 +3,7 @@ package edu.bpmanalysis.web;
 import com.google.gson.Gson;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
+import edu.bpmanalysis.analysis.model.EvaluationUtil;
 import edu.bpmanalysis.config.Configuration;
 import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.description.tools.Model;
@@ -61,6 +62,8 @@ public class BPMAIApplication {
             processModelAnalysisBean.setRecommendations(generateRecommendations(processModelAnalysisBean));
 
             processModelAnalysisBean.setGraph(ProcessModelPatternMatchingStorage.getGraph(model.getId()).getGraph());
+
+            processModelAnalysisBean.setGuidelines(EvaluationUtil.checkGuidelines(model));
 
             analysisResultsRepository.addAnalysisResult(processModelAnalysisBean);
         }

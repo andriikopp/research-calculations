@@ -35,6 +35,8 @@ public class ProcessModelAnalysisBean {
     private Map<String, double[]> routingChanges;
     private Map<String, double[]> functionsChanges;
 
+    private double[] guidelines;
+
     private List<String> recommendations;
 
     private Map<String, String> similarModels;
@@ -68,6 +70,7 @@ public class ProcessModelAnalysisBean {
                 ", routingChanges=" + routingChanges +
                 ", functionsChanges=" + functionsChanges +
                 ", recommendations='" + recommendations + '\'' +
+                ", guidelines=" + Arrays.toString(guidelines) +
                 ", similarModels=" + similarModels +
                 ", quality=" + quality +
                 ", hasErrors=" + hasErrors +
@@ -101,6 +104,7 @@ public class ProcessModelAnalysisBean {
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (fileName != null ? !fileName.equals(that.fileName) : that.fileName != null) return false;
         if (!Arrays.equals(nodesChanges, that.nodesChanges)) return false;
+        if (!Arrays.equals(guidelines, that.guidelines)) return false;
         if (connectorsChanges != null ? !connectorsChanges.equals(that.connectorsChanges) : that.connectorsChanges != null)
             return false;
         if (routingChanges != null ? !routingChanges.equals(that.routingChanges) : that.routingChanges != null)
@@ -138,6 +142,7 @@ public class ProcessModelAnalysisBean {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + orConnectors;
         result = 31 * result + Arrays.hashCode(nodesChanges);
+        result = 31 * result + Arrays.hashCode(guidelines);
         result = 31 * result + (connectorsChanges != null ? connectorsChanges.hashCode() : 0);
         result = 31 * result + (routingChanges != null ? routingChanges.hashCode() : 0);
         result = 31 * result + (functionsChanges != null ? functionsChanges.hashCode() : 0);
@@ -349,5 +354,13 @@ public class ProcessModelAnalysisBean {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public double[] getGuidelines() {
+        return guidelines;
+    }
+
+    public void setGuidelines(double[] guidelines) {
+        this.guidelines = guidelines;
     }
 }
