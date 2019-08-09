@@ -15,7 +15,6 @@ import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
 import edu.bpmanalysis.web.model.api.AnalysisResultsRepository;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
-import edu.bpmanalysis.web.model.bean.ProcessModelGraphNodeBean;
 
 import java.awt.*;
 import java.net.URL;
