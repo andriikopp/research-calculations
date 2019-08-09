@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_10eu7t3" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="4.0.0">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_10eu7t3" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="5.0.0-beta.0">
   <bpmn:process id="Process_124khkl" isExecutable="false">
     <bpmn:startEvent id="StartEvent_0dygppk">
       <bpmn:outgoing>SequenceFlow_0km1dmq</bpmn:outgoing>
@@ -22,17 +22,15 @@
     <bpmn:sequenceFlow id="SequenceFlow_17la29f" sourceRef="ExclusiveGateway_1d687gv" targetRef="Task_0x2c21k" />
     <bpmn:endEvent id="EndEvent_09mu674">
       <bpmn:incoming>SequenceFlow_1xxabiv</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1xxabiv" sourceRef="Task_08fp454" targetRef="EndEvent_09mu674" />
-    <bpmn:endEvent id="EndEvent_02bqd5u">
       <bpmn:incoming>SequenceFlow_0wzbzby</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0wzbzby" sourceRef="Task_0x2c21k" targetRef="EndEvent_02bqd5u" />
-    <bpmn:inclusiveGateway id="ExclusiveGateway_1d687gv">
+    <bpmn:sequenceFlow id="SequenceFlow_1xxabiv" sourceRef="Task_08fp454" targetRef="EndEvent_09mu674" />
+    <bpmn:sequenceFlow id="SequenceFlow_0wzbzby" sourceRef="Task_0x2c21k" targetRef="EndEvent_09mu674" />
+    <bpmn:parallelGateway id="ExclusiveGateway_1d687gv">
       <bpmn:incoming>SequenceFlow_0q3j7hm</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1rctw3y</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_17la29f</bpmn:outgoing>
-    </bpmn:inclusiveGateway>
+    </bpmn:parallelGateway>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_124khkl">
@@ -73,14 +71,12 @@
         <di:waypoint x="600" y="120" />
         <di:waypoint x="662" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_02bqd5u_di" bpmnElement="EndEvent_02bqd5u">
-        <dc:Bounds x="662" y="242" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0wzbzby_di" bpmnElement="SequenceFlow_0wzbzby">
         <di:waypoint x="600" y="260" />
-        <di:waypoint x="662" y="260" />
+        <di:waypoint x="680" y="260" />
+        <di:waypoint x="680" y="138" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="InclusiveGateway_1bf9mv9_di" bpmnElement="ExclusiveGateway_1d687gv">
+      <bpmndi:BPMNShape id="ParallelGateway_15eso2q_di" bpmnElement="ExclusiveGateway_1d687gv">
         <dc:Bounds x="395" y="165" width="50" height="50" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

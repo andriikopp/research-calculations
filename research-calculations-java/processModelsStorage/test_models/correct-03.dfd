@@ -15,18 +15,14 @@
     <bpmn:task id="Task_07bwe47" name="process 2">
       <bpmn:incoming>SequenceFlow_0cqpijt</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0so7nyd</bpmn:outgoing>
-      <bpmn:property id="Property_05nwe5b" name="__targetRef_placeholder" />
+      <bpmn:property id="Property_03x5p4l" name="__targetRef_placeholder" />
       <bpmn:dataInputAssociation id="DataInputAssociation_0fr1bom">
         <bpmn:sourceRef>DataStoreReference_1c7e8a7</bpmn:sourceRef>
-        <bpmn:targetRef>Property_05nwe5b</bpmn:targetRef>
+        <bpmn:targetRef>Property_03x5p4l</bpmn:targetRef>
       </bpmn:dataInputAssociation>
       <bpmn:dataInputAssociation id="DataInputAssociation_1c3renp">
         <bpmn:sourceRef>DataObjectReference_0eme7sj</bpmn:sourceRef>
-        <bpmn:targetRef>Property_05nwe5b</bpmn:targetRef>
-      </bpmn:dataInputAssociation>
-      <bpmn:dataInputAssociation id="DataInputAssociation_17mygd6">
-        <bpmn:sourceRef>DataStoreReference_0okz1ko</bpmn:sourceRef>
-        <bpmn:targetRef>Property_05nwe5b</bpmn:targetRef>
+        <bpmn:targetRef>Property_03x5p4l</bpmn:targetRef>
       </bpmn:dataInputAssociation>
     </bpmn:task>
     <bpmn:sequenceFlow id="SequenceFlow_0cqpijt" sourceRef="Task_1wmuot3" targetRef="Task_07bwe47" />
@@ -70,20 +66,12 @@
         <di:waypoint x="510" y="120" />
         <di:waypoint x="510" y="200" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssociation_0fr1bom_di" bpmnElement="DataInputAssociation_0fr1bom">
-        <di:waypoint x="335" y="240" />
-        <di:waypoint x="460" y="240" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="DataObjectReference_0eme7sj_di" bpmnElement="DataObjectReference_0eme7sj">
         <dc:Bounds x="492" y="345" width="36" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="486" y="402" width="49" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="DataInputAssociation_1c3renp_di" bpmnElement="DataInputAssociation_1c3renp">
-        <di:waypoint x="510" y="345" />
-        <di:waypoint x="510" y="280" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Task_0wu7h75_di" bpmnElement="Task_0wu7h75">
         <dc:Bounds x="660" y="200" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -101,9 +89,13 @@
         <di:waypoint x="710" y="200" />
         <di:waypoint x="710" y="145" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssociation_17mygd6_di" bpmnElement="DataInputAssociation_17mygd6">
-        <di:waypoint x="685" y="135" />
-        <di:waypoint x="560" y="210" />
+      <bpmndi:BPMNEdge id="DataInputAssociation_0fr1bom_di" bpmnElement="DataInputAssociation_0fr1bom">
+        <di:waypoint x="335" y="240" />
+        <di:waypoint x="460" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1c3renp_di" bpmnElement="DataInputAssociation_1c3renp">
+        <di:waypoint x="510" y="345" />
+        <di:waypoint x="510" y="280" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
