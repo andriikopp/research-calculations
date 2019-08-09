@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_14oea2c" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="4.0.0">
+  <bpmn:process id="Process_0ytwn7d" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_116a5tx">
+      <bpmn:outgoing>SequenceFlow_1pyox2v</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0b732xu" name="">
+      <bpmn:incoming>SequenceFlow_1pyox2v</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0r17doy</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1pyox2v" sourceRef="StartEvent_116a5tx" targetRef="IntermediateThrowEvent_0b732xu" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_0xfrldy">
+      <bpmn:incoming>SequenceFlow_0r17doy</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1w3u4e8</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1tmjrlk</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0r17doy" sourceRef="IntermediateThrowEvent_0b732xu" targetRef="ExclusiveGateway_0xfrldy" />
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0jrg93h">
+      <bpmn:incoming>SequenceFlow_1w3u4e8</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0waytbt</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1w3u4e8" sourceRef="ExclusiveGateway_0xfrldy" targetRef="IntermediateThrowEvent_0jrg93h" />
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0nefiro">
+      <bpmn:incoming>SequenceFlow_1tmjrlk</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0s9ogja</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1tmjrlk" sourceRef="ExclusiveGateway_0xfrldy" targetRef="IntermediateThrowEvent_0nefiro" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1q1te0y">
+      <bpmn:incoming>SequenceFlow_0s9ogja</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0waytbt</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0aopwwf</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0s9ogja" sourceRef="IntermediateThrowEvent_0nefiro" targetRef="ExclusiveGateway_1q1te0y" />
+    <bpmn:sequenceFlow id="SequenceFlow_0waytbt" sourceRef="IntermediateThrowEvent_0jrg93h" targetRef="ExclusiveGateway_1q1te0y" />
+    <bpmn:endEvent id="EndEvent_16wwute">
+      <bpmn:incoming>SequenceFlow_0aopwwf</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0aopwwf" sourceRef="ExclusiveGateway_1q1te0y" targetRef="EndEvent_16wwute" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0ytwn7d">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_116a5tx">
+        <dc:Bounds x="156" y="141" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateThrowEvent_0b732xu_di" bpmnElement="IntermediateThrowEvent_0b732xu">
+        <dc:Bounds x="242" y="141" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="246" y="124" width="28" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1pyox2v_di" bpmnElement="SequenceFlow_1pyox2v">
+        <di:waypoint x="192" y="159" />
+        <di:waypoint x="242" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0xfrldy_di" bpmnElement="ExclusiveGateway_0xfrldy" isMarkerVisible="true">
+        <dc:Bounds x="335" y="134" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0r17doy_di" bpmnElement="SequenceFlow_0r17doy">
+        <di:waypoint x="278" y="159" />
+        <di:waypoint x="335" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="IntermediateThrowEvent_0jrg93h_di" bpmnElement="IntermediateThrowEvent_0jrg93h">
+        <dc:Bounds x="442" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1w3u4e8_di" bpmnElement="SequenceFlow_1w3u4e8">
+        <di:waypoint x="360" y="134" />
+        <di:waypoint x="360" y="100" />
+        <di:waypoint x="442" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="IntermediateThrowEvent_0nefiro_di" bpmnElement="IntermediateThrowEvent_0nefiro">
+        <dc:Bounds x="442" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1tmjrlk_di" bpmnElement="SequenceFlow_1tmjrlk">
+        <di:waypoint x="360" y="184" />
+        <di:waypoint x="360" y="210" />
+        <di:waypoint x="442" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1q1te0y_di" bpmnElement="ExclusiveGateway_1q1te0y" isMarkerVisible="true">
+        <dc:Bounds x="535" y="134" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0s9ogja_di" bpmnElement="SequenceFlow_0s9ogja">
+        <di:waypoint x="478" y="210" />
+        <di:waypoint x="560" y="210" />
+        <di:waypoint x="560" y="184" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0waytbt_di" bpmnElement="SequenceFlow_0waytbt">
+        <di:waypoint x="478" y="100" />
+        <di:waypoint x="560" y="100" />
+        <di:waypoint x="560" y="134" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_16wwute_di" bpmnElement="EndEvent_16wwute">
+        <dc:Bounds x="642" y="141" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0aopwwf_di" bpmnElement="SequenceFlow_0aopwwf">
+        <di:waypoint x="585" y="159" />
+        <di:waypoint x="642" y="159" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

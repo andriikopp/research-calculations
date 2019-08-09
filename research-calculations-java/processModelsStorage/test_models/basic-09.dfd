@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_0fm004d" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="4.0.0">
+  <bpmn:process id="Process_0zpnhpr" isExecutable="false">
+    <bpmn:dataObjectReference id="DataObjectReference_1nuhjfd" name="external 1" dataObjectRef="DataObject_0sltztg" />
+    <bpmn:dataObject id="DataObject_0sltztg" />
+    <bpmn:dataStoreReference id="DataStoreReference_1c7e8a7" name="store 1" />
+    <bpmn:dataObjectReference id="DataObjectReference_0eme7sj" name="external 2" dataObjectRef="DataObject_1bn0fd1" />
+    <bpmn:dataObject id="DataObject_1bn0fd1" />
+    <bpmn:dataObjectReference id="DataObjectReference_0zkdyjt" name="external 3" dataObjectRef="DataObject_0qxafbc" />
+    <bpmn:dataObject id="DataObject_0qxafbc" />
+    <bpmn:dataStoreReference id="DataStoreReference_0okz1ko" name="store 2" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0zpnhpr">
+      <bpmndi:BPMNShape id="DataObjectReference_1nuhjfd_di" bpmnElement="DataObjectReference_1nuhjfd">
+        <dc:Bounds x="162" y="95" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="152" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1c7e8a7_di" bpmnElement="DataStoreReference_1c7e8a7">
+        <dc:Bounds x="285" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="293" y="272" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0eme7sj_di" bpmnElement="DataObjectReference_0eme7sj">
+        <dc:Bounds x="492" y="345" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="486" y="402" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0zkdyjt_di" bpmnElement="DataObjectReference_0zkdyjt">
+        <dc:Bounds x="162" y="215" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="272" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_0okz1ko_di" bpmnElement="DataStoreReference_0okz1ko">
+        <dc:Bounds x="685" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="693" y="71" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
