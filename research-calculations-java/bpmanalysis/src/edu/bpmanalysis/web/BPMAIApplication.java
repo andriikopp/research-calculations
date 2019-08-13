@@ -9,7 +9,7 @@ import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.pattern.ProcessModelPatternMatchingStorage;
 import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
-import edu.bpmanalysis.web.api.SummaryRepositoryDashboard;
+import edu.bpmanalysis.web.api.SummaryAnalysisBean;
 import edu.bpmanalysis.web.model.AnalysisResultsRepositoryJsonDB;
 import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
 import edu.bpmanalysis.web.model.api.AnalysisResultsRepository;
@@ -79,7 +79,7 @@ public class BPMAIApplication {
 
         path("/", () -> {
             get("/bpmai/api", (req, res) ->
-                    new Gson().toJson(new SummaryRepositoryDashboard(processModelRepository)));
+                    new Gson().toJson(new SummaryAnalysisBean(processModelRepository)));
             get("/bpmai/api/models", (req, res) ->
                     new Gson().toJson(analysisResultsRepository.getAnalysisResults()));
             get("/bpmai/api/model/:id", (req, res) ->

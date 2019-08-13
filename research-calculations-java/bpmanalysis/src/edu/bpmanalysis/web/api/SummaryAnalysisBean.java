@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class SummaryRepositoryDashboard {
+public class SummaryAnalysisBean {
     private int numberOfModels;
     private int duplicateModels;
     private int invalidModels;
@@ -27,7 +27,7 @@ public class SummaryRepositoryDashboard {
     private int invalidMatching;
     private int invalidORGateways;
 
-    public SummaryRepositoryDashboard(ProcessModelRepository repository) {
+    public SummaryAnalysisBean(ProcessModelRepository repository) {
         List<Model> models = new ArrayList<>();
 
         for (ProcessModelBean bean : repository.getProcessModels()) {
