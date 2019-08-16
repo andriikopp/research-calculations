@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>JS-BPMAI Tool</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/js-bmpai.css" />
+</head>
+
+<body>
+	<h3>Business Process Model Analysis & Improvement Tool</h3>
+	<div>
+		<p>Place the content of a BPMN document to the text area below</p>
+		<p>
+			<textarea class="form-control" id="bpmnDoc" rows="5" cols="100"></textarea>
+		</p>
+		<p>
+			<button class="btn btn-info" id="analyzeDoc">Analyze BPMN Document</button>
+		</p>
+	</div>
+	<div id="canvas"></div>
+	<p>
+		<div id="recommendations"></div>
+	</p>
+	<script src="js/bpmn-viewer.development.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="app/js-bpmai.js"></script>
+</body>
+
+</html>
