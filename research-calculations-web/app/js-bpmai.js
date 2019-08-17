@@ -4,8 +4,10 @@ $(document).ready(function () {
 
         let bpmnXML = $('#bpmnDoc').val();
 
-        if (bpmnXML.includes('<bpmn:')) {
-            prefix = 'bpmn:';
+        let prefix = $('#bpmnPrefix').val();
+
+        if (prefix.length > 1) {
+            prefix = prefix + ':';
         }
 
         let viewer = new BpmnJS({ container: '#canvas' });
@@ -33,12 +35,7 @@ $(document).ready(function () {
 
                 let recommendations = [];
 
-                sizeValidation(xmlDoc, recommendations);
-                eventsValidation(xmlDoc, recommendations);
-                gatewaysValidation(xmlDoc, recommendations);
-                tasksValidation(xmlDoc, recommendations);
-                routingValidation(xmlDoc, recommendations);
-                branchingValidation(xmlDoc, recommendations);
+                bpmnValidation(xmlDoc, recommendations, prefix);
 
                 for (let value in recommendations) {
                     $('#recommendations').append('<div class="alert alert-danger">' +
@@ -49,214 +46,221 @@ $(document).ready(function () {
     });
 });
 
-var prefix = '';
+function bpmnValidation(xmlDoc, recommendations, prefix) {
+    let processList = xmlDoc.getElementsByTagName(prefix + 'process');
 
-function sizeValidation(xmlDoc, recommendations) {
-    let process = xmlDoc.getElementsByTagName(prefix + 'process')[0].childNodes;
+    for (let k = 0; k < processList.length; k++) {
+        let startEvents = 0;
+        let endEvents = 0;
 
-    let size = 0;
+        let inclusiveGateways = 0;
 
-    for (let i = 0; i < process.length; i++) {
-        if (process[i].nodeName.toLowerCase().includes('task'.toLowerCase())) {
-            size++;
+        let splits = {};
+        let joins = {};
+
+        let process = processList[k].childNodes;
+
+        for (let i = 0; i < process.length; i++) {
+            if (process[i].nodeName.toLowerCase().includes('task'.toLowerCase()) ||
+                process[i].nodeName.toLowerCase().includes('subProcess'.toLowerCase())) {
+                let name = process[i].attributes['name'] === undefined ?
+                    process[i].attributes['id'].nodeValue :
+                    process[i].attributes['name'].nodeValue;
+                name = name === '' ? process[i].attributes['id'].nodeValue : name;
+
+                let incoming = 0;
+                let outgoing = 0;
+
+                for (let j = 0; j < process[i].childNodes.length; j++) {
+                    if (process[i].childNodes[j].nodeName.toLowerCase().includes('incoming'.toLowerCase())) {
+                        incoming++;
+                    }
+
+                    if (process[i].childNodes[j].nodeName.toLowerCase().includes('outgoing'.toLowerCase())) {
+                        outgoing++;
+                    }
+                }
+
+                let incomingChange = 1 - incoming;
+
+                if (incomingChange !== 0) {
+                    if (incomingChange > 0) {
+                        recommendations.push('Add ' + incomingChange +
+                            ' incoming arc(s) to "' + name + '" task');
+                    } else {
+                        recommendations.push('Remove ' + Math.abs(incomingChange) +
+                            ' incoming arc(s) from "' + name + '" task');
+                    }
+                }
+
+                let outgoingChange = 1 - outgoing;
+
+                if (outgoingChange !== 0) {
+                    if (outgoingChange > 0) {
+                        recommendations.push('Add ' + outgoingChange +
+                            ' outgoing arc(s) to "' + name + '" task');
+                    } else {
+                        recommendations.push('Remove ' + Math.abs(outgoingChange) +
+                            ' outoing arc(s) from "' + name + '" task');
+                    }
+                }
+            }
+
+            if (process[i].nodeName.includes('Event')) {
+                let name = process[i].attributes['name'] === undefined ?
+                    process[i].attributes['id'].nodeValue :
+                    process[i].attributes['name'].nodeValue;
+                name = name === '' ? process[i].attributes['id'].nodeValue : name;
+
+                let incoming = 0;
+                let outgoing = 0;
+
+                for (let j = 0; j < process[i].childNodes.length; j++) {
+                    if (process[i].childNodes[j].nodeName.toLowerCase().includes('incoming'.toLowerCase())) {
+                        incoming++;
+                    }
+
+                    if (process[i].childNodes[j].nodeName.toLowerCase().includes('outgoing'.toLowerCase())) {
+                        outgoing++;
+                    }
+                }
+
+                let inIdeal = 1;
+
+                if (process[i].nodeName.toLowerCase().includes('startEvent'.toLowerCase())) {
+                    inIdeal = 0;
+
+                    startEvents++;
+                }
+
+                let incomingChange = inIdeal - incoming;
+
+                if (incomingChange !== 0) {
+                    if (incomingChange > 0) {
+                        recommendations.push('Add ' + incomingChange +
+                            ' incoming arc(s) to "' + name + '" event');
+                    } else {
+                        recommendations.push('Remove ' + Math.abs(incomingChange) +
+                            ' incoming arc(s) from "' + name + '" event');
+                    }
+                }
+
+                let outIdeal = 1;
+
+                if (process[i].nodeName.toLowerCase().includes('endEvent'.toLowerCase())) {
+                    outIdeal = 0;
+
+                    endEvents++;
+                }
+
+                let outgoingChange = outIdeal - outgoing;
+
+                if (outgoingChange !== 0) {
+                    if (outgoingChange > 0) {
+                        recommendations.push('Add ' + outgoingChange +
+                            ' outgoing arc(s) to "' + name + '" event');
+                    } else {
+                        recommendations.push('Remove ' + Math.abs(outgoingChange) +
+                            ' outoing arc(s) from "' + name + '" event');
+                    }
+                }
+            }
+
+            if (process[i].nodeName.toLowerCase().includes('gateway'.toLowerCase())) {
+                let name = process[i].attributes['name'] === undefined ?
+                    process[i].attributes['id'].nodeValue :
+                    process[i].attributes['name'].nodeValue;
+                name = name === '' ? process[i].attributes['id'].nodeValue : name;
+
+                let incoming = 0;
+                let outgoing = 0;
+
+                for (let j = 0; j < process[i].childNodes.length; j++) {
+                    if (process[i].childNodes[j].nodeName.toLowerCase().includes('incoming'.toLowerCase())) {
+                        incoming++;
+                    }
+
+                    if (process[i].childNodes[j].nodeName.toLowerCase().includes('outgoing'.toLowerCase())) {
+                        outgoing++;
+                    }
+                }
+
+                if (incoming === 1 && outgoing > 1) {
+                    if (splits[process[i].nodeName] === undefined) {
+                        splits[process[i].nodeName] = 1;
+                    } else {
+                        let old = splits[process[i].nodeName];
+                        splits[process[i].nodeName] = old + 1;
+                    }
+
+                    if (joins[process[i].nodeName] === undefined) {
+                        joins[process[i].nodeName] = 0;
+                    }
+                }
+
+                if (incoming > 1 && outgoing === 1) {
+                    if (joins[process[i].nodeName] === undefined) {
+                        joins[process[i].nodeName] = 1;
+                    } else {
+                        let old = joins[process[i].nodeName];
+                        joins[process[i].nodeName] = old + 1;
+                    }
+
+                    if (splits[process[i].nodeName] === undefined) {
+                        splits[process[i].nodeName] = 0;
+                    }
+                }
+
+                if (process[i].nodeName.toLowerCase().includes('inclusiveGateway'.toLowerCase())) {
+                    inclusiveGateways++;
+                }
+
+                let change = 3 - (incoming + outgoing);
+
+                if (change !== 0) {
+                    if (change > 0) {
+                        recommendations.push('Add ' + change +
+                            ' arc(s) to "' + name + '" gateway');
+                    } else {
+                        recommendations.push('Remove ' + Math.abs(change) +
+                            ' arc(s) from "' + name + '" gateway');
+                    }
+                }
+            }
         }
 
-        if (process[i].nodeName.toLowerCase().includes('event'.toLowerCase())) {
-            size++;
-        }
+        let startEventsChange = 1 - startEvents;
 
-        if (process[i].nodeName.toLowerCase().includes('gateway'.toLowerCase())) {
-            size++;
-        }
-    }
-
-    let sizeChange = Math.min(31, size) - size;
-
-    if (sizeChange !== 0) {
-        recommendations.push('Remove ' + Math.abs(sizeChange) + ' element(s)');
-    }
-
-    let tasks = xmlDoc.getElementsByTagName(prefix + 'task');
-    let tasksChange = Math.max(1, tasks.length) - tasks.length;
-
-    if (tasksChange !== 0) {
-        recommendations.push('Add ' + tasksChange + ' task');
-    }
-}
-
-function eventsValidation(xmlDoc, recommendations) {
-    let startEvents = xmlDoc.getElementsByTagName(prefix + 'startEvent');
-    let endEvents = xmlDoc.getElementsByTagName(prefix + 'endEvent');
-
-    let startEventsChange = 1 - startEvents.length;
-    let endEventsChange = 1 - endEvents.length;
-
-    if (startEventsChange !== 0) {
-        if (startEventsChange > 0) {
-            recommendations.push('Add ' + startEventsChange + ' start event');
-        } else {
+        if (startEventsChange !== 0) {
             recommendations.push('Remove ' + Math.abs(startEventsChange) + ' start event(s)');
         }
-    }
 
-    if (endEventsChange !== 0) {
-        if (endEventsChange > 0) {
-            recommendations.push('Add ' + endEventsChange + ' end event');
-        } else {
+        let endEventsChange = 1 - endEvents;
+
+        if (endEventsChange !== 0) {
             recommendations.push('Remove ' + Math.abs(endEventsChange) + ' end event(s)');
         }
-    }
-}
 
-function gatewaysValidation(xmlDoc, recommendations) {
-    let exclusiveGateways = xmlDoc.getElementsByTagName(prefix + 'exclusiveGateway');
-    let parallelGateways = xmlDoc.getElementsByTagName(prefix + 'parallelGateway');
+        let inclusiveGatewaysChange = 0 - inclusiveGateways;
 
-    let validateGatewaysOfType = function (gateways, recommendations) {
-        for (let i = 0; i < gateways.length; i++) {
-            let name = gateways[i].attributes[1] === undefined ? gateways[i].attributes[0].nodeValue :
-                gateways[i].attributes[1].nodeValue;
+        if (inclusiveGatewaysChange !== 0) {
+            recommendations.push('Remove ' + Math.abs(inclusiveGatewaysChange) + ' inclusive gateways(s)');
+        }
 
-            let incoming = 0;
-            let outgoing = 0;
+        for (var key in splits) {
+            if (splits.hasOwnProperty(key) && joins.hasOwnProperty(key)) {
+                let splitsChanges = joins[key] - splits[key];
+                let joinsChanges = splits[key] - joins[key];
 
-            let childNodes = gateways[i].childNodes;
+                if (splitsChanges !== 0 || joinsChanges !== 0) {
+                    let splitsAction = splitsChanges > 0 ? 'Add ' : 'Remove ';
+                    let joinsAction = joinsChanges > 0 ? 'add ' : 'remove ';
 
-            for (let j = 0; j < childNodes.length; j++) {
-                if (childNodes[j].nodeName.toLowerCase().includes('incoming'.toLowerCase())) {
-                    incoming++;
-                }
-
-                if (childNodes[j].nodeName.toLowerCase().includes('outgoing'.toLowerCase())) {
-                    outgoing++;
-                }
-            }
-
-            let routingChange = 3 - (incoming + outgoing);
-
-            if (routingChange !== 0) {
-                if (routingChange > 0) {
-                    recommendations.push('Add ' + routingChange +
-                        ' arc(s) to "' + name + '" gateway');
-                } else {
-                    recommendations.push('Remove ' + Math.abs(routingChange) +
-                        ' arc(s) from "' + name + '" gateway');
+                    recommendations.push(splitsAction + ' ' + Math.abs(splitsChanges) + ' ' + key +
+                        '-split gateway(s) or ' + joinsAction + ' ' + Math.abs(joinsChanges) + ' ' + key +
+                        '-join gateway(s)');
                 }
             }
         }
-    }
-
-    validateGatewaysOfType(exclusiveGateways, recommendations);
-    validateGatewaysOfType(parallelGateways, recommendations);
-}
-
-function tasksValidation(xmlDoc, recommendations) {
-    let tasks = xmlDoc.getElementsByTagName(prefix + 'task');
-
-    for (let i = 0; i < tasks.length; i++) {
-        let name = tasks[i].attributes[1] === undefined ? tasks[i].attributes[0].nodeValue :
-            tasks[i].attributes[1].nodeValue;
-
-        let taskIncoming = 0;
-        let taskOutgoing = 0;
-
-        let childNodes = tasks[i].childNodes;
-
-        for (let j = 0; j < childNodes.length; j++) {
-            if (childNodes[j].nodeName.toLowerCase().includes('incoming'.toLowerCase())) {
-                taskIncoming++;
-            }
-
-            if (childNodes[j].nodeName.toLowerCase().includes('outgoing'.toLowerCase())) {
-                taskOutgoing++;
-            }
-        }
-
-        let taskIncomingChange = 1 - taskIncoming;
-
-        if (taskIncomingChange !== 0) {
-            if (taskIncomingChange > 0) {
-                recommendations.push('Add ' + taskIncomingChange +
-                    ' incoming arc(s) to "' + name + '" task');
-            } else {
-                recommendations.push('Remove ' + Math.abs(taskIncomingChange) +
-                    ' incoming arc(s) from "' + name + '" task');
-            }
-        }
-
-        let taskOutgoingChange = 1 - taskOutgoing;
-
-        if (taskOutgoingChange !== 0) {
-            if (taskOutgoingChange > 0) {
-                recommendations.push('Add ' + taskOutgoingChange +
-                    ' outgoing arc(s) to "' + name + '" task');
-            } else {
-                recommendations.push('Remove ' + Math.abs(taskOutgoingChange) +
-                    ' outoing arc(s) from "' + name + '" task');
-            }
-        }
-    }
-}
-
-function routingValidation(xmlDoc, recommendations) {
-    let exclusiveGateways = xmlDoc.getElementsByTagName(prefix + 'exclusiveGateway');
-    let parallelGateways = xmlDoc.getElementsByTagName(prefix + 'parallelGateway');
-
-    let validateGatewaysOfType = function (gateways, gwType, recommendations) {
-        let splits = 0;
-        let joins = 0;
-
-        for (let i = 0; i < gateways.length; i++) {
-            let name = gateways[i].attributes[1] === undefined ? gateways[i].attributes[0].nodeValue :
-                gateways[i].attributes[1].nodeValue;
-
-            let incoming = 0;
-            let outgoing = 0;
-
-            let childNodes = gateways[i].childNodes;
-
-            for (let j = 0; j < childNodes.length; j++) {
-                if (childNodes[j].nodeName.toLowerCase().includes('incoming'.toLowerCase())) {
-                    incoming++;
-                }
-
-                if (childNodes[j].nodeName.toLowerCase().includes('outgoing'.toLowerCase())) {
-                    outgoing++;
-                }
-            }
-
-            if (incoming === 1 && outgoing > 1) {
-                splits++;
-            }
-
-            if (incoming > 1 && outgoing === 1) {
-                joins++;
-            }
-        }
-
-        let splitsChanges = joins - splits;
-        let joinsChanges = splits - joins;
-
-        if (splitsChanges !== 0 || joinsChanges !== 0) {
-            let splitsAction = splitsChanges > 0 ? 'Add ' : 'Remove ';
-            let joinsAction = joinsChanges > 0 ? 'add ' : 'remove ';
-
-            recommendations.push(splitsAction + ' ' + Math.abs(splitsChanges) + ' ' + gwType +
-                '-split gateway(s) or ' + joinsAction + ' ' + Math.abs(joinsChanges) + ' ' + gwType +
-                '-join gateway(s)');
-        }
-    }
-
-    validateGatewaysOfType(exclusiveGateways, 'XOR', recommendations);
-    validateGatewaysOfType(parallelGateways, 'AND', recommendations);
-}
-
-function branchingValidation(xmlDoc, recommendations) {
-    let inclusiveGateways = xmlDoc.getElementsByTagName(prefix + 'inclusiveGateway');
-
-    let inclusiveGatewaysChange = 0 - inclusiveGateways.length;
-
-    if (inclusiveGatewaysChange !== 0) {
-        recommendations.push('Remove ' + Math.abs(inclusiveGatewaysChange) + ' OR gateways(s)');
     }
 }
