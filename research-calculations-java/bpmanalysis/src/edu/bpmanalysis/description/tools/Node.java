@@ -15,7 +15,7 @@ public class Node {
     public enum NodeType {
         FUNCTION, EVENT, XOR_CONNECTOR, OR_CONNECTOR, AND_CONNECTOR,
         DATA_STORE, EXTERNAL_ENTITY,
-        INTERFACE_ARC_INPUT, INTERFACE_ARC_OUTPUT, INTERFACE_ARC_CONTROL, INTERFACE_ARC_MECHANISM
+        INTERFACE_I, INTERFACE_O, INTERFACE_C, INTERFACE_M, INTERFACE_OI, INTERFACE_OC, INTERFACE_OM
     }
 
     public interface ArcType {
@@ -98,36 +98,40 @@ public class Node {
         return new Node(name, input, output, 0, 0, NodeType.EXTERNAL_ENTITY);
     }
 
-    public static Node createInterfaceArcInput(int output) {
-        return new Node(null, 0, output, 0, 0, NodeType.INTERFACE_ARC_INPUT);
+    public static Node createInterface(int input, int output, int control, int mechanism) {
+        return new Node(null, input, output, control, mechanism,
+                getInterfaceType(input, output, control, mechanism));
     }
 
-    public static Node createInterfaceArcInput(String name, int output) {
-        return new Node(name, 0, output, 0, 0, NodeType.INTERFACE_ARC_INPUT);
+    public static Node createInterface(String name, int input, int output, int control, int mechanism) {
+        return new Node(name, input, output, control, mechanism,
+                getInterfaceType(input, output, control, mechanism));
     }
 
-    public static Node createInterfaceArcOutput(int input) {
-        return new Node(null, input, 0, 0, 0, NodeType.INTERFACE_ARC_OUTPUT);
-    }
+    public static NodeType getInterfaceType(int input, int output, int control, int mechanism) {
+        NodeType nodeType = null;
 
-    public static Node createInterfaceArcOutput(String name, int input) {
-        return new Node(name, input, 0, 0, 0, NodeType.INTERFACE_ARC_OUTPUT);
-    }
+        if (input > 0) {
+            if (output > 0) {
+                nodeType = NodeType.INTERFACE_OI;
+            } else if (control > 0) {
+                nodeType = NodeType.INTERFACE_OC;
+            } else if (mechanism > 0) {
+                nodeType = NodeType.INTERFACE_OM;
+            } else {
+                nodeType = NodeType.INTERFACE_O;
+            }
+        } else {
+            if (output > 0) {
+                nodeType = NodeType.INTERFACE_I;
+            } else if (control > 0) {
+                nodeType = NodeType.INTERFACE_C;
+            } else if (mechanism > 0) {
+                nodeType = NodeType.INTERFACE_M;
+            }
+        }
 
-    public static Node createInterfaceArcControl(int output) {
-        return new Node(null, 0, output, 0, 0, NodeType.INTERFACE_ARC_CONTROL);
-    }
-
-    public static Node createInterfaceArcControl(String name, int output) {
-        return new Node(name, 0, output, 0, 0, NodeType.INTERFACE_ARC_CONTROL);
-    }
-
-    public static Node createInterfaceArcMechanism(int output) {
-        return new Node(null, 0, output, 0, 0, NodeType.INTERFACE_ARC_MECHANISM);
-    }
-
-    public static Node createInterfaceArcMechanism(String name, int output) {
-        return new Node(name, 0, output, 0, 0, NodeType.INTERFACE_ARC_MECHANISM);
+        return nodeType;
     }
 
     public String getLabel() {

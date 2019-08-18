@@ -79,6 +79,14 @@ public class ProcessModelAnalysisUtil {
                         getOutputs(processModelBean, nodeBean));
             }
 
+            if (getNodeType(nodeBean).equals("interface")) {
+                node = Node.createInterface(getNodeLabel(nodeBean),
+                        getInterfaceOutIn(processModelBean, nodeBean),
+                        getInterfaceInOut(processModelBean, nodeBean),
+                        getInterfaceConOut(processModelBean, nodeBean),
+                        getInterfaceMechOut(processModelBean, nodeBean));
+            }
+
             if (node != null) {
                 model.getNodesList().add(node);
             }
@@ -262,6 +270,62 @@ public class ProcessModelAnalysisUtil {
         for (ProcessModelGraphEdgeBean edgeBean : processModelBean.getGraph().getEdges()) {
             if (edgeBean.getLabel().equals("mechanismArc")) {
                 if (edgeBean.getTo().equals(nodeBean.getId())) {
+                    value++;
+                }
+            }
+        }
+
+        return value;
+    }
+
+    private static int getInterfaceOutIn(ProcessModelBean processModelBean, ProcessModelGraphNodeBean nodeBean) {
+        int value = 0;
+
+        for (ProcessModelGraphEdgeBean edgeBean : processModelBean.getGraph().getEdges()) {
+            if (edgeBean.getLabel().equals("outputArc")) {
+                if (edgeBean.getTo().equals(nodeBean.getId())) {
+                    value++;
+                }
+            }
+        }
+
+        return value;
+    }
+
+    private static int getInterfaceInOut(ProcessModelBean processModelBean, ProcessModelGraphNodeBean nodeBean) {
+        int value = 0;
+
+        for (ProcessModelGraphEdgeBean edgeBean : processModelBean.getGraph().getEdges()) {
+            if (edgeBean.getLabel().equals("inputArc")) {
+                if (edgeBean.getFrom().equals(nodeBean.getId())) {
+                    value++;
+                }
+            }
+        }
+
+        return value;
+    }
+
+    private static int getInterfaceConOut(ProcessModelBean processModelBean, ProcessModelGraphNodeBean nodeBean) {
+        int value = 0;
+
+        for (ProcessModelGraphEdgeBean edgeBean : processModelBean.getGraph().getEdges()) {
+            if (edgeBean.getLabel().equals("controlArc")) {
+                if (edgeBean.getFrom().equals(nodeBean.getId())) {
+                    value++;
+                }
+            }
+        }
+
+        return value;
+    }
+
+    private static int getInterfaceMechOut(ProcessModelBean processModelBean, ProcessModelGraphNodeBean nodeBean) {
+        int value = 0;
+
+        for (ProcessModelGraphEdgeBean edgeBean : processModelBean.getGraph().getEdges()) {
+            if (edgeBean.getLabel().equals("mechanismArc")) {
+                if (edgeBean.getFrom().equals(nodeBean.getId())) {
                     value++;
                 }
             }
