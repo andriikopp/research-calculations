@@ -1,8 +1,24 @@
 $(document).ready(function () {
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/eclipse");
+    editor.session.setMode("ace/mode/xml");
+
+    $('#expand').click(function () {
+        $('#editor').css('height', '370');
+
+        editor.resize();
+    });
+
+    $('#collapse').click(function () {
+        $('#editor').css('height', '170');
+
+        editor.resize();
+    });
+
     $('#analyzeDoc').click(function () {
         $('#canvas').empty();
 
-        let bpmnXML = $('#bpmnDoc').val();
+        let bpmnXML = editor.getValue();
 
         let prefix = $('#bpmnPrefix').val();
 

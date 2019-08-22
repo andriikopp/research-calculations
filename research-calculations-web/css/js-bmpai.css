@@ -6,3 +6,7 @@ body {
 #canvas {
     height: 400px;
 }
+
+#editor {
+    height: 170px;
+}

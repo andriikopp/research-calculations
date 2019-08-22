@@ -11,8 +11,12 @@
 	<h3>Business Process Model Analysis & Improvement Tool</h3>
 	<div>
 		<p>Place the content of a BPMN document to the text area below</p>
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary btn-sm" id="expand">Expand</button>
+			<button type="button" class="btn btn-primary btn-sm" id="collapse">Collapse</button>
+		</div>
 		<p>
-			<textarea class="form-control" id="bpmnDoc" rows="5" cols="100"></textarea>
+			<div id="editor"></div>
 		</p>
 		<p>
 			XMLNS prefix used for BPMN elements: <input type="text" id="bpmnPrefix" />
@@ -27,6 +31,7 @@
 	</p>
 	<script src="js/bpmn-viewer.development.js"></script>
 	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/ace/ace.js"></script>
 	<script src="app/js-bpmai.js"></script>
 </body>
 
