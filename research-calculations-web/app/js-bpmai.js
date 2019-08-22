@@ -278,5 +278,10 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
                 }
             }
         }
+
+        if (recommendations.length === 0) {
+            $('#recommendations').append('<div class="alert alert-info">' +
+                'No changes required</div>');
+        }
     }
 }
