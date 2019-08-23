@@ -12,7 +12,7 @@ $(document).ready(function () {
         editor.insert(localStorage.getItem('editor'));
     }
 
-    $('#editor').keyup(function() {
+    $('#editor').keyup(function () {
         let bpmnXML = editor.getValue();
 
         localStorage.setItem('editor', bpmnXML);
@@ -28,6 +28,25 @@ $(document).ready(function () {
         $('#editor').height(170);
 
         editor.resize();
+    });
+
+    $('#clear').click(function () {
+        editor.setValue('');
+        localStorage.setItem('editor', '');
+    });
+
+    $('#paste').click(function () {
+        navigator.clipboard.readText().then(clipText => {
+            editor.setValue('');
+            editor.insert(clipText);
+
+            localStorage.setItem('editor', clipText);
+        });
+    });
+
+    $('#copy').click(function () {
+        navigator.clipboard.writeText(editor.getValue()).then(clipText => {
+        });
     });
 
     $('#zoomin').click(function () {
