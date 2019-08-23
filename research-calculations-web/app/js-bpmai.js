@@ -1,21 +1,47 @@
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/eclipse");
+editor.session.setMode("ace/mode/xml");
+
+var viewer = null;
+
 $(document).ready(function () {
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/eclipse");
-    editor.session.setMode("ace/mode/xml");
+    $('#zoombuttons').hide();
+    $('#canvas').hide();
+
+    if (localStorage.getItem('editor')) {
+        editor.insert(localStorage.getItem('editor'));
+    }
+
+    $('#editor').keyup(function() {
+        let bpmnXML = editor.getValue();
+
+        localStorage.setItem('editor', bpmnXML);
+    });
 
     $('#expand').click(function () {
-        $('#editor').css('height', '370');
+        $('#editor').height(370);
 
         editor.resize();
     });
 
     $('#collapse').click(function () {
-        $('#editor').css('height', '170');
+        $('#editor').height(170);
 
         editor.resize();
     });
 
+    $('#zoomin').click(function () {
+        resizeCanvas(50);
+    });
+
+    $('#zoomout').click(function () {
+        resizeCanvas(-50);
+    });
+
     $('#analyzeDoc').click(function () {
+        $('#zoombuttons').show();
+        $('#canvas').show();
+
         $('#canvas').empty();
 
         let bpmnXML = editor.getValue();
@@ -26,7 +52,7 @@ $(document).ready(function () {
             prefix = prefix + ':';
         }
 
-        let viewer = new BpmnJS({ container: '#canvas' });
+        viewer = new BpmnJS({ container: '#canvas' });
 
         viewer.importXML(bpmnXML, function (err) {
             if (err) {
@@ -61,6 +87,26 @@ $(document).ready(function () {
         });
     });
 });
+
+function resizeCanvas(change) {
+    let height = parseInt($('#canvas').height());
+
+    if (height > 400 || (height >= 400 && change > 0)) {
+        $('#canvas').height(height + change);
+
+        let bpmnXML = editor.getValue();
+
+        viewer.importXML(bpmnXML, function (err) {
+            if (err) {
+                $('#canvas').append('<div class="alert alert-danger">' + err + '</div>');
+            } else {
+                let canvas = viewer.get('canvas');
+
+                canvas.zoom('fit-viewport');
+            }
+        });
+    }
+}
 
 function bpmnValidation(xmlDoc, recommendations, prefix) {
     let processList = xmlDoc.getElementsByTagName(prefix + 'process');
