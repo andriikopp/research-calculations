@@ -10,12 +10,18 @@ $(document).ready(function () {
 
     if (localStorage.getItem('editor')) {
         editor.insert(localStorage.getItem('editor'));
+
+        let bpmnXML = editor.getValue();
+
+        defineXMLNamespace(bpmnXML);
     }
 
     $('#editor').keyup(function () {
         let bpmnXML = editor.getValue();
 
         localStorage.setItem('editor', bpmnXML);
+
+        defineXMLNamespace(bpmnXML);
     });
 
     $('#expand').click(function () {
@@ -41,6 +47,10 @@ $(document).ready(function () {
             editor.insert(clipText);
 
             localStorage.setItem('editor', clipText);
+
+            let bpmnXML = editor.getValue();
+
+            defineXMLNamespace(bpmnXML);
         });
     });
 
@@ -106,6 +116,19 @@ $(document).ready(function () {
         });
     });
 });
+
+function defineXMLNamespace(bpmnXML) {
+    if (bpmnXML.includes('<definitions')) {
+        $('#bpmnPrefix').val('');
+    } else {
+        let matched = bpmnXML.match(/<[a-z]*:definitions/gi);
+        let xmlns = matched[0];
+
+        xmlns = xmlns.replace('<', '').replace(':definitions', '');
+
+        $('#bpmnPrefix').val(xmlns);
+    }
+}
 
 function resizeCanvas(change) {
     let height = parseInt($('#canvas').height());
