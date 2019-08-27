@@ -16,6 +16,14 @@ $(document).ready(function () {
         defineXMLNamespace(bpmnXML);
     }
 
+    if (localStorage.getItem('link')) {
+        $('#bpmnLink').val(localStorage.getItem('link'));
+    }
+
+    $('#bpmnLink').keyup(function () {
+        loadDocumentByLink();
+    });
+
     $('#editor').keyup(function () {
         let bpmnXML = editor.getValue();
 
@@ -116,6 +124,24 @@ $(document).ready(function () {
         });
     });
 });
+
+function loadDocumentByLink() {
+    let bpmnLink = $('#bpmnLink').val();
+
+    if (bpmnLink.length === 0) {
+        localStorage.setItem('link', '');
+    } else {
+        $.get(bpmnLink, function (data) {
+            editor.setValue('');
+            editor.insert(data);
+
+            localStorage.setItem('editor', data);
+            localStorage.setItem('link', bpmnLink);
+
+            defineXMLNamespace(data);
+        });
+    }
+}
 
 function defineXMLNamespace(bpmnXML) {
     if (bpmnXML.includes('<definitions')) {
@@ -336,13 +362,21 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
         let startEventsChange = 1 - startEvents;
 
         if (startEventsChange !== 0) {
-            recommendations.push('Remove ' + Math.abs(startEventsChange) + ' start event(s)');
+            if (startEventsChange > 0) {
+                recommendations.push('Add ' + Math.abs(startEventsChange) + ' start event(s)');
+            } else {
+                recommendations.push('Remove ' + Math.abs(startEventsChange) + ' start event(s)');
+            }
         }
 
         let endEventsChange = 1 - endEvents;
 
         if (endEventsChange !== 0) {
-            recommendations.push('Remove ' + Math.abs(endEventsChange) + ' end event(s)');
+            if (endEventsChange > 0) {
+                recommendations.push('Add ' + Math.abs(endEventsChange) + ' end event(s)');
+            } else {
+                recommendations.push('Remove ' + Math.abs(endEventsChange) + ' end event(s)');
+            }
         }
 
         let inclusiveGatewaysChange = 0 - inclusiveGateways;
@@ -366,10 +400,10 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
                 }
             }
         }
+    }
 
-        if (recommendations.length === 0) {
-            $('#recommendations').append('<div class="alert alert-info">' +
-                'No changes required</div>');
-        }
+    if (recommendations.length === 0) {
+        $('#recommendations').append('<div class="alert alert-info">' +
+            'No changes required</div>');
     }
 }
