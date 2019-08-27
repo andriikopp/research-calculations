@@ -87,6 +87,10 @@ $(document).ready(function () {
         resizeCanvas(-50);
     });
 
+    $('#reload').click(function () {
+        window.location.href = './js-bpmai.html?doc=' + $('#bpmnLink').val();
+    });
+
     $('#analyzeDoc').click(function () {
         $('#zoombuttons').show();
         $('#canvas').show();
