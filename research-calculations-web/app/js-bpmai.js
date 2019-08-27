@@ -8,6 +8,18 @@ $(document).ready(function () {
     $('#zoombuttons').hide();
     $('#canvas').hide();
 
+    // GET parameter ?doc=<path to a BPMN document>
+    let bpmnLinkParam = getParameterByName('doc');
+
+    if (bpmnLinkParam) {
+        localStorage.setItem('editor', '');
+        localStorage.setItem('link', '');
+
+        $('#bpmnLink').val(bpmnLinkParam);
+
+        loadDocumentByLink();
+    }
+
     if (localStorage.getItem('editor')) {
         editor.insert(localStorage.getItem('editor'));
 
@@ -406,4 +418,18 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
         $('#recommendations').append('<div class="alert alert-info">' +
             'No changes required</div>');
     }
+}
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+
+    name = name.replace(/[\[\]]/g, '\\$&');
+
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+
+    if (!results) return null;
+    if (!results[2]) return '';
+
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
