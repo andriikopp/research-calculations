@@ -5,6 +5,10 @@ editor.session.setMode("ace/mode/xml");
 var viewer = null;
 
 $(document).ready(function () {
+    if (Cookies.get('hidewarn')) {
+        $('#warning').hide();
+    }
+
     $('#zoombuttons').hide();
     $('#canvas').hide();
 
@@ -150,6 +154,12 @@ $(document).ready(function () {
                 }
             }
         });
+    });
+
+    $('#closewarn').click(function () {
+        Cookies.set('hidewarn', 'true');
+
+        $('#warning').hide();
     });
 });
 
