@@ -59,6 +59,9 @@ $(document).ready(function () {
     $('#clear').click(function () {
         editor.setValue('');
         localStorage.setItem('editor', '');
+
+        $('#bpmnLink').val('');
+        localStorage.setItem('link', '');
     });
 
     $('#paste').click(function () {
@@ -71,6 +74,9 @@ $(document).ready(function () {
             let bpmnXML = editor.getValue();
 
             defineXMLNamespace(bpmnXML);
+
+            $('#bpmnLink').val('');
+            localStorage.setItem('link', '');
         });
     });
 
@@ -88,7 +94,13 @@ $(document).ready(function () {
     });
 
     $('#reload').click(function () {
-        window.location.href = './js-bpmai.html?doc=' + $('#bpmnLink').val();
+        let bpmnLink = $('#bpmnLink').val();
+
+        if (bpmnLink === null || bpmnLink === '') {
+            window.location.href = './js-bpmai.html';
+        } else {
+            window.location.href = './js-bpmai.html?doc=' + bpmnLink;
+        }
     });
 
     $('#analyzeDoc').click(function () {
@@ -164,11 +176,14 @@ function defineXMLNamespace(bpmnXML) {
         $('#bpmnPrefix').val('');
     } else {
         let matched = bpmnXML.match(/<[a-z]*:definitions/gi);
-        let xmlns = matched[0];
 
-        xmlns = xmlns.replace('<', '').replace(':definitions', '');
+        if (matched !== null && matched.length > 0) {
+            let xmlns = matched[0];
 
-        $('#bpmnPrefix').val(xmlns);
+            xmlns = xmlns.replace('<', '').replace(':definitions', '');
+
+            $('#bpmnPrefix').val(xmlns);
+        }
     }
 }
 
