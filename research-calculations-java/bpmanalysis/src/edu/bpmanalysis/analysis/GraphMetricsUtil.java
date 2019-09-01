@@ -46,17 +46,26 @@ public final class GraphMetricsUtil {
         return arcsBetweenFunctions / arcs;
     }
 
+    public static double countDepth(ProcessModelBean processModelBean) {
+        double nodes = countNodes(processModelBean);
+        double arcs = countArcs(processModelBean);
+
+        return arcs - nodes + 1;
+    }
+
     public static void analyzeModels(ProcessModelRepository processModelRepository) {
         for (ProcessModelBean processModelBean : processModelRepository.getProcessModels()) {
-            double size = countNodes(processModelBean);
+            double nodes = countNodes(processModelBean);
+            double arcs = countArcs(processModelBean);
             double density = countDensity(processModelBean);
             double connectivity = countConnectivity(processModelBean);
             double sequentiality = countSequentiality(processModelBean);
+            double depth = countDepth(processModelBean);
 
             double quality = EvaluationUtil.quality(ProcessModelAnalysisUtil.transformToModel(processModelBean));
 
-            System.out.printf("%s\t%f\t%f\t%f\t%f\t%f\n", processModelBean.getName(),
-                    size, density, connectivity, sequentiality, quality);
+            System.out.printf("%s\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", processModelBean.getName(),
+                    0, nodes, arcs, density, connectivity, sequentiality, quality, depth);
         }
     }
 }

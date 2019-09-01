@@ -1,6 +1,7 @@
 package edu.bpmanalysis.web;
 
 import com.google.gson.Gson;
+import edu.bpmanalysis.analysis.GraphMetricsUtil;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.analysis.model.EvaluationUtil;
@@ -98,6 +99,10 @@ public class BPMAIApplication {
         System.err.println("Use /models to access all process models");
         System.err.println("Use /model/<MODEL_ID> to access a specific process model");
         System.err.println();
+
+        if (Configuration.CALCULATE_METRICS) {
+            GraphMetricsUtil.analyzeModels(processModelRepository);
+        }
 
         try {
             Desktop.getDesktop().browse(new URL("http://localhost:4567/bpmai.html").toURI());

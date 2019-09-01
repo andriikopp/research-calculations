@@ -14,4 +14,6 @@ public class Configuration {
 
     public static final boolean LOAD_MODELS_BEFORE_START = true;
 
+    public static final boolean CALCULATE_METRICS = false;
+
 }
