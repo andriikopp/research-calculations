@@ -68,4 +68,55 @@ public final class GraphMetricsUtil {
                     0, nodes, arcs, density, connectivity, sequentiality, quality, depth);
         }
     }
+
+    public static void measurePerformance(ProcessModelRepository processModelRepository) {
+        ProcessModelBean processModelBean = processModelRepository.getProcessModels().get(0);
+
+        long start, end, time;
+
+        int[] executions = {1, 10, 100, 1000, 10000};
+
+        for (int times : executions) {
+            start = System.nanoTime();
+
+            for (int i = 0; i < times; i++)
+                countDensity(processModelBean);
+
+            end = System.nanoTime();
+            time = end - start;
+            System.out.println(time);
+            start = System.nanoTime();
+
+            for (int i = 0; i < times; i++)
+                countConnectivity(processModelBean);
+
+            end = System.nanoTime();
+            time = end - start;
+            System.out.println(time);
+            start = System.nanoTime();
+
+            for (int i = 0; i < times; i++)
+                countSequentiality(processModelBean);
+
+            end = System.nanoTime();
+            time = end - start;
+            System.out.println(time);
+            start = System.nanoTime();
+
+            for (int i = 0; i < times; i++)
+                countDepth(processModelBean);
+
+            end = System.nanoTime();
+            time = end - start;
+            System.out.println(time);
+            start = System.nanoTime();
+
+            for (int i = 0; i < times; i++)
+                EvaluationUtil.quality(ProcessModelAnalysisUtil.transformToModel(processModelBean));
+
+            end = System.nanoTime();
+            time = end - start;
+            System.out.println(time);
+        }
+    }
 }

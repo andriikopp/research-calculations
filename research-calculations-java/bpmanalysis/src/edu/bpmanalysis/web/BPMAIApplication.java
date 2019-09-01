@@ -104,6 +104,10 @@ public class BPMAIApplication {
             GraphMetricsUtil.analyzeModels(processModelRepository);
         }
 
+        if (Configuration.MEASURE_PERFORMANCE) {
+            GraphMetricsUtil.measurePerformance(processModelRepository);
+        }
+
         try {
             Desktop.getDesktop().browse(new URL("http://localhost:4567/bpmai.html").toURI());
         } catch (Exception e) {
