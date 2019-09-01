@@ -5,6 +5,8 @@ import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
 
+import java.util.List;
+
 public final class GraphMetricsUtil {
 
     private GraphMetricsUtil() {
@@ -70,7 +72,7 @@ public final class GraphMetricsUtil {
     }
 
     public static void measurePerformance(ProcessModelRepository processModelRepository) {
-        ProcessModelBean processModelBean = processModelRepository.getProcessModels().get(0);
+        List<ProcessModelBean> processModelBeanList = processModelRepository.getProcessModels();
 
         long start, end, time;
 
@@ -80,7 +82,8 @@ public final class GraphMetricsUtil {
             start = System.nanoTime();
 
             for (int i = 0; i < times; i++)
-                countDensity(processModelBean);
+                for (ProcessModelBean processModelBean : processModelBeanList)
+                    countDensity(processModelBean);
 
             end = System.nanoTime();
             time = end - start;
@@ -88,7 +91,8 @@ public final class GraphMetricsUtil {
             start = System.nanoTime();
 
             for (int i = 0; i < times; i++)
-                countConnectivity(processModelBean);
+                for (ProcessModelBean processModelBean : processModelBeanList)
+                    countConnectivity(processModelBean);
 
             end = System.nanoTime();
             time = end - start;
@@ -96,7 +100,8 @@ public final class GraphMetricsUtil {
             start = System.nanoTime();
 
             for (int i = 0; i < times; i++)
-                countSequentiality(processModelBean);
+                for (ProcessModelBean processModelBean : processModelBeanList)
+                    countSequentiality(processModelBean);
 
             end = System.nanoTime();
             time = end - start;
@@ -104,7 +109,8 @@ public final class GraphMetricsUtil {
             start = System.nanoTime();
 
             for (int i = 0; i < times; i++)
-                countDepth(processModelBean);
+                for (ProcessModelBean processModelBean : processModelBeanList)
+                    countDepth(processModelBean);
 
             end = System.nanoTime();
             time = end - start;
@@ -112,7 +118,8 @@ public final class GraphMetricsUtil {
             start = System.nanoTime();
 
             for (int i = 0; i < times; i++)
-                EvaluationUtil.quality(ProcessModelAnalysisUtil.transformToModel(processModelBean));
+                for (ProcessModelBean processModelBean : processModelBeanList)
+                    EvaluationUtil.quality(ProcessModelAnalysisUtil.transformToModel(processModelBean));
 
             end = System.nanoTime();
             time = end - start;
