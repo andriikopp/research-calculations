@@ -1,10 +1,12 @@
 package edu.bpmanalysis.analysis;
 
 import edu.bpmanalysis.analysis.model.EvaluationUtil;
+import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class GraphMetricsUtil {
@@ -72,6 +74,8 @@ public final class GraphMetricsUtil {
     }
 
     public static void measurePerformance(ProcessModelRepository processModelRepository) {
+        System.out.println("========= Analysis Performance =========");
+
         List<ProcessModelBean> processModelBeanList = processModelRepository.getProcessModels();
 
         long start, end, time;
@@ -120,6 +124,36 @@ public final class GraphMetricsUtil {
             for (int i = 0; i < times; i++)
                 for (ProcessModelBean processModelBean : processModelBeanList)
                     EvaluationUtil.quality(ProcessModelAnalysisUtil.transformToModel(processModelBean));
+
+            end = System.nanoTime();
+            time = end - start;
+            System.out.println(time);
+        }
+
+        measureOptimizationPerformance(processModelRepository);
+    }
+
+    public static void measureOptimizationPerformance(ProcessModelRepository processModelRepository) {
+        System.out.println("========= Optimization Performance =========");
+
+        List<ProcessModelBean> processModelBeanList = processModelRepository.getProcessModels();
+
+        List<Model> modelList = new ArrayList<>();
+
+        for (ProcessModelBean processModelBean : processModelBeanList) {
+            modelList.add(ProcessModelAnalysisUtil.transformToModel(processModelBean));
+        }
+
+        long start, end, time;
+
+        int[] executions = {1, 10, 100, 1000, 10000};
+
+        for (int times : executions) {
+            start = System.nanoTime();
+
+            for (int i = 0; i < times; i++)
+                for (Model model : modelList)
+                    ProcessModelAnalysisUtil.analyzeModel(model);
 
             end = System.nanoTime();
             time = end - start;
