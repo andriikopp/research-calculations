@@ -16,6 +16,6 @@ public class Configuration {
 
     public static final boolean CALCULATE_METRICS = false;
 
-    public static final boolean MEASURE_PERFORMANCE = true;
+    public static final boolean MEASURE_PERFORMANCE = false;
 
 }
