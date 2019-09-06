@@ -1,16 +1,16 @@
-$.getJSON("/bpmai/api/models", function(data) {
+$.getJSON("/bpmai/api/models", function (data) {
     for (var i = 0; i < data.length; i++) {
         $("#processModelsList").append('<p>' +
             '<div class="card" id="' + data[i].id + '">' +
-                '<div class="card-body">' +
-                    '<a onclick="loadModel(\'' + data[i].id + '\')" href="javascript:void(0)">' +
-                        data[i].name + '</br>' + data[i].timeStamp + '</a>' +
-                '</div>' +
+            '<div class="card-body">' +
+            '<a onclick="loadModel(\'' + data[i].id + '\')" href="javascript:void(0)">' +
+            data[i].name + '</br>' + data[i].timeStamp + '</a>' +
+            '</div>' +
             '</div>' +
             '</p>');
     }
 
-    var get = function(name) {
+    var get = function (name) {
         if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search)) {
             return decodeURIComponent(name[1]);
         }
@@ -25,9 +25,10 @@ $.getJSON("/bpmai/api/models", function(data) {
 
 var activeModel = null;
 var graphVisible = false;
+var similarVisible = false;
 
 function loadModel(id) {
-    $.getJSON("/bpmai/api/model/" + id, function(data) {
+    $.getJSON("/bpmai/api/model/" + id, function (data) {
         var modelInfo = $("#modelInfo");
         modelInfo.empty();
 
@@ -49,7 +50,7 @@ function loadModel(id) {
         $('#' + data.id).css('background-color', 'lightGrey');
         activeModel = data.id;
 
-        var updateURLParameter = function(url, param, paramVal){
+        var updateURLParameter = function (url, param, paramVal) {
             var newAdditionalURL = "";
             var tempArray = url.split("?");
             var baseURL = tempArray[0];
@@ -87,11 +88,11 @@ function drawModel(data) {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             var viewer = new BpmnJS({ container: '#canvas' });
-            
-            viewer.importXML(xhr.response, function(err) {
+
+            viewer.importXML(xhr.response, function (err) {
                 var canvas = viewer.get('canvas');
                 canvas.zoom('fit-viewport');
             });
@@ -123,12 +124,10 @@ function drawGraph(data) {
 }
 
 function analyzeModel(id) {
-    $.getJSON("/bpmai/api/model/" + id, function(data) {
+    $.getJSON("/bpmai/api/model/" + id, function (data) {
         var modelAnalysis = $("#modelAnalysis");
 
         modelAnalysis.empty();
-
-        var isModelValid = true;
 
         modelAnalysis.append("<p><b>Size:</b> " + data.size + "</p>");
         modelAnalysis.append("<p><b>Functions:</b> " + data.functions + "</p>");
@@ -142,36 +141,35 @@ function analyzeModel(id) {
         modelAnalysis.append("<p><b>Quality:</b> " + data.quality + "</p>");
 
         if (data.quality < 1.0) {
-            isModelValid = false;
-        }
-
-        if (!isModelValid) {
-            modelAnalysis.append('<div id="rulesViolations"></div>');
-            $('#rulesViolations').append('<div class="alert alert-danger" role="danger">' +
+            modelAnalysis.append('<div class="alert alert-danger" role="danger">' +
                 'This model might contain errors!</div>');
-            
-            for (var x in data.recommendations) {
-                modelAnalysis.append('<div class="alert alert-info" role="info">' + data.recommendations[x] + '</div>');
-            }
-        } else {
-            modelAnalysis.append('<div id="similarModels"></div>');
-
-            var duplicatesCounter = 0;
-
-            if (data.similarModels != null) {
-                Object.keys(data.similarModels).forEach(function(key, index) {
-                    modelAnalysis.append('<div class="alert alert-info" role="info">' +
-                        '<a target="_blank" href="?id=' + key + '">' + data.similarModels[key] + '</a>' +
-                        '</div>');
-                    duplicatesCounter++;
-                });
-            }
-
-            if (duplicatesCounter > 0) {
-                $('#similarModels').append('<div class="alert alert-warning" role="alert">' +
-                    'There are similar models found!</div>');
-            }
         }
+
+        for (var x in data.recommendations) {
+            modelAnalysis.append('<div class="alert alert-info" role="info">' + data.recommendations[x] + '</div>');
+        }
+
+        modelAnalysis.append('<div id="similarModels"></div>');
+        modelAnalysis.append('<div id="similarModelsLinks"></div>');
+
+        var similarCounter = 0;
+
+        if (data.similarModels != null) {
+            Object.keys(data.similarModels).forEach(function (key, index) {
+                $('#similarModelsLinks').append('<div class="alert alert-secondary" role="info">' +
+                    '<a target="_blank" href="?id=' + key + '">' + data.similarModels[key] + '</a>' +
+                    '</div>');
+                similarCounter++;
+            });
+        }
+
+        if (similarCounter > 0) {
+            $('#similarModels').append('<div class="alert alert-warning" role="alert">' +
+                'There are ' + similarCounter + ' model(s) found that have similar quality characteristics</div>');
+            $('#similarModels').append('<a href="javascript:void(0);" onclick="displaySimilarModels();" id="descriptionLink">Show/hide similar models</a><br/>');
+        }
+
+        $('#similarModelsLinks').hide();
     });
 }
 
@@ -182,5 +180,15 @@ function displayGraph() {
     } else {
         $('#modelDescription').show();
         graphVisible = true;
+    }
+}
+
+function displaySimilarModels() {
+    if (similarVisible) {
+        $('#similarModelsLinks').hide();
+        similarVisible = false;
+    } else {
+        $('#similarModelsLinks').show();
+        similarVisible = true;
     }
 }

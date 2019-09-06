@@ -7,7 +7,7 @@ import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.analysis.model.*;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.description.tools.Node;
-import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
+import edu.bpmanalysis.search.partition.ProcessModelAnalysisResultsPartition;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphNodeBean;
@@ -191,7 +191,7 @@ public class ProcessModelAnalysisUtil {
             }
         }
 
-        processModelAnalysisBean.setSimilarModels(ProcessModelSimilaritySearchStorage.findDuplicates(model));
+        processModelAnalysisBean.setSimilarModels(ProcessModelAnalysisResultsPartition.getPartitionedModels(model));
 
         double quality = EvaluationUtil.quality(model);
 

@@ -8,6 +8,7 @@ import edu.bpmanalysis.analysis.model.EvaluationUtil;
 import edu.bpmanalysis.config.Configuration;
 import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.description.tools.Model;
+import edu.bpmanalysis.search.partition.ProcessModelAnalysisResultsPartition;
 import edu.bpmanalysis.search.pattern.ProcessModelPatternMatchingStorage;
 import edu.bpmanalysis.search.similarity.ProcessModelSimilaritySearchStorage;
 import edu.bpmanalysis.web.api.SummaryAnalysisBean;
@@ -43,8 +44,7 @@ public class BPMAIApplication {
             ProcessModelImportUtil.importModels();
         }
 
-        ProcessModelSimilaritySearchStorage.loadModels(processModelRepository);
-        ProcessModelPatternMatchingStorage.loadModels(processModelRepository);
+        ProcessModelAnalysisResultsPartition.partitionModels(processModelRepository);
 
         AnalysisResultsRepository analysisResultsRepository = new AnalysisResultsRepositoryJsonDB();
 
@@ -80,13 +80,13 @@ public class BPMAIApplication {
 
         path("/", () -> {
             get("/bpmai/api", (req, res) ->
-                    new Gson().toJson(new SummaryAnalysisBean(processModelRepository)));
+                    new Gson().toJson(new SummaryAnalysisBean(processModelRepository).getResults()));
             get("/bpmai/api/models", (req, res) ->
                     new Gson().toJson(analysisResultsRepository.getAnalysisResults()));
             get("/bpmai/api/model/:id", (req, res) ->
                     new Gson().toJson(analysisResultsRepository.getAnalysisResult(req.params(":id"))));
-            get("/bpmai/api/duplicates", (req, res) ->
-                    new Gson().toJson(ProcessModelSimilaritySearchStorage.getDuplicates(models)));
+            get("/bpmai/api/partition", (req, res) ->
+                    new Gson().toJson(ProcessModelAnalysisResultsPartition.getModelsClusters()));
         });
 
         System.err.println();
