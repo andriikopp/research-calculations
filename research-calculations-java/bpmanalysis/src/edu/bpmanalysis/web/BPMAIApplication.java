@@ -2,6 +2,7 @@ package edu.bpmanalysis.web;
 
 import com.google.gson.Gson;
 import edu.bpmanalysis.analysis.GraphMetricsUtil;
+import edu.bpmanalysis.analysis.IndicatorsUtil;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.analysis.model.EvaluationUtil;
@@ -102,6 +103,12 @@ public class BPMAIApplication {
 
         if (Configuration.CALCULATE_METRICS) {
             GraphMetricsUtil.analyzeModels(processModelRepository);
+
+            System.out.println("========= Research metrics =========");
+
+            for (Model model : models) {
+                IndicatorsUtil.printIndicators(model);
+            }
         }
 
         if (Configuration.MEASURE_PERFORMANCE) {
