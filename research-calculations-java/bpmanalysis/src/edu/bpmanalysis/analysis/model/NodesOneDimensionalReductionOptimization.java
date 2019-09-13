@@ -57,13 +57,13 @@ public class NodesOneDimensionalReductionOptimization {
 
     private static double[] getVectorOfIdealCharacteristics(Model model) {
         if (model.getModelType().equals(Model.ModelType.IDEF0)) {
-            return new double[]{Math.min(ModelDensity.size(model), 6), 0, 0, 0,
-                    Math.max(NodesSubsetsUtil.getFunctions(model).size(), 3)};
+            return new double[]{ModelDensity.size(model), 0, 0, 0,
+                    Math.max(Math.min(NodesSubsetsUtil.getFunctions(model).size(), 6), 3)};
         }
 
         if (model.getModelType().equals(Model.ModelType.DFD)) {
-            return new double[]{Math.min(ModelDensity.size(model), 7), 0, 0, 0,
-                    Math.max(NodesSubsetsUtil.getFunctions(model).size(), 1)};
+            return new double[]{ModelDensity.size(model), 0, 0, 0,
+                    Math.max(Math.min(NodesSubsetsUtil.getFunctions(model).size(), 7), 1)};
         }
 
         return new double[]{Math.min(ModelDensity.size(model), 31), 1, 1, 0,

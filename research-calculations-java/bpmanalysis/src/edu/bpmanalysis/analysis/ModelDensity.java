@@ -47,6 +47,18 @@ public class ModelDensity {
                     value++;
                 }
             }
+
+            if (model.getModelType().equals(Model.ModelType.IDEF0)) {
+                if (node.getNodeType().equals(Node.NodeType.INTERFACE_I) ||
+                        node.getNodeType().equals(Node.NodeType.INTERFACE_C) ||
+                        node.getNodeType().equals(Node.NodeType.INTERFACE_O) ||
+                        node.getNodeType().equals(Node.NodeType.INTERFACE_M) ||
+                        node.getNodeType().equals(Node.NodeType.INTERFACE_OI) ||
+                        node.getNodeType().equals(Node.NodeType.INTERFACE_OC) ||
+                        node.getNodeType().equals(Node.NodeType.INTERFACE_OM)) {
+                    value++;
+                }
+            }
         }
 
         return value;

@@ -20,9 +20,9 @@ public class EvaluationUtil {
                                 Math.max(nodes, 31) - 31 :
 
                                 model.getModelType().equals(Model.ModelType.DFD) ?
-                                        Math.max(nodes, 7) - 7 :
+                                        Math.max(functions, 7) - 7 :
 
-                                        Math.max(nodes, 6) - 6
+                                        Math.max(functions, 6) - 6
                 ),
                 1 - Math.signum(
                         (model.getModelType().equals(Model.ModelType.EPC) ||
@@ -79,9 +79,9 @@ public class EvaluationUtil {
                                 Math.max(nodes, 31) - 31 :
 
                                 model.getModelType().equals(Model.ModelType.DFD) ?
-                                        Math.max(nodes, 7) - 7 :
+                                        Math.max(functions, 7) - 7 :
 
-                                        Math.max(nodes, 6) - 6
+                                        Math.max(functions, 6) - 6
                 ),
                 1 - Math.signum(
                         (model.getModelType().equals(Model.ModelType.EPC) ||

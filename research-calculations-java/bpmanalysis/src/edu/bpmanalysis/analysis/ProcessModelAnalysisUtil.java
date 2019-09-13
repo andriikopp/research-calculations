@@ -126,7 +126,7 @@ public class ProcessModelAnalysisUtil {
 
         if (model.getModelType().equals(Model.ModelType.DFD) || model.getModelType().equals(Model.ModelType.IDEF0)) {
             if ((model.getModelType().equals(Model.ModelType.DFD) &&
-                    (processModelAnalysisBean.getSize() > 7 || processModelAnalysisBean.getFunctions() < 1)) ||
+                    (processModelAnalysisBean.getFunctions() > 7 || processModelAnalysisBean.getFunctions() < 1)) ||
                     (model.getModelType().equals(Model.ModelType.IDEF0) &&
                             (processModelAnalysisBean.getFunctions() > 6 || processModelAnalysisBean.getFunctions() < 3))) {
                 nodesChanges = NodesOneDimensionalReductionOptimization.optimization(model);
