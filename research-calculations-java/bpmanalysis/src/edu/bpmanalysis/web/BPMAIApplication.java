@@ -45,6 +45,7 @@ public class BPMAIApplication {
             ProcessModelImportUtil.importModels();
         }
 
+        ProcessModelPatternMatchingStorage.loadModels(processModelRepository);
         ProcessModelAnalysisResultsPartition.partitionModels(processModelRepository);
 
         AnalysisResultsRepository analysisResultsRepository = new AnalysisResultsRepositoryJsonDB();
