@@ -20,3 +20,4 @@ research-calculations-java/processModelsStorage/graph.rdf
 research-calculations-java/processModelsStorage/processModels.json
 
 *.DS_Store
+research-calculations-java/process-models-path.conf
