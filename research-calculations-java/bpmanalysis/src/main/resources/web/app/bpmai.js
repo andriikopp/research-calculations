@@ -4,7 +4,7 @@ $.getJSON("/bpmai/api/models", function (data) {
             '<div class="card" id="' + data[i].id + '">' +
             '<div class="card-body">' +
             '<a onclick="loadModel(\'' + data[i].id + '\')" href="javascript:void(0)">' +
-            data[i].name + '</br>' + data[i].timeStamp + '</a>' +
+            data[i].name + '</br>' + data[i].timeStamp + '</a>' + ' <kbd>' + data[i].notation + '</kbd>' +
             '</div>' +
             '</div>' +
             '</p>');
@@ -26,6 +26,7 @@ $.getJSON("/bpmai/api/models", function (data) {
 var activeModel = null;
 var graphVisible = false;
 var similarVisible = false;
+var modelsListExpanded = false;
 
 function loadModel(id) {
     $.getJSON("/bpmai/api/model/" + id, function (data) {
@@ -190,5 +191,15 @@ function displaySimilarModels() {
     } else {
         $('#similarModelsLinks').show();
         similarVisible = true;
+    }
+}
+
+function resizeModelsList() {
+    if (modelsListExpanded) {
+        $('#processModelsList').css('height', '600px');
+        modelsListExpanded = false;
+    } else {
+        $('#processModelsList').css('height', '100%');
+        modelsListExpanded = true;
     }
 }
