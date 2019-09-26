@@ -231,6 +231,13 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
 
         let process = processList[k].childNodes;
 
+        let processName = processList[k].attributes['name'] === undefined ?
+            processList[k].attributes['id'].nodeValue :
+            processList[k].attributes['name'].nodeValue;
+        processName = processName === '' ? processList[k].attributes['id'].nodeValue : processName;
+
+        recommendations.push('Process <b>' + processName + '</b> has errors:');
+
         for (let i = 0; i < process.length; i++) {
             if (process[i].nodeName.toLowerCase().includes('task'.toLowerCase()) ||
                 process[i].nodeName.toLowerCase().includes('subProcess'.toLowerCase())) {
