@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+    <style>
+        body {
+            margin: 2%;
+        }
+
+        #block {
+            border-style: solid;
+            border-color: lightgray;
+        }
+
+        #chart {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>BI Dashboards Templating Tool</h3>
+
+    <div id="create">
+        <label>Indicator</label>
+        <p class="form-inline">
+            <input type="text" class="form-control col-sm-4" id="name" placeholder="Name" />
+            <select id="type" class="form-control col-sm-3">
+                <option value="categories">Categories</option>
+                <option value="distribution">Distribution</option>
+                <option value="value">Value</option>
+                <option value="comparison">Comparison</option>
+            </select>
+            <button class="btn btn-primary col-sm-1" onclick="addIndicator();">Add</button>
+        </p>
+
+        <div id="kpiList"></div>
+
+        <label>Rows limit</label>
+        <p class="form-inline">
+            <input type="number" class="form-control col-sm-4" id="maxRows" min="1" value="1" placeholder="Max. rows" />
+            <button class="btn btn-info col-sm-2" onclick="drawDashboard();">Create</button>
+        </p>
+
+        <p id="message"></p>
+    </div>
+
+    <label>Dashboard template</label>
+    <div class="container" id="dashboard">
+        <div class="alert alert-info">
+            Add any indicators to create a dashboard template
+        </div>
+    </div>
+
+    <div>
+        <p>
+            <button class="btn btn-success col-sm-2" onclick="download('dashboard-template.html', 
+        document.getElementById('dashboard').innerHTML);">Download</button>
+        </p>
+    </div>
+
+    <script>
+        var charts = {
+            'bar':
+            {
+                'cols': 6,
+                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/pbi-nancy-viz-bar.png',
+                'weight': 0.25
+            },
+            'pie': {
+                'cols': 4,
+                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/pbi-nancy-viz-pie.png',
+                'weight': 0.05
+            },
+            'line': {
+                'cols': 6,
+                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/pbi-nancy-viz-line.png',
+                'weight': 0.22
+            },
+            'scatter': {
+                'cols': 6,
+                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/density-scatter.png',
+                'weight': 0.11
+            },
+            'number': {
+                'cols': 1,
+                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/pbi-nancy-viz-card.png',
+                'weight': 0.09
+            },
+            'sparkline': {
+                'cols': 2,
+                'viz': 'https://www.sqlbi.com/okviz/wp-content/uploads/sites/261/2016/12/main-2.png',
+                'weight': 0.1
+            },
+            'bullet': {
+                'cols': 3,
+                'viz': 'https://microsoft.github.io/PowerBI-visuals/samples/screenshots/bullet-chart.png',
+                'weight': 0.12
+            },
+            'gauge': {
+                'cols': 4,
+                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/gauge-m.png',
+                'weight': 0.06
+            }
+        }
+
+        var types = {
+            'categories': getChart(['bar', 'pie']),
+            'distribution': getChart(['line', 'scatter']),
+            'value': getChart(['number', 'sparkline']),
+            'comparison': getChart(['bullet', 'gauge'])
+        };
+
+        function getChart(possibleCharts) {
+            var max = -1;
+            var chart = '';
+
+            for (var i = 0; i < possibleCharts.length; i++) {
+                var current = charts[possibleCharts[i]]['weight'];
+
+                if (current > max) {
+                    max = current;
+                    chart = possibleCharts[i];
+                }
+            }
+
+            return chart;
+        }
+
+        function addIndicator() {
+            var name = $('#name').val();
+            var type = $('#type').val();
+
+            var id = `f${(~~(Math.random() * 1e8)).toString(16)}`;
+
+            if (name === undefined || name === '') {
+                name = 'KPI-' + id;
+            }
+
+            document.getElementById('kpiList').innerHTML += '<p id="' +
+                id + '"><b>' + name + '</b> (' +
+                type + ') <button class="btn btn-danger btn-sm" onclick="$(\'#' + id + '\').remove();">Remove</button>' +
+                '<input type="hidden" id="name-' + id + '" value="' + name + '" />' +
+                '<input type="hidden" id="type-' + id + '" value="' + type + '" />' +
+                '<button class="btn btn-default btn-sm" onclick="$(\'#' + id +
+                '\').insertBefore(document.getElementById(\'' + id + '\').previousSibling);">Up</button>' +
+                '<button class="btn btn-default btn-sm" onclick="$(\'#' + id +
+                '\').insertAfter(document.getElementById(\'' + id + '\').nextSibling);">Down</button>' +
+                '</p>';
+        }
+
+        function drawDashboard() {
+            var kpiList = document.getElementById('kpiList').childNodes;
+            var indicators = [];
+
+            for (var i = 0; i < kpiList.length; i++) {
+                indicators.push({
+                    'name': $('#name-' + kpiList[i].id).val(),
+                    'chart': types[$('#type-' + kpiList[i].id).val()]
+                });
+            }
+
+            $('#message').empty();
+            $('#dashboard').empty();
+
+            var row = 1;
+
+            document.getElementById('dashboard').innerHTML = '<div class="row" id="row-' +
+                row + '"></div>';
+
+            var capacity = 0;
+
+            for (var kpi = 0; kpi < indicators.length; kpi++) {
+                var name = indicators[kpi]['name'];
+                var cols = charts[indicators[kpi]['chart']]['cols'];
+                var link = charts[indicators[kpi]['chart']]['viz'];
+
+                capacity += cols;
+
+                if (capacity > 12) {
+                    capacity = cols;
+                    row++;
+
+                    if (row > $('#maxRows').val()) {
+                        $('#message').append('<div class="alert alert-danger">' +
+                            'Rows limit exceeded! Increase the limit and try again.' +
+                            '</div>');
+                        break;
+                    }
+
+                    document.getElementById('dashboard').innerHTML += '<div class="row" id="row-' + row + '"></div>';
+                }
+
+                document.getElementById('row-' + row).innerHTML += '<div class="col-' + cols + '" id="block">' +
+                    name + '<br/><img src="' + link + '" id="chart" />' +
+                    '</div>';
+            }
+
+            if (indicators.length === 0) {
+                $('#dashboard').append('<div class="alert alert-info">' +
+                    'Add any indicators to create a dashboard template' +
+                    '</div>');
+            } else {
+                $('#dashboard').append('<br/>');
+            }
+        }
+
+        function download(filename, text) {
+            var pom = document.createElement('a');
+            pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            pom.setAttribute('download', filename);
+
+            if (document.createEvent) {
+                var event = document.createEvent('MouseEvents');
+                event.initEvent('click', true, true);
+                pom.dispatchEvent(event);
+            }
+            else {
+                pom.click();
+            }
+        }
+    </script>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+</body>
+
+</html>
