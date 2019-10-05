@@ -11,12 +11,22 @@
         }
 
         #block {
-            border-style: solid;
+            border-style: dashed;
             border-color: lightgray;
         }
 
         #chart {
             max-width: 100%;
+        }
+
+        .kpiLine {
+            border-style: solid;
+            border-width: 1px;
+            border-color: lightgray;
+            padding: 1%;
+            border-radius: 5px;
+
+            margin-bottom: 7px;
         }
     </style>
 </head>
@@ -28,16 +38,22 @@
         <label>Indicator</label>
         <p class="form-inline">
             <input type="text" class="form-control col-sm-4" id="name" placeholder="Name" />
-            <select id="type" class="form-control col-sm-3">
+            <select id="type" class="form-control col-sm-2" onchange="proposeChart(this);">
                 <option value="categories">Categories</option>
                 <option value="distribution">Distribution</option>
                 <option value="value">Value</option>
                 <option value="comparison">Comparison</option>
             </select>
-            <button class="btn btn-primary col-sm-1" onclick="addIndicator();">Add</button>
+            <select id="chart" class="form-control col-sm-2">
+            </select>
+            <button class="btn btn-info col-sm-1" onclick="addIndicator();">Add</button>
         </p>
 
-        <div id="kpiList"></div>
+        <div id="kpiList" class="container">
+            <div class="alert alert-warning" id="noKpis">
+                No indicators added yet
+            </div>
+        </div>
 
         <label>Rows limit</label>
         <p class="form-inline">
@@ -48,7 +64,7 @@
         <p id="message"></p>
     </div>
 
-    <label>Dashboard template</label>
+    <label>Dashboard template informativeness: <kbd id="informativeness">NaN%</kbd></label>
     <div class="container" id="dashboard">
         <div class="alert alert-info">
             Add any indicators to create a dashboard template
@@ -67,52 +83,60 @@
             'bar':
             {
                 'cols': 6,
-                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/pbi-nancy-viz-bar.png',
+                'viz': 'https://datavizproject.com/wp-content/uploads/2015/10/6-Grouped-Bar-Chart.png',
                 'weight': 0.25
             },
             'pie': {
                 'cols': 4,
-                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/pbi-nancy-viz-pie.png',
+                'viz': 'https://datavizproject.com/wp-content/uploads/2015/10/11-Pie-Chart.png',
                 'weight': 0.05
             },
             'line': {
                 'cols': 6,
-                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/pbi-nancy-viz-line.png',
+                'viz': 'https://datavizproject.com/wp-content/uploads/2015/10/1-Line-Chart.png',
                 'weight': 0.22
             },
             'scatter': {
                 'cols': 6,
-                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/density-scatter.png',
+                'viz': 'https://datavizproject.com/wp-content/uploads/2015/10/DVP-22.png',
                 'weight': 0.11
             },
             'number': {
                 'cols': 1,
-                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/pbi-nancy-viz-card.png',
+                'viz': 'https://datavizproject.com/wp-content/uploads/2016/01/DVP_101_200-17.png',
                 'weight': 0.09
             },
             'sparkline': {
                 'cols': 2,
-                'viz': 'https://www.sqlbi.com/okviz/wp-content/uploads/sites/261/2016/12/main-2.png',
+                'viz': 'https://datavizproject.com/wp-content/uploads/2016/06/DVP_101_200-08.png',
                 'weight': 0.1
             },
             'bullet': {
                 'cols': 3,
-                'viz': 'https://microsoft.github.io/PowerBI-visuals/samples/screenshots/bullet-chart.png',
+                'viz': 'https://datavizproject.com/wp-content/uploads/2016/06/DVP_1_100-52.png',
                 'weight': 0.12
             },
             'gauge': {
                 'cols': 4,
-                'viz': 'https://docs.microsoft.com/en-us/power-bi/consumer/media/end-user-visual-type/gauge-m.png',
+                'viz': 'https://datavizproject.com/wp-content/uploads/2015/10/DVP-42.png',
                 'weight': 0.06
             }
         }
 
+        Object.keys(charts).forEach(function (key, index) {
+            document.getElementById('chart').innerHTML += '<option value="' + key + '">' + key + '</option>';
+        });
+
         var types = {
-            'categories': getChart(['bar', 'pie']),
-            'distribution': getChart(['line', 'scatter']),
-            'value': getChart(['number', 'sparkline']),
-            'comparison': getChart(['bullet', 'gauge'])
+            'categories': ['bar', 'pie'],
+            'distribution': ['line', 'scatter'],
+            'value': ['number', 'sparkline'],
+            'comparison': ['bullet', 'gauge']
         };
+
+        function proposeChart(typeSelect) {
+            document.getElementById('chart').value = getChart(types[typeSelect.value]);
+        }
 
         function getChart(possibleCharts) {
             var max = -1;
@@ -131,8 +155,11 @@
         }
 
         function addIndicator() {
+            $('#noKpis').remove();
+
             var name = $('#name').val();
             var type = $('#type').val();
+            var chart = $('#chart').val();
 
             var id = `f${(~~(Math.random() * 1e8)).toString(16)}`;
 
@@ -140,26 +167,45 @@
                 name = 'KPI-' + id;
             }
 
-            document.getElementById('kpiList').innerHTML += '<p id="' +
-                id + '"><b>' + name + '</b> (' +
-                type + ') <button class="btn btn-danger btn-sm" onclick="$(\'#' + id + '\').remove();">Remove</button>' +
+            document.getElementById('kpiList').innerHTML += '<div id="' +
+                id + '" class="row kpiLine"><div class="col-8"><b>' + name + '</b> (' + type + ' - ' + chart + ') ' +
                 '<input type="hidden" id="name-' + id + '" value="' + name + '" />' +
                 '<input type="hidden" id="type-' + id + '" value="' + type + '" />' +
-                '<button class="btn btn-default btn-sm" onclick="$(\'#' + id +
+                '<input type="hidden" id="chart-' + id + '" value="' + chart + '" />' +
+                '</div><div class="col-4"><div class="btn-group"><button class="btn btn-default btn-sm" onclick="$(\'#' + id +
                 '\').insertBefore(document.getElementById(\'' + id + '\').previousSibling);">Up</button>' +
                 '<button class="btn btn-default btn-sm" onclick="$(\'#' + id +
                 '\').insertAfter(document.getElementById(\'' + id + '\').nextSibling);">Down</button>' +
-                '</p>';
+                '<button class="btn btn-danger btn-sm" onclick="removeKpi(\'' + id + '\');">Remove</button>' +
+                '</div></div></div>';
+
+            $('#name').val('');
+        }
+
+        function removeKpi(id) {
+            $('#' + id).remove();
+
+            if (document.getElementById('kpiList').childNodes.length === 1) {
+                $('#kpiList').append('<div class="alert alert-warning" id="noKpis">' +
+                    'No indicators added yet' +
+                    '</div>');
+            }
         }
 
         function drawDashboard() {
             var kpiList = document.getElementById('kpiList').childNodes;
             var indicators = [];
 
-            for (var i = 0; i < kpiList.length; i++) {
+            for (var i = 1; i < kpiList.length; i++) {
+                if (kpiList[i].id === 'noKpis') {
+                    break;
+                }
+
                 indicators.push({
+                    'id': kpiList[i].id,
                     'name': $('#name-' + kpiList[i].id).val(),
-                    'chart': types[$('#type-' + kpiList[i].id).val()]
+                    'type': $('#type-' + kpiList[i].id).val(),
+                    'chart': $('#chart-' + kpiList[i].id).val()
                 });
             }
 
@@ -170,6 +216,8 @@
 
             document.getElementById('dashboard').innerHTML = '<div class="row" id="row-' +
                 row + '"></div>';
+
+            var informativeness = 0;
 
             var capacity = 0;
 
@@ -186,7 +234,7 @@
 
                     if (row > $('#maxRows').val()) {
                         $('#message').append('<div class="alert alert-danger">' +
-                            'Rows limit exceeded! Increase the limit and try again.' +
+                            'Rows limit exceeded! Increase the limit and try again' +
                             '</div>');
                         break;
                     }
@@ -195,9 +243,23 @@
                 }
 
                 document.getElementById('row-' + row).innerHTML += '<div class="col-' + cols + '" id="block">' +
-                    name + '<br/><img src="' + link + '" id="chart" />' +
+                    name + ' (<b>' + indicators[kpi]['chart'] + '</b>' +
+                    ')<br/><img style="max-height: 200px;" src="' + link + '" id="chart" />' +
                     '</div>';
+
+                var actual = charts[indicators[kpi]['chart']]['weight'];
+                var expected = charts[getChart(types[indicators[kpi]['type']])]['weight'];
+
+                actual *= types[indicators[kpi]['type']].includes(indicators[kpi]['chart']) ? 1 : 0;
+
+                informativeness += (actual / expected);
             }
+
+            informativeness /= indicators.length;
+            informativeness = Math.round(informativeness * 100) / 100;
+            informativeness *= 100;
+
+            $('#informativeness').text(informativeness + '%');
 
             if (indicators.length === 0) {
                 $('#dashboard').append('<div class="alert alert-info">' +
