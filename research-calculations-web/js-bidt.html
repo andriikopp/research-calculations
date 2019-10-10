@@ -74,7 +74,13 @@
     <div>
         <p>
             <button class="btn btn-success col-sm-2" onclick="download('dashboard-template.html', 
-        document.getElementById('dashboard').innerHTML);">Download</button>
+            '<html><head>' + 
+            '<title>Template</title>' + 
+            '<link rel=\'stylesheet\' href=\'https:\/\/stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\'></button>' +
+            '<style>body { margin: 2%; } #block { border-style: dashed; border-color: lightgray; } #chart { max-width: 100%; }</style>' +
+            '</head><body><div class=\'container\'>' + 
+            document.getElementById('dashboard').innerHTML); +
+            '</div></body></html>'">Download</button>
         </p>
     </div>
 
@@ -279,8 +285,7 @@
                 var event = document.createEvent('MouseEvents');
                 event.initEvent('click', true, true);
                 pom.dispatchEvent(event);
-            }
-            else {
+            } else {
                 pom.click();
             }
         }
