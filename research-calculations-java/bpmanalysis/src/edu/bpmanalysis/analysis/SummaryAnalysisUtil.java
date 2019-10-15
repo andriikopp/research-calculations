@@ -1,19 +1,17 @@
-package edu.bpmanalysis.web.api;
+package edu.bpmanalysis.analysis;
 
-import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.*;
 
-public class SummaryAnalysisBean {
-    private Map<String, Integer> results = new LinkedHashMap<>();
+public class SummaryAnalysisUtil {
 
-    public SummaryAnalysisBean(ProcessModelRepository repository) {
+    public static Map<String, Integer> getSummaryAnalysisResults(ProcessModelRepository repository) {
+        Map<String, Integer> results = new LinkedHashMap<>();
+
         List<Model> models = new ArrayList<>();
 
         for (ProcessModelBean bean : repository.getProcessModels()) {
@@ -75,13 +73,7 @@ public class SummaryAnalysisBean {
         results.put("End events", invalidEndEvents);
         results.put("Mismatch", invalidMatching);
         results.put("ORs", invalidORGateways);
-    }
 
-    public Map<String, Integer> getResults() {
         return results;
-    }
-
-    public void setResults(Map<String, Integer> results) {
-        this.results = results;
     }
 }

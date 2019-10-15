@@ -129,28 +129,28 @@ public class ProcessModelAnalysisUtil {
                     (processModelAnalysisBean.getFunctions() > 7 || processModelAnalysisBean.getFunctions() < 1)) ||
                     (model.getModelType().equals(Model.ModelType.IDEF0) &&
                             (processModelAnalysisBean.getFunctions() > 6 || processModelAnalysisBean.getFunctions() < 3))) {
-                nodesChanges = NodesOneDimensionalReductionOptimization.optimization(model);
+                nodesChanges = NodesOptimization.optimization(model);
             } else {
                 if (processModelAnalysisBean.getFunctionsBalance() > 0) {
-                    functionsChanges = FunctionsOneDimensionalReductionOptimization.optimization(model);
+                    functionsChanges = FunctionsOptimization.optimization(model);
                 }
             }
         } else {
             if (processModelAnalysisBean.getSize() > 31 || processModelAnalysisBean.getFunctions() < 1 ||
                     processModelAnalysisBean.getStartEvents() != 1 || processModelAnalysisBean.getEndEvents() != 1 ||
                     processModelAnalysisBean.getOrConnectors() > 0) {
-                nodesChanges = NodesOneDimensionalReductionOptimization.optimization(model);
+                nodesChanges = NodesOptimization.optimization(model);
             } else {
                 if (processModelAnalysisBean.getConnectorsBalance() > 0) {
-                    connectorsChanges = ConnectorsOneDimensionalReductionOptimization.optimization(model);
+                    connectorsChanges = ConnectorsOptimization.optimization(model);
                 }
 
                 if (processModelAnalysisBean.getMismatch() > 0) {
-                    routingChanges = RoutingOneDimensionalReductionOptimization.optimization(model);
+                    routingChanges = RoutingOptimization.optimization(model);
                 }
 
                 if (processModelAnalysisBean.getFunctionsBalance() > 0) {
-                    functionsChanges = FunctionsOneDimensionalReductionOptimization.optimization(model);
+                    functionsChanges = FunctionsOptimization.optimization(model);
                 }
             }
         }

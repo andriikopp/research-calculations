@@ -3,7 +3,6 @@ package edu.bpmanalysis.analysis;
 import edu.bpmanalysis.analysis.balance.ConnectorsBalance;
 import edu.bpmanalysis.analysis.balance.FunctionsBalance;
 import edu.bpmanalysis.analysis.model.EvaluationUtil;
-import edu.bpmanalysis.analysis.model.PredictionModel;
 import edu.bpmanalysis.description.tools.Model;
 
 public class IndicatorsUtil {
