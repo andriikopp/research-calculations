@@ -107,23 +107,23 @@
                 'viz': 'https://datavizproject.com/wp-content/uploads/2015/10/DVP-22.png',
                 'weight': 0.11
             },
-            'number': {
+            /*'number': {
                 'cols': 1,
                 'viz': 'https://datavizproject.com/wp-content/uploads/2016/01/DVP_101_200-17.png',
                 'weight': 0.09
-            },
+            },*/
             'sparkline': {
                 'cols': 2,
                 'viz': 'https://datavizproject.com/wp-content/uploads/2016/06/DVP_101_200-08.png',
                 'weight': 0.1
             },
-            'bullet': {
+            /*'bullet': {
                 'cols': 3,
                 'viz': 'https://datavizproject.com/wp-content/uploads/2016/06/DVP_1_100-52.png',
                 'weight': 0.12
-            },
+            },*/
             'gauge': {
-                'cols': 4,
+                'cols': 2,
                 'viz': 'https://datavizproject.com/wp-content/uploads/2015/10/DVP-42.png',
                 'weight': 0.06
             }
@@ -136,8 +136,8 @@
         var types = {
             'categories': ['bar', 'pie'],
             'distribution': ['line', 'scatter'],
-            'value': ['number', 'sparkline'],
-            'comparison': ['bullet', 'gauge']
+            'value': [/*'number', */'sparkline'],
+            'comparison': [/*'bullet', */'gauge']
         };
 
         function proposeChart(typeSelect) {
@@ -249,8 +249,8 @@
                 }
 
                 document.getElementById('row-' + row).innerHTML += '<div class="col-' + cols + '" id="block">' +
-                    name + ' (<b>' + indicators[kpi]['chart'] + '</b>' +
-                    ')<br/><img style="max-height: 200px;" src="' + link + '" id="chart" />' +
+                    name + '<br/>(<b>' + indicators[kpi]['chart'] + '</b>' +
+                    ')<br/><iframe src="charts/' + indicators[kpi]['chart'] + '.html" style="max-width: 100%; min-width: 100%; min-height: 230px;">' +
                     '</div>';
 
                 var actual = charts[indicators[kpi]['chart']]['weight'];
