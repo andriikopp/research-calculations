@@ -14,11 +14,19 @@ To run the software you need to clone it from this repository and follow the ste
 
 4. To use interactive dashboards, open the BPMAI_Dashboard.pbix in Power BI Desktop (it can be than published to Power BI cloud service).
 
+At the research-calculations-java/processModelsStorage/test_models/ you can find a set of test models (IDEF0, BPMN, DFD, EPC) for BPMAI software evaluation
+
 # BPMAI_Dashboard.pbix
 Power BI dashboards used to display results provide by the BPMAI software
 
-# research-calculations-java/processModelsStorage/test_models/
-A set of test models (IDEF0, BPMN, DFD, EPC) for BPMAI software evaluation
+# research-calculations-web
+Pure JavaScript lightweight solutions in the related field of research
+
+1. JS-BPMAI is a tool for BPMN models analysis.
+
+2. JS-BIDT is a tool for BI (Business Intelligence) dashboards design and templating.
 
 # research-calculations-* (NOT RELEVANT)
 Related solutions/calculations in other languages, prototypes, algorithms test, etc.
+
+Not worth your attention.
