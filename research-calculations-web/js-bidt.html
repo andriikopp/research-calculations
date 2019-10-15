@@ -144,6 +144,24 @@
             document.getElementById('chart').value = getChart(types[typeSelect.value]);
         }
 
+        function evaluateChart(selectedChart) {
+            var kpiId = selectedChart.id.split('-')[1];
+
+            var type = $('#type-' + kpiId).val();
+            var chart = $('#chart-' + kpiId).val();
+
+            var actual = charts[chart]['weight'];
+            var expected = charts[getChart(types[type])]['weight'];
+
+            actual *= types[type].includes(chart) ? 1 : 0;
+
+            var informativeness = (actual / expected);
+            informativeness = Math.round(informativeness * 100) / 100;
+            informativeness *= 100;
+
+            $('#eval-' + kpiId).text(informativeness + '%');
+        }
+
         function getChart(possibleCharts) {
             var max = -1;
             var chart = '';
@@ -173,19 +191,34 @@
                 name = 'KPI-' + id;
             }
 
-            document.getElementById('kpiList').innerHTML += '<div id="' +
-                id + '" class="row kpiLine"><div class="col-8"><b>' + name + '</b> (' + type + ' - ' + chart + ') ' +
+            var actual = charts[chart]['weight'];
+            var expected = charts[getChart(types[type])]['weight'];
+
+            actual *= types[type].includes(chart) ? 1 : 0;
+
+            var informativeness = (actual / expected);
+            informativeness = Math.round(informativeness * 100) / 100;
+            informativeness *= 100;
+
+            $('#kpiList').append('<div id="' + id + '" class="row kpiLine form-inline"><div class="col-8"><b>' + name + '</b> (' + type + ') ' +
                 '<input type="hidden" id="name-' + id + '" value="' + name + '" />' +
                 '<input type="hidden" id="type-' + id + '" value="' + type + '" />' +
-                '<input type="hidden" id="chart-' + id + '" value="' + chart + '" />' +
+                '<select id="chart-' + id + '" class="form-control form-control-sm" onchange="evaluateChart(this);"></select>' +
+                ' informativeness: <kbd id="eval-' + id + '">' + informativeness + '%</kbd>' +
                 '</div><div class="col-4"><div class="btn-group"><button class="btn btn-default btn-sm" onclick="$(\'#' + id +
                 '\').insertBefore(document.getElementById(\'' + id + '\').previousSibling);">Up</button>' +
                 '<button class="btn btn-default btn-sm" onclick="$(\'#' + id +
                 '\').insertAfter(document.getElementById(\'' + id + '\').nextSibling);">Down</button>' +
                 '<button class="btn btn-danger btn-sm" onclick="removeKpi(\'' + id + '\');">Remove</button>' +
-                '</div></div></div>';
+                '</div></div></div>');
 
             $('#name').val('');
+
+            Object.keys(charts).forEach(function (key, index) {
+                document.getElementById('chart-' + id).innerHTML += '<option value="' + key + '">' + key + '</option>';
+            });
+
+            document.getElementById('chart-' + id).value = chart;
         }
 
         function removeKpi(id) {
@@ -202,7 +235,7 @@
             var kpiList = document.getElementById('kpiList').childNodes;
             var indicators = [];
 
-            for (var i = 1; i < kpiList.length; i++) {
+            for (var i = 2; i < kpiList.length; i++) {
                 if (kpiList[i].id === 'noKpis') {
                     break;
                 }
@@ -250,7 +283,8 @@
 
                 document.getElementById('row-' + row).innerHTML += '<div class="col-' + cols + '" id="block">' +
                     name + '<br/>(<b>' + indicators[kpi]['chart'] + '</b>' +
-                    ')<br/><iframe src="charts/' + indicators[kpi]['chart'] + '.html" style="max-width: 100%; min-width: 100%; min-height: 230px;">' +
+                    ')<br/><iframe src="charts/' + indicators[kpi]['chart'] + '.html" frameBorder="0"' +
+                    ' style="max-width: 100%; min-width: 100%; min-height: 230px;">' +
                     '</div>';
 
                 var actual = charts[indicators[kpi]['chart']]['weight'];
