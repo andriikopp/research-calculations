@@ -6,16 +6,6 @@ import java.util.*;
 
 public class RecommendationsUtil {
 
-    public static void transformGuidelines(ProcessModelAnalysisBean processModelAnalysisBean) {
-        for (int i = 0; i < processModelAnalysisBean.getGuidelines().length; i++) {
-            double value = processModelAnalysisBean.getGuidelines()[i];
-
-            if (value < 1) {
-                processModelAnalysisBean.getGuidelines()[i] = -1;
-            }
-        }
-    }
-
     public static List<String> generateRecommendations(ProcessModelAnalysisBean processModelAnalysisBean) {
         List<String> recommendations = new ArrayList<>();
 

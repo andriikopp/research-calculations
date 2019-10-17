@@ -8,8 +8,6 @@ public interface AnalysisResultsRepository {
 
     void addAnalysisResult(ProcessModelAnalysisBean processModelAnalysisBean);
 
-    List<ProcessModelAnalysisBean> getAnalysisResults(String userName);
-
     List<ProcessModelAnalysisBean> getAnalysisResults();
 
     ProcessModelAnalysisBean getAnalysisResult(String id);

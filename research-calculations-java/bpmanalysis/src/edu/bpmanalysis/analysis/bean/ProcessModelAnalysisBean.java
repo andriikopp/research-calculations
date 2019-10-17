@@ -42,9 +42,6 @@ public class ProcessModelAnalysisBean {
     private Map<String, String> similarModels;
 
     private double quality;
-    private double hasErrors;
-
-    private String userName;
 
     @Override
     public String toString() {
@@ -69,12 +66,10 @@ public class ProcessModelAnalysisBean {
                 ", connectorsChanges=" + connectorsChanges +
                 ", routingChanges=" + routingChanges +
                 ", functionsChanges=" + functionsChanges +
-                ", recommendations='" + recommendations + '\'' +
                 ", guidelines=" + Arrays.toString(guidelines) +
+                ", recommendations=" + recommendations +
                 ", similarModels=" + similarModels +
                 ", quality=" + quality +
-                ", hasErrors=" + hasErrors +
-                ", userName='" + userName + '\'' +
                 '}';
     }
 
@@ -94,7 +89,6 @@ public class ProcessModelAnalysisBean {
         if (Double.compare(that.mismatch, mismatch) != 0) return false;
         if (orConnectors != that.orConnectors) return false;
         if (Double.compare(that.quality, quality) != 0) return false;
-        if (Double.compare(that.hasErrors, hasErrors) != 0) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (timeStamp != null ? !timeStamp.equals(that.timeStamp) : that.timeStamp != null) return false;
@@ -104,18 +98,16 @@ public class ProcessModelAnalysisBean {
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (fileName != null ? !fileName.equals(that.fileName) : that.fileName != null) return false;
         if (!Arrays.equals(nodesChanges, that.nodesChanges)) return false;
-        if (!Arrays.equals(guidelines, that.guidelines)) return false;
         if (connectorsChanges != null ? !connectorsChanges.equals(that.connectorsChanges) : that.connectorsChanges != null)
             return false;
         if (routingChanges != null ? !routingChanges.equals(that.routingChanges) : that.routingChanges != null)
             return false;
         if (functionsChanges != null ? !functionsChanges.equals(that.functionsChanges) : that.functionsChanges != null)
             return false;
+        if (!Arrays.equals(guidelines, that.guidelines)) return false;
         if (recommendations != null ? !recommendations.equals(that.recommendations) : that.recommendations != null)
             return false;
-        if (similarModels != null ? !similarModels.equals(that.similarModels) : that.similarModels != null)
-            return false;
-        return userName != null ? userName.equals(that.userName) : that.userName == null;
+        return similarModels != null ? similarModels.equals(that.similarModels) : that.similarModels == null;
     }
 
     @Override
@@ -142,17 +134,14 @@ public class ProcessModelAnalysisBean {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + orConnectors;
         result = 31 * result + Arrays.hashCode(nodesChanges);
-        result = 31 * result + Arrays.hashCode(guidelines);
         result = 31 * result + (connectorsChanges != null ? connectorsChanges.hashCode() : 0);
         result = 31 * result + (routingChanges != null ? routingChanges.hashCode() : 0);
         result = 31 * result + (functionsChanges != null ? functionsChanges.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(guidelines);
         result = 31 * result + (recommendations != null ? recommendations.hashCode() : 0);
         result = 31 * result + (similarModels != null ? similarModels.hashCode() : 0);
         temp = Double.doubleToLongBits(quality);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(hasErrors);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (userName != null ? userName.hashCode() : 0);
         return result;
     }
 
@@ -316,6 +305,14 @@ public class ProcessModelAnalysisBean {
         this.functionsChanges = functionsChanges;
     }
 
+    public double[] getGuidelines() {
+        return guidelines;
+    }
+
+    public void setGuidelines(double[] guidelines) {
+        this.guidelines = guidelines;
+    }
+
     public List<String> getRecommendations() {
         return recommendations;
     }
@@ -338,29 +335,5 @@ public class ProcessModelAnalysisBean {
 
     public void setQuality(double quality) {
         this.quality = quality;
-    }
-
-    public double getHasErrors() {
-        return hasErrors;
-    }
-
-    public void setHasErrors(double hasErrors) {
-        this.hasErrors = hasErrors;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public double[] getGuidelines() {
-        return guidelines;
-    }
-
-    public void setGuidelines(double[] guidelines) {
-        this.guidelines = guidelines;
     }
 }

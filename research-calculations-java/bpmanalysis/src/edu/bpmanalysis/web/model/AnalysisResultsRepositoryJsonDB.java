@@ -5,7 +5,6 @@ import edu.bpmanalysis.web.model.api.AnalysisResultsRepository;
 import io.jsondb.JsonDBTemplate;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AnalysisResultsRepositoryJsonDB implements AnalysisResultsRepository {
     private JsonDBTemplate jsonDBTemplate;
@@ -22,14 +21,6 @@ public class AnalysisResultsRepositoryJsonDB implements AnalysisResultsRepositor
     @Override
     public void addAnalysisResult(ProcessModelAnalysisBean processModelAnalysisBean) {
         jsonDBTemplate.insert(processModelAnalysisBean);
-    }
-
-    @Override
-    public List<ProcessModelAnalysisBean> getAnalysisResults(String userName) {
-        return jsonDBTemplate.findAll(ProcessModelAnalysisBean.class)
-                .stream()
-                .filter(x -> x.getUserName().equals(userName))
-                .collect(Collectors.toList());
     }
 
     @Override

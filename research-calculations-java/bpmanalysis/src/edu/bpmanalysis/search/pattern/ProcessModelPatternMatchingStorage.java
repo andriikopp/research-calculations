@@ -9,10 +9,6 @@ import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphNodeBean;
 import org.apache.jena.rdf.model.*;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,27 +18,9 @@ public class ProcessModelPatternMatchingStorage {
 
     public static final String URI_PREFIX = "http://";
 
-    public static final String GRAPH_FILE = "processModelsStorage/graph.rdf";
-
     public static void loadModels(ProcessModelRepository processModelRepository) {
-        try {
-            model.read(new FileInputStream(GRAPH_FILE), null, "NT");
-
-            System.err.println("Graph loaded");
-        } catch (FileNotFoundException readException) {
-            System.err.println("Graph loading is failed");
-
-            for (ProcessModelBean processModelBean : processModelRepository.getProcessModels()) {
-                addModel(processModelBean);
-            }
-
-            try {
-                model.write(new FileWriter(GRAPH_FILE), "NT");
-            } catch (IOException writeException) {
-                throw new RuntimeException(writeException);
-            }
-
-            System.err.println("Graph stored");
+        for (ProcessModelBean processModelBean : processModelRepository.getProcessModels()) {
+            addModel(processModelBean);
         }
     }
 

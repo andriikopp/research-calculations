@@ -1,5 +1,7 @@
 package edu.bpmanalysis.description;
 
+import edu.bpmanalysis.config.Configuration;
+import edu.bpmanalysis.web.BPMAIApplication;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphBean;
@@ -12,6 +14,8 @@ import org.camunda.bpm.model.bpmn.instance.*;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.camunda.bpm.model.xml.type.ModelElementType;
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +45,7 @@ public class ProcessModelImportUtil {
                 String fileExtension = splitFileName[splitFileName.length - 1];
 
                 if (fileExtension.equals("idef0")) {
-                    System.out.println(file.getName());
+                    System.out.printf("File '%s' processed\n", file.getName());
 
                     try {
                         BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
@@ -179,7 +183,7 @@ public class ProcessModelImportUtil {
 
                         repository.addProcessModel(processModelBean);
                     } catch (RuntimeException e) {
-                        System.err.printf("%s cannot be parsed\n", file.getName());
+                        System.err.printf("File '%s' cannot be processed\n", file.getName());
                     }
                 }
             }
@@ -197,7 +201,7 @@ public class ProcessModelImportUtil {
                 String fileExtension = splitFileName[splitFileName.length - 1];
 
                 if (fileExtension.equals("dfd")) {
-                    System.out.println(file.getName());
+                    System.out.printf("File '%s' processed\n", file.getName());
 
                     try {
                         BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
@@ -414,34 +418,7 @@ public class ProcessModelImportUtil {
 
                         repository.addProcessModel(processModelBean);
                     } catch (RuntimeException e) {
-                        System.err.printf("%s cannot be parsed\n", file.getName());
-                    }
-                }
-            }
-        }
-    }
-
-    public static void importDiagramImages(String extension) {
-        File folder;
-        folder = new File(PATH_TO_BPMN_MODELS);
-        File[] listOfFiles = folder.listFiles();
-
-        for (File file : listOfFiles) {
-            if (file.isFile()) {
-                String[] splitFileName = file.getName().split("\\.");
-                String fileExtension = splitFileName[splitFileName.length - 1];
-
-                if (fileExtension.equals(extension)) {
-                    String srcFilePath = PATH_TO_BPMN_MODELS + file.getName();
-                    String destFilePath = "bpmanalysis/src/main/resources/web/images/" + file.getName();
-
-                    File srcFile = new File(srcFilePath);
-                    File destFile = new File(destFilePath);
-
-                    try {
-                        FileUtils.copyFile(srcFile, destFile);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        System.err.printf("File '%s' cannot be processed\n", file.getName());
                     }
                 }
             }
@@ -477,17 +454,6 @@ public class ProcessModelImportUtil {
         File jsonModelsFile = new File("processModelsStorage/processModels.json");
         jsonModelsFile.delete();
 
-        File rdfGraphFile = new File("processModelsStorage/graph.rdf");
-        rdfGraphFile.delete();
-
-        File imagesFolder = new File("bpmanalysis/src/main/resources/web/images");
-
-        try {
-            FileUtils.deleteDirectory(imagesFolder);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         File modelsFolder = new File("bpmanalysis/src/main/resources/web/models");
 
         try {
@@ -496,7 +462,14 @@ public class ProcessModelImportUtil {
             throw new RuntimeException(e);
         }
 
-        new File("bpmanalysis/src/main/resources/web/images").mkdirs();
+        Sql2o sql2o = Configuration.DB_CREDENTIALS;
+
+        try (Connection connection = sql2o.open()) {
+            connection.createQuery("insert into d_time (time_id, t_day, t_month, t_year) " +
+                    "values (:idParam, DAY(NOW()), MONTH(NOW()), YEAR(NOW()))")
+                    .addParameter("idParam", BPMAIApplication.TIME_STAMP_ID)
+                    .executeUpdate();
+        }
     }
 
     public static String getNodeTypeByBPMNType(String type) {
@@ -557,7 +530,7 @@ public class ProcessModelImportUtil {
                 String fileExtension = splitFileName[splitFileName.length - 1];
 
                 if (fileExtension.equals(extension)) {
-                    System.out.println(file.getName());
+                    System.out.printf("File '%s' processed\n", file.getName());
 
                     try {
                         BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
@@ -678,7 +651,7 @@ public class ProcessModelImportUtil {
                             repository.addProcessModel(processModelBean);
                         }
                     } catch (RuntimeException e) {
-                        System.err.printf("%s cannot be parsed\n", file.getName());
+                        System.err.printf("File '%s' cannot be processed\n", file.getName());
                     }
                 }
             }

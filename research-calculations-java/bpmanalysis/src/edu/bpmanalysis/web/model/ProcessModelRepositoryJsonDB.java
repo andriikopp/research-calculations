@@ -24,25 +24,7 @@ public class ProcessModelRepositoryJsonDB implements ProcessModelRepository {
     }
 
     @Override
-    public ProcessModelBean getProcessModel(String id) {
-        return jsonDBTemplate.findById(id, ProcessModelBean.class);
-    }
-
-    @Override
     public void addProcessModel(ProcessModelBean processModelBean) {
         jsonDBTemplate.insert(processModelBean);
-    }
-
-    @Override
-    public void deleteProcessModel(String id) {
-        ProcessModelBean processModelBean = new ProcessModelBean();
-        processModelBean.setId(id);
-
-        jsonDBTemplate.remove(processModelBean, ProcessModelBean.class);
-    }
-
-    @Override
-    public void updateProcessModel(ProcessModelBean processModelBean) {
-        jsonDBTemplate.upsert(processModelBean);
     }
 }

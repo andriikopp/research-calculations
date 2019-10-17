@@ -3,6 +3,7 @@ package edu.bpmanalysis.web;
 import com.google.gson.Gson;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.analysis.RecommendationsUtil;
+import edu.bpmanalysis.analysis.SummaryAnalysisUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.analysis.model.EvaluationUtil;
 import edu.bpmanalysis.config.Configuration;
@@ -10,11 +11,13 @@ import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.partition.ProcessModelAnalysisResultsPartition;
 import edu.bpmanalysis.search.pattern.ProcessModelPatternMatchingStorage;
-import edu.bpmanalysis.analysis.SummaryAnalysisUtil;
-import edu.bpmanalysis.web.model.AnalysisResultsRepositoryJsonDB;
-import edu.bpmanalysis.web.model.ProcessModelRepositoryJsonDB;
+import edu.bpmanalysis.web.model.AnalysisResultsRepositoryMySQL;
+import edu.bpmanalysis.web.model.PartitionRepositoryMySQL;
+import edu.bpmanalysis.web.model.RecommendationsRepositoryMySQL;
 import edu.bpmanalysis.web.model.api.AnalysisResultsRepository;
+import edu.bpmanalysis.web.model.api.PartitionRepository;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
+import edu.bpmanalysis.web.model.api.RecommendationsRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 
 import java.awt.*;
@@ -22,17 +25,19 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static spark.Spark.*;
 
 public class BPMAIApplication {
+    public static final String TIME_STAMP_ID = UUID.randomUUID().toString();
 
     public static void main(String[] args) {
         if (Configuration.LOAD_MODELS_BEFORE_START) {
             ProcessModelImportUtil.cleanRepository();
         }
 
-        ProcessModelRepository processModelRepository = new ProcessModelRepositoryJsonDB();
+        ProcessModelRepository processModelRepository = Configuration.MODEL_STORAGE;
 
         if (Configuration.LOAD_MODELS_BEFORE_START) {
             ProcessModelImportUtil.importModelsFromBPMNDocuments(processModelRepository);
@@ -46,10 +51,18 @@ public class BPMAIApplication {
         ProcessModelPatternMatchingStorage.loadModels(processModelRepository);
         ProcessModelAnalysisResultsPartition.partitionModels(processModelRepository);
 
-        AnalysisResultsRepository analysisResultsRepository = new AnalysisResultsRepositoryJsonDB();
+        AnalysisResultsRepository analysisResultsRepository = Configuration.ANALYSIS_STORAGE;
+        RecommendationsRepository recommendationsRepository = null;
+        PartitionRepository partitionRepository = null;
+
+        if (analysisResultsRepository instanceof AnalysisResultsRepositoryMySQL) {
+            recommendationsRepository = new RecommendationsRepositoryMySQL();
+            partitionRepository = new PartitionRepositoryMySQL();
+        }
 
         for (ProcessModelBean processModelBean : processModelRepository.getProcessModels()) {
             Model model = ProcessModelAnalysisUtil.transformToModel(processModelBean);
+
             ProcessModelAnalysisBean processModelAnalysisBean = ProcessModelAnalysisUtil.analyzeModel(model);
 
             processModelAnalysisBean.setTimeStamp(new Timestamp(System.currentTimeMillis()).toString());
@@ -58,17 +71,18 @@ public class BPMAIApplication {
             processModelAnalysisBean.setGraph(processModelBean.getGraph());
             processModelAnalysisBean.setDescription(processModelBean.getDescription());
             processModelAnalysisBean.setFileName(processModelBean.getFileName());
-
             processModelAnalysisBean.setRecommendations(RecommendationsUtil
                     .generateRecommendations(processModelAnalysisBean));
-
             processModelAnalysisBean.setGraph(ProcessModelPatternMatchingStorage
                     .getGraph(model.getId()).getGraph());
-
             processModelAnalysisBean.setGuidelines(EvaluationUtil.checkGuidelines(model));
-            RecommendationsUtil.transformGuidelines(processModelAnalysisBean);
 
             analysisResultsRepository.addAnalysisResult(processModelAnalysisBean);
+
+            if (analysisResultsRepository instanceof AnalysisResultsRepositoryMySQL) {
+                recommendationsRepository.addRecommendations(processModelAnalysisBean);
+                partitionRepository.addPartition(processModelAnalysisBean);
+            }
         }
 
         List<Model> models = new ArrayList<>();
@@ -89,20 +103,20 @@ public class BPMAIApplication {
             get("/bpmai/api/model/:id", (req, res) ->
                     new Gson().toJson(analysisResultsRepository.getAnalysisResult(req.params(":id"))));
             get("/bpmai/api/partition", (req, res) ->
-                    new Gson().toJson(ProcessModelAnalysisResultsPartition.getModelsClusters()));
+                    new Gson().toJson(ProcessModelAnalysisResultsPartition.getModelGroups()));
         });
 
-        System.err.println();
-        System.err.println(
-                        "▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
+        System.out.println();
+        System.out.println(
+                "▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
                         "▒█▀▀▄ ▒█▄▄█ ▒█▒█▒█ ▒█▄▄█ ▒█░ 　 ░▒█░░ ▒█░░▒█ ▒█░░▒█ ▒█░░░ \n" +
                         "▒█▄▄█ ▒█░░░ ▒█░░▒█ ▒█░▒█ ▄█▄ 　 ░▒█░░ ▒█▄▄▄█ ▒█▄▄▄█ ▒█▄▄█");
-        System.err.println();
-        System.err.println("API is now serving at http://localhost:4567/bpmai/api/");
-        System.err.println("Use /models to access all process models");
-        System.err.println("Use /model/<MODEL_ID> to access a specific process model");
-        System.err.println("Use /partition to access the models partition results");
-        System.err.println();
+        System.out.println();
+        System.out.println("API is now serving at http://localhost:4567/bpmai/api/");
+        System.out.println("Use /models to access all process models");
+        System.out.println("Use /model/<MODEL_ID> to access a specific process model");
+        System.out.println("Use /partition to access the models partition results");
+        System.out.println();
 
         try {
             Desktop.getDesktop().browse(new URL("http://localhost:4567/bpmai.html").toURI());

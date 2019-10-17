@@ -49,6 +49,11 @@ public class ProcessModelAnalysisResultsPartition {
 
     public static String getModelDescription(Model model) {
         double[] modelDescriptionArray = EvaluationUtil.checkGuidelines(model);
+
+        return getModelDescriptionFromArray(modelDescriptionArray);
+    }
+
+    public static String getModelDescriptionFromArray(double[] modelDescriptionArray) {
         String modelDescription = "";
 
         for (double property : modelDescriptionArray) {
@@ -68,55 +73,59 @@ public class ProcessModelAnalysisResultsPartition {
         return features;
     }
 
-    public static Map<String, Integer> getModelsClusters() {
+    public static String getGroupDescription(String group) {
+        double[] features = getModelDescriptionArray(group);
+
+        String result = "";
+
+        if (features[0] == 0) {
+            result += "Elements";
+        }
+
+        if (features[1] == 0) {
+            if (result.isEmpty()) {
+                result += "Degrees";
+            } else {
+                result += ", degrees";
+            }
+        }
+
+        if (features[2] == 0) {
+            if (result.isEmpty()) {
+                result += "Events";
+            } else {
+                result += ", events";
+            }
+        }
+
+        if (features[3] == 0) {
+            if (result.isEmpty()) {
+                result += "Mismatch";
+            } else {
+                result += ", mismatch";
+            }
+        }
+
+        if (features[4] == 0) {
+            if (result.isEmpty()) {
+                result += "ORs";
+            } else {
+                result += ", ORs";
+            }
+        }
+
+        if (result.isEmpty()) {
+            result += "Correct models";
+        }
+
+        return result;
+    }
+
+    public static Map<String, Integer> getModelGroups() {
         Map<String, Integer> results = new LinkedHashMap<>();
 
         for (Map.Entry<String, List<Model>> entry : clusters.entrySet()) {
-            double[] features = getModelDescriptionArray(entry.getKey());
-
-            String categoryName = "";
-
-            if (features[0] == 0) {
-                categoryName += "Elements";
-            }
-
-            if (features[1] == 0) {
-                if (categoryName.isEmpty()) {
-                    categoryName += "Degrees";
-                } else {
-                    categoryName += ", degrees";
-                }
-            }
-
-            if (features[2] == 0) {
-                if (categoryName.isEmpty()) {
-                    categoryName += "Events";
-                } else {
-                    categoryName += ", events";
-                }
-            }
-
-            if (features[3] == 0) {
-                if (categoryName.isEmpty()) {
-                    categoryName += "Mismatch";
-                } else {
-                    categoryName += ", mismatch";
-                }
-            }
-
-            if (features[4] == 0) {
-                if (categoryName.isEmpty()) {
-                    categoryName += "ORs";
-                } else {
-                    categoryName += ", ORs";
-                }
-            }
-
-            if (categoryName.isEmpty()) {
-                categoryName += "Correct models";
-            }
-
-            results.put(categoryName, entry.getValue().size());
+            results.put(getGroupDescription(entry.getKey()), entry.getValue().size());
         }
 
         return results;

@@ -7,12 +7,6 @@ import java.util.List;
 public interface ProcessModelRepository {
 
     List<ProcessModelBean> getProcessModels();
-
-    ProcessModelBean getProcessModel(String id);
-
+    
     void addProcessModel(ProcessModelBean processModelBean);
-
-    void deleteProcessModel(String id);
-
-    void updateProcessModel(ProcessModelBean processModelBean);
 }
