@@ -1,7 +1,9 @@
 research-calculations-cs/pmmining/bin
 research-calculations-cs/pmmining/obj
 
-research-calculations-python/
+research-calculations-python/venv/
+research-calculations-python/.idea/
+research-calculations-python/__pycache__/
 
 *.lnk
 
