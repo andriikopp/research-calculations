@@ -60,10 +60,14 @@ for path in templates:
     for pt in unique_points:
         # show found areas on the image
         cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), path[3], 2)
+
+        # put text to display the type of found connector (xor, or, and)
+        cv2.putText(img_rgb, path[0], (pt[0] + w, pt[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, path[3], 2)
+
         path[1] += 1
 
 # store processed image
-cv2.imwrite('result.png',img_rgb)
+cv2.imwrite('result.png', img_rgb)
 
 print('Detected connectors:')
 
