@@ -8,29 +8,36 @@ input_dir = 'input'
 # read process diagram file names
 diagrams = os.listdir(input_dir)
 
+# for OpenCV template matching
+threshold = 0.9
+
+# color of the found template
+matching_color = (0, 0, 255)
+
 # iterate over all input diagrams
 for diagram in diagrams:
     print('Diagram file name\t' + diagram)
 
-    # open source process diagram and make it gray
+    # open source process diagram, make it gray, and blur it
     img_rgb = cv2.imread(input_dir + '/' + diagram)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    img_gray = cv2.GaussianBlur(img_gray, (3, 3), 0)
 
     # templates for matching
     # each has name, number of occurrence, path, color
     templates = [
-        ['xor', 0, 'xor.png', (0, 255, 0)],
-        ['or', 0, 'or.png', (0, 0, 255)],
-        ['and', 0, 'and.png', (255, 0, 0)]
+        ['xor', 0, 'xor.png'],
+        ['or', 0, 'or.png'],
+        ['and', 0, 'and.png'],
+        ['function', 0, 'function.png'],
+        ['event', 0, 'event.png']
     ]
 
-    # for OpenCV template matching
-    threshold = 0.9
-
     for path in templates:
-        # open template image and make it gray
+        # open template image, make it gray, and blur it
         template = cv2.imread('templates/' + path[2])
         template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+        template = cv2.GaussianBlur(template, (3, 3), 0)
 
         # get width and height of the template
         w, h = template.shape[::-1]
@@ -64,37 +71,31 @@ for diagram in diagrams:
 
         for pt in unique_points:
             # show found areas on the image
-            cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), path[3], 2)
+            cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), matching_color, 2)
 
-            # put text to display the type of found connector (xor, or, and)
-            cv2.putText(img_rgb, path[0], (pt[0] + w, pt[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, path[3], 2)
+            # put text to display the type of found element
+            cv2.putText(img_rgb, path[0], (pt[0] + w, pt[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.7, matching_color, 2)
 
             path[1] += 1
+
+    # store processed image
+    cv2.imwrite('output/' + diagram, img_rgb)
 
     # print found templates
     for path in templates:
         print(path[0] + '\t' + str(path[1]))
 
-    # get values of certain connector numbers
-    cfc_xor = templates[0][1] * 2
-    cfc_or = templates[1][1] * 4
-    cfc_and = templates[2][1]
-
-    # color of the info
-    info_font_color = (0, 0, 0)
-
-    # display control-flow complexity indicators (xor, or, and) on the image
-    cv2.putText(img_rgb, 'CFC_xor = ' + str(cfc_xor), (20, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, info_font_color, 2)
-    cv2.putText(img_rgb, 'CFC_or = ' + str(cfc_or), (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.7, info_font_color, 2)
-    cv2.putText(img_rgb, 'CFC_and = ' + str(cfc_and), (20, 75), cv2.FONT_HERSHEY_SIMPLEX, 0.7, info_font_color, 2)
+    # get values of certain metric numbers
+    xor_conns = templates[0][1]
+    or_conns = templates[1][1]
+    and_conns = templates[2][1]
+    functions = templates[3][1]
+    events = templates[4][1]
 
     # calculate the general control-flow complexity coefficient
-    cfc_general = cfc_xor + cfc_or + cfc_and
+    cfc_general = xor_conns * 2 + or_conns * 4 + and_conns
 
     print('Control-flow complexity\t' + str(cfc_general))
-
-    # display control-flow complexity on the image
-    cv2.putText(img_rgb, 'CFC = ' + str(cfc_general), (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.7, info_font_color, 2)
 
     # there are 5 levels of understandability of process models
     # 1 is the best, 5 is the worst
@@ -128,9 +129,3 @@ for diagram in diagrams:
 
     print('Level of understandability\t' + str(level))
 
-    # display understandability level on the image
-    cv2.putText(img_rgb, 'Understandability level = ' + str(level), (20, 125),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, info_font_color, 2)
-
-    # store processed image
-    cv2.imwrite('output/' + diagram, img_rgb)
