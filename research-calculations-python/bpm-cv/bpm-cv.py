@@ -16,8 +16,6 @@ matching_color = (0, 0, 255)
 
 # iterate over all input diagrams
 for diagram in diagrams:
-    print('Diagram file name\t' + diagram)
-
     # open source process diagram, make it gray, and blur it
     img_rgb = cv2.imread(input_dir + '/' + diagram)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
@@ -26,11 +24,18 @@ for diagram in diagrams:
     # templates for matching
     # each has name, number of occurrence, path, color
     templates = [
+        # nodes templates
         ['xor', 0, 'xor.png'],
         ['or', 0, 'or.png'],
         ['and', 0, 'and.png'],
         ['function', 0, 'function.png'],
-        ['event', 0, 'event.png']
+        ['event', 0, 'event.png'],
+
+        # arcs templates
+        ['arc-down', 0, 'arc-down.png'],
+        ['arc-up', 0, 'arc-up.png'],
+        ['arc-right', 0, 'arc-right.png'],
+        ['arc-left', 0, 'arc-left.png']
     ]
 
     for path in templates:
@@ -81,51 +86,20 @@ for diagram in diagrams:
     # store processed image
     cv2.imwrite('output/' + diagram, img_rgb)
 
-    # print found templates
-    for path in templates:
-        print(path[0] + '\t' + str(path[1]))
-
-    # get values of certain metric numbers
+    # get values of certain metric
     xor_conns = templates[0][1]
     or_conns = templates[1][1]
     and_conns = templates[2][1]
     functions = templates[3][1]
     events = templates[4][1]
+    arcs = templates[5][1] + templates[6][1] + templates[7][1] + templates[8][1]
 
-    # calculate the general control-flow complexity coefficient
-    cfc_general = xor_conns * 2 + or_conns * 4 + and_conns
+    # total number of nodes
+    nodes = functions + events + xor_conns + or_conns + and_conns
 
-    print('Control-flow complexity\t' + str(cfc_general))
+    # total number of connectors
+    connectors = xor_conns + or_conns + and_conns
 
-    # there are 5 levels of understandability of process models
-    # 1 is the best, 5 is the worst
-    fuzzy_levels = []
-
-    # threshold values of (xor, or, and) connectors
-    # to check correspondence of a model to a certain level
-    cfc_thresholds = [
-        [6, 1, 1],
-        [12, 2, 1],
-        [22, 6, 3],
-        [31, 9, 4],
-        [46, 14, 7]
-    ]
-
-    # used to store correspondence of the diagram to each level
-    fuzzy_levels = []
-
-    for level in range(0, len(cfc_thresholds)):
-        fuzzy_values = []
-
-        # calculate membership values for each level
-        for i in range(0, len(cfc_thresholds[level])):
-            fuzzy_values.append(1 / (1 + (templates[i][1] - cfc_thresholds[level][i]) ** 2))
-
-        # store min value multiplied by result number of a level
-        fuzzy_levels.append(np.amin(fuzzy_values) * (1 + level))
-
-    # use Max-Criterion rule to get the understandability level
-    level = 1 + np.argmax(fuzzy_levels)
-
-    print('Level of understandability\t' + str(level))
+    # print diagram name and corresponding metrics
+    print('{}\t{}\t{}\t{}\t{}\t{}\t'.format(diagram, nodes, connectors, events, functions, arcs))
 
