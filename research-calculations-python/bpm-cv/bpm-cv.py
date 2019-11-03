@@ -100,6 +100,30 @@ for diagram in diagrams:
     # total number of connectors
     connectors = xor_conns + or_conns + and_conns
 
+    # thresholds of metrics
+    metrics_thresholds = [48, 8, 22, 40, 62]
+
+    # calculated metrics
+    metrics = [nodes, connectors, events, functions, arcs]
+
+    # fuzzy value of metrics
+    fuzzy_metrics = []
+
+    # calculate fuzzy values of metrics
+    for i in range(0, len(metrics)):
+        fuzzy_value = 0
+
+        if metrics[i] <= metrics_thresholds[i]:
+            fuzzy_value = metrics[i] / metrics_thresholds[i]
+        else:
+            fuzzy_value = 1
+
+        fuzzy_metrics.append(fuzzy_value)
+
+    # define is process model error-prone
+    has_errors = np.max(fuzzy_metrics)
+
     # print diagram name and corresponding metrics
-    print('{}\t{}\t{}\t{}\t{}\t{}\t'.format(diagram, nodes, connectors, events, functions, arcs))
+    print('{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(diagram, nodes, connectors, events, functions, arcs,
+                                              has_errors))
 
