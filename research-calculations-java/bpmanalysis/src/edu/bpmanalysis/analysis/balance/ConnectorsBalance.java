@@ -1,5 +1,6 @@
 package edu.bpmanalysis.analysis.balance;
 
+import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.analysis.balance.api.Balance;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.description.tools.Node;
@@ -15,7 +16,7 @@ public class ConnectorsBalance implements Balance {
 
         double value = 0;
 
-        double count = 0;
+        double count = NodesSubsetsUtil.getConnectors(model).size();
 
         for (Node node : model.getNodesList()) {
             if (node.getNodeType().equals(Node.NodeType.XOR_CONNECTOR) ||
@@ -23,10 +24,8 @@ public class ConnectorsBalance implements Balance {
                     node.getNodeType().equals(Node.NodeType.AND_CONNECTOR)) {
                 value += Math.abs((node.getInput() + node.getOutput()) - MAX_C);
             }
-
-            count++;
         }
 
-        return value / count;
+        return count < 1 ? 0 : value / count;
     }
 }

@@ -1,5 +1,6 @@
 package edu.bpmanalysis.analysis.balance;
 
+import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.analysis.balance.api.Balance;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.description.tools.Node;
@@ -16,7 +17,7 @@ public class FunctionsBalance implements Balance {
 
         double value = 0;
 
-        double count = 0;
+        double count = NodesSubsetsUtil.getFunctions(model).size();
 
         for (Node node : model.getNodesList()) {
             for (int j = 0; j < Node.arcTypes.length; j++) {
@@ -47,10 +48,8 @@ public class FunctionsBalance implements Balance {
                     value += Math.abs(Node.arcTypes[j].get(node) - max);
                 }
             }
-
-            count++;
         }
 
-        return value / count;
+        return count < 1 ? 0 : value / count;
     }
 }
