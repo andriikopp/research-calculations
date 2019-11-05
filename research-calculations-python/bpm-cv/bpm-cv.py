@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
 import os
+import uuid
+
+from flask import Flask, jsonify, abort
 
 # input directory with process diagrams
 input_dir = 'input'
@@ -13,6 +16,9 @@ threshold = 0.9
 
 # color of the found template
 matching_color = (0, 0, 255)
+
+# process diagrams analysis results
+results = []
 
 # iterate over all input diagrams
 for diagram in diagrams:
@@ -124,6 +130,45 @@ for diagram in diagrams:
     has_errors = np.max(fuzzy_metrics)
 
     # print diagram name and corresponding metrics
-    print('{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(diagram, nodes, connectors, events, functions, arcs,
-                                              has_errors))
+    print('{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(diagram, nodes, connectors, events, functions, arcs, has_errors))
+
+    # save calculated metrics
+    results.append({
+        'id': str(uuid.uuid4()),
+        'diagram': diagram,
+        'nodes': nodes,
+        'connectors': connectors,
+        'events': functions,
+        'arcs': arcs,
+        'hasErrors': has_errors
+    })
+
+
+# launch web API
+app = Flask(__name__)
+
+@app.route('/bpm-cv/api/v1.0/models', methods=['GET'])
+def get_models():
+    return jsonify({'models': results})
+
+
+@app.route('/bpm-cv/api/v1.0/models/<model_id>', methods=['GET'])
+def get_model(model_id):
+    result = None
+
+    for row in results:
+        # look for a diagram with a certain id
+        if row['id'] == model_id:
+            result = row
+            break
+
+    # if no diagram found return 404 response
+    if result is None:
+        abort(404)
+
+    return jsonify({'model': result})
+
+
+if __name__ == '__main__':
+    app.run(use_reloader=False)
 
