@@ -26,6 +26,9 @@ Pure JavaScript lightweight solutions in the related field of research.
 
 2. JS-BIDT is a tool for BI (Business Intelligence) dashboards design and templating.
 
+# research-calculations-python/bpm-cv
+Using computer vision and fuzzy logic to assess quality of business process models.
+
 # research-calculations-* (NOT RELEVANT)
 Related solutions/calculations in other languages, prototypes, algorithms test, etc.
 
