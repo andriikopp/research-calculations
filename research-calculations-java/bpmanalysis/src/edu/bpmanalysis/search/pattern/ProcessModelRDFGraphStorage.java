@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ProcessModelPatternMatchingStorage {
+public class ProcessModelRDFGraphStorage {
     private static Model model = ModelFactory.createDefaultModel();
 
     public static final String URI_PREFIX = "http://";
