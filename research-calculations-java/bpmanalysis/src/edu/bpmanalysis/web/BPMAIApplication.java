@@ -10,7 +10,7 @@ import edu.bpmanalysis.config.Configuration;
 import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.search.partition.ProcessModelAnalysisResultsPartition;
-import edu.bpmanalysis.search.pattern.ProcessModelRDFGraphStorage;
+import edu.bpmanalysis.search.graph.ProcessModelRDFGraphStorage;
 import edu.bpmanalysis.web.model.AnalysisResultsRepositoryMySQL;
 import edu.bpmanalysis.web.model.PartitionRepositoryMySQL;
 import edu.bpmanalysis.web.model.RecommendationsRepositoryMySQL;

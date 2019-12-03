@@ -1,4 +1,4 @@
-package edu.bpmanalysis.search.pattern;
+package edu.bpmanalysis.search.graph;
 
 import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.search.bean.ProcessModelPatternMatchingBean;
