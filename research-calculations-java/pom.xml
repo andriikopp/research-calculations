@@ -6,11 +6,13 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>repository</module>
-        <module>gateway</module>
-        <module>similarity</module>
         <module>bpmanalysis</module>
     </modules>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.1.RELEASE</version>
+    </parent>
     <name>research-calculations-java</name>
 	<description>Research calculations made during PhD study.</description>
 	<build>
@@ -32,11 +34,6 @@
 			<artifactId>apache-jena-libs</artifactId>
 			<version>3.5.0</version>
 			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>5.0.3.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>com.healthmarketscience.jackcess</groupId>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BPMQ Application</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body ng-app="bpmqApp" ng-controller="bpmqCtrl">
+	<nav class="navbar navbar-light bg-light">
+		<span class="navbar-brand mb-0 h1">Business Process Model Quality Application</span>
+	</nav>
+
+	<div class="card">
+		<div class="card-body">
+			<p><b>Total Models:</b> {{summary.totalModels}}</p>
+			<p><b>Correct Models:</b> {{summary.correctModels}}</p>
+			<p><b>Invalid Models:</b> {{summary.invalidModels}}</p>
+				
+			<p><b>Models with invalid number of nodes:</b> {{summary.sizeQualityCount}}</p>
+			<p><b>Models with invalid degrees of nodes:</b> {{summary.degreesQualityCount}}</p>
+			<p><b>Models with invalid start/end events:</b> {{summary.eventsQualityCount}}</p>
+			<p><b>Models with gateways mismatch:</b> {{summary.gatewaysQualityCount}}</p>
+			<p><b>Models with OR gateways:</b> {{summary.orQualityCount}}</p>
+		</div>
+	</div>
+
+	<div class="table-responsive">
+		<table class="table table-hover">
+	    	<thead>
+				<tr>
+			    	<th scope="col">File Name</th>
+			    	<th scope="col">Total Nodes</th>
+			    	<th scope="col">Invalid Nodes</th>
+			    	<th scope="col">Start Events</th>
+			    	<th scope="col">End Events</th>
+			    	<th scope="col">Unmatched Gateways</th>
+			    	<th scope="col">Total Gateways</th>
+			    	<th scope="col">OR Gateways</th>
+			    	<th scope="col">"Hard" Quality</th>
+			    	<th scope="col">"Soft" Quality</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="bpModel in bpModels" class="{{bpModel.hardQuality < 1 ? 'table-danger' : 'table-success'}}">
+			    	<th scope="row">{{bpModel.fileName}}</th>
+			    	<td>{{bpModel.totalNodes}}</td>
+			    	<td>{{bpModel.invalidNodes}}</td>
+			    	<td>{{bpModel.startEvents}}</td>
+			    	<td>{{bpModel.endEvents}}</td>
+			    	<td>{{bpModel.unmatchedGateways}}</td>
+			    	<td>{{bpModel.totalGateways}}</td>
+			    	<td>{{bpModel.orGateways}}</td>
+			    	<td>{{bpModel.hardQuality}}</td>
+			    	<td>{{bpModel.softQuality}}</td>
+			    </tr>
+			</tbody>
+		</table>
+	</div>
+
+	<script src="js/angular.min.js"></script>
+	<script>
+		var app = angular.module('bpmqApp', []);
+		
+		app.controller('bpmqCtrl', function($scope, $http) {
+		 	$http.get("/api/allModels").then(function(response) {
+		    	$scope.bpModels = response.data;
+		  	});
+
+		  	$http.get("/api/summary").then(function(response) {
+		    	$scope.summary = response.data;
+		  	});
+		});
+	</script>
+</body>
+</html>
