@@ -15,9 +15,9 @@ public class EvaluationUtil {
 
         if (model.getModelType().equals(Model.ModelType.EPC) ||
                 model.getModelType().equals(Model.ModelType.BPMN)) {
-            weights = new double[]{0.19, 0.2, 0.23, 0.14, 0.24};
+            weights = new double[]{0.21, 0.19, 0.16, 0.28, 0.16};
         } else {
-            weights = new double[]{0.48, 0.52, 0, 0, 0};
+            weights = new double[]{0.52, 0.48, 0, 0, 0};
         }
 
         double quality = 0;
