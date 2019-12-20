@@ -2,7 +2,6 @@ package edu.bpmanalysis.web.bpmq.controller;
 
 import com.google.gson.Gson;
 import edu.bpmanalysis.web.bpmq.entity.BPMQualitySummary;
-import edu.bpmanalysis.web.bpmq.entity.BinBPMQualityTuple;
 import edu.bpmanalysis.web.bpmq.repository.api.BPModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,23 +28,13 @@ public class BPMQController {
         int correctModels = bpModelRepository.countCorrectModels();
         int invalidModels = bpModelRepository.countInvalidModels();
 
-        int sizeQualityCount = bpModelRepository.findModelsByBinaryQualityTuple(
-                new BinBPMQualityTuple(1, 0, 0, 0, 0))
-                .size();
-        int degreesQualityCount = bpModelRepository.findModelsByBinaryQualityTuple(
-                new BinBPMQualityTuple(0, 1, 0, 0, 0))
-                .size();
-        int eventsQualityCount = bpModelRepository.findModelsByBinaryQualityTuple(
-                new BinBPMQualityTuple(0, 0, 1, 0, 0))
-                .size();
-        int gatewaysQualityCount = bpModelRepository.findModelsByBinaryQualityTuple(
-                new BinBPMQualityTuple(0, 0, 0, 1, 0))
-                .size();
-        int orQualityCount = bpModelRepository.findModelsByBinaryQualityTuple(
-                new BinBPMQualityTuple(0, 0, 0, 0, 1))
-                .size();
+        int sizeQualityCount = bpModelRepository.countWithInvalidNodes();
+        int degreesQualityCount = bpModelRepository.countWithInvalidDegrees();
+        int eventsQualityCount = bpModelRepository.countWithInvalidEvents();
+        int gatewaysQualityCount = bpModelRepository.countWithGatewaysMismatch();
+        int orQualityCount = bpModelRepository.countWithOrGateways();
 
-        BPMQualitySummary qualitySummary = new BPMQualitySummary(
+        return new Gson().toJson(new BPMQualitySummary(
                 totalModels,
                 correctModels,
                 invalidModels,
@@ -54,8 +43,6 @@ public class BPMQController {
                 eventsQualityCount,
                 gatewaysQualityCount,
                 orQualityCount
-        );
-
-        return new Gson().toJson(qualitySummary);
+        ));
     }
 }

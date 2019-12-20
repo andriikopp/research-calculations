@@ -28,11 +28,12 @@ public class BPMGraphMetricsUtil {
         int gatewaysQualityH = unmatchedGateways == 0 ? 1 : 0;
         int orQualityH = orGateways == 0 ? 1 : 0;
 
-        double sizeQualityS = sizeQualityH;
+        double sizeQualityS = totalNodes <= 31 ? 1 : 31.0 / (double) totalNodes;
         double degreesQualityS = 1.0 - (double) invalidNodes / (double) totalNodes;
-        double eventsQualityS = eventsQualityH;
+        double eventsQualityS = Math.min(1.0 / (1.0 + Math.pow((double) startEvents - 1.0, 2.0)),
+                1.0 / (1.0 + Math.pow((double) endEvents - 1.0, 2.0)));
         double gatewaysQualityS = totalGateways > 0 ? 1.0 - (double) unmatchedGateways / (double) totalGateways : 1;
-        double orQualityS = orQualityH;
+        double orQualityS = totalGateways > 0 ? 1.0 - (double) orGateways / (double) totalGateways : 1;
 
         double hardQuality =
                 BPMQualityWeights.SIZE * sizeQualityH +

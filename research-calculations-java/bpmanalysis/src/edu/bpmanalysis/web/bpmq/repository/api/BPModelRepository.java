@@ -13,6 +13,16 @@ public interface BPModelRepository {
 
     int countInvalidModels();
 
+    int countWithInvalidNodes();
+
+    int countWithInvalidDegrees();
+
+    int countWithInvalidEvents();
+
+    int countWithGatewaysMismatch();
+
+    int countWithOrGateways();
+
     void save(BPModel bpModel);
 
     void update(BPModel bpModel);

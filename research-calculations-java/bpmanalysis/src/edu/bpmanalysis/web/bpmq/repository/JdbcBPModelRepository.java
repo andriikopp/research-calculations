@@ -31,6 +31,31 @@ public class JdbcBPModelRepository implements BPModelRepository {
     }
 
     @Override
+    public int countWithInvalidNodes() {
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where sizeQualityH = 1", Integer.class);
+    }
+
+    @Override
+    public int countWithInvalidDegrees() {
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where degreesQualityH = 1", Integer.class);
+    }
+
+    @Override
+    public int countWithInvalidEvents() {
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where eventsQualityH = 1", Integer.class);
+    }
+
+    @Override
+    public int countWithGatewaysMismatch() {
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where gatewaysQualityH = 1", Integer.class);
+    }
+
+    @Override
+    public int countWithOrGateways() {
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where orQualityH = 1", Integer.class);
+    }
+
+    @Override
     public void save(BPModel bpModel) {
         jdbcTemplate.update(
                 "insert into bpmodels (fileName, totalNodes, invalidNodes, startEvents, endEvents, unmatchedGateways, " +

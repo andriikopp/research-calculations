@@ -13,15 +13,11 @@
 		<div class="card-body">
 			<p><b>Total Models:</b> {{summary.totalModels}}</p>
 			<p><b>Correct Models:</b> {{summary.correctModels}}</p>
-			<p><b>Invalid Models:</b> {{summary.invalidModels}}</p>
-				
-			<p><b>Models with invalid number of nodes:</b> {{summary.sizeQualityCount}}</p>
-			<p><b>Models with invalid degrees of nodes:</b> {{summary.degreesQualityCount}}</p>
-			<p><b>Models with invalid start/end events:</b> {{summary.eventsQualityCount}}</p>
-			<p><b>Models with gateways mismatch:</b> {{summary.gatewaysQualityCount}}</p>
-			<p><b>Models with OR gateways:</b> {{summary.orQualityCount}}</p>
+			<p><b>Models to be improved:</b> {{summary.invalidModels}}</p>
 		</div>
 	</div>
+
+	<div id="dashboard"></div>
 
 	<div class="table-responsive">
 		<table class="table table-hover">
@@ -40,7 +36,7 @@
 			    </tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="bpModel in bpModels" class="{{bpModel.hardQuality < 1 ? 'table-danger' : 'table-success'}}">
+				<tr ng-repeat="bpModel in bpModels" class="{{bpModel.softQuality >= 0.64 ? 'table-success' : bpModel.softQuality >= 0.37 ? 'table-warning' : 'table-danger' }}">
 			    	<th scope="row">{{bpModel.fileName}}</th>
 			    	<td>{{bpModel.totalNodes}}</td>
 			    	<td>{{bpModel.invalidNodes}}</td>
@@ -50,23 +46,85 @@
 			    	<td>{{bpModel.totalGateways}}</td>
 			    	<td>{{bpModel.orGateways}}</td>
 			    	<td>{{bpModel.hardQuality}}</td>
-			    	<td>{{bpModel.softQuality}}</td>
+			    	<td>{{bpModel.softQuality >= 0.8 ? 'Very High' : bpModel.softQuality >= 0.64 ? 'High' : bpModel.softQuality >= 0.37 ? 'Medium' : bpModel.softQuality >= 0.2 ? 'Low' : 'Very Low' }} ({{bpModel.softQuality}})</td>
 			    </tr>
 			</tbody>
 		</table>
 	</div>
 
 	<script src="js/angular.min.js"></script>
+	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 	<script>
 		var app = angular.module('bpmqApp', []);
 		
 		app.controller('bpmqCtrl', function($scope, $http) {
-		 	$http.get("/api/allModels").then(function(response) {
+		 	$http.get('/api/allModels').then(function(response) {
 		    	$scope.bpModels = response.data;
 		  	});
 
-		  	$http.get("/api/summary").then(function(response) {
+		  	$http.get('/api/summary').then(function(response) {
 		    	$scope.summary = response.data;
+
+		    	var layout = {
+		    		width: 1200,
+		    		height: 300,
+		    		grid: { rows: 1, columns: 5, pattern: "independent" }
+		    	};
+
+		    	var data = [
+					{
+						domain: { row: 0, column: 0 },
+						value: response.data.sizeQualityCount,
+						title: { text: 'Invalid Size' },
+						gauge: {
+      						axis: { range: [null, response.data.totalModels] }
+      					},
+						type: 'indicator',
+						mode: 'gauge+number'
+					},
+					{
+						domain: { row: 0, column: 1 },
+						value: response.data.degreesQualityCount,
+						title: { text: 'Invalid Degrees' },
+						gauge: {
+      						axis: { range: [null, response.data.totalModels] }
+      					},
+						type: 'indicator',
+						mode: 'gauge+number'
+					},
+					{
+						domain: { row: 0, column: 2 },
+						value: response.data.eventsQualityCount,
+						title: { text: 'Invalid Events' },
+						gauge: {
+      						axis: { range: [null, response.data.totalModels] }
+      					},
+						type: 'indicator',
+						mode: 'gauge+number'
+					},
+					{
+						domain: { row: 0, column: 3 },
+						value: response.data.gatewaysQualityCount,
+						title: { text: 'Gateways Mismatch' },
+						gauge: {
+      						axis: { range: [null, response.data.totalModels] }
+      					},
+						type: 'indicator',
+						mode: 'gauge+number'
+					},
+					{
+						domain: { row: 0, column: 4 },
+						value: response.data.orQualityCount,
+						title: { text: 'OR Gateways' },
+						gauge: {
+      						axis: { range: [null, response.data.totalModels] }
+      					},
+						type: 'indicator',
+						mode: 'gauge+number'
+					}
+				];
+
+				Plotly.newPlot('dashboard', data, layout);
 		  	});
 		});
 	</script>
