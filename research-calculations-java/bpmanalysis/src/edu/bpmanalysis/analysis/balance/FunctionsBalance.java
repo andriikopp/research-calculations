@@ -20,6 +20,8 @@ public class FunctionsBalance implements Balance {
         double count = NodesSubsetsUtil.getFunctions(model).size();
 
         for (Node node : model.getNodesList()) {
+            double funcValue = 0;
+
             for (int j = 0; j < Node.arcTypes.length; j++) {
                 if (node.getNodeType().equals(Node.NodeType.FUNCTION)) {
                     if ((j == 2 || j == 3) && model.getArcTypes().length == 2) {
@@ -45,9 +47,11 @@ public class FunctionsBalance implements Balance {
                         }
                     }
 
-                    value += Math.abs(Node.arcTypes[j].get(node) - max);
+                    funcValue += Math.signum(Math.abs(Node.arcTypes[j].get(node) - max));
                 }
             }
+
+            value += Math.signum(funcValue);
         }
 
         return count < 1 ? 0 : value / count;

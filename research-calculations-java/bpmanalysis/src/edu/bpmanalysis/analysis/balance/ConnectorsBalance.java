@@ -22,7 +22,7 @@ public class ConnectorsBalance implements Balance {
             if (node.getNodeType().equals(Node.NodeType.XOR_CONNECTOR) ||
                     node.getNodeType().equals(Node.NodeType.OR_CONNECTOR) ||
                     node.getNodeType().equals(Node.NodeType.AND_CONNECTOR)) {
-                value += Math.abs((node.getInput() + node.getOutput()) - MAX_C);
+                value += Math.signum(Math.abs((node.getInput() + node.getOutput()) - MAX_C));
             }
         }
 
