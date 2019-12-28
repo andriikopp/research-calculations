@@ -32,27 +32,27 @@ public class JdbcBPModelRepository implements BPModelRepository {
 
     @Override
     public int countWithInvalidNodes() {
-        return jdbcTemplate.queryForObject("select count(*) from bpmodels where sizeQualityH = 1", Integer.class);
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where sizeQualityH = 0", Integer.class);
     }
 
     @Override
     public int countWithInvalidDegrees() {
-        return jdbcTemplate.queryForObject("select count(*) from bpmodels where degreesQualityH = 1", Integer.class);
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where degreesQualityH = 0", Integer.class);
     }
 
     @Override
     public int countWithInvalidEvents() {
-        return jdbcTemplate.queryForObject("select count(*) from bpmodels where eventsQualityH = 1", Integer.class);
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where eventsQualityH = 0", Integer.class);
     }
 
     @Override
     public int countWithGatewaysMismatch() {
-        return jdbcTemplate.queryForObject("select count(*) from bpmodels where gatewaysQualityH = 1", Integer.class);
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where gatewaysQualityH = 0", Integer.class);
     }
 
     @Override
     public int countWithOrGateways() {
-        return jdbcTemplate.queryForObject("select count(*) from bpmodels where orQualityH = 1", Integer.class);
+        return jdbcTemplate.queryForObject("select count(*) from bpmodels where orQualityH = 0", Integer.class);
     }
 
     @Override

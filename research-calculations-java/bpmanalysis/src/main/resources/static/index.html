@@ -2,7 +2,11 @@
 <html>
 <head>
 	<title>BPMQ Application</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/autocomplete.css">
 </head>
 <body ng-app="bpmqApp" ng-controller="bpmqCtrl">
 	<nav class="navbar navbar-light bg-light">
@@ -14,10 +18,62 @@
 			<p><b>Total Models:</b> {{summary.totalModels}}</p>
 			<p><b>Correct Models:</b> {{summary.correctModels}}</p>
 			<p><b>Models to be improved:</b> {{summary.invalidModels}}</p>
+
+			<ul class="list-group">
+				<li class="list-group-item">
+					Models with invalid number of nodes: {{summary.sizeQualityCount}}
+				</li>
+				<li class="list-group-item">
+					Models with invalid degrees of nodes: {{summary.degreesQualityCount}}
+				</li>
+				<li class="list-group-item">
+					Models with multiple start/end events: {{summary.eventsQualityCount}}
+				</li>
+				<li class="list-group-item">
+					Models with gateways mismatch: {{summary.gatewaysQualityCount}}
+				</li>
+				<li class="list-group-item">
+					Models with OR gateways: {{summary.orQualityCount}}
+				</li>
+			</ul>
+			<br />
+
+			<form class="form-inline">
+				<div class="form-check mb-2 mr-sm-2">
+					<input class="form-check-input" type="checkbox" ng-model="checked" id="query">
+					<label class="form-check-label" for="query"><b>Query Ontology</b></label>
+				</div>
+			</form>
 		</div>
 	</div>
 
-	<div id="dashboard"></div>
+	<div class="card" ng-show="checked">
+		<div class="card-body">
+			<form class="form-inline">
+				<label class="my-1 mr-2" for="property">Column</label>
+				<select class="custom-select my-1 mr-sm-2" id="property" ng-model="zachman.property">
+			    	<option value="hasInput">What - hasInput</option>
+			    	<option value="hasOutput">What - hasOutput</option>
+			    	<option value="hasActivity">How - hasActivity</option>
+			    	<option value="happenLocation">Where - happenLocation</option>
+			    	<option value="hasStakeholder">Who - hasStakeholder</option>
+			    	<option value="happenTime">When - happenTime</option>
+			    	<option value="hasMotivation">Why - hasMotivation</option>
+			    	<option value="hasQuality">Quality - hasQuality</option>
+				</select>
+				
+				<label class="my-1 mr-2" for="object">Value</label>
+				<input type="text" class="form-control my-1 mr-sm-2 autocomplete" id="object" placeholder="Value" ng-model="zachman.object">
+
+				<div class="custom-control my-1 mr-sm-2">
+					<button ng-click="queryOntology()" class="btn btn-primary my-1" >Query</button>
+				</div>
+				<div class="custom-control my-1 mr-sm-2">
+					<button ng-click="getAll()" class="btn btn-secondary my-1">Reset</button>
+				</div>
+			</form>
+		</div>
+	</div>
 
 	<div class="table-responsive">
 		<table class="table table-hover">
@@ -31,8 +87,9 @@
 			    	<th scope="col">Unmatched Gateways</th>
 			    	<th scope="col">Total Gateways</th>
 			    	<th scope="col">OR Gateways</th>
-			    	<th scope="col">"Hard" Quality</th>
-			    	<th scope="col">"Soft" Quality</th>
+			    	<th scope="col">PMQ 1</th>
+			    	<th scope="col">PMQ 2</th>
+			    	<th scope="col">Quality</th>
 			    </tr>
 			</thead>
 			<tbody>
@@ -46,14 +103,15 @@
 			    	<td>{{bpModel.totalGateways}}</td>
 			    	<td>{{bpModel.orGateways}}</td>
 			    	<td>{{bpModel.hardQuality}}</td>
-			    	<td>{{bpModel.softQuality >= 0.8 ? 'Very High' : bpModel.softQuality >= 0.64 ? 'High' : bpModel.softQuality >= 0.37 ? 'Medium' : bpModel.softQuality >= 0.2 ? 'Low' : 'Very Low' }} ({{bpModel.softQuality}})</td>
+			    	<td>{{bpModel.softQuality}}</td>
+			    	<td>{{bpModel.softQuality >= 0.8 ? 'Very High' : bpModel.softQuality >= 0.64 ? 'High' : bpModel.softQuality >= 0.37 ? 'Medium' : bpModel.softQuality >= 0.2 ? 'Low' : 'Very Low' }}</td>
 			    </tr>
 			</tbody>
 		</table>
 	</div>
 
 	<script src="js/angular.min.js"></script>
-	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+	<script src="js/autocomplete.js"></script>
 	<script>
 		var app = angular.module('bpmqApp', []);
 		
@@ -64,68 +122,23 @@
 
 		  	$http.get('/api/summary').then(function(response) {
 		    	$scope.summary = response.data;
-
-		    	var layout = {
-		    		width: 1200,
-		    		height: 300,
-		    		grid: { rows: 1, columns: 5, pattern: "independent" }
-		    	};
-
-		    	var data = [
-					{
-						domain: { row: 0, column: 0 },
-						value: response.data.sizeQualityCount,
-						title: { text: 'Invalid Size' },
-						gauge: {
-      						axis: { range: [null, response.data.totalModels] }
-      					},
-						type: 'indicator',
-						mode: 'gauge+number'
-					},
-					{
-						domain: { row: 0, column: 1 },
-						value: response.data.degreesQualityCount,
-						title: { text: 'Invalid Degrees' },
-						gauge: {
-      						axis: { range: [null, response.data.totalModels] }
-      					},
-						type: 'indicator',
-						mode: 'gauge+number'
-					},
-					{
-						domain: { row: 0, column: 2 },
-						value: response.data.eventsQualityCount,
-						title: { text: 'Invalid Events' },
-						gauge: {
-      						axis: { range: [null, response.data.totalModels] }
-      					},
-						type: 'indicator',
-						mode: 'gauge+number'
-					},
-					{
-						domain: { row: 0, column: 3 },
-						value: response.data.gatewaysQualityCount,
-						title: { text: 'Gateways Mismatch' },
-						gauge: {
-      						axis: { range: [null, response.data.totalModels] }
-      					},
-						type: 'indicator',
-						mode: 'gauge+number'
-					},
-					{
-						domain: { row: 0, column: 4 },
-						value: response.data.orQualityCount,
-						title: { text: 'OR Gateways' },
-						gauge: {
-      						axis: { range: [null, response.data.totalModels] }
-      					},
-						type: 'indicator',
-						mode: 'gauge+number'
-					}
-				];
-
-				Plotly.newPlot('dashboard', data, layout);
 		  	});
+
+		  	$scope.getAll = function() {
+				$http.get('/api/allModels').then(function(response) {
+			    	$scope.bpModels = response.data;
+			  	});
+		  	};
+
+		  	$scope.queryOntology = function() {
+		  		$http.get('/api/query?property=' + $scope.zachman.property + '&object=' + document.getElementById('object').value).then(function(response) {
+			    	$scope.bpModels = response.data;
+			  	});
+		  	};
+
+		  	$http.get('/api/allObjects').then(function(response) {
+			    autocomplete(document.getElementById('object'), response.data);
+			});
 		});
 	</script>
 </body>

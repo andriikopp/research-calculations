@@ -73,6 +73,26 @@ public class BPMGraphMetricsUtil {
         );
     }
 
+    public static String assessQuality(double quality) {
+        if (quality >= 0.8) {
+            return "Very High";
+        }
+
+        if (quality >= 0.64) {
+            return "High";
+        }
+
+        if (quality >= 0.37) {
+            return "Medium";
+        }
+
+        if (quality >= 0.2) {
+            return "Low";
+        }
+
+        return "Very Low";
+    }
+
     public static int getTotalNodes(Model model) {
         return model.getNodesList().size();
     }
@@ -171,7 +191,7 @@ public class BPMGraphMetricsUtil {
 
     public static int getOrGateways(Model model) {
         return ((NodesSubset) x -> x.getNodesList()
-                .stream().filter(node -> (node.getNodeType().equals(Node.NodeType.XOR_CONNECTOR)))
+                .stream().filter(node -> (node.getNodeType().equals(Node.NodeType.OR_CONNECTOR)))
                 .collect(Collectors.toList()))
                 .getSubset(model).size();
     }

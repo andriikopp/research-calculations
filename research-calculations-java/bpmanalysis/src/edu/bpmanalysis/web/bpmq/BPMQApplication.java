@@ -3,6 +3,7 @@ package edu.bpmanalysis.web.bpmq;
 import edu.bpmanalysis.web.bpmq.entity.BPModel;
 import edu.bpmanalysis.web.bpmq.repository.api.BPModelRepository;
 import edu.bpmanalysis.web.bpmq.util.BPMGraphUtil;
+import edu.bpmanalysis.web.bpmq.util.BPMOntologyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

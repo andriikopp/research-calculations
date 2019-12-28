@@ -155,6 +155,8 @@ public class BPMGraphUtil {
 
                             if (bpModel != null) {
                                 bpmnModels.add(bpModel);
+
+                                BPMOntologyUtil.processModel(file.getName(), modelInstance, bpModel);
                             }
                         }
                     } catch (RuntimeException e) {
