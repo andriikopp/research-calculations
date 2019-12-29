@@ -51,13 +51,15 @@ public class BPMQController {
 
     @RequestMapping(value = "query", method = RequestMethod.GET)
     public @ResponseBody
-    String queryOntology(@RequestParam("property") String property,
-                         @RequestParam("object") String object) {
+    String queryOntology(@RequestParam("queryText") String queryText) {
         Model model = BPMOntologyUtil.MODEL;
+
+        String[] arr = queryText.split(" ");
+        String property = arr[0];
+        String object = queryText.replace(property, "").trim();
 
         Selector selector = new SimpleSelector(null, model.createProperty(property), object);
         StmtIterator iterator = model.listStatements(selector);
-
         List<BPModel> results = new ArrayList<>();
 
         while (iterator.hasNext()) {
@@ -69,16 +71,16 @@ public class BPMQController {
         return new Gson().toJson(results);
     }
 
-    @GetMapping("/allObjects")
-    public String getAllObjects() {
+    @GetMapping("/allStatements")
+    public String getAllStatements() {
         Model model = BPMOntologyUtil.MODEL;
-
-        NodeIterator iterator = model.listObjects();
-
-        List<String> result = new ArrayList<>();
+        StmtIterator iterator = model.listStatements();
+        Set<String> result = new HashSet<>();
 
         while (iterator.hasNext()) {
-            result.add(iterator.nextNode().asLiteral().getString());
+            Statement statement = iterator.nextStatement();
+            result.add(statement.getPredicate().getURI() + " " +
+                    statement.getObject().asLiteral().getString());
         }
 
         return new Gson().toJson(result);

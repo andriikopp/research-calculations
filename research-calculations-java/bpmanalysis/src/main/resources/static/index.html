@@ -13,57 +13,38 @@
 		<span class="navbar-brand mb-0 h1">Business Process Model Quality Application</span>
 	</nav>
 
-	<div class="card">
-		<div class="card-body">
-			<p><b>Total Models:</b> {{summary.totalModels}}</p>
-			<p><b>Correct Models:</b> {{summary.correctModels}}</p>
-			<p><b>Models to be improved:</b> {{summary.invalidModels}}</p>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-4">
+				<br />
+				<p><b>Total Models:</b> {{summary.totalModels}}</p>
+				<p><b>Correct Models:</b> {{summary.correctModels}}</p>
+				<p><b>Models to be improved:</b> {{summary.invalidModels}}</p>
 
-			<ul class="list-group">
-				<li class="list-group-item">
-					Models with invalid number of nodes: {{summary.sizeQualityCount}}
-				</li>
-				<li class="list-group-item">
-					Models with invalid degrees of nodes: {{summary.degreesQualityCount}}
-				</li>
-				<li class="list-group-item">
-					Models with multiple start/end events: {{summary.eventsQualityCount}}
-				</li>
-				<li class="list-group-item">
-					Models with gateways mismatch: {{summary.gatewaysQualityCount}}
-				</li>
-				<li class="list-group-item">
-					Models with OR gateways: {{summary.orQualityCount}}
-				</li>
-			</ul>
-			<br />
-
-			<form class="form-inline">
-				<div class="form-check mb-2 mr-sm-2">
-					<input class="form-check-input" type="checkbox" ng-model="checked" id="query">
-					<label class="form-check-label" for="query"><b>Query Ontology</b></label>
-				</div>
-			</form>
+				<form class="form-inline">
+					<div class="form-check mb-2 mr-sm-2">
+						<input class="form-check-input" type="checkbox" ng-model="checked" id="query">
+						<label class="form-check-label" for="query"><b>Show querying form</b></label>
+					</div>
+				</form>
+			</div>
+			<div class="col-sm-8">
+				<br />
+				<div id="chart_div"></div>
+				<br />
+			</div>
 		</div>
 	</div>
 
 	<div class="card" ng-show="checked">
 		<div class="card-body">
 			<form class="form-inline">
-				<label class="my-1 mr-2" for="property">Column</label>
-				<select class="custom-select my-1 mr-sm-2" id="property" ng-model="zachman.property">
-			    	<option value="hasInput">What - hasInput</option>
-			    	<option value="hasOutput">What - hasOutput</option>
-			    	<option value="hasActivity">How - hasActivity</option>
-			    	<option value="happenLocation">Where - happenLocation</option>
-			    	<option value="hasStakeholder">Who - hasStakeholder</option>
-			    	<option value="happenTime">When - happenTime</option>
-			    	<option value="hasMotivation">Why - hasMotivation</option>
-			    	<option value="hasQuality">Quality - hasQuality</option>
-				</select>
-				
-				<label class="my-1 mr-2" for="object">Value</label>
-				<input type="text" class="form-control my-1 mr-sm-2 autocomplete" id="object" placeholder="Value" ng-model="zachman.object">
+				<div class="input-group my-1 mr-sm-2 col-6">
+					<div class="input-group-prepend">
+				    	<div class="input-group-text">?bpModel</div>
+				    </div>
+				    <input type="text" autocomplete="off" class="form-control autocomplete" id="queryText" placeholder="Query Condition">
+				</div>
 
 				<div class="custom-control my-1 mr-sm-2">
 					<button ng-click="queryOntology()" class="btn btn-primary my-1" >Query</button>
@@ -72,6 +53,7 @@
 					<button ng-click="getAll()" class="btn btn-secondary my-1">Reset</button>
 				</div>
 			</form>
+			Result: {{resultRecords}} model(s)
 		</div>
 	</div>
 
@@ -112,16 +94,58 @@
 
 	<script src="js/angular.min.js"></script>
 	<script src="js/autocomplete.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script>
 		var app = angular.module('bpmqApp', []);
 		
 		app.controller('bpmqCtrl', function($scope, $http) {
+			$scope.resultRecords = 0;
+
 		 	$http.get('/api/allModels').then(function(response) {
 		    	$scope.bpModels = response.data;
 		  	});
 
 		  	$http.get('/api/summary').then(function(response) {
 		    	$scope.summary = response.data;
+
+		    	google.charts.load('current', {packages: ['corechart', 'bar']});
+		    	google.charts.setOnLoadCallback(drawChart);
+
+			    function drawChart() {
+			    	var data = google.visualization.arrayToDataTable([
+			        	["Models", "Number", { role: 'annotation' }],
+			        	["Invlid size", response.data.sizeQualityCount, response.data.sizeQualityCount],
+			        	["Invlid degrees", response.data.degreesQualityCount, response.data.degreesQualityCount],
+			        	["Multiple events", response.data.eventsQualityCount, response.data.eventsQualityCount],
+			        	["Gateways mismatch", response.data.gatewaysQualityCount, response.data.gatewaysQualityCount],
+			        	["OR gateways", response.data.orQualityCount,response.data.orQualityCount]
+			    	]);
+
+			      	var view = new google.visualization.DataView(data);
+			      	var textStyleObj = {
+			      		fontSize: 16,
+				        bold: true,
+				        fontName: 'Helvetica Neue'
+				    };
+			      	
+			    	var options = {
+				        title: "Models to be improved",
+				        titleTextStyle: textStyleObj,
+				        legend: { position: "none" },
+				        hAxis: {
+				        	textStyle: textStyleObj
+				        },
+				        vAxis: {
+				        	textStyle: textStyleObj
+				        },
+				        annotations: {
+				        	textStyle: textStyleObj
+				        }
+			      	};
+			    
+			    	var chart = new google.visualization.ColumnChart(document.getElementById("chart_div"));
+			      	chart.draw(view, options);
+				}
 		  	});
 
 		  	$scope.getAll = function() {
@@ -131,13 +155,14 @@
 		  	};
 
 		  	$scope.queryOntology = function() {
-		  		$http.get('/api/query?property=' + $scope.zachman.property + '&object=' + document.getElementById('object').value).then(function(response) {
+		  		$http.get('/api/query?queryText=' + document.getElementById('queryText').value).then(function(response) {
 			    	$scope.bpModels = response.data;
+			    	$scope.resultRecords = response.data.length;
 			  	});
 		  	};
 
-		  	$http.get('/api/allObjects').then(function(response) {
-			    autocomplete(document.getElementById('object'), response.data);
+		  	$http.get('/api/allStatements').then(function(response) {
+			    autocomplete(document.getElementById('queryText'), response.data);
 			});
 		});
 	</script>
