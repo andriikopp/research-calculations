@@ -151,12 +151,14 @@ public class BPMGraphUtil {
                             processModelBean.setGraph(processModelGraphBean);
 
                             Model model = ProcessModelAnalysisUtil.transformToModel(processModelBean);
-                            BPModel bpModel = BPMGraphMetricsUtil.getBPModelFromGraph(model, processModelBean.getFileName());
+                            BPModel bpModel = BPMGraphMetricsUtil.getBPModelFromGraph(model,
+                                    processModelBean.getFileName() + "_" + processName);
 
                             if (bpModel != null) {
                                 bpmnModels.add(bpModel);
 
-                                BPMOntologyUtil.processModel(file.getName(), modelInstance, bpModel);
+                                BPMOntologyUtil.processModel(file.getName() + "_" + processName,
+                                        modelInstance, bpModel);
                             }
                         }
                     } catch (RuntimeException e) {

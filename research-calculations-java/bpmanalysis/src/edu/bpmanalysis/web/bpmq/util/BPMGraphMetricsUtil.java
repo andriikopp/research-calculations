@@ -115,30 +115,21 @@ public class BPMGraphMetricsUtil {
                 ((NodesSubset) x -> x.getNodesList()
                         .stream().filter(node -> (
                                 node.getNodeType().equals(Node.NodeType.XOR_CONNECTOR) &&
-                                        (
-                                                (node.getInput() > 1 && node.getOutput() > 1) ||
-                                                        node.getInput() == 0 || node.getOutput() == 0
-                                        ))
+                                        (node.getInput() > 2 || node.getOutput() > 2))
                         ).collect(Collectors.toList()))
                         .getSubset(model).size()
                 +
                 ((NodesSubset) x -> x.getNodesList()
                         .stream().filter(node -> (
                                 node.getNodeType().equals(Node.NodeType.OR_CONNECTOR) &&
-                                        (
-                                                (node.getInput() > 1 && node.getOutput() > 1) ||
-                                                        node.getInput() == 0 || node.getOutput() == 0
-                                        ))
+                                        (node.getInput() > 2 || node.getOutput() > 2))
                         ).collect(Collectors.toList()))
                         .getSubset(model).size()
                 +
                 ((NodesSubset) x -> x.getNodesList()
                         .stream().filter(node -> (
                                 node.getNodeType().equals(Node.NodeType.AND_CONNECTOR) &&
-                                        (
-                                                (node.getInput() > 1 && node.getOutput() > 1) ||
-                                                        node.getInput() == 0 || node.getOutput() == 0
-                                        ))
+                                        (node.getInput() > 2 || node.getOutput() > 2))
                         ).collect(Collectors.toList()))
                         .getSubset(model).size();
     }
