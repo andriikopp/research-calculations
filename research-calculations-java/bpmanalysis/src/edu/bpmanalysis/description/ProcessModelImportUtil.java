@@ -465,6 +465,12 @@ public class ProcessModelImportUtil {
         Sql2o sql2o = Configuration.DB_CREDENTIALS;
 
         try (Connection connection = sql2o.open()) {
+            connection.createQuery("delete from f_analysis").executeUpdate();
+            connection.createQuery("delete from f_partition").executeUpdate();
+            connection.createQuery("delete from f_recommendations").executeUpdate();
+            connection.createQuery("delete from d_model").executeUpdate();
+            connection.createQuery("delete from d_time").executeUpdate();
+
             connection.createQuery("insert into d_time (time_id, t_day, t_month, t_year) " +
                     "values (:idParam, DAY(NOW()), MONTH(NOW()), YEAR(NOW()))")
                     .addParameter("idParam", BPMAIApplication.TIME_STAMP_ID)
