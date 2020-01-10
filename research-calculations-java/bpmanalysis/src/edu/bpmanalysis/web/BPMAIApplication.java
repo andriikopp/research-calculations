@@ -117,11 +117,5 @@ public class BPMAIApplication {
         System.out.println("Use /model/<MODEL_ID> to access a specific process model");
         System.out.println("Use /partition to access the models partition results");
         System.out.println();
-
-        try {
-            Desktop.getDesktop().browse(new URL("http://localhost:4567/bpmai.html").toURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
