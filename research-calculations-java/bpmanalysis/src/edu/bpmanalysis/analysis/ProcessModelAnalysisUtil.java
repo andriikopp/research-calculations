@@ -124,35 +124,63 @@ public class ProcessModelAnalysisUtil {
         double[][] routingChanges = null;
         double[][] functionsChanges = null;
 
-        if (model.getModelType().equals(Model.ModelType.DFD) || model.getModelType().equals(Model.ModelType.IDEF0)) {
-            if ((model.getModelType().equals(Model.ModelType.DFD) &&
-                    (processModelAnalysisBean.getFunctions() > 7 || processModelAnalysisBean.getFunctions() < 1)) ||
-                    (model.getModelType().equals(Model.ModelType.IDEF0) &&
-                            (processModelAnalysisBean.getFunctions() > 6 || processModelAnalysisBean.getFunctions() < 3))) {
-                nodesChanges = NodesOptimization.optimization(model);
+        int improvements = 0;
+        int prevImprovements = 0;
+
+        boolean nodesFixed = false;
+        boolean connectorsFixed = false;
+        boolean routingFixed = false;
+        boolean functionsFixed = false;
+
+        while (true) {
+            if (model.getModelType().equals(Model.ModelType.DFD) || model.getModelType().equals(Model.ModelType.IDEF0)) {
+                if (!nodesFixed && ((model.getModelType().equals(Model.ModelType.DFD) &&
+                        (processModelAnalysisBean.getFunctions() > 7 || processModelAnalysisBean.getFunctions() < 1)) ||
+                        (model.getModelType().equals(Model.ModelType.IDEF0) &&
+                                (processModelAnalysisBean.getFunctions() > 6 || processModelAnalysisBean.getFunctions() < 3)))) {
+                    nodesChanges = NodesOptimization.optimization(model);
+                    improvements++;
+                    nodesFixed = true;
+                } else {
+                    if (!functionsFixed && processModelAnalysisBean.getFunctionsBalance() > 0) {
+                        functionsChanges = FunctionsOptimization.optimization(model);
+                        improvements++;
+                        functionsFixed = true;
+                    }
+                }
             } else {
-                if (processModelAnalysisBean.getFunctionsBalance() > 0) {
-                    functionsChanges = FunctionsOptimization.optimization(model);
+                if (!nodesFixed && (processModelAnalysisBean.getSize() > 31 || processModelAnalysisBean.getFunctions() < 1 ||
+                        processModelAnalysisBean.getStartEvents() != 1 || processModelAnalysisBean.getEndEvents() != 1 ||
+                        processModelAnalysisBean.getOrConnectors() > 0)) {
+                    nodesChanges = NodesOptimization.optimization(model);
+                    improvements++;
+                    nodesFixed = true;
+                } else {
+                    if (!connectorsFixed && processModelAnalysisBean.getConnectorsBalance() > 0) {
+                        connectorsChanges = ConnectorsOptimization.optimization(model);
+                        improvements++;
+                        connectorsFixed = true;
+                    }
+
+                    if (!routingFixed && processModelAnalysisBean.getMismatch() > 0) {
+                        routingChanges = RoutingOptimization.optimization(model);
+                        improvements++;
+                        routingFixed = true;
+                    }
+
+                    if (!functionsFixed && processModelAnalysisBean.getFunctionsBalance() > 0) {
+                        functionsChanges = FunctionsOptimization.optimization(model);
+                        improvements++;
+                        functionsFixed = true;
+                    }
                 }
             }
-        } else {
-            if (processModelAnalysisBean.getSize() > 31 || processModelAnalysisBean.getFunctions() < 1 ||
-                    processModelAnalysisBean.getStartEvents() != 1 || processModelAnalysisBean.getEndEvents() != 1 ||
-                    processModelAnalysisBean.getOrConnectors() > 0) {
-                nodesChanges = NodesOptimization.optimization(model);
-            } else {
-                if (processModelAnalysisBean.getConnectorsBalance() > 0) {
-                    connectorsChanges = ConnectorsOptimization.optimization(model);
-                }
 
-                if (processModelAnalysisBean.getMismatch() > 0) {
-                    routingChanges = RoutingOptimization.optimization(model);
-                }
-
-                if (processModelAnalysisBean.getFunctionsBalance() > 0) {
-                    functionsChanges = FunctionsOptimization.optimization(model);
-                }
+            if (improvements == prevImprovements) {
+                break;
             }
+
+            prevImprovements = improvements;
         }
 
         if (nodesChanges == null) {
