@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1at96tr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="6.1.1">
+  <bpmn:process id="Process_1qgjyf7">
+    <bpmn:task id="Task_0zhpucx" name="Deal Signed">
+      <bpmn:incoming>SequenceFlow_0ruxpna</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1a90pw4</bpmn:outgoing>
+      <bpmn:property id="Property_0a0a3lr" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_1b343rl">
+        <bpmn:sourceRef>DataObjectReference_0pn5wkp</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0a0a3lr</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_06gttpx">
+        <bpmn:targetRef>DataStoreReference_0mxkzws</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_0qfhghs" name="Employee Day Start">
+      <bpmn:outgoing>SequenceFlow_0ruxpna</bpmn:outgoing>
+      <bpmn:property id="Property_1n1neu8" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_1sc3ro7">
+        <bpmn:sourceRef>DataObjectReference_0tmvmvu</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1n1neu8</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_13dr7n1">
+        <bpmn:targetRef>DataStoreReference_1a2uudn</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_0yev65n" name="Employee Day End">
+      <bpmn:incoming>SequenceFlow_1a90pw4</bpmn:incoming>
+      <bpmn:property id="Property_185z1r2" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_0d9msvq">
+        <bpmn:sourceRef>DataObjectReference_0tmvmvu</bpmn:sourceRef>
+        <bpmn:targetRef>Property_185z1r2</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1bemsnx">
+        <bpmn:targetRef>DataStoreReference_1a2uudn</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:dataObjectReference id="DataObjectReference_0pn5wkp" name="PurchasingAgreementID, Items[], ServicePlans[] Timestamp" dataObjectRef="DataObject_0tubzrq" />
+    <bpmn:dataObject id="DataObject_0tubzrq" />
+    <bpmn:dataStoreReference id="DataStoreReference_1a2uudn" name="SF - HeadCount&#10;Oren - HeadCount" />
+    <bpmn:dataObjectReference id="DataObjectReference_0tmvmvu" name="EmployeeID, Timestamp" dataObjectRef="DataObject_0pz8kih" />
+    <bpmn:dataObject id="DataObject_0pz8kih" />
+    <bpmn:dataStoreReference id="DataStoreReference_0mxkzws" name="SF - Sales, Service&#10;Oren - Store" />
+    <bpmn:sequenceFlow id="SequenceFlow_1a90pw4" sourceRef="Task_0zhpucx" targetRef="Task_0yev65n" />
+    <bpmn:sequenceFlow id="SequenceFlow_0ruxpna" sourceRef="Task_0qfhghs" targetRef="Task_0zhpucx" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1qgjyf7">
+      <bpmndi:BPMNShape id="Participant_16zv9hs_di" isHorizontal="true">
+        <dc:Bounds x="156" y="81" width="1900" height="440" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0zhpucx_di" bpmnElement="Task_0zhpucx">
+        <dc:Bounds x="426" y="261" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0qfhghs_di" bpmnElement="Task_0qfhghs">
+        <dc:Bounds x="276" y="261" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ruxpna_di" bpmnElement="SequenceFlow_0ruxpna">
+        <di:waypoint x="376" y="301" />
+        <di:waypoint x="426" y="301" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_0yev65n_di" bpmnElement="Task_0yev65n">
+        <dc:Bounds x="576" y="261" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1a90pw4_di" bpmnElement="SequenceFlow_1a90pw4">
+        <di:waypoint x="526" y="301" />
+        <di:waypoint x="576" y="301" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_0tmvmvu_di" bpmnElement="DataObjectReference_0tmvmvu">
+        <dc:Bounds x="390" y="126" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="377" y="183" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1sc3ro7_di" bpmnElement="DataInputAssociation_1sc3ro7">
+        <di:waypoint x="390" y="151" />
+        <di:waypoint x="326" y="151" />
+        <di:waypoint x="326" y="261" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0d9msvq_di" bpmnElement="DataInputAssociation_0d9msvq">
+        <di:waypoint x="426" y="151" />
+        <di:waypoint x="626" y="151" />
+        <di:waypoint x="626" y="261" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_0pn5wkp_di" bpmnElement="DataObjectReference_0pn5wkp">
+        <dc:Bounds x="308" y="396" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="284" y="453" width="84" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1b343rl_di" bpmnElement="DataInputAssociation_1b343rl">
+        <di:waypoint x="344" y="407" />
+        <di:waypoint x="431" y="339" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_1a2uudn_di" bpmnElement="DataStoreReference_1a2uudn">
+        <dc:Bounds x="171" y="396" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="453" width="81" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_13dr7n1_di" bpmnElement="DataOutputAssociation_13dr7n1">
+        <di:waypoint x="282" y="340" />
+        <di:waypoint x="219" y="396" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1bemsnx_di" bpmnElement="DataOutputAssociation_1bemsnx">
+        <di:waypoint x="606" y="341" />
+        <di:waypoint x="520" y="510" />
+        <di:waypoint x="270" y="510" />
+        <di:waypoint x="270" y="416" />
+        <di:waypoint x="221" y="416" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_0mxkzws_di" bpmnElement="DataStoreReference_0mxkzws">
+        <dc:Bounds x="681" y="126" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="667" y="183" width="78" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_06gttpx_di" bpmnElement="DataOutputAssociation_06gttpx">
+        <di:waypoint x="526" y="270" />
+        <di:waypoint x="681" y="172" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

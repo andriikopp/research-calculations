@@ -13,6 +13,10 @@ research-calculations-java/xpdl-models/
 research-calculations-java/processModelsStorage/*
 
 !research-calculations-java/processModelsStorage/test_models/
+!research-calculations-java/processModelsStorage/01-set/
+!research-calculations-java/processModelsStorage/02-set/
+!research-calculations-java/processModelsStorage/03-set/
+!research-calculations-java/processModelsStorage/04-set/
 
 !research-calculations-java/processModelsStorage/users.json
 !research-calculations-java/processModelsStorage/processModels.json

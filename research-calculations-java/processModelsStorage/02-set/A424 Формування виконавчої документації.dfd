@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_008e4ar" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="5.0.4">
+  <bpmn:process id="Process_13jkwad" isExecutable="false">
+    <bpmn:dataObjectReference id="DataObjectReference_0l1s2xy" name="Первинна звітність" dataObjectRef="DataObject_1rmltqs" />
+    <bpmn:dataObject id="DataObject_1rmltqs" />
+    <bpmn:dataObjectReference id="DataObjectReference_0lz4un4" name="Виконавча документація до теки проекту" dataObjectRef="DataObject_09181s0" />
+    <bpmn:dataObject id="DataObject_09181s0" />
+    <bpmn:task id="Task_0ow1qs6" name="Внесення виконавчої документації до теки проекту">
+      <bpmn:property id="Property_10jynbf" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_0nd6elq">
+        <bpmn:sourceRef>DataStoreReference_10xfsr2</bpmn:sourceRef>
+        <bpmn:targetRef>Property_10jynbf</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_1lxyt4j">
+        <bpmn:sourceRef>DataStoreReference_1692s9l</bpmn:sourceRef>
+        <bpmn:targetRef>Property_10jynbf</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_134h2qh">
+        <bpmn:targetRef>DataObjectReference_0l1s2xy</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_12cj48e">
+        <bpmn:targetRef>DataObjectReference_0lz4un4</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_1hi9ami" name="Передача документації замовнику">
+      <bpmn:property id="Property_1nhs4aw" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_097vzbr">
+        <bpmn:sourceRef>DataStoreReference_1jnndyw</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1nhs4aw</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_03yinr4">
+        <bpmn:targetRef>DataStoreReference_1gymzfp</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_04qaj0o">
+        <bpmn:targetRef>DataStoreReference_1692s9l</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_018bhrc" name="Підписання документації">
+      <bpmn:property id="Property_178w786" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_0fae31l">
+        <bpmn:sourceRef>DataStoreReference_1nmjsej</bpmn:sourceRef>
+        <bpmn:targetRef>Property_178w786</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1ekhb64">
+        <bpmn:targetRef>DataStoreReference_1jnndyw</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_0kyven1" name="Формування акту виконаних робіт та рахунка-фактури">
+      <bpmn:property id="Property_1frn6tr" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_19wqlq7">
+        <bpmn:sourceRef>DataStoreReference_1jl5laf</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1frn6tr</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0g6dr8i">
+        <bpmn:targetRef>DataStoreReference_1nmjsej</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:dataObjectReference id="DataObjectReference_0ll3sky" name="Завдання на виконання робіт" dataObjectRef="DataObject_1cwobyv" />
+    <bpmn:dataObject id="DataObject_1cwobyv" />
+    <bpmn:dataObjectReference id="DataObjectReference_078ofj0" name="Робочий проект" dataObjectRef="DataObject_0qck7rl" />
+    <bpmn:dataObject id="DataObject_0qck7rl" />
+    <bpmn:task id="Task_031swqq" name="Формування виконавчої документації">
+      <bpmn:property id="Property_0v6gfg9" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_18nwwvd">
+        <bpmn:sourceRef>DataObjectReference_078ofj0</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0v6gfg9</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_0mplpsp">
+        <bpmn:sourceRef>DataObjectReference_0ll3sky</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0v6gfg9</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_0ipatd3">
+        <bpmn:sourceRef>DataStoreReference_1f3ps3j</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0v6gfg9</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_0gj5f1r">
+        <bpmn:sourceRef>DataStoreReference_1y26qq2</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0v6gfg9</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0e6g6do">
+        <bpmn:targetRef>DataStoreReference_19ltaso</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:dataStoreReference id="DataStoreReference_19ltaso" name="Виконавча документація" />
+    <bpmn:task id="Task_0offlad" name="Аналіз та затвердження виконавчої документації">
+      <bpmn:property id="Property_1441gf7" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_0merw6n">
+        <bpmn:sourceRef>DataStoreReference_19ltaso</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1441gf7</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_07arrf1">
+        <bpmn:targetRef>DataStoreReference_1jl5laf</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0ww9l67">
+        <bpmn:targetRef>DataStoreReference_1f3ps3j</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:dataStoreReference id="DataStoreReference_1jl5laf" name="Затверджена керівником виконавча документація" />
+    <bpmn:dataStoreReference id="DataStoreReference_1nmjsej" name="Виконавча документація, сформовані акт виконаних робіт та рахунок-фактура" />
+    <bpmn:dataStoreReference id="DataStoreReference_1jnndyw" name="Підписана виконавча документація" />
+    <bpmn:task id="Task_1c75dx1" name="Затвердження виконавчої документації та акту виконаних робіт">
+      <bpmn:property id="Property_1sn7tvl" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_1v18142">
+        <bpmn:sourceRef>DataStoreReference_1gymzfp</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1sn7tvl</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1v61qlr">
+        <bpmn:targetRef>DataStoreReference_10xfsr2</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1ydwfro">
+        <bpmn:targetRef>DataStoreReference_1y26qq2</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:dataStoreReference id="DataStoreReference_10xfsr2" name="Затверджена замовником виконавча документація" />
+    <bpmn:dataStoreReference id="DataStoreReference_1gymzfp" name="Виконавча документація до затвердження замовником" />
+    <bpmn:dataStoreReference id="DataStoreReference_1f3ps3j" name="Не затверджена керівником виконавча документація" />
+    <bpmn:dataStoreReference id="DataStoreReference_1y26qq2" name="Не затверджена замовником виконавча документація" />
+    <bpmn:dataStoreReference id="DataStoreReference_1692s9l" name="Рахунок-фактура" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_13jkwad">
+      <bpmndi:BPMNShape id="DataObjectReference_0l1s2xy_di" bpmnElement="DataObjectReference_0l1s2xy">
+        <dc:Bounds x="1022" y="885" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1015" y="942" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0lz4un4_di" bpmnElement="DataObjectReference_0lz4un4">
+        <dc:Bounds x="1022" y="765" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="998" y="720" width="83" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0ow1qs6_di" bpmnElement="Task_0ow1qs6">
+        <dc:Bounds x="810" y="840" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_1hi9ami_di" bpmnElement="Task_1hi9ami">
+        <dc:Bounds x="490" y="620" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_018bhrc_di" bpmnElement="Task_018bhrc">
+        <dc:Bounds x="650" y="500" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0kyven1_di" bpmnElement="Task_0kyven1">
+        <dc:Bounds x="810" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0ll3sky_di" bpmnElement="DataObjectReference_0ll3sky">
+        <dc:Bounds x="152" y="230" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="128" y="287" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_078ofj0_di" bpmnElement="DataObjectReference_078ofj0">
+        <dc:Bounds x="152" y="105" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="129" y="83" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_031swqq_di" bpmnElement="Task_031swqq">
+        <dc:Bounds x="320" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_18nwwvd_di" bpmnElement="DataInputAssociation_18nwwvd">
+        <di:waypoint x="190" y="130" />
+        <di:waypoint x="320" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0mplpsp_di" bpmnElement="DataInputAssociation_0mplpsp">
+        <di:waypoint x="170" y="225" />
+        <di:waypoint x="170" y="170" />
+        <di:waypoint x="320" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_19ltaso_di" bpmnElement="DataStoreReference_19ltaso">
+        <dc:Bounds x="515" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="506" y="95.5" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0offlad_di" bpmnElement="Task_0offlad">
+        <dc:Bounds x="490" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1jl5laf_di" bpmnElement="DataStoreReference_1jl5laf">
+        <dc:Bounds x="675" y="230" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="666" y="173" width="68" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_07arrf1_di" bpmnElement="DataOutputAssociation_07arrf1">
+        <di:waypoint x="590" y="255" />
+        <di:waypoint x="675" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_19wqlq7_di" bpmnElement="DataInputAssociation_19wqlq7">
+        <di:waypoint x="725" y="255" />
+        <di:waypoint x="810" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_1nmjsej_di" bpmnElement="DataStoreReference_1nmjsej">
+        <dc:Bounds x="835" y="405" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="898" y="390" width="83" height="80" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0g6dr8i_di" bpmnElement="DataOutputAssociation_0g6dr8i">
+        <di:waypoint x="860" y="300" />
+        <di:waypoint x="860" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0fae31l_di" bpmnElement="DataInputAssociation_0fae31l">
+        <di:waypoint x="860" y="455" />
+        <di:waypoint x="860" y="540" />
+        <di:waypoint x="750" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_1jnndyw_di" bpmnElement="DataStoreReference_1jnndyw">
+        <dc:Bounds x="515" y="515" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="506" y="465" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1ekhb64_di" bpmnElement="DataOutputAssociation_1ekhb64">
+        <di:waypoint x="650" y="540" />
+        <di:waypoint x="565" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_097vzbr_di" bpmnElement="DataInputAssociation_097vzbr">
+        <di:waypoint x="540" y="565" />
+        <di:waypoint x="540" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1c75dx1_di" bpmnElement="Task_1c75dx1">
+        <dc:Bounds x="490" y="840" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_10xfsr2_di" bpmnElement="DataStoreReference_10xfsr2">
+        <dc:Bounds x="675" y="855" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="666" y="912" width="68" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1v61qlr_di" bpmnElement="DataOutputAssociation_1v61qlr">
+        <di:waypoint x="590" y="880" />
+        <di:waypoint x="675" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0nd6elq_di" bpmnElement="DataInputAssociation_0nd6elq">
+        <di:waypoint x="725" y="880" />
+        <di:waypoint x="810" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_134h2qh_di" bpmnElement="DataOutputAssociation_134h2qh">
+        <di:waypoint x="910" y="900" />
+        <di:waypoint x="1020" y="900" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_12cj48e_di" bpmnElement="DataOutputAssociation_12cj48e">
+        <di:waypoint x="910" y="860" />
+        <di:waypoint x="1042" y="860" />
+        <di:waypoint x="1042" y="815" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_1gymzfp_di" bpmnElement="DataStoreReference_1gymzfp">
+        <dc:Bounds x="515" y="745" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="421.5" y="743" width="83" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_03yinr4_di" bpmnElement="DataOutputAssociation_03yinr4">
+        <di:waypoint x="540" y="700" />
+        <di:waypoint x="540" y="745" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1v18142_di" bpmnElement="DataInputAssociation_1v18142">
+        <di:waypoint x="540" y="795" />
+        <di:waypoint x="540" y="840" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0e6g6do_di" bpmnElement="DataOutputAssociation_0e6g6do">
+        <di:waypoint x="420" y="150" />
+        <di:waypoint x="515" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0merw6n_di" bpmnElement="DataInputAssociation_0merw6n">
+        <di:waypoint x="540" y="175" />
+        <di:waypoint x="540" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_1f3ps3j_di" bpmnElement="DataStoreReference_1f3ps3j">
+        <dc:Bounds x="375" y="230" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="359" y="287" width="83" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0ww9l67_di" bpmnElement="DataOutputAssociation_0ww9l67">
+        <di:waypoint x="490" y="255" />
+        <di:waypoint x="425" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0ipatd3_di" bpmnElement="DataInputAssociation_0ipatd3">
+        <di:waypoint x="400" y="230" />
+        <di:waypoint x="400" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_1y26qq2_di" bpmnElement="DataStoreReference_1y26qq2">
+        <dc:Bounds x="315" y="855" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="299" y="912" width="83" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1ydwfro_di" bpmnElement="DataOutputAssociation_1ydwfro">
+        <di:waypoint x="490" y="880" />
+        <di:waypoint x="365" y="880" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0gj5f1r_di" bpmnElement="DataInputAssociation_0gj5f1r">
+        <di:waypoint x="340" y="855" />
+        <di:waypoint x="340" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_1692s9l_di" bpmnElement="DataStoreReference_1692s9l">
+        <dc:Bounds x="835" y="635" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="816" y="611" width="88" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_04qaj0o_di" bpmnElement="DataOutputAssociation_04qaj0o">
+        <di:waypoint x="590" y="660" />
+        <di:waypoint x="835" y="660" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1lxyt4j_di" bpmnElement="DataInputAssociation_1lxyt4j">
+        <di:waypoint x="860" y="685" />
+        <di:waypoint x="860" y="840" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

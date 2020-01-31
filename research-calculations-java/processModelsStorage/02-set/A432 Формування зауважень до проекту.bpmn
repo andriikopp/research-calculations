@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_166kyka" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="5.0.4">
+  <bpmn:collaboration id="Collaboration_0ww5e2h">
+    <bpmn:participant id="Participant_1rve63c" name="Формування зауважень до проекту" processRef="Process_14ywm49" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_14ywm49" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1l9umzu">
+      <bpmn:lane id="Lane_0f1o07a" name="Керівник проекту">
+        <bpmn:flowNodeRef>StartEvent_0jscfxg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_0xhu94j</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_1wvthi0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_0vdn4pe</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_140tzly" name="Співробітники, які формують зауваження до проекту">
+        <bpmn:flowNodeRef>Task_1a1roza</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_0jscfxg" name="Працездатна система введена в експлуатацію">
+      <bpmn:outgoing>SequenceFlow_0mmrmkb</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_0xhu94j" name="Організація підсумкового збору за проектом">
+      <bpmn:incoming>SequenceFlow_0mmrmkb</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_07z1bqi</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_1a1roza" name="Обговорення результатів проекту">
+      <bpmn:incoming>SequenceFlow_07z1bqi</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_14bgtd3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_1wvthi0" name="Формування підсумкового переліку зауважень за проектом та внесення його до теки проекту">
+      <bpmn:incoming>SequenceFlow_14bgtd3</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0bjdb4t</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_0vdn4pe" name="Проект проаналізований">
+      <bpmn:incoming>SequenceFlow_0bjdb4t</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0mmrmkb" sourceRef="StartEvent_0jscfxg" targetRef="Task_0xhu94j" />
+    <bpmn:sequenceFlow id="SequenceFlow_07z1bqi" sourceRef="Task_0xhu94j" targetRef="Task_1a1roza" />
+    <bpmn:sequenceFlow id="SequenceFlow_14bgtd3" sourceRef="Task_1a1roza" targetRef="Task_1wvthi0" />
+    <bpmn:sequenceFlow id="SequenceFlow_0bjdb4t" sourceRef="Task_1wvthi0" targetRef="EndEvent_0vdn4pe" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0ww5e2h">
+      <bpmndi:BPMNShape id="Participant_1rve63c_di" bpmnElement="Participant_1rve63c" isHorizontal="true">
+        <dc:Bounds x="170" y="80" width="770" height="300" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0f1o07a_di" bpmnElement="Lane_0f1o07a" isHorizontal="true">
+        <dc:Bounds x="200" y="80" width="740" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_140tzly_di" bpmnElement="Lane_140tzly" isHorizontal="true">
+        <dc:Bounds x="200" y="230" width="740" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_100lq3s_di" bpmnElement="StartEvent_0jscfxg">
+        <dc:Bounds x="282" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="256" y="175" width="88" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0xhu94j_di" bpmnElement="Task_0xhu94j">
+        <dc:Bounds x="370" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0mmrmkb_di" bpmnElement="SequenceFlow_0mmrmkb">
+        <di:waypoint x="318" y="150" />
+        <di:waypoint x="370" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1a1roza_di" bpmnElement="Task_1a1roza">
+        <dc:Bounds x="530" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_07z1bqi_di" bpmnElement="SequenceFlow_07z1bqi">
+        <di:waypoint x="470" y="150" />
+        <di:waypoint x="500" y="150" />
+        <di:waypoint x="500" y="300" />
+        <di:waypoint x="530" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1wvthi0_di" bpmnElement="Task_1wvthi0">
+        <dc:Bounds x="690" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_14bgtd3_di" bpmnElement="SequenceFlow_14bgtd3">
+        <di:waypoint x="630" y="300" />
+        <di:waypoint x="660" y="300" />
+        <di:waypoint x="660" y="150" />
+        <di:waypoint x="690" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0vdn4pe_di" bpmnElement="EndEvent_0vdn4pe">
+        <dc:Bounds x="852" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="827" y="175" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0bjdb4t_di" bpmnElement="SequenceFlow_0bjdb4t">
+        <di:waypoint x="790" y="150" />
+        <di:waypoint x="852" y="150" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
