@@ -2,6 +2,7 @@ package edu.bpmanalysis.analysis;
 
 import edu.bpmanalysis.analysis.model.EvaluationUtil;
 import edu.bpmanalysis.description.tools.Model;
+import edu.bpmanalysis.description.tools.Node;
 import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphEdgeBean;
@@ -57,20 +58,74 @@ public final class GraphMetricsUtil {
         return arcs - nodes + 1;
     }
 
+    public static double countBalancing(Model model) {
+        double max = 0;
+        double size = 0;
+        double result = 0;
+
+        for (Node node : model.getNodesList()) {
+            if (node.getNodeType().equals(Node.NodeType.FUNCTION)) {
+                double arcs = node.getInput() + node.getOutput() + node.getControl() + node.getMechanism();
+
+                if (arcs > max) {
+                    max = arcs;
+                }
+
+                size++;
+            }
+        }
+
+        for (Node node : model.getNodesList()) {
+            if (node.getNodeType().equals(Node.NodeType.FUNCTION)) {
+                double arcs = node.getInput() + node.getOutput() + node.getControl() + node.getMechanism();
+
+                result += arcs - max;
+            }
+        }
+
+        return Math.abs(result / size);
+    }
+
+    public static double countCFC(Model model) {
+        double result = 0;
+
+        for (Node node : model.getNodesList()) {
+            if (node.getNodeType().equals(Node.NodeType.XOR_CONNECTOR)) {
+                result += node.getOutput();
+            }
+
+            if (node.getNodeType().equals(Node.NodeType.OR_CONNECTOR)) {
+                result += Math.pow(2, node.getOutput()) - 1;
+            }
+
+            if (node.getNodeType().equals(Node.NodeType.AND_CONNECTOR)) {
+                result += 1;
+            }
+        }
+
+        return result;
+    }
+
     public static void analyzeModels(ProcessModelRepository processModelRepository) {
+        System.out.println("=== Methods comparison ===");
+
         for (ProcessModelBean processModelBean : processModelRepository.getProcessModels()) {
-            double nodes = countNodes(processModelBean);
-            double arcs = countArcs(processModelBean);
             double density = countDensity(processModelBean);
             double connectivity = countConnectivity(processModelBean);
             double sequentiality = countSequentiality(processModelBean);
-            double depth = countDepth(processModelBean);
 
-            double quality = EvaluationUtil.quality(ProcessModelAnalysisUtil.transformToModel(processModelBean));
+            Model model = ProcessModelAnalysisUtil.transformToModel(processModelBean);
 
-            System.out.printf("%s\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", processModelBean.getName(),
-                    0, nodes, arcs, density, connectivity, sequentiality, quality, depth);
+            double balance = countBalancing(model);
+            double quality = EvaluationUtil.quality(model);
+
+            System.out.printf("%s\t%f\t%f\t%f\t%f\t%f\n",
+                    processModelBean.getName(),
+                    density, connectivity, sequentiality, balance,
+                    quality);
         }
+
+        System.out.println("==========================");
     }
 
     public static void measurePerformance(ProcessModelRepository processModelRepository) {

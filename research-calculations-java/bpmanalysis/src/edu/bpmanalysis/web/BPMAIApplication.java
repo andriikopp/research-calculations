@@ -1,6 +1,7 @@
 package edu.bpmanalysis.web;
 
 import com.google.gson.Gson;
+import edu.bpmanalysis.analysis.GraphMetricsUtil;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.analysis.RecommendationsUtil;
 import edu.bpmanalysis.analysis.SummaryAnalysisUtil;
@@ -91,6 +92,8 @@ public class BPMAIApplication {
             Model model = ProcessModelAnalysisUtil.transformToModel(bean);
             models.add(model);
         }
+
+        GraphMetricsUtil.analyzeModels(processModelRepository);
 
         staticFiles.location("/web");
 
