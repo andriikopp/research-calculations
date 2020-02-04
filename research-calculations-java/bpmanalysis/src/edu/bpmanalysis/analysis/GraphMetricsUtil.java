@@ -132,12 +132,26 @@ public final class GraphMetricsUtil {
         System.out.println("========= Analysis Performance =========");
 
         List<ProcessModelBean> processModelBeanList = processModelRepository.getProcessModels();
+        List<Model> modelList = new ArrayList<>();
+
+        for (ProcessModelBean processModelBean : processModelBeanList) {
+            modelList.add(ProcessModelAnalysisUtil.transformToModel(processModelBean));
+        }
 
         long start, end, time;
 
-        int[] executions = {1, 10, 100, 1000, 10000};
+        int[] executions = {1000};
 
         for (int times : executions) {
+            start = System.nanoTime();
+
+            for (int i = 0; i < times; i++)
+                for (Model model : modelList)
+                    EvaluationUtil.quality(model);
+
+            end = System.nanoTime();
+            time = end - start;
+            System.out.println(time);
             start = System.nanoTime();
 
             for (int i = 0; i < times; i++)
@@ -168,17 +182,8 @@ public final class GraphMetricsUtil {
             start = System.nanoTime();
 
             for (int i = 0; i < times; i++)
-                for (ProcessModelBean processModelBean : processModelBeanList)
-                    countDepth(processModelBean);
-
-            end = System.nanoTime();
-            time = end - start;
-            System.out.println(time);
-            start = System.nanoTime();
-
-            for (int i = 0; i < times; i++)
-                for (ProcessModelBean processModelBean : processModelBeanList)
-                    EvaluationUtil.quality(ProcessModelAnalysisUtil.transformToModel(processModelBean));
+                for (Model model : modelList)
+                    countBalancing(model);
 
             end = System.nanoTime();
             time = end - start;
@@ -192,7 +197,6 @@ public final class GraphMetricsUtil {
         System.out.println("========= Optimization Performance =========");
 
         List<ProcessModelBean> processModelBeanList = processModelRepository.getProcessModels();
-
         List<Model> modelList = new ArrayList<>();
 
         for (ProcessModelBean processModelBean : processModelBeanList) {
@@ -201,7 +205,7 @@ public final class GraphMetricsUtil {
 
         long start, end, time;
 
-        int[] executions = {1, 10, 100, 1000, 10000};
+        int[] executions = {1000};
 
         for (int times : executions) {
             start = System.nanoTime();

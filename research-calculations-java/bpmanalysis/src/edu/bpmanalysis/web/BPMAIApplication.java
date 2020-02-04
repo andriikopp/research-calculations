@@ -94,6 +94,7 @@ public class BPMAIApplication {
         }
 
         GraphMetricsUtil.analyzeModels(processModelRepository);
+        GraphMetricsUtil.measurePerformance(processModelRepository);
 
         staticFiles.location("/web");
 
