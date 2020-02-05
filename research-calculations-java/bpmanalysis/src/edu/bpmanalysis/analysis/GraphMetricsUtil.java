@@ -51,13 +51,6 @@ public final class GraphMetricsUtil {
         return arcsBetweenFunctions / arcs;
     }
 
-    public static double countDepth(ProcessModelBean processModelBean) {
-        double nodes = countNodes(processModelBean);
-        double arcs = countArcs(processModelBean);
-
-        return arcs - nodes + 1;
-    }
-
     public static double countBalancing(Model model) {
         double max = 0;
         double size = 0;
@@ -84,26 +77,6 @@ public final class GraphMetricsUtil {
         }
 
         return Math.abs(result / size);
-    }
-
-    public static double countCFC(Model model) {
-        double result = 0;
-
-        for (Node node : model.getNodesList()) {
-            if (node.getNodeType().equals(Node.NodeType.XOR_CONNECTOR)) {
-                result += node.getOutput();
-            }
-
-            if (node.getNodeType().equals(Node.NodeType.OR_CONNECTOR)) {
-                result += Math.pow(2, node.getOutput()) - 1;
-            }
-
-            if (node.getNodeType().equals(Node.NodeType.AND_CONNECTOR)) {
-                result += 1;
-            }
-        }
-
-        return result;
     }
 
     public static void analyzeModels(ProcessModelRepository processModelRepository) {
