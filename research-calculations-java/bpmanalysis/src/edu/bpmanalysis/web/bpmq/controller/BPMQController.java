@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import edu.bpmanalysis.web.bpmq.entity.BPMQualitySummary;
 import edu.bpmanalysis.web.bpmq.entity.BPModel;
 import edu.bpmanalysis.web.bpmq.repository.api.BPModelRepository;
+import edu.bpmanalysis.web.bpmq.util.BPMEALandscapeUtil;
 import edu.bpmanalysis.web.bpmq.util.BPMOntologyUtil;
 import org.apache.jena.rdf.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -54,7 +56,7 @@ public class BPMQController {
     String queryOntology(@RequestParam("queryText") String queryText) {
         Model model = BPMOntologyUtil.MODEL;
 
-        String[] arr = queryText.split(" ");
+        String[] arr = queryText.trim().split(" ");
         String property = arr[0];
         String object = queryText.replace(property, "").trim();
 
@@ -84,5 +86,19 @@ public class BPMQController {
         }
 
         return new Gson().toJson(result);
+    }
+
+    @GetMapping("/architectureMatrix")
+    public String getEAMatrix() {
+        return new Gson().toJson(BPMEALandscapeUtil.generateEAMatrix());
+    }
+
+    @RequestMapping(value = "/landscape",
+            method = RequestMethod.GET,
+            produces = {"application/xml", "text/xml"},
+            consumes = MediaType.ALL_VALUE)
+    @ResponseBody
+    public String getEALandscape() {
+        return BPMEALandscapeUtil.generateArchiMateEALandscape();
     }
 }

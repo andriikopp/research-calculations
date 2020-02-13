@@ -69,8 +69,8 @@
 			    	<th scope="col">Unmatched Gateways</th>
 			    	<th scope="col">Total Gateways</th>
 			    	<th scope="col">OR Gateways</th>
-			    	<th scope="col">PMQ 1</th>
-			    	<th scope="col">PMQ 2</th>
+			    	<!--<th scope="col">PMQ 1</th>-->
+			    	<th scope="col">PMQ</th>
 			    	<th scope="col">Quality</th>
 			    </tr>
 			</thead>
@@ -84,7 +84,7 @@
 			    	<td>{{bpModel.unmatchedGateways}}</td>
 			    	<td>{{bpModel.totalGateways}}</td>
 			    	<td>{{bpModel.orGateways}}</td>
-			    	<td>{{bpModel.hardQuality}}</td>
+			    	<!--<td>{{bpModel.hardQuality}}</td>-->
 			    	<td>{{bpModel.softQuality}}</td>
 			    	<td>{{bpModel.softQuality >= 0.8 ? 'Very High' : bpModel.softQuality >= 0.64 ? 'High' : bpModel.softQuality >= 0.37 ? 'Medium' : bpModel.softQuality >= 0.2 ? 'Low' : 'Very Low' }}</td>
 			    </tr>

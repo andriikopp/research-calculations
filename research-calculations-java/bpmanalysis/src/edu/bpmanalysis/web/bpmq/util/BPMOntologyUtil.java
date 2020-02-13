@@ -1,28 +1,21 @@
 package edu.bpmanalysis.web.bpmq.util;
 
 import edu.bpmanalysis.web.bpmq.entity.BPModel;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.*;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.*;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
+import static edu.bpmanalysis.web.bpmq.util.BPMEALandscapeUtil.EA_LANDSCAPE;
 
 public class BPMOntologyUtil {
     public static final Model MODEL = ModelFactory.createDefaultModel();
 
     public static void processModel(String fileName, BpmnModelInstance modelInstance, BPModel bpModel) {
-        Set<String> happenLocation = new HashSet<>();
-        Set<String> hasActivity = new HashSet<>();
-        Set<String> hasInput = new HashSet<>();
-        Set<String> hasOutput = new HashSet<>();
-        Set<String> hasStakeholder = new HashSet<>();
-        Set<String> happenTime = new HashSet<>();
-        Set<String> hasMotivation = new HashSet<>();
+        List<String[]> rdfGraphArcs = new LinkedList<>();
 
         for (ModelElementInstance modelElementInstance : modelInstance.getModelElementsByType(
                 modelInstance.getModel().getType(Process.class))) {
@@ -38,8 +31,8 @@ public class BPMOntologyUtil {
                 }
             }
 
-            if (happenLocation != null && !happenLocation.isEmpty()) {
-                happenLocation.add(whereLabel);
+            if (whereLabel != null && !whereLabel.isEmpty()) {
+                rdfGraphArcs.add(new String[]{"happenLocation", whereLabel, "BusinessProcess"});
             }
         }
 
@@ -49,7 +42,7 @@ public class BPMOntologyUtil {
             String taskName = task.getName();
 
             if (taskName != null && !taskName.isEmpty()) {
-                hasActivity.add(taskName);
+                rdfGraphArcs.add(new String[]{"hasActivity", taskName, "BusinessFunction"});
             }
 
             Collection<DataInputAssociation> inputs = task.getDataInputAssociations();
@@ -71,7 +64,8 @@ public class BPMOntologyUtil {
                 }
 
                 if (sourceName != null && !sourceName.isEmpty()) {
-                    hasInput.add(sourceName);
+                    String eaElement = sourceType.equals("dataObjectReference") ? "BusinessObject" : null;
+                    rdfGraphArcs.add(new String[]{"hasInput", sourceName, eaElement});
                 }
             }
 
@@ -90,7 +84,8 @@ public class BPMOntologyUtil {
                 }
 
                 if (targetName != null && !targetName.isEmpty()) {
-                    hasOutput.add(targetName);
+                    String eaElement = targetType.equals("dataObjectReference") ? "BusinessObject" : null;
+                    rdfGraphArcs.add(new String[]{"hasOutput", targetName, eaElement});
                 }
             }
         }
@@ -101,7 +96,7 @@ public class BPMOntologyUtil {
             String laneName = lane.getName();
 
             if (laneName != null && !laneName.isEmpty()) {
-                hasStakeholder.add(laneName);
+                rdfGraphArcs.add(new String[]{"hasStakeholder", laneName, "BusinessRole"});
             }
         }
 
@@ -111,7 +106,17 @@ public class BPMOntologyUtil {
             String startEventName = startEvent.getName();
 
             if (startEventName != null && !startEventName.isEmpty()) {
-                happenTime.add(startEventName);
+                rdfGraphArcs.add(new String[]{"happenTime", startEventName, null});
+            }
+        }
+
+        for (ModelElementInstance modelElementInstance : modelInstance.getModelElementsByType(
+                modelInstance.getModel().getType(Event.class))) {
+            Event event = (Event) modelElementInstance;
+            String startEventName = event.getName();
+
+            if (startEventName != null && !startEventName.isEmpty()) {
+                rdfGraphArcs.add(new String[]{null, startEventName, "BusinessEvent"});
             }
         }
 
@@ -121,57 +126,23 @@ public class BPMOntologyUtil {
             String gatewayName = gateway.getName();
 
             if (gatewayName != null && !gatewayName.isEmpty()) {
-                hasMotivation.add(gatewayName);
+                rdfGraphArcs.add(new String[]{"hasMotivation", gatewayName, null});
             }
         }
 
-        for (String property : hasInput) {
-            MODEL.createResource(fileName)
-                    .addProperty(MODEL.createProperty("hasInput"), property
-                            .replace("\n", "")
-                            .replace("\r", ""));
-        }
+        for (String[] pair : rdfGraphArcs) {
+            String label = pair[1]
+                    .replaceAll("\\W+", " ")
+                    .replaceAll("\\s+", "_")
+                    .toLowerCase();
 
-        for (String property : hasOutput) {
-            MODEL.createResource(fileName)
-                    .addProperty(MODEL.createProperty("hasOutput"), property
-                            .replace("\n", "")
-                            .replace("\r", ""));
-        }
+            if (pair[0] != null) {
+                MODEL.createResource(fileName).addProperty(MODEL.createProperty(pair[0]), label);
+            }
 
-        for (String property : hasActivity) {
-            MODEL.createResource(fileName)
-                    .addProperty(MODEL.createProperty("hasActivity"), property
-                            .replace("\n", "")
-                            .replace("\r", ""));
-        }
-
-        for (String property : happenLocation) {
-            MODEL.createResource(fileName)
-                    .addProperty(MODEL.createProperty("happenLocation"), property
-                            .replace("\n", "")
-                            .replace("\r", ""));
-        }
-
-        for (String property : hasStakeholder) {
-            MODEL.createResource(fileName)
-                    .addProperty(MODEL.createProperty("hasStakeholder"), property
-                            .replace("\n", "")
-                            .replace("\r", ""));
-        }
-
-        for (String property : happenTime) {
-            MODEL.createResource(fileName)
-                    .addProperty(MODEL.createProperty("happenTime"), property
-                            .replace("\n", "")
-                            .replace("\r", ""));
-        }
-
-        for (String property : hasMotivation) {
-            MODEL.createResource(fileName)
-                    .addProperty(MODEL.createProperty("hasMotivation"), property
-                            .replace("\n", "")
-                            .replace("\r", ""));
+            if (pair[2] != null) {
+                EA_LANDSCAPE.put(label, pair[2]);
+            }
         }
 
         MODEL.createResource(fileName)
