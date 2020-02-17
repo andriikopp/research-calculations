@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1at96tr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="6.1.1">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1at96tr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="6.3.0">
   <bpmn:process id="Process_1kyd43u" isExecutable="false">
     <bpmn:laneSet id="LaneSet_06e39sd" />
     <bpmn:task id="Task_0x819v0" name="Inbound Online Call">
@@ -15,7 +15,6 @@
     </bpmn:task>
     <bpmn:task id="Task_0hva2hq" name="Service Call Signed">
       <bpmn:incoming>SequenceFlow_0wa46kt</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0hc3b0m</bpmn:outgoing>
       <bpmn:property id="Property_0q89s3v" name="__targetRef_placeholder" />
       <bpmn:dataInputAssociation id="DataInputAssociation_0gjzowe">
         <bpmn:sourceRef>DataObjectReference_0ttwm7a</bpmn:sourceRef>
@@ -83,10 +82,6 @@
     <bpmn:sequenceFlow id="SequenceFlow_1pkj55s" sourceRef="Task_0rjo6p6" targetRef="Task_0eos4wk" />
     <bpmn:dataObjectReference id="DataObjectReference_0ls8roa" name="EmployeeID, Timestamp, Bill_of_Materials_Return[], Service_Call[], Client_Sign" dataObjectRef="DataObject_05yxo8x" />
     <bpmn:dataObject id="DataObject_05yxo8x" />
-    <bpmn:endEvent id="EndEvent_072qpq9" name="Service Call Signed">
-      <bpmn:incoming>SequenceFlow_0hc3b0m</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0hc3b0m" sourceRef="Task_0hva2hq" targetRef="EndEvent_072qpq9" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1kyd43u">
@@ -231,16 +226,6 @@
         <di:waypoint x="910" y="210" />
         <di:waypoint x="910" y="290" />
         <di:waypoint x="1076" y="290" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_072qpq9_di" bpmnElement="EndEvent_072qpq9">
-        <dc:Bounds x="1692" y="273" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1680" y="316" width="60" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_0hc3b0m_di" bpmnElement="SequenceFlow_0hc3b0m">
-        <di:waypoint x="1636" y="291" />
-        <di:waypoint x="1692" y="291" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
