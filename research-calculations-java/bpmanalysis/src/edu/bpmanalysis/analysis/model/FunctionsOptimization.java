@@ -4,12 +4,15 @@ import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.analysis.balance.FunctionsBalance;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.description.tools.Node;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.exception.TooManyEvaluationsException;
-import org.apache.commons.math3.optim.ConvergenceChecker;
-import org.apache.commons.math3.optim.OptimizationData;
-import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.SimpleValueChecker;
+import org.apache.commons.math3.optim.*;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer;
+import org.apache.commons.math3.optim.univariate.BrentOptimizer;
+import org.apache.commons.math3.optim.univariate.SearchInterval;
+import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
+import org.apache.commons.math3.optim.univariate.UnivariateOptimizer;
 
 import java.util.List;
 
@@ -53,7 +56,27 @@ public class FunctionsOptimization extends NonLinearConjugateGradientOptimizer {
                     }
                 }
 
-                changes[i][j] = max - current[i][j];
+                final int indexX = i;
+                final int indexY = j;
+                final double ideal = max;
+
+                UnivariateFunction func =
+                        v -> Math.pow((current[indexX][indexY] + v) - ideal, 2);
+                UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+                double point = optimizer.optimize(new MaxEval(200),
+                        new UnivariateObjectiveFunction(func),
+                        GoalType.MINIMIZE,
+                        new SearchInterval(ideal - current[indexX][indexY] - 1,
+                                ideal - current[indexX][indexY] + 1)).getPoint();
+
+                int aPoint = (int) point;
+                int bPoint = aPoint + 1;
+
+                if (func.value(aPoint) < func.value(bPoint)) {
+                    changes[i][j] = aPoint;
+                } else {
+                    changes[i][j] = bPoint;
+                }
             }
         }
 
@@ -64,7 +87,7 @@ public class FunctionsOptimization extends NonLinearConjugateGradientOptimizer {
         List<Node> functions = NodesSubsetsUtil.getFunctions(model);
 
         double[][] current = getNodesDegreesVector(functions);
-        
+
         FunctionsOptimization functionsOptimization =
                 new FunctionsOptimization(Formula.FLETCHER_REEVES,
                         new SimpleValueChecker(1e-6, 1e-6));

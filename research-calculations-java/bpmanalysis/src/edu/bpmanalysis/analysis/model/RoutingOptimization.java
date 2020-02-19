@@ -3,12 +3,15 @@ package edu.bpmanalysis.analysis.model;
 import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.description.tools.Node;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.exception.TooManyEvaluationsException;
-import org.apache.commons.math3.optim.ConvergenceChecker;
-import org.apache.commons.math3.optim.OptimizationData;
-import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.SimpleValueChecker;
+import org.apache.commons.math3.optim.*;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer;
+import org.apache.commons.math3.optim.univariate.BrentOptimizer;
+import org.apache.commons.math3.optim.univariate.SearchInterval;
+import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
+import org.apache.commons.math3.optim.univariate.UnivariateOptimizer;
 
 public class RoutingOptimization extends NonLinearConjugateGradientOptimizer {
     private double[][] current;
@@ -25,8 +28,42 @@ public class RoutingOptimization extends NonLinearConjugateGradientOptimizer {
         this.changes = new double[size][2];
 
         for (int i = 0; i < size; i++) {
-            changes[i][0] = current[i][1] - current[i][0];
-            changes[i][1] = current[i][0] - current[i][1];
+            final int index = i;
+
+            UnivariateFunction func =
+                    v -> Math.pow((current[index][0] + v) - current[index][1], 2);
+            UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+            double point = optimizer.optimize(new MaxEval(200),
+                    new UnivariateObjectiveFunction(func),
+                    GoalType.MINIMIZE,
+                    new SearchInterval(current[index][1] - current[index][0] - 1,
+                            current[index][1] - current[index][0] + 1)).getPoint();
+
+            int aPoint = (int) point;
+            int bPoint = aPoint + 1;
+
+            if (func.value(aPoint) < func.value(bPoint)) {
+                changes[i][0] = aPoint;
+            } else {
+                changes[i][0] = bPoint;
+            }
+
+            func = v -> Math.pow((current[index][1] + v) - current[index][0], 2);
+            optimizer = new BrentOptimizer(1e-10, 1e-14);
+            point = optimizer.optimize(new MaxEval(200),
+                    new UnivariateObjectiveFunction(func),
+                    GoalType.MINIMIZE,
+                    new SearchInterval(current[index][0] - current[index][1] - 1,
+                            current[index][0] - current[index][1] + 1)).getPoint();
+
+            aPoint = (int) point;
+            bPoint = aPoint + 1;
+
+            if (func.value(aPoint) < func.value(bPoint)) {
+                changes[i][1] = aPoint;
+            } else {
+                changes[i][1] = bPoint;
+            }
         }
 
         return null;

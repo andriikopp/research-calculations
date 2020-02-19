@@ -3,12 +3,15 @@ package edu.bpmanalysis.analysis.model;
 import edu.bpmanalysis.analysis.ModelDensity;
 import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.description.tools.Model;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.exception.TooManyEvaluationsException;
-import org.apache.commons.math3.optim.ConvergenceChecker;
-import org.apache.commons.math3.optim.OptimizationData;
-import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.SimpleValueChecker;
+import org.apache.commons.math3.optim.*;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer;
+import org.apache.commons.math3.optim.univariate.BrentOptimizer;
+import org.apache.commons.math3.optim.univariate.SearchInterval;
+import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
+import org.apache.commons.math3.optim.univariate.UnivariateOptimizer;
 
 public class NodesOptimization extends NonLinearConjugateGradientOptimizer {
     private double[] current;
@@ -26,7 +29,25 @@ public class NodesOptimization extends NonLinearConjugateGradientOptimizer {
         this.changes = new double[size];
 
         for (int i = 0; i < size; i++) {
-            changes[i] = ideal[i] - current[i];
+            final int index = i;
+
+            UnivariateFunction func =
+                    v -> Math.pow((current[index] + v) - ideal[index], 2);
+            UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+            double point = optimizer.optimize(new MaxEval(200),
+                    new UnivariateObjectiveFunction(func),
+                    GoalType.MINIMIZE,
+                    new SearchInterval(ideal[index] - current[i] - 1,
+                            ideal[index] - current[i] + 1)).getPoint();
+
+            int aPoint = (int) point;
+            int bPoint = aPoint + 1;
+
+            if (func.value(aPoint) < func.value(bPoint)) {
+                changes[i] = aPoint;
+            } else {
+                changes[i] = bPoint;
+            }
         }
 
         return null;
