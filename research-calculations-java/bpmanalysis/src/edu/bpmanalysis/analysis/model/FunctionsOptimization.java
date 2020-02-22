@@ -31,6 +31,52 @@ public class FunctionsOptimization extends NonLinearConjugateGradientOptimizer {
 
         this.changes = new double[size][Node.arcTypes.length];
 
+        // Nonlinear Conjugate Gradient Optimization
+        UnivariateFunction func = v -> {
+            double result = 0;
+
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < Node.arcTypes.length; j++) {
+                    if ((j == 2 || j == 3) && model.getArcTypes().length == 2) {
+                        continue;
+                    }
+
+                    double max = FunctionsBalance.MAX_F;
+
+                    if (model.getModelType().equals(Model.ModelType.IDEF0) ||
+                            model.getModelType().equals(Model.ModelType.DFD)) {
+                        double necessaryMin = 1;
+
+                        if (model.getModelType().equals(Model.ModelType.IDEF0) && (j == 0)) {
+                            necessaryMin = 0;
+                        }
+
+                        if (model.getModelType().equals(Model.ModelType.DFD) && (j == 1)) {
+                            max = Math.max(necessaryMin, Math.min(current[i][j],
+                                    current[i][0]));
+                        } else {
+                            max = Math.max(necessaryMin, Math.min(current[i][j],
+                                    FunctionsBalance.MAX_FUNCTIONAL_ARCS));
+                        }
+                    }
+
+                    result += Math.pow(current[i][j] - max + (changes[i][j] -
+                            v * 2.0 * (current[i][j] - max + changes[i][j])), 2);
+                }
+            }
+
+            return result;
+        };
+
+        UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+
+        double lambda = optimizer.optimize(
+                new MaxEval(200),
+                new UnivariateObjectiveFunction(func),
+                GoalType.MINIMIZE,
+                new SearchInterval(0, 1)
+        ).getPoint();
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < Node.arcTypes.length; j++) {
                 if ((j == 2 || j == 3) && model.getArcTypes().length == 2) {
@@ -56,31 +102,82 @@ public class FunctionsOptimization extends NonLinearConjugateGradientOptimizer {
                     }
                 }
 
-                final int indexX = i;
-                final int indexY = j;
-                final double ideal = max;
+                double point = changes[i][j] - lambda * 2 * (current[i][j] -
+                        max + changes[i][j]);
 
-                UnivariateFunction func =
-                        v -> Math.pow((current[indexX][indexY] + v) - ideal, 2);
-                UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
-                double point = optimizer.optimize(new MaxEval(200),
-                        new UnivariateObjectiveFunction(func),
-                        GoalType.MINIMIZE,
-                        new SearchInterval(ideal - current[indexX][indexY] - 1,
-                                ideal - current[indexX][indexY] + 1)).getPoint();
+                changes[i][j] = (int) point;
+            }
+        }
 
-                int aPoint = (int) point;
-                int bPoint = aPoint + 1;
+        // Branch and Bound Optimization
+        double best = goal(changes);
 
-                if (func.value(aPoint) < func.value(bPoint)) {
-                    changes[i][j] = aPoint;
-                } else {
-                    changes[i][j] = bPoint;
+        for (int i = 0; i < changes.length; i++) {
+            for (int j = 0; j < Node.arcTypes.length; j++) {
+                double[][] left = new double[size][Node.arcTypes.length];
+
+                for (int k = 0; k < size; k++) {
+                    System.arraycopy(changes[k], 0, left[k], 0, Node.arcTypes.length);
                 }
+
+                double[][] right = new double[size][Node.arcTypes.length];
+
+                for (int k = 0; k < size; k++) {
+                    System.arraycopy(changes[k], 0, right[k], 0, Node.arcTypes.length);
+                }
+
+                left[i][j] = (int) changes[i][j];
+                right[i][j] = ((int) changes[i][j]) + 1;
+
+                if (goal(left) < best) {
+                    changes[i][j] = left[i][j];
+                } else if (goal(right) < best) {
+                    changes[i][j] = right[i][j];
+                } else {
+                    changes[i][j] = (int) changes[i][j];
+                }
+
+                best = goal(changes);
             }
         }
 
         return null;
+    }
+
+    // Goal Function
+    public double goal(double[][] changes) {
+        double result = 0;
+
+        for (int i = 0; i < changes.length; i++) {
+            for (int j = 0; j < Node.arcTypes.length; j++) {
+                if ((j == 2 || j == 3) && model.getArcTypes().length == 2) {
+                    continue;
+                }
+
+                double max = FunctionsBalance.MAX_F;
+
+                if (model.getModelType().equals(Model.ModelType.IDEF0) ||
+                        model.getModelType().equals(Model.ModelType.DFD)) {
+                    double necessaryMin = 1;
+
+                    if (model.getModelType().equals(Model.ModelType.IDEF0) && (j == 0)) {
+                        necessaryMin = 0;
+                    }
+
+                    if (model.getModelType().equals(Model.ModelType.DFD) && (j == 1)) {
+                        max = Math.max(necessaryMin, Math.min(current[i][j],
+                                current[i][0]));
+                    } else {
+                        max = Math.max(necessaryMin, Math.min(current[i][j],
+                                FunctionsBalance.MAX_FUNCTIONAL_ARCS));
+                    }
+                }
+
+                result += Math.pow((current[i][j] + changes[i][j]) - max, 2);
+            }
+        }
+
+        return result;
     }
 
     public static double[][] optimization(Model model) {

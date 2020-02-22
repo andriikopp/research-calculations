@@ -27,46 +27,94 @@ public class RoutingOptimization extends NonLinearConjugateGradientOptimizer {
 
         this.changes = new double[size][2];
 
-        for (int i = 0; i < size; i++) {
-            final int index = i;
+        // Nonlinear Conjugate Gradient Optimization
+        UnivariateFunction func = v -> {
+            double result = 0;
 
-            UnivariateFunction func =
-                    v -> Math.pow((current[index][0] + v) - current[index][1], 2);
-            UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
-            double point = optimizer.optimize(new MaxEval(200),
-                    new UnivariateObjectiveFunction(func),
-                    GoalType.MINIMIZE,
-                    new SearchInterval(current[index][1] - current[index][0] - 1,
-                            current[index][1] - current[index][0] + 1)).getPoint();
+            for (int i = 0; i < size; i++) {
+                // splits
+                result += Math.pow(current[i][0] - current[i][1] + (changes[i][0] -
+                        v * 2.0 * (current[i][0] - current[i][1] + changes[i][0])), 2);
 
-            int aPoint = (int) point;
-            int bPoint = aPoint + 1;
-
-            if (func.value(aPoint) < func.value(bPoint)) {
-                changes[i][0] = aPoint;
-            } else {
-                changes[i][0] = bPoint;
+                // joins
+                result += Math.pow(current[i][1] - current[i][0] + (changes[i][1] -
+                        v * 2.0 * (current[i][1] - current[i][0] + changes[i][1])), 2);
             }
 
-            func = v -> Math.pow((current[index][1] + v) - current[index][0], 2);
-            optimizer = new BrentOptimizer(1e-10, 1e-14);
-            point = optimizer.optimize(new MaxEval(200),
-                    new UnivariateObjectiveFunction(func),
-                    GoalType.MINIMIZE,
-                    new SearchInterval(current[index][0] - current[index][1] - 1,
-                            current[index][0] - current[index][1] + 1)).getPoint();
+            return result;
+        };
 
-            aPoint = (int) point;
-            bPoint = aPoint + 1;
+        UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
 
-            if (func.value(aPoint) < func.value(bPoint)) {
-                changes[i][1] = aPoint;
-            } else {
-                changes[i][1] = bPoint;
+        double lambda = optimizer.optimize(
+                new MaxEval(200),
+                new UnivariateObjectiveFunction(func),
+                GoalType.MINIMIZE,
+                new SearchInterval(0, 1)
+        ).getPoint();
+
+        for (int i = 0; i < size; i++) {
+            // splits
+            double point = changes[i][0] - lambda * 2 *
+                    (current[i][0] - current[i][1] + changes[i][0]);
+
+            changes[i][0] = (int) point;
+
+            // joins
+            point = changes[i][1] - lambda * 2 *
+                    (current[i][1] - current[i][0] + changes[i][1]);
+
+            changes[i][1] = (int) point;
+        }
+
+        // Branch and Bound Optimization
+        double best = goal(changes);
+
+        for (int i = 0; i < size; i++) {
+            for (int k = 0; k < changes[i].length; k++) {
+                double[][] left = new double[size][changes[i].length];
+
+                for (int j = 0; j < size; j++) {
+                    System.arraycopy(changes[j], 0, left[j], 0, changes[i].length);
+                }
+
+                double[][] right = new double[size][changes[i].length];
+
+                for (int j = 0; j < size; j++) {
+                    System.arraycopy(changes[j], 0, right[j], 0, changes[i].length);
+                }
+
+                left[i][k] = (int) changes[i][k];
+                right[i][k] = ((int) changes[i][k]) + 1;
+
+                if (goal(left) < best) {
+                    changes[i][k] = left[i][k];
+                } else if (goal(right) < best) {
+                    changes[i][k] = right[i][k];
+                } else {
+                    changes[i][k] = (int) changes[i][k];
+                }
+
+                best = goal(changes);
             }
         }
 
         return null;
+    }
+
+    // Goal Function
+    public double goal(double[][] changes) {
+        double result = 0;
+
+        for (int i = 0; i < changes.length; i++) {
+            // splits
+            result += Math.pow((current[i][0] + changes[i][0]) - current[i][1], 2);
+
+            // joins
+            result += Math.pow((current[i][1] + changes[i][1]) - current[i][0], 2);
+        }
+
+        return result;
     }
 
     public static double[][] optimization(Model model) {

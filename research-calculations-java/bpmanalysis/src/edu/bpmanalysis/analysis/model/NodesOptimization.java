@@ -28,29 +28,70 @@ public class NodesOptimization extends NonLinearConjugateGradientOptimizer {
 
         this.changes = new double[size];
 
-        for (int i = 0; i < size; i++) {
-            final int index = i;
+        // Nonlinear Conjugate Gradient Optimization
+        UnivariateFunction func = v -> {
+            double result = 0;
 
-            UnivariateFunction func =
-                    v -> Math.pow((current[index] + v) - ideal[index], 2);
-            UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
-            double point = optimizer.optimize(new MaxEval(200),
-                    new UnivariateObjectiveFunction(func),
-                    GoalType.MINIMIZE,
-                    new SearchInterval(ideal[index] - current[i] - 1,
-                            ideal[index] - current[i] + 1)).getPoint();
-
-            int aPoint = (int) point;
-            int bPoint = aPoint + 1;
-
-            if (func.value(aPoint) < func.value(bPoint)) {
-                changes[i] = aPoint;
-            } else {
-                changes[i] = bPoint;
+            for (int i = 0; i < size; i++) {
+                result += Math.pow(current[i] - ideal[i] + (changes[i] -
+                        v * 2.0 * (current[i] - ideal[i] + changes[i])), 2);
             }
+
+            return result;
+        };
+
+        UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+
+        double lambda = optimizer.optimize(
+                new MaxEval(200),
+                new UnivariateObjectiveFunction(func),
+                GoalType.MINIMIZE,
+                new SearchInterval(0, 1)
+        ).getPoint();
+
+        for (int i = 0; i < size; i++) {
+            double point = changes[i] - lambda * 2 * (current[i] -
+                    ideal[i] + changes[i]);
+
+            changes[i] = (int) point;
+        }
+
+        // Branch and Bound Optimization
+        double best = goal(changes);
+
+        for (int i = 0; i < size; i++) {
+            double[] left = new double[size];
+            System.arraycopy(changes, 0, left, 0, size);
+
+            double[] right = new double[size];
+            System.arraycopy(changes, 0, right, 0, size);
+
+            left[i] = (int) changes[i];
+            right[i] = ((int) changes[i]) + 1;
+
+            if (goal(left) < best) {
+                changes[i] = left[i];
+            } else if (goal(right) < best) {
+                changes[i] = right[i];
+            } else {
+                changes[i] = (int) changes[i];
+            }
+
+            best = goal(changes);
         }
 
         return null;
+    }
+
+    // Goal Function
+    public double goal(double[] changes) {
+        double result = 0;
+
+        for (int i = 0; i < changes.length; i++) {
+            result += Math.pow((current[i] + changes[i]) - ideal[i], 2);
+        }
+
+        return result;
     }
 
     public static double[] optimization(Model model) {
