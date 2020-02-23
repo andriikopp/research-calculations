@@ -4,15 +4,12 @@ import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.analysis.balance.FunctionsBalance;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.description.tools.Node;
-import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.exception.TooManyEvaluationsException;
-import org.apache.commons.math3.optim.*;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.apache.commons.math3.optim.ConvergenceChecker;
+import org.apache.commons.math3.optim.OptimizationData;
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.SimpleValueChecker;
 import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer;
-import org.apache.commons.math3.optim.univariate.BrentOptimizer;
-import org.apache.commons.math3.optim.univariate.SearchInterval;
-import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
-import org.apache.commons.math3.optim.univariate.UnivariateOptimizer;
 
 import java.util.List;
 
@@ -32,50 +29,7 @@ public class FunctionsOptimization extends NonLinearConjugateGradientOptimizer {
         this.changes = new double[size][Node.arcTypes.length];
 
         // Nonlinear Conjugate Gradient Optimization
-        UnivariateFunction func = v -> {
-            double result = 0;
-
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < Node.arcTypes.length; j++) {
-                    if ((j == 2 || j == 3) && model.getArcTypes().length == 2) {
-                        continue;
-                    }
-
-                    double max = FunctionsBalance.MAX_F;
-
-                    if (model.getModelType().equals(Model.ModelType.IDEF0) ||
-                            model.getModelType().equals(Model.ModelType.DFD)) {
-                        double necessaryMin = 1;
-
-                        if (model.getModelType().equals(Model.ModelType.IDEF0) && (j == 0)) {
-                            necessaryMin = 0;
-                        }
-
-                        if (model.getModelType().equals(Model.ModelType.DFD) && (j == 1)) {
-                            max = Math.max(necessaryMin, Math.min(current[i][j],
-                                    current[i][0]));
-                        } else {
-                            max = Math.max(necessaryMin, Math.min(current[i][j],
-                                    FunctionsBalance.MAX_FUNCTIONAL_ARCS));
-                        }
-                    }
-
-                    result += Math.pow(current[i][j] - max + (changes[i][j] -
-                            v * 2.0 * (current[i][j] - max + changes[i][j])), 2);
-                }
-            }
-
-            return result;
-        };
-
-        UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
-
-        double lambda = optimizer.optimize(
-                new MaxEval(200),
-                new UnivariateObjectiveFunction(func),
-                GoalType.MINIMIZE,
-                new SearchInterval(0, 1)
-        ).getPoint();
+        double lambda = 0.5;
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < Node.arcTypes.length; j++) {
@@ -105,7 +59,7 @@ public class FunctionsOptimization extends NonLinearConjugateGradientOptimizer {
                 double point = changes[i][j] - lambda * 2 * (current[i][j] -
                         max + changes[i][j]);
 
-                changes[i][j] = (int) point;
+                changes[i][j] = point;
             }
         }
 

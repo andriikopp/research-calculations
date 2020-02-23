@@ -3,15 +3,12 @@ package edu.bpmanalysis.analysis.model;
 import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.description.tools.Model;
 import edu.bpmanalysis.description.tools.Node;
-import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.exception.TooManyEvaluationsException;
-import org.apache.commons.math3.optim.*;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.apache.commons.math3.optim.ConvergenceChecker;
+import org.apache.commons.math3.optim.OptimizationData;
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.SimpleValueChecker;
 import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer;
-import org.apache.commons.math3.optim.univariate.BrentOptimizer;
-import org.apache.commons.math3.optim.univariate.SearchInterval;
-import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
-import org.apache.commons.math3.optim.univariate.UnivariateOptimizer;
 
 public class RoutingOptimization extends NonLinearConjugateGradientOptimizer {
     private double[][] current;
@@ -28,43 +25,20 @@ public class RoutingOptimization extends NonLinearConjugateGradientOptimizer {
         this.changes = new double[size][2];
 
         // Nonlinear Conjugate Gradient Optimization
-        UnivariateFunction func = v -> {
-            double result = 0;
-
-            for (int i = 0; i < size; i++) {
-                // splits
-                result += Math.pow(current[i][0] - current[i][1] + (changes[i][0] -
-                        v * 2.0 * (current[i][0] - current[i][1] + changes[i][0])), 2);
-
-                // joins
-                result += Math.pow(current[i][1] - current[i][0] + (changes[i][1] -
-                        v * 2.0 * (current[i][1] - current[i][0] + changes[i][1])), 2);
-            }
-
-            return result;
-        };
-
-        UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
-
-        double lambda = optimizer.optimize(
-                new MaxEval(200),
-                new UnivariateObjectiveFunction(func),
-                GoalType.MINIMIZE,
-                new SearchInterval(0, 1)
-        ).getPoint();
+        double lambda = 0.5;
 
         for (int i = 0; i < size; i++) {
             // splits
             double point = changes[i][0] - lambda * 2 *
                     (current[i][0] - current[i][1] + changes[i][0]);
 
-            changes[i][0] = (int) point;
+            changes[i][0] = point;
 
             // joins
             point = changes[i][1] - lambda * 2 *
                     (current[i][1] - current[i][0] + changes[i][1]);
 
-            changes[i][1] = (int) point;
+            changes[i][1] = point;
         }
 
         // Branch and Bound Optimization

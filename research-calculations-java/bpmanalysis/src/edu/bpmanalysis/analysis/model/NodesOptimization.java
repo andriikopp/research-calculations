@@ -3,15 +3,12 @@ package edu.bpmanalysis.analysis.model;
 import edu.bpmanalysis.analysis.ModelDensity;
 import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.description.tools.Model;
-import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.exception.TooManyEvaluationsException;
-import org.apache.commons.math3.optim.*;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.apache.commons.math3.optim.ConvergenceChecker;
+import org.apache.commons.math3.optim.OptimizationData;
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.SimpleValueChecker;
 import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer;
-import org.apache.commons.math3.optim.univariate.BrentOptimizer;
-import org.apache.commons.math3.optim.univariate.SearchInterval;
-import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
-import org.apache.commons.math3.optim.univariate.UnivariateOptimizer;
 
 public class NodesOptimization extends NonLinearConjugateGradientOptimizer {
     private double[] current;
@@ -29,31 +26,13 @@ public class NodesOptimization extends NonLinearConjugateGradientOptimizer {
         this.changes = new double[size];
 
         // Nonlinear Conjugate Gradient Optimization
-        UnivariateFunction func = v -> {
-            double result = 0;
-
-            for (int i = 0; i < size; i++) {
-                result += Math.pow(current[i] - ideal[i] + (changes[i] -
-                        v * 2.0 * (current[i] - ideal[i] + changes[i])), 2);
-            }
-
-            return result;
-        };
-
-        UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
-
-        double lambda = optimizer.optimize(
-                new MaxEval(200),
-                new UnivariateObjectiveFunction(func),
-                GoalType.MINIMIZE,
-                new SearchInterval(0, 1)
-        ).getPoint();
+        double lambda = 0.5;
 
         for (int i = 0; i < size; i++) {
             double point = changes[i] - lambda * 2 * (current[i] -
                     ideal[i] + changes[i]);
 
-            changes[i] = (int) point;
+            changes[i] = point;
         }
 
         // Branch and Bound Optimization
