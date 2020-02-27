@@ -28,6 +28,8 @@ var graphVisible = false;
 var similarVisible = false;
 var modelsListExpanded = false;
 
+var similarModelsSet = null;
+
 function loadModel(id) {
     $.getJSON("/bpmai/api/model/" + id, function (data) {
         var modelInfo = $("#modelInfo");
@@ -151,11 +153,17 @@ function analyzeModel(id) {
         }
 
         modelAnalysis.append('<div id="similarModels"></div>');
+        modelAnalysis.append('<div id="searchForm">' +
+            '<p><input type="text" class="form-control" id="searchQuery" placeholder="Filter similar models"/></p>' +
+            '<p><button class="btn btn-info" onclick="similaritySearch();">Search</button></p>' +
+        '</div>');
         modelAnalysis.append('<div id="similarModelsLinks"></div>');
 
         var similarCounter = 0;
 
         if (data.similarModels != null) {
+            similarModelsSet = data.similarModels;
+
             Object.keys(data.similarModels).forEach(function (key, index) {
                 $('#similarModelsLinks').append('<div class="alert alert-secondary" role="info">' +
                     '<a target="_blank" href="?id=' + key + '">' + data.similarModels[key] + '</a>' +
@@ -201,5 +209,20 @@ function resizeModelsList() {
     } else {
         $('#processModelsList').css('height', '100%');
         modelsListExpanded = true;
+    }
+}
+
+function similaritySearch() {
+    $('#similarModelsLinks').empty();
+    var request = $('#searchQuery').val();
+
+    if (similarModelsSet != null) {
+        Object.keys(similarModelsSet).forEach(function (key, index) {
+            if (similarModelsSet[key].includes(request)) {
+                $('#similarModelsLinks').append('<div class="alert alert-secondary" role="info">' +
+                    '<a target="_blank" href="?id=' + key + '">' + similarModelsSet[key] + '</a>' +
+                    '</div>');
+            }
+        });
     }
 }
