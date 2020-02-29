@@ -17,6 +17,7 @@ research-calculations-java/processModelsStorage/*
 !research-calculations-java/processModelsStorage/02-set/
 !research-calculations-java/processModelsStorage/03-set/
 !research-calculations-java/processModelsStorage/04-set/
+!research-calculations-java/processModelsStorage/Supply_process_BPMN/
 
 !research-calculations-java/processModelsStorage/users.json
 !research-calculations-java/processModelsStorage/processModels.json

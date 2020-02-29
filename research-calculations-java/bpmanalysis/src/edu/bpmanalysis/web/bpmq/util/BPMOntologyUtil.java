@@ -1,13 +1,16 @@
 package edu.bpmanalysis.web.bpmq.util;
 
 import edu.bpmanalysis.web.bpmq.entity.BPModel;
-import org.apache.jena.rdf.model.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.*;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import static edu.bpmanalysis.web.bpmq.util.BPMEALandscapeUtil.EA_LANDSCAPE;
 
@@ -53,19 +56,12 @@ public class BPMOntologyUtil {
                 String sourceType = itemAwareElement.getElementType().getTypeName();
                 String sourceName = null;
 
-                if (sourceType.equals("dataStoreReference")) {
-                    DataStoreReference dataStoreReference = (DataStoreReference) itemAwareElement;
-                    sourceName = dataStoreReference.getName();
-                }
-
-                if (sourceType.equals("dataObjectReference")) {
-                    DataObjectReference dataObjectReference = (DataObjectReference) itemAwareElement;
-                    sourceName = dataObjectReference.getName();
+                if (sourceType.contains("dataObject")) {
+                    sourceName = itemAwareElement.getAttributeValue("name");
                 }
 
                 if (sourceName != null && !sourceName.isEmpty()) {
-                    String eaElement = sourceType.equals("dataObjectReference") ? "BusinessObject" : null;
-                    rdfGraphArcs.add(new String[]{"hasInput", sourceName, eaElement});
+                    rdfGraphArcs.add(new String[]{"hasInput", sourceName, "BusinessObject"});
                 }
             }
 
@@ -73,19 +69,12 @@ public class BPMOntologyUtil {
                 String targetType = output.getTarget().getElementType().getTypeName();
                 String targetName = null;
 
-                if (targetType.equals("dataStoreReference")) {
-                    DataStoreReference dataStoreReference = (DataStoreReference) output.getTarget();
-                    targetName = dataStoreReference.getName();
-                }
-
-                if (targetType.equals("dataObjectReference")) {
-                    DataObjectReference dataObjectReference = (DataObjectReference) output.getTarget();
-                    targetName = dataObjectReference.getName();
+                if (targetType.contains("dataObject")) {
+                    targetName = output.getAttributeValue("name");
                 }
 
                 if (targetName != null && !targetName.isEmpty()) {
-                    String eaElement = targetType.equals("dataObjectReference") ? "BusinessObject" : null;
-                    rdfGraphArcs.add(new String[]{"hasOutput", targetName, eaElement});
+                    rdfGraphArcs.add(new String[]{"hasOutput", targetName, "BusinessObject"});
                 }
             }
         }
