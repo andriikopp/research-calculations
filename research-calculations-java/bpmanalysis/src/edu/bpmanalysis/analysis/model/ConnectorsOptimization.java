@@ -27,7 +27,6 @@ public class ConnectorsOptimization extends NonLinearConjugateGradientOptimizer 
 
         this.changes = new double[size];
 
-        // Nonlinear Conjugate Gradient Optimization
         double lambda = 0.5;
 
         for (int i = 0; i < size; i++) {
@@ -37,42 +36,7 @@ public class ConnectorsOptimization extends NonLinearConjugateGradientOptimizer 
             changes[i] = point;
         }
 
-        // Branch and Bound Optimization
-        double best = goal(changes);
-
-        for (int i = 0; i < size; i++) {
-            double[] left = new double[size];
-            System.arraycopy(changes, 0, left, 0, size);
-
-            double[] right = new double[size];
-            System.arraycopy(changes, 0, right, 0, size);
-
-            left[i] = (int) changes[i];
-            right[i] = ((int) changes[i]) + 1;
-
-            if (goal(left) < best) {
-                changes[i] = left[i];
-            } else if (goal(right) < best) {
-                changes[i] = right[i];
-            } else {
-                changes[i] = (int) changes[i];
-            }
-
-            best = goal(changes);
-        }
-
         return null;
-    }
-
-    // Goal Function
-    public double goal(double[] changes) {
-        double result = 0;
-
-        for (int i = 0; i < changes.length; i++) {
-            result += Math.pow((current[i] + changes[i]) - ConnectorsBalance.MAX_C, 2);
-        }
-
-        return result;
     }
 
     public static double[] optimization(Model model) {

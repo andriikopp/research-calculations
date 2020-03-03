@@ -24,71 +24,21 @@ public class RoutingOptimization extends NonLinearConjugateGradientOptimizer {
 
         this.changes = new double[size][2];
 
-        // Nonlinear Conjugate Gradient Optimization
         double lambda = 0.5;
 
         for (int i = 0; i < size; i++) {
-            // splits
             double point = changes[i][0] - lambda * 2 *
                     (current[i][0] - current[i][1] + changes[i][0]);
 
             changes[i][0] = point;
 
-            // joins
             point = changes[i][1] - lambda * 2 *
                     (current[i][1] - current[i][0] + changes[i][1]);
 
             changes[i][1] = point;
         }
 
-        // Branch and Bound Optimization
-        double best = goal(changes);
-
-        for (int i = 0; i < size; i++) {
-            for (int k = 0; k < changes[i].length; k++) {
-                double[][] left = new double[size][changes[i].length];
-
-                for (int j = 0; j < size; j++) {
-                    System.arraycopy(changes[j], 0, left[j], 0, changes[i].length);
-                }
-
-                double[][] right = new double[size][changes[i].length];
-
-                for (int j = 0; j < size; j++) {
-                    System.arraycopy(changes[j], 0, right[j], 0, changes[i].length);
-                }
-
-                left[i][k] = (int) changes[i][k];
-                right[i][k] = ((int) changes[i][k]) + 1;
-
-                if (goal(left) < best) {
-                    changes[i][k] = left[i][k];
-                } else if (goal(right) < best) {
-                    changes[i][k] = right[i][k];
-                } else {
-                    changes[i][k] = (int) changes[i][k];
-                }
-
-                best = goal(changes);
-            }
-        }
-
         return null;
-    }
-
-    // Goal Function
-    public double goal(double[][] changes) {
-        double result = 0;
-
-        for (int i = 0; i < changes.length; i++) {
-            // splits
-            result += Math.pow((current[i][0] + changes[i][0]) - current[i][1], 2);
-
-            // joins
-            result += Math.pow((current[i][1] + changes[i][1]) - current[i][0], 2);
-        }
-
-        return result;
     }
 
     public static double[][] optimization(Model model) {
