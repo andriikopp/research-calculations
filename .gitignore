@@ -7,7 +7,9 @@ research-calculations-python/__pycache__/
 
 *.lnk
 
-research-calculations-r/
+!research-calculations-r/
+*.RData
+*.Rhistory
 
 research-calculations-java/xpdl-models/
 research-calculations-java/processModelsStorage/*
