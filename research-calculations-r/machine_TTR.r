@@ -1,8 +1,8 @@
 setwd("D:/GitHub/research-calculations/research-calculations-r")
 
-training <- read.csv("test_prediction.csv")
+training <- read.csv("test_equipment_failure.csv")
 
-training_ts <- c(training$Y)
+training_ts <- c(training$TTR)
 training_ts <- training_ts[training_ts != 0]
 
 # mean average prediction
