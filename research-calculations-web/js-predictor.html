@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Timeseries Predictor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="nav">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><h3>Predictor.js</h3></a>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <form>
+                    <div class="form-group">
+                        <label for="timeseries"><b>Timeseries (comma separated values)</b></label>
+                        <textarea class="form-control" id="timeseries" rows="10"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="predictValue();">Predict</button>
+                </form>
+                <br/>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Moving Avg.</th>
+                            <th scope="col">Exp. Smoothing</th>
+                            <th scope="col">Linear Regression</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Prediction</th>
+                            <td><span id="maVal">0</span></td>
+                            <td><span id="esVal">0</span></td>
+                            <td><span id="lrVal">0</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Error</th>
+                            <td><span id="maErr">0</span></td>
+                            <td><span id="esErr">0</span></td>
+                            <td><span id="lrErr">0</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="app/predictor.js"></script>
+    <script type="text/javascript">
+        function predictValue() {
+            var rawData = document.getElementById('timeseries').value;
+            var timeseries = rawData.split(',');
+
+            for (var i = 0; i < timeseries.length; i++) {
+                timeseries[i] = parseFloat(timeseries[i]);
+            }
+
+            var maRes = predictor.movingAverage(timeseries);
+            var esRes = predictor.exponentialSmoothing(timeseries);
+            var lrRes = predictor.linearRegression(timeseries);
+
+            document.getElementById('maVal').innerHTML = maRes.prediction.toFixed(2);
+            document.getElementById('maErr').innerHTML = (maRes.error * 100).toFixed(2) + '%';
+
+            document.getElementById('esVal').innerHTML = esRes.prediction.toFixed(2);
+            document.getElementById('esErr').innerHTML = (esRes.error * 100).toFixed(2) + '%';
+
+            document.getElementById('lrVal').innerHTML = lrRes.prediction.toFixed(2);
+            document.getElementById('lrErr').innerHTML = (lrRes.error * 100).toFixed(2) + '%';
+        }
+    </script>
+</body>
+
+</html>
