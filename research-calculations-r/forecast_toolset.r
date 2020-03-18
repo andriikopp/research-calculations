@@ -70,7 +70,7 @@ for ( i in 1:length( training_ts ) ) {
 }
 
 a <- ( sum_xy - ( sum_x * sum_y ) / length( training_ts ) ) / 
-  ( sum_x2 - ( sum_x ) / length( training_ts ) )
+  ( sum_x2 - ( sum_x * sum_x ) / length( training_ts ) )
 
 b <- ( sum_y / length( training_ts ) ) - a * ( sum_x / length( training_ts ) )
 
