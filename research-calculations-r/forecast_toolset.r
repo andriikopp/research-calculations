@@ -1,11 +1,11 @@
 setwd("D:/GitHub/research-calculations/research-calculations-r")
 
-training <- read.csv("test_equipment_failure.csv")
+training <- read.csv("pdm_telemetry_2015.csv")
 
-training_ts <- c(training$TTR)
+training_ts <- c(training$volt)
 training_ts <- training_ts[training_ts != 0]
 
-# mean average prediction
+# moving average
 ma_ts <- c()
 sum_err <- 0
 

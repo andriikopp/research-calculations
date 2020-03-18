@@ -25,3 +25,4 @@ prediction <- predict(tree, test)
 
 # Display prediction results
 print(prediction)
+
