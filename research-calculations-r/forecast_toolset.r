@@ -1,9 +1,13 @@
+cat("\f")
+
 setwd("D:/GitHub/research-calculations/research-calculations-r")
 
 training <- read.csv("pdm_telemetry_2015.csv")
 
-training_ts <- c(training$volt)
+training_ts <- c(training$failures)
 training_ts <- training_ts[training_ts != 0]
+
+plot(training$failures, type = "l")
 
 # moving average
 ma_ts <- c()
