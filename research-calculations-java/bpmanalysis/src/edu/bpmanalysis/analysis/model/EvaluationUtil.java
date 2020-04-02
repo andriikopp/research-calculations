@@ -67,6 +67,10 @@ public class EvaluationUtil {
                 1 - Math.signum(Math.abs(1 - NodesSubsetsUtil.getEndEvents(model).size()))))
                 : 1;
 
+        if (model.getModelType().equals(Model.ModelType.BPMN)) {
+            guideline3 = 1 - Math.signum(Math.abs(1 - NodesSubsetsUtil.getStartEvents(model).size()));
+        }
+
         double guideline4 = (model.getModelType().equals(Model.ModelType.EPC) ||
                 model.getModelType().equals(Model.ModelType.BPMN))
                 ? (1 - Math.signum(ConnectorsMismatch.mismatch(model)))

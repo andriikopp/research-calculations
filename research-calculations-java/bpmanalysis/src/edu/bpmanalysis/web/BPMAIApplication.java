@@ -1,17 +1,14 @@
 package edu.bpmanalysis.web;
 
 import com.google.gson.Gson;
-import edu.bpmanalysis.analysis.GraphMetricsUtil;
-import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
-import edu.bpmanalysis.analysis.RecommendationsUtil;
-import edu.bpmanalysis.analysis.SummaryAnalysisUtil;
+import edu.bpmanalysis.analysis.*;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.analysis.model.EvaluationUtil;
 import edu.bpmanalysis.config.Configuration;
 import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.description.tools.Model;
-import edu.bpmanalysis.search.partition.ProcessModelAnalysisResultsPartition;
 import edu.bpmanalysis.search.graph.ProcessModelRDFGraphStorage;
+import edu.bpmanalysis.search.partition.ProcessModelAnalysisResultsPartition;
 import edu.bpmanalysis.web.model.AnalysisResultsRepositoryMySQL;
 import edu.bpmanalysis.web.model.PartitionRepositoryMySQL;
 import edu.bpmanalysis.web.model.RecommendationsRepositoryMySQL;
@@ -21,8 +18,6 @@ import edu.bpmanalysis.web.model.api.ProcessModelRepository;
 import edu.bpmanalysis.web.model.api.RecommendationsRepository;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 
-import java.awt.*;
-import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +107,7 @@ public class BPMAIApplication {
 
         System.out.println();
         System.out.println(
-                "▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
+                        "▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
                         "▒█▀▀▄ ▒█▄▄█ ▒█▒█▒█ ▒█▄▄█ ▒█░ 　 ░▒█░░ ▒█░░▒█ ▒█░░▒█ ▒█░░░ \n" +
                         "▒█▄▄█ ▒█░░░ ▒█░░▒█ ▒█░▒█ ▄█▄ 　 ░▒█░░ ▒█▄▄▄█ ▒█▄▄▄█ ▒█▄▄█");
         System.out.println();
@@ -121,5 +116,9 @@ public class BPMAIApplication {
         System.out.println("Use /model/<MODEL_ID> to access a specific process model");
         System.out.println("Use /partition to access the models partition results");
         System.out.println();
+
+        for (Model model : models) {
+            IndicatorsUtil.printIndicators(model);
+        }
     }
 }

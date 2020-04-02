@@ -26,6 +26,33 @@ public class BPModel {
     private double hardQuality;
     private double softQuality;
 
+    @Override
+    public String toString() {
+        return fileName +
+
+                "\t" + totalNodes +
+                "\t" + invalidNodes +
+                "\t" + startEvents +
+                "\t" + endEvents +
+                "\t" + unmatchedGateways +
+                "\t" + totalGateways +
+                "\t" + orGateways +
+
+                "\t" + sizeQualityH +
+                "\t" + degreesQualityH +
+                "\t" + eventsQualityH +
+                "\t" + gatewaysQualityH +
+                "\t" + orQualityH +
+                "\t" + hardQuality +
+
+                "\t" + sizeQualityS +
+                "\t" + degreesQualityS +
+                "\t" + eventsQualityS +
+                "\t" + gatewaysQualityS +
+                "\t" + orQualityS +
+                "\t" + softQuality;
+    }
+
     public BPModel(String fileName, int totalNodes, int invalidNodes, int startEvents, int endEvents, int unmatchedGateways, int totalGateways, int orGateways, int sizeQualityH, int degreesQualityH, int eventsQualityH, int gatewaysQualityH, int orQualityH, double sizeQualityS, double degreesQualityS, double eventsQualityS, double gatewaysQualityS, double orQualityS, double hardQuality, double softQuality) {
         this.fileName = fileName;
         this.totalNodes = totalNodes;
