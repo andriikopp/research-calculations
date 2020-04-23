@@ -1,0 +1,57 @@
+@startuml
+
+Process o-- Phase : contains >
+
+note left of Process
+    Process landscape view 
+    (zero-level decomposition)
+end note
+
+Phase o-- Activity : contains >
+
+note left of Phase
+    Coarse-grained process structure
+end note
+
+Activity o-- Task : contains >
+
+note right of Activity
+    Detailed process decomposition
+end note
+
+note right of Task
+    Process execution scenario
+end note
+
+Role --> Task : performs >
+
+note right of Role
+    Responsible for task completion
+end note
+
+Task --> Resource : consumes >
+
+note right of Resource
+    Resources required to 
+    complete tasks
+end note
+
+Task --> WorkProduct : uses >
+Task --> WorkProduct : produces >
+
+note right of WorkProduct
+    Tasks inputs and outputs
+end note
+
+Process <|-- "VAD (value-added chain diagram)"
+Phase <|-- IDEF0
+Activity <|-- eEPC
+Task <|-- "BPMN / Flowchart"
+
+"VAD (value-added chain diagram)" o-- IDEF0
+IDEF0 o-- eEPC
+eEPC o-- "BPMN / Flowchart"
+
+hide members
+
+@enduml

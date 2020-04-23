@@ -1,0 +1,25 @@
+@startuml
+
+"Process Document" <|-- "Process Model"
+    note left of "Process Model"
+        Documenting 
+        process flow
+    endnote
+"Process Document" <|-- "Process Map"
+    note right of "Process Map"
+        Documenting relationships
+        between process steps and 
+        business elements
+    endnote
+
+"Process Model" <|-- BPMN
+"Process Model" <|-- EPC
+"Process Model" <|-- Flowchart
+
+"Process Map" <|-- IDEF0
+"Process Map" <|-- VAD
+"Process Map" <|-- "ArchiMate (Business View)"
+
+hide members
+
+@enduml

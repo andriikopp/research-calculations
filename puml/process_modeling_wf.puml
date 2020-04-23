@@ -1,0 +1,25 @@
+@startuml
+
+(*) --> "Define process landscape"
+        note left: Complexity = (N processes)
+    --> "Define coarse-grained process structure"
+        note left: Complexity = (N processes) x (M phases)
+    --> "Define detailed process decomposition"
+        note left
+            Complexity = (N processes) x (M phases) x
+            x (K activities)
+        end note
+    --> "Define process execution scenarios"
+        note left
+            Complexity = (N processes) x (M phases) x
+            x (K activities) x (P tasks)
+        end note
+    --> "Define roles, resources, and work products"
+
+    if "Need to extend upper models" then
+        --> [true] "Append process environment elements to upper layers"
+        --> "Define process landscape"
+    else
+        --> [false] (*)
+
+@enduml
