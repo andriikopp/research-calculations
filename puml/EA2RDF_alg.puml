@@ -1,0 +1,28 @@
+@startuml
+
+start
+
+:Navigate to <model/elements> node;
+
+repeat
+    :$type = model/elements/element/@type
+    Create triple (<model/elements/element/label>, "is a", $type);
+repeat while (Iterated over all <model/elements/element>?) is (no)
+-> yes;
+
+:Navigate to <model/relationships> node;
+
+repeat 
+    :Get attributes @source, @target, @type of <model/relationships/relationship> node;
+
+    if (If @type contains "TriggeringRelationship") then (yes)
+        :$from = model/elements/element[@identifier=@source]/label
+        $to = model/elements/element[@identifier=@target]/label
+        Create triple ($from, @type, $to) of RDF graph;
+    endif
+repeat while (Iterated over all <model/relationships/relationship> nodes?) is (no)
+-> yes;
+
+stop
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+
+start
+
+:Create a set of "BusinessProcess" nodes;
+
+repeat
+    if (subject/object is a "BusinessProcess"?) then (yes)
+        :Add subject/object respectively to the set of "BusinessProcess" nodes;
+    endif
+repeat while (Iterated over all RDF statements?) is (no)
+-> yes;
+
+repeat
+    :Create a set of incoming nodes and a set of outgoing nodes;
+
+    repeat 
+        if (object/subject is a current node and subject/object is a "BusinessProcess"?) then (yes)
+            :Add subject/object respectively to the set of incoming nodes;
+        endif
+    repeat while (Iterated over all RDF statements?) is (no)
+    -> yes;
+
+    :Create a bean with fields (current node name, incoming nodes, outgoing nodes);
+repeat while (Iterated over all "BusinessProcess" nodes?) is (no)
+-> yes;
+
+stop
+
+@enduml

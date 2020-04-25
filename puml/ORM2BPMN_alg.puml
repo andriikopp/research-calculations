@@ -1,0 +1,23 @@
+@startuml
+
+start
+
+:Create a map of "BusinessProcess" nodes (String => FlowNode);
+
+repeat
+    :Create a FlowNode element and put it to the map;
+repeat while (Iterated over all beans?) is (no)
+-> yes;
+
+repeat 
+    if (Map contains key = subject and contains key = object) then (yes)
+        :Create a sequence flow from subject FlowNode to object FlowNode;
+    endif
+repeat while (Iterated over all RDF statements?) is (no)
+-> yes;
+
+:Write a model to the BPMN 2.0 document;
+
+stop
+
+@enduml
