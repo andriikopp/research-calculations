@@ -1,0 +1,41 @@
+@startuml
+
+class Artifact {
+    name : String
+    incoming : Set<String>
+    outgoing : Set<String>
+    centrality : double
+    rank : double
+    
+    Artifact(String name, int incoming, int outgoing)
+}
+
+class ModelAnalysis {
+    model : Model
+    artifacts : List<Artifact>
+    modelInstance : BpmnModelInstance
+
+    ModelAnalysis(Model graph)
+    extractArtifacts() : List<Artifact>
+    createMap(String fileName) : void
+    density() : double
+    connectivity() : double
+    centrality() : void
+    modelCentrality() : double
+    rank() : void
+}
+
+class ModelTranslator {
+    toRDFGraph(String modelPath, String triplesPath) : Model
+}
+
+class App {
+    run(String modelName) : void
+    main(String[] args) : void
+}
+
+ModelAnalysis o-- Artifact
+App ..> ModelTranslator
+App ..> ModelAnalysis
+
+@enduml

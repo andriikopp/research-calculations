@@ -10,7 +10,7 @@ repeat while (Iterated over all beans?) is (no)
 -> yes;
 
 repeat 
-    if (Map contains key = subject and contains key = object) then (yes)
+    if (If map contains key = subject and contains key = object) then (yes)
         :Create a sequence flow from subject FlowNode to object FlowNode;
     endif
 repeat while (Iterated over all RDF statements?) is (no)
