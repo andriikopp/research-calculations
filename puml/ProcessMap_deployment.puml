@@ -1,0 +1,63 @@
+@startuml
+
+skinparam componentStyle uml2
+
+database "MySQL Server" {
+    [Process Landscape Database]
+}
+
+node "Eclipse IDE" {
+    folder "Java Application" {
+        [Data Extraction]
+        [Model Analysis]
+        [Model Translator]
+        [Web API]
+    }
+    
+    folder "BPMN Models Folder" {
+        [BPMN 2.0 Files Collection]
+    }
+
+    [Eclipse BPMN2 Modeler] ..> [BPMN 2.0 Files Collection]
+
+    interface "Spark Web API" as WebAPI
+    WebAPI - [Web API]
+
+    folder "ArchiMate Models Folder" {
+        [ArchiMate Exchange Files Collection]
+    }
+
+    interface "Camunda BPMN API" as BPMN2API
+    BPMN2API - [Data Extraction]
+    [BPMN 2.0 Files Collection] <.. BPMN2API
+
+    [Model Translator] <.. [Data Extraction]
+
+    interface "XSLT Translator" as XSLT
+    XSLT <.. [Model Translator]
+    [ArchiMate Exchange Files Collection] - XSLT
+
+    folder "RDF Triplestore" {
+        [RDF Triples]
+    }
+
+    interface "Apache Jena RDF API" as Jena
+    Jena <.. [Model Translator]
+    [RDF Triples] - Jena
+
+    Jena <.. [Model Analysis]
+    [Model Analysis] <.. [Data Extraction]
+}
+
+interface "sql2o JDBC Wrapper" as DbAPI
+DbAPI - [Process Landscape Database]
+[Web API] ..> DbAPI
+[Data Extraction] ..> DbAPI
+
+node "Power BI" {
+    [Process Landscape Dashboard]
+}
+
+[Process Landscape Dashboard] ..> WebAPI
+
+@enduml
