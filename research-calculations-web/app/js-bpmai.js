@@ -4,7 +4,7 @@ editor.session.setMode("ace/mode/xml");
 
 var viewer = null;
 
-$(document).ready(function () {
+$(document).ready(function() {
     if (Cookies.get('hidewarn')) {
         $('#warning').hide();
     }
@@ -12,7 +12,6 @@ $(document).ready(function () {
     $('#zoombuttons').hide();
     $('#canvas').hide();
 
-    // GET parameter ?doc=<path to a BPMN document>
     let bpmnLinkParam = getParameterByName('doc');
 
     if (bpmnLinkParam) {
@@ -36,11 +35,11 @@ $(document).ready(function () {
         $('#bpmnLink').val(localStorage.getItem('link'));
     }
 
-    $('#bpmnLink').keyup(function () {
+    $('#bpmnLink').keyup(function() {
         loadDocumentByLink();
     });
 
-    $('#editor').keyup(function () {
+    $('#editor').keyup(function() {
         let bpmnXML = editor.getValue();
 
         localStorage.setItem('editor', bpmnXML);
@@ -48,19 +47,19 @@ $(document).ready(function () {
         defineXMLNamespace(bpmnXML);
     });
 
-    $('#expand').click(function () {
+    $('#expand').click(function() {
         $('#editor').height(370);
 
         editor.resize();
     });
 
-    $('#collapse').click(function () {
+    $('#collapse').click(function() {
         $('#editor').height(170);
 
         editor.resize();
     });
 
-    $('#clear').click(function () {
+    $('#clear').click(function() {
         editor.setValue('');
         localStorage.setItem('editor', '');
 
@@ -68,7 +67,7 @@ $(document).ready(function () {
         localStorage.setItem('link', '');
     });
 
-    $('#paste').click(function () {
+    $('#paste').click(function() {
         navigator.clipboard.readText().then(clipText => {
             editor.setValue('');
             editor.insert(clipText);
@@ -84,20 +83,19 @@ $(document).ready(function () {
         });
     });
 
-    $('#copy').click(function () {
-        navigator.clipboard.writeText(editor.getValue()).then(clipText => {
-        });
+    $('#copy').click(function() {
+        navigator.clipboard.writeText(editor.getValue()).then(clipText => {});
     });
 
-    $('#zoomin').click(function () {
+    $('#zoomin').click(function() {
         resizeCanvas(50);
     });
 
-    $('#zoomout').click(function () {
+    $('#zoomout').click(function() {
         resizeCanvas(-50);
     });
 
-    $('#reload').click(function () {
+    $('#reload').click(function() {
         let bpmnLink = $('#bpmnLink').val();
 
         if (bpmnLink === null || bpmnLink === '') {
@@ -107,7 +105,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#analyzeDoc').click(function () {
+    $('#analyzeDoc').click(function() {
         $('#zoombuttons').show();
         $('#canvas').show();
 
@@ -123,7 +121,7 @@ $(document).ready(function () {
 
         viewer = new BpmnJS({ container: '#canvas' });
 
-        viewer.importXML(bpmnXML, function (err) {
+        viewer.importXML(bpmnXML, function(err) {
             if (err) {
                 $('#canvas').append('<div class="alert alert-danger">' + err + '</div>');
             } else {
@@ -144,19 +142,12 @@ $(document).ready(function () {
 
                 $('#recommendations').empty();
 
-                let recommendations = [];
-
-                bpmnValidation(xmlDoc, recommendations, prefix);
-
-                for (let value in recommendations) {
-                    $('#recommendations').append('<div class="alert alert-danger">' +
-                        recommendations[value] + '</div>');
-                }
+                bpmnValidation(xmlDoc, prefix);
             }
         });
     });
 
-    $('#closewarn').click(function () {
+    $('#closewarn').click(function() {
         Cookies.set('hidewarn', 'true');
 
         $('#warning').hide();
@@ -169,7 +160,7 @@ function loadDocumentByLink() {
     if (bpmnLink.length === 0) {
         localStorage.setItem('link', '');
     } else {
-        $.get(bpmnLink, function (data) {
+        $.get(bpmnLink, function(data) {
             editor.setValue('');
             editor.insert(data);
 
@@ -205,7 +196,7 @@ function resizeCanvas(change) {
 
         let bpmnXML = editor.getValue();
 
-        viewer.importXML(bpmnXML, function (err) {
+        viewer.importXML(bpmnXML, function(err) {
             if (err) {
                 $('#canvas').append('<div class="alert alert-danger">' + err + '</div>');
             } else {
@@ -217,15 +208,10 @@ function resizeCanvas(change) {
     }
 }
 
-function bpmnValidation(xmlDoc, recommendations, prefix) {
+function bpmnValidation(xmlDoc, prefix) {
     let processList = xmlDoc.getElementsByTagName(prefix + 'process');
 
     for (let k = 0; k < processList.length; k++) {
-        let startEvents = 0;
-        let endEvents = 0;
-
-        let inclusiveGateways = 0;
-
         let splits = {};
         let joins = {};
 
@@ -236,9 +222,27 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
             processList[k].attributes['name'].nodeValue;
         processName = processName === '' ? processList[k].attributes['id'].nodeValue : processName;
 
-        recommendations.push('Process <b>' + processName + '</b> has errors:');
+        let warnings = {
+            invalidTasks: 0,
+            invalidEvents: 0,
+            gatewaysMismatch: 0,
+            startEvents: 0,
+            endEvents: 0,
+            inclusiveGateways: 0,
+            uncertainGateways: 0,
+
+            validate: function() {
+                return this.invalidTasks === 0 && this.invalidEvents === 0 && this.gatewaysMismatch === 0 &&
+                    this.startEvents === 1 && this.endEvents === 1 && this.inclusiveGateways === 0 &&
+                    this.uncertainGateways === 0;
+            }
+        }
+
+        $('#recommendations').append('<div class="alert alert-light">' +
+            'Process <b>"' + processName + '"</b>' + '</div>');
 
         for (let i = 0; i < process.length; i++) {
+            // [start] Tasks analysis
             if (process[i].nodeName.toLowerCase().includes('task'.toLowerCase()) ||
                 process[i].nodeName.toLowerCase().includes('subProcess'.toLowerCase())) {
                 let name = process[i].attributes['name'] === undefined ?
@@ -259,31 +263,33 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
                     }
                 }
 
-                let incomingChange = 1 - incoming;
-
-                if (incomingChange !== 0) {
-                    if (incomingChange > 0) {
-                        recommendations.push('Add ' + incomingChange +
-                            ' incoming arc(s) to "' + name + '" task');
-                    } else {
-                        recommendations.push('Remove ' + Math.abs(incomingChange) +
-                            ' incoming arc(s) from "' + name + '" task');
-                    }
+                if (incoming !== 1 || outgoing !== 1) {
+                    warnings.invalidTasks++;
                 }
 
-                let outgoingChange = 1 - outgoing;
+                if (incoming < 1) {
+                    $('#recommendations').append('<div class="alert alert-danger">' +
+                        'Task <b>"' + name + '"</b> does not have any incoming flows' + '</div>');
+                }
 
-                if (outgoingChange !== 0) {
-                    if (outgoingChange > 0) {
-                        recommendations.push('Add ' + outgoingChange +
-                            ' outgoing arc(s) to "' + name + '" task');
-                    } else {
-                        recommendations.push('Remove ' + Math.abs(outgoingChange) +
-                            ' outoing arc(s) from "' + name + '" task');
-                    }
+                if (incoming > 1) {
+                    $('#recommendations').append('<div class="alert alert-danger">' +
+                        'Task <b>"' + name + '"</b> has multiple incoming flows' + '</div>');
+                }
+
+                if (outgoing < 1) {
+                    $('#recommendations').append('<div class="alert alert-danger">' +
+                        'Task <b>"' + name + '"</b> does not have any outgoing flows' + '</div>');
+                }
+
+                if (outgoing > 1) {
+                    $('#recommendations').append('<div class="alert alert-danger">' +
+                        'Task <b>"' + name + '"</b> has multiple outgoing flows' + '</div>');
                 }
             }
+            // [end] Tasks analysis
 
+            // [start] Events analysis
             if (process[i].nodeName.includes('Event')) {
                 let name = process[i].attributes['name'] === undefined ?
                     process[i].attributes['id'].nodeValue :
@@ -303,47 +309,39 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
                     }
                 }
 
-                let inIdeal = 1;
-
                 if (process[i].nodeName.toLowerCase().includes('startEvent'.toLowerCase())) {
-                    inIdeal = 0;
-
-                    startEvents++;
-                }
-
-                let incomingChange = inIdeal - incoming;
-
-                if (incomingChange !== 0) {
-                    if (incomingChange > 0) {
-                        recommendations.push('Add ' + incomingChange +
-                            ' incoming arc(s) to "' + name + '" event');
-                    } else {
-                        recommendations.push('Remove ' + Math.abs(incomingChange) +
-                            ' incoming arc(s) from "' + name + '" event');
+                    warnings.startEvents++;
+                } else if (process[i].nodeName.toLowerCase().includes('endEvent'.toLowerCase())) {
+                    warnings.endEvents++;
+                } else {
+                    if (incoming !== 1 || outgoing !== 1) {
+                        warnings.invalidEvents++;
                     }
-                }
 
-                let outIdeal = 1;
+                    if (incoming < 1) {
+                        $('#recommendations').append('<div class="alert alert-danger">' +
+                            'Event <b>"' + name + '"</b> does not have any incoming flows' + '</div>');
+                    }
 
-                if (process[i].nodeName.toLowerCase().includes('endEvent'.toLowerCase())) {
-                    outIdeal = 0;
+                    if (incoming > 1) {
+                        $('#recommendations').append('<div class="alert alert-danger">' +
+                            'Event <b>"' + name + '"</b> has multiple incoming flows' + '</div>');
+                    }
 
-                    endEvents++;
-                }
+                    if (outgoing < 1) {
+                        $('#recommendations').append('<div class="alert alert-danger">' +
+                            'Event <b>"' + name + '"</b> does not have any outgoing flows' + '</div>');
+                    }
 
-                let outgoingChange = outIdeal - outgoing;
-
-                if (outgoingChange !== 0) {
-                    if (outgoingChange > 0) {
-                        recommendations.push('Add ' + outgoingChange +
-                            ' outgoing arc(s) to "' + name + '" event');
-                    } else {
-                        recommendations.push('Remove ' + Math.abs(outgoingChange) +
-                            ' outoing arc(s) from "' + name + '" event');
+                    if (outgoing > 1) {
+                        $('#recommendations').append('<div class="alert alert-danger">' +
+                            'Event <b>"' + name + '"</b> has multiple outgoing flows' + '</div>');
                     }
                 }
             }
+            // [end] Events analysis
 
+            // [start] Gateways analysis
             if (process[i].nodeName.toLowerCase().includes('gateway'.toLowerCase())) {
                 let name = process[i].attributes['name'] === undefined ?
                     process[i].attributes['id'].nodeValue :
@@ -374,9 +372,7 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
                     if (joins[process[i].nodeName] === undefined) {
                         joins[process[i].nodeName] = 0;
                     }
-                }
-
-                if (incoming > 1 && outgoing === 1) {
+                } else if (incoming > 1 && outgoing === 1) {
                     if (joins[process[i].nodeName] === undefined) {
                         joins[process[i].nodeName] = 1;
                     } else {
@@ -387,72 +383,64 @@ function bpmnValidation(xmlDoc, recommendations, prefix) {
                     if (splits[process[i].nodeName] === undefined) {
                         splits[process[i].nodeName] = 0;
                     }
+                } else {
+                    warnings.uncertainGateways++;
                 }
 
                 if (process[i].nodeName.toLowerCase().includes('inclusiveGateway'.toLowerCase())) {
-                    inclusiveGateways++;
-                }
-
-                let change = 3 - (incoming + outgoing);
-
-                if (change !== 0) {
-                    if (change > 0) {
-                        recommendations.push('Add ' + change +
-                            ' arc(s) to "' + name + '" gateway');
-                    } else {
-                        recommendations.push('Remove ' + Math.abs(change) +
-                            ' arc(s) from "' + name + '" gateway');
-                    }
+                    warnings.inclusiveGateways++;
                 }
             }
         }
 
-        let startEventsChange = 1 - startEvents;
-
-        if (startEventsChange !== 0) {
-            if (startEventsChange > 0) {
-                recommendations.push('Add ' + Math.abs(startEventsChange) + ' start event(s)');
-            } else {
-                recommendations.push('Remove ' + Math.abs(startEventsChange) + ' start event(s)');
-            }
+        if (warnings.inclusiveGateways > 0) {
+            $('#recommendations').append('<div class="alert alert-danger">' +
+                'Process contains <b>inclusive gateways</b>' + '</div>');
         }
 
-        let endEventsChange = 1 - endEvents;
-
-        if (endEventsChange !== 0) {
-            if (endEventsChange > 0) {
-                recommendations.push('Add ' + Math.abs(endEventsChange) + ' end event(s)');
-            } else {
-                recommendations.push('Remove ' + Math.abs(endEventsChange) + ' end event(s)');
-            }
-        }
-
-        let inclusiveGatewaysChange = 0 - inclusiveGateways;
-
-        if (inclusiveGatewaysChange !== 0) {
-            recommendations.push('Remove ' + Math.abs(inclusiveGatewaysChange) + ' inclusive gateways(s)');
+        if (warnings.uncertainGateways > 0) {
+            $('#recommendations').append('<div class="alert alert-danger">' +
+                'Process contains <b>uncertain gateways</b> (neither splits nor joins)' + '</div>');
         }
 
         for (var key in splits) {
             if (splits.hasOwnProperty(key) && joins.hasOwnProperty(key)) {
-                let splitsChanges = joins[key] - splits[key];
-                let joinsChanges = splits[key] - joins[key];
+                let gatewaysMismatch = splits[key] - joins[key];
 
-                if (splitsChanges !== 0 || joinsChanges !== 0) {
-                    let splitsAction = splitsChanges > 0 ? 'Add ' : 'Remove ';
-                    let joinsAction = joinsChanges > 0 ? 'add ' : 'remove ';
+                warnings.gatewaysMismatch += Math.abs(gatewaysMismatch);
 
-                    recommendations.push(splitsAction + ' ' + Math.abs(splitsChanges) + ' ' + key +
-                        '-split gateway(s) or ' + joinsAction + ' ' + Math.abs(joinsChanges) + ' ' + key +
-                        '-join gateway(s)');
+                if (Math.abs(gatewaysMismatch) > 0) {
+                    $('#recommendations').append('<div class="alert alert-danger">' +
+                        'Mismatch of <b>' + key.replace('G', ' g') + 's</b>' + '</div>');
                 }
             }
         }
-    }
+        // [end] Gateways analysis
 
-    if (recommendations.length === 0) {
-        $('#recommendations').append('<div class="alert alert-info">' +
-            'No changes required</div>');
+        if (warnings.startEvents < 1) {
+            $('#recommendations').append('<div class="alert alert-danger">' +
+                'Process does not have any <b>start events</b>' + '</div>');
+        }
+
+        if (warnings.startEvents > 1) {
+            $('#recommendations').append('<div class="alert alert-danger">' +
+                'Process has multiple <b>start events</b>' + '</div>');
+        }
+
+        if (warnings.endEvents < 1) {
+            $('#recommendations').append('<div class="alert alert-danger">' +
+                'Process does not have any <b>end events</b>' + '</div>');
+        }
+
+        if (warnings.endEvents > 1) {
+            $('#recommendations').append('<div class="alert alert-danger">' +
+                'Process has multiple <b>end events</b>' + '</div>');
+        }
+
+        if (warnings.validate()) {
+            $('#recommendations').append('<div class="alert alert-info">' +
+                'No warnings found</div>');
+        }
     }
 }
 

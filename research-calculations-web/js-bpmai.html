@@ -2,59 +2,91 @@
 <html>
 
 <head>
-	<title>JS-BPMAI Tool</title>
-	<link rel="stylesheet" href="css/bootstrap.min.css" />
-	<link rel="stylesheet" href="css/js-bmpai.css" />
+    <title>BPMN Quality Analysis. Free validation of business process models | BPMQA</title>
+    <meta name="description" content="Simple but powerful free online BPMN quality analysis service. Free online quality validation of your Business Process Model and Notation diagrams. Supports BPMN 2.0 exchange format" />
+    <meta name="keywords" content="business, process, BPMN, BPM, model, diagram, online, quality, validation, metric, management, notation" />
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/js-bmpai.css" />
 </head>
 
 <body>
-	<div class="alert alert-warning alert-dismissible" id="warning">
-		<a href="javascript:void(0);" class="close" data-dismiss="alert" id="closewarn" aria-label="close">&times;</a>
-		This site uses cookies and browser's local storage to offer you a better working experience.
-	</div>
+    <div class="alert alert-warning alert-dismissible" id="warning">
+        <a href="javascript:void(0);" class="close" data-dismiss="alert" id="closewarn" aria-label="close">&times;</a> This site uses cookies and browser's local storage to offer you better working experience.
+    </div>
 
-	<h3>Business Process Model Analysis & Improvement Tool</h3>
-	<div>
-		<label>Place the content of a BPMN document to the editor below or use the link</label>
-		<p class="form-inline">
-			<input type="text" class="form-control col-sm-11" id="bpmnLink" placeholder="Link to the BPMN document" />
-			<button type="button" class="btn btn-primary col-sm-1" id="reload">Reload</button>
-		</p>
-		<div class="btn-group">
-			<button type="button" class="btn btn-default btn-sm" id="expand">Expand</button>
-			<button type="button" class="btn btn-default btn-sm" id="collapse">Collapse</button>
-		</div>
-		<div class="btn-group">
-			<button type="button" class="btn btn-link btn-sm" id="copy">Copy</button>
-			<button type="button" class="btn btn-link btn-sm" id="paste">Paste</button>
-			<button type="button" class="btn btn-link btn-sm" id="clear">Clear</button>
-		</div>
-		<p>
-			<div id="editor"></div>
-		</p>
-		<label>XMLNS prefix used for BPMN elements</label>
-		<p>
-			<input type="text" class="form-control" id="bpmnPrefix" />
-		</p>
-		<p>
-			<button class="btn btn-info" id="analyzeDoc">Analyze BPMN Document</button>
-		</p>
-	</div>
-	<div class="btn-group" id="zoombuttons">
-		<button type="button" class="btn btn-default btn-sm" id="zoomin">Zoom-in</button>
-		<button type="button" class="btn btn-default btn-sm" id="zoomout">Zoom-out</button>
-	</div>
-	<p>
-		<div id="canvas"></div>
-	</p>
-	<p>
-		<div id="recommendations"></div>
-	</p>
-	<script src="js/bpmn-viewer.development.js"></script>
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/ace/ace.js"></script>
-	<script src="js/js.cookie.js"></script>
-	<script src="app/js-bpmai.js"></script>
+    <div class="jumbotron">
+        <h1 class="display-4">BPMN Quality Analysis</h1>
+        <p class="lead">This is a simple but powerful online service you can use to validate quality of <br/>Business Process Model and Notation (BPMN) diagrams for <b>free</b></p>
+        <hr class="my-4">
+        <p>We use a third-party <a href="https://github.com/bpmn-io">bpmn.io</a> service to visualize BPMN models</p>
+        <a class="btn btn-primary btn-lg" href="#getStarted" role="button">Get started</a>
+    </div>
+
+    <div id="getStarted">
+        <label>Place the content of a BPMN document to the editor below or use the link to a raw document online</label>
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="bpmnLink" placeholder="Link to the BPMN document" />
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-info" id="reload">Load</button>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default btn-sm" id="expand">Expand</button>
+            <button type="button" class="btn btn-default btn-sm" id="collapse">Collapse</button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-link btn-sm" id="copy">Copy</button>
+            <button type="button" class="btn btn-link btn-sm" id="paste">Paste</button>
+            <button type="button" class="btn btn-link btn-sm" id="clear">Clear</button>
+        </div>
+        <p>
+            <div id="editor"></div>
+        </p>
+
+        <label>XMLNS prefix used for BPMN elements</label>
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="bpmnPrefix" />
+            <div class="input-group-append">
+                <button class="btn btn-outline-info" id="analyzeDoc">Analyze BPMN Document</button>
+            </div>
+        </div>
+    </div>
+    <div class="btn-group" id="zoombuttons">
+        <button type="button" class="btn btn-default btn-sm" id="zoomin">Zoom-in</button>
+        <button type="button" class="btn btn-default btn-sm" id="zoomout">Zoom-out</button>
+    </div>
+    <p>
+        <div id="canvas"></div>
+    </p>
+    <p>
+        <div id="recommendations"></div>
+    </p>
+
+    <div class="card text-center">
+        <div class="card-body">
+            <h5 class="card-title">Free BPMN Quality Analysis Online Service</h5>
+            <p class="card-text"><a href="mailto:7960954@gmail.com">Contact us</a> to report bugs or offer cooperation</p>
+            <p class="card-text">We use a third-party <a href="https://github.com/bpmn-io">bpmn.io</a> service to visualize BPMN models</p>
+            <a class="btn btn-primary" href="https://creativecommons.org/licenses/by/3.0/legalcode">Creative Commons Attribution (CC-BY) License</a>
+        </div>
+        <div class="card-footer text-muted">
+            BPMN Quality Analysis <b>(CC-BY)</b>
+            <script>
+                var CurrentYear = new Date().getFullYear()
+                document.write(CurrentYear)
+            </script>
+        </div>
+    </div>
+
+    <script src="js/bpmn-viewer.development.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/ace/ace.js"></script>
+    <script src="js/js.cookie.js"></script>
+    <script src="app/js-bpmai.js"></script>
 </body>
 
 </html>
