@@ -67,6 +67,8 @@ public class BPMGraphUtil {
                             }
 
                             processName += "_[Id-" + process.getId() + "]";
+                            processName = processName.replaceAll("\r\n", "");
+                            processName = processName.replaceAll("\n", "");
 
                             ProcessModelBean processModelBean = new ProcessModelBean();
                             processModelBean.setId(UUID.randomUUID().toString());
