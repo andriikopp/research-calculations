@@ -465,6 +465,7 @@ public class ProcessModelImportUtil {
         Sql2o sql2o = Configuration.DB_CREDENTIALS;
 
         try (Connection connection = sql2o.open()) {
+            connection.createQuery("delete from f_node").executeUpdate();
             connection.createQuery("delete from f_analysis").executeUpdate();
             connection.createQuery("delete from f_partition").executeUpdate();
             connection.createQuery("delete from f_recommendations").executeUpdate();

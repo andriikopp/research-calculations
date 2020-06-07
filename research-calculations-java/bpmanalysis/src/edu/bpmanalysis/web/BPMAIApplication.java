@@ -11,6 +11,7 @@ import edu.bpmanalysis.search.graph.ProcessModelRDFGraphStorage;
 import edu.bpmanalysis.search.partition.ProcessModelAnalysisResultsPartition;
 import edu.bpmanalysis.web.model.AnalysisResultsRepositoryMySQL;
 import edu.bpmanalysis.web.model.PartitionRepositoryMySQL;
+import edu.bpmanalysis.web.model.ProcessModelStructureRepositoryMySQL;
 import edu.bpmanalysis.web.model.RecommendationsRepositoryMySQL;
 import edu.bpmanalysis.web.model.api.AnalysisResultsRepository;
 import edu.bpmanalysis.web.model.api.PartitionRepository;
@@ -82,10 +83,12 @@ public class BPMAIApplication {
         }
 
         List<Model> models = new ArrayList<>();
+        ProcessModelStructureRepositoryMySQL processModelStructureRepositoryMySQL = new ProcessModelStructureRepositoryMySQL();
 
         for (ProcessModelBean bean : processModelRepository.getProcessModels()) {
             Model model = ProcessModelAnalysisUtil.transformToModel(bean);
             models.add(model);
+            processModelStructureRepositoryMySQL.storeModel(model);
         }
 
         GraphMetricsUtil.analyzeModels(processModelRepository);
@@ -107,7 +110,7 @@ public class BPMAIApplication {
 
         System.out.println();
         System.out.println(
-                        "▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
+                "▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
                         "▒█▀▀▄ ▒█▄▄█ ▒█▒█▒█ ▒█▄▄█ ▒█░ 　 ░▒█░░ ▒█░░▒█ ▒█░░▒█ ▒█░░░ \n" +
                         "▒█▄▄█ ▒█░░░ ▒█░░▒█ ▒█░▒█ ▄█▄ 　 ░▒█░░ ▒█▄▄▄█ ▒█▄▄▄█ ▒█▄▄█");
         System.out.println();
