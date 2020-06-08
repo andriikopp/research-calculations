@@ -43,6 +43,8 @@ public class BpmnNodesQueryingUtil {
             sql += "(" + condition + " and node_type = \"" + tokens[2] + "\")";
         } else if (tokens[1].equals("valid")) {
             sql += "(not " + condition + " and node_type = \"" + tokens[2] + "\")";
+        } else if (tokens[1].equals("*")) {
+            sql += "(node_type = \"" + tokens[2] + "\")";
         } else {
             throw new RuntimeException(ERROR_MESSAGE);
         }
@@ -71,6 +73,36 @@ public class BpmnNodesQueryingUtil {
         }
 
         return results;
+    }
+
+    public List<String> getAllModels() {
+        String sql = "select distinct bpmn_model from bpmn_models";
+
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql).executeAndFetch(String.class);
+        }
+    }
+
+    public double getModelQuality(String model) {
+        double invalidNodes = 0;
+
+        try (Connection con = sql2o.open()) {
+            invalidNodes += con.createQuery(translateQuery("select invalid Task from " + model)).executeAndFetchTable().rows().size();
+            invalidNodes += con.createQuery(translateQuery("select invalid Event from " + model)).executeAndFetchTable().rows().size();
+
+            invalidNodes += con.createQuery(translateQuery("select invalid XOr from " + model)).executeAndFetchTable().rows().size();
+            invalidNodes += con.createQuery(translateQuery("select invalid And from " + model)).executeAndFetchTable().rows().size();
+            invalidNodes += con.createQuery(translateQuery("select invalid Or from " + model)).executeAndFetchTable().rows().size();
+        }
+
+        double totalNodes = 0;
+
+        try (Connection con = sql2o.open()) {
+            totalNodes += con.createQuery("select * from bpmn_models where bpmn_model = :model")
+                    .addParameter("model", model).executeAndFetchTable().rows().size();
+        }
+
+        return 1.0 - invalidNodes / totalNodes;
     }
 
     public static void main(String[] args) {
