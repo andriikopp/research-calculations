@@ -35,36 +35,36 @@ public class ProcessEventLogSandbox {
         return Arrays.asList(label);
     }
 
-    public static void run(String name, List<String> process) {
-        System.out.println(name);
-
+    public static void run(int instance, List<String> process) {
         for (String task : process) {
-            System.out.println(task);
+            System.out.println(String.format("%d\t%s\t%s", instance, task, System.nanoTime()));
         }
     }
 
     public static void main(String[] args) {
-        run("Dispatch of Goods",
-                sequence(
-                        exclusive(
-                                sequence(
-                                        parallel(
-                                                task("Request Bid Shipping Company 1"),
-                                                task("Request Bid Shipping Company 2"),
-                                                task("Request Bid Shipping Company 3")
-                                        ),
-                                        task("Choose Company")
-                                ),
-                                task("Normal Post")
-                        ),
-                        task("Package Label"),
-                        task("Determine Insurance"),
-                        exclusive(
-                                task("Insurance Taken"),
-                                task("Insurance Not Taken")
-                        ),
-                        task("Prepare for pickup")
-                )
-        );
+
+        for (int instance = 1; instance <= 100; instance++)
+            run(instance,
+                    sequence(
+                            exclusive(
+                                    sequence(
+                                            parallel(
+                                                    task("Request Bid Shipping Company 1"),
+                                                    task("Request Bid Shipping Company 2"),
+                                                    task("Request Bid Shipping Company 3")
+                                            ),
+                                            task("Choose Company")
+                                    ),
+                                    task("Normal Post")
+                            ),
+                            task("Package Label"),
+                            task("Determine Insurance"),
+                            exclusive(
+                                    task("Insurance Taken"),
+                                    task("Insurance Not Taken")
+                            ),
+                            task("Prepare for pickup")
+                    )
+            );
     }
 }
