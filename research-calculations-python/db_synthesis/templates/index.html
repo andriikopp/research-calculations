@@ -5,18 +5,35 @@
     <title>DB Synthesis</title>
 </head>
 <body>
+
+<table>
+    <tr>
+        <td><b>Business rules pattern for attributes</b></td>
+        <td><b>Business rules pattern for entities</b></td>
+    </tr>
+    <tr>
+        <td>
+            <p><i>(A | Each) {Entity} [is described by] {attr1}, {attr2}, ..., (and) {attrN} .</i></p>
+            <p><i>Example (one attribute):</i> Each Student is described by Full Name.</p>
+            <p><i>Example (two attributes):</i> A Student is described by Last Name, and First Name.</p>
+            <p><i>Example (multiple attribute):</i> Each Student is described by Full Name, Year, and Birthdate.</p>
+        </td>
+        <td>
+            <p><i>(A | Each) {Entity} {relationship} (one | many) {Entity} .</i></p>
+            <p><i>Example (1:M):</i> A Student is assigned to many Courses.</p>
+            <p><i>Example (1:1):</i> Each Student has a one Identification.</p>
+        </td>
+    </tr>
+</table>
+
 <form method="get" action="translate">
-    <p>
-        Database name:
-    </p>
+    <b>Database name:</b>
     <p>
         <input type="text" name="name"/>
     </p>
+    <b>Business rules:</b>
     <p>
-        Business rules:
-    </p>
-    <p>
-        <textarea name="rules" rows="20" cols="100"></textarea>
+        <textarea name="rules" rows="15" cols="135"></textarea>
     </p>
     <p>
         <input type="submit">
