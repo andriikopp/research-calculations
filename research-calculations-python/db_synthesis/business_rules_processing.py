@@ -105,25 +105,23 @@ def translate():
     relations = []
 
     for entity in entities:
-        # assign data types to attributes
-        # TODO
-        data_type = 'VARCHAR(255)'
+        key_data_type = 'INTEGER'
 
         tables[entity] = set()
 
         # add declared attributes
         if entity in entities_attributes.keys():
-            tables[entity].update(['`' + re.sub(r'\s+', '_', attribute) + '` ' + data_type for attribute in
+            tables[entity].update(['`' + re.sub(r'\s+', '_', attribute) + '` ' + detect_type(attribute) for attribute in
                                    entities_attributes[entity]])
 
         for relationship in entities_relations:
             if relationship['object'] == entity:
                 # establish references according to the cardinality
                 if relationship['cardinality'] == '1:M':
-                    tables[entity].update(['`' + entity + '_ID`' + ' ' + data_type + ' PRIMARY KEY'])
-                    tables[entity].update(['`' + relationship['subject'] + '_ID` ' + data_type])
+                    tables[entity].update(['`' + entity + '_ID`' + ' ' + key_data_type + ' AUTO_INCREMENT PRIMARY KEY'])
+                    tables[entity].update(['`' + relationship['subject'] + '_ID` ' + key_data_type])
                 elif relationship['cardinality'] == '1:1':
-                    tables[entity].update(['`' + relationship['subject'] + '_ID` ' + data_type + ' PRIMARY KEY'])
+                    tables[entity].update(['`' + relationship['subject'] + '_ID` ' + key_data_type + ' PRIMARY KEY'])
 
                 # establish foreign keys
                 relations.append(
@@ -131,7 +129,7 @@ def translate():
                         'subject'] + '_ID`) REFERENCES `' +
                     relationship['subject'] + '` (`' + relationship['subject'] + '_ID`);')
             elif relationship['subject'] == entity:
-                tables[entity].update(['`' + entity + '_ID`' + ' ' + data_type + ' PRIMARY KEY'])
+                tables[entity].update(['`' + entity + '_ID`' + ' ' + key_data_type + ' AUTO_INCREMENT PRIMARY KEY'])
 
     # OUTPUT: DDL statements
     output = 'DROP DATABASE IF EXISTS `' + database_name + '`;\n'
@@ -156,6 +154,39 @@ def translate():
         output += relation + '\n'
 
     return output
+
+
+# function to suggest data type by field name
+def detect_type(filed_name):
+    data_type = 'VARCHAR(255)'
+
+    types_tags = {
+        # string tags
+        'name': 'string', 'title': 'string', 'comment': 'string', 'description': 'string', 'text': 'string',
+        'note': 'string',
+
+        # number tags
+        'number': 'number', 'count': 'number', 'amount': 'number', 'price': 'number', 'cost': 'number',
+        'point': 'number', 'score': 'number', 'quantity': 'number',
+
+        # date/time tags
+        'date': 'datetime', 'time': 'datetime'
+    }
+
+    types_mysql = {
+        'string': 'VARCHAR(255)',
+        'number': 'DECIMAL(18,2)',
+        'datetime': 'DATETIME',
+        'blob': 'BLOB'
+    }
+
+    # match tags in field names and suggest data types
+    for tag in types_tags:
+        if tag in filed_name.lower():
+            data_type = types_mysql[types_tags[tag]]
+            break
+
+    return data_type
 
 
 if __name__ == '__main__':
