@@ -1,7 +1,9 @@
 package edu.bpmanalysis.web;
 
 import com.google.gson.Gson;
-import edu.bpmanalysis.analysis.*;
+import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
+import edu.bpmanalysis.analysis.RecommendationsUtil;
+import edu.bpmanalysis.analysis.SummaryAnalysisUtil;
 import edu.bpmanalysis.analysis.bean.ProcessModelAnalysisBean;
 import edu.bpmanalysis.analysis.model.EvaluationUtil;
 import edu.bpmanalysis.config.Configuration;
@@ -91,9 +93,6 @@ public class BPMAIApplication {
             processModelStructureRepositoryMySQL.storeModel(model);
         }
 
-        GraphMetricsUtil.analyzeModels(processModelRepository);
-        GraphMetricsUtil.measurePerformance(processModelRepository);
-
         staticFiles.location("/web");
 
         path("/", () -> {
@@ -109,19 +108,14 @@ public class BPMAIApplication {
         });
 
         System.out.println();
-        System.out.println(
-                "▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
-                        "▒█▀▀▄ ▒█▄▄█ ▒█▒█▒█ ▒█▄▄█ ▒█░ 　 ░▒█░░ ▒█░░▒█ ▒█░░▒█ ▒█░░░ \n" +
-                        "▒█▄▄█ ▒█░░░ ▒█░░▒█ ▒█░▒█ ▄█▄ 　 ░▒█░░ ▒█▄▄▄█ ▒█▄▄▄█ ▒█▄▄█");
+        System.out.println("▒█▀▀█ ▒█▀▀█ ▒█▀▄▀█ ░█▀▀█ ▀█▀ 　 ▀▀█▀▀ ▒█▀▀▀█ ▒█▀▀▀█ ▒█░░░ \n" +
+                           "▒█▀▀▄ ▒█▄▄█ ▒█▒█▒█ ▒█▄▄█ ▒█░ 　 ░▒█░░ ▒█░░▒█ ▒█░░▒█ ▒█░░░ \n" +
+                           "▒█▄▄█ ▒█░░░ ▒█░░▒█ ▒█░▒█ ▄█▄ 　 ░▒█░░ ▒█▄▄▄█ ▒█▄▄▄█ ▒█▄▄█");
         System.out.println();
         System.out.println("API is now serving at http://localhost:4567/bpmai/api/");
         System.out.println("Use /models to access all process models");
         System.out.println("Use /model/<MODEL_ID> to access a specific process model");
         System.out.println("Use /partition to access the models partition results");
         System.out.println();
-
-        for (Model model : models) {
-            IndicatorsUtil.printIndicators(model);
-        }
     }
 }
