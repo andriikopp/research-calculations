@@ -31,17 +31,17 @@ for script in soup.findAll('script', src=True):
     if script_src.endswith('.js'):
         js_components.add(script_src)
 
-presentation_weight = 0.17
-behavior_weight = 0.83
-complexity = presentation_weight * len(css_components) + behavior_weight * len(js_components)
+behavior = 'Web Page Behavior'
+presentation = 'Web Page Presentation'
+
+print(presentation + ' Components: ' + str(len(css_components)))
+print(behavior + ' Components: ' + str(len(js_components)))
+
+print('Application Architecture Model:')
 
 print('@startuml')
 print('!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml')
-print('title Complexity = ' + str(round(complexity, 2)))
 print('Group([' + home_page + '], "' + home_page + '") {')
-
-behavior = 'Web Page Behavior'
-presentation = 'Web Page Presentation'
 
 print('Group([' + presentation.replace(' ', '_') + '], "' + presentation + '") {')
 
