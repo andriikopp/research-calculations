@@ -1,8 +1,10 @@
 package edu.bpmanalysis.web.bpmq.util;
 
+import edu.bpmanalysis.analysis.NodesSubsetsUtil;
 import edu.bpmanalysis.analysis.ProcessModelAnalysisUtil;
 import edu.bpmanalysis.description.ProcessModelImportUtil;
 import edu.bpmanalysis.description.tools.Model;
+import edu.bpmanalysis.web.bpmq.entity.BPMMeasures;
 import edu.bpmanalysis.web.bpmq.entity.BPModel;
 import edu.bpmanalysis.web.model.bean.ProcessModelBean;
 import edu.bpmanalysis.web.model.bean.ProcessModelGraphBean;
@@ -155,6 +157,29 @@ public class BPMGraphUtil {
                             Model model = ProcessModelAnalysisUtil.transformToModel(processModelBean);
                             BPModel bpModel = BPMGraphMetricsUtil.getBPModelFromGraph(model,
                                     processModelBean.getFileName() + "_" + processName);
+
+                            BPMMeasures bpmMeasures = new BPMMeasures();
+
+                            bpmMeasures.totalNodes = nodeBeans.size();
+                            bpmMeasures.sequenceFlows = edgeBeans.size();
+
+                            bpmMeasures.tasks = NodesSubsetsUtil.getFunctions(model).size();
+
+                            bpmMeasures.startEvents = NodesSubsetsUtil.getStartEvents(model).size();
+                            bpmMeasures.intermediateEvents = NodesSubsetsUtil.getIntermediateEvents(model).size();
+                            bpmMeasures.endEvents = NodesSubsetsUtil.getEndEvents(model).size();
+
+                            bpmMeasures.andGateways =
+                                    NodesSubsetsUtil.getSplitANDConnectors(model).size() +
+                                            NodesSubsetsUtil.getJoinANDConnectors(model).size();
+                            bpmMeasures.orGateways =
+                                    NodesSubsetsUtil.getSplitORConnectors(model).size() +
+                                            NodesSubsetsUtil.getJoinORConnectors(model).size();
+                            bpmMeasures.xorGateways =
+                                    NodesSubsetsUtil.getSplitXORConnectors(model).size() +
+                                            NodesSubsetsUtil.getJoinXORConnectors(model).size();
+
+                            bpModel.setMeasures(bpmMeasures);
 
                             if (bpModel != null) {
                                 bpmnModels.add(bpModel);

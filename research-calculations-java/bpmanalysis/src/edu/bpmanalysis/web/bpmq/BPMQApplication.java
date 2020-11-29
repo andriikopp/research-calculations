@@ -66,7 +66,7 @@ public class BPMQApplication implements CommandLineRunner {
         log.info("Total models: {}", bpModelRepository.count());
 
         for (BPModel bpModel : bpModels) {
-            System.out.println(bpModel);
+            System.out.println(bpModel.toString() + bpModel.getMeasures());
         }
     }
 }

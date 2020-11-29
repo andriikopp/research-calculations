@@ -26,6 +26,8 @@ public class BPModel {
     private double hardQuality;
     private double softQuality;
 
+    private BPMMeasures measures;
+
     @Override
     public String toString() {
         return fileName +
@@ -234,5 +236,13 @@ public class BPModel {
 
     public void setSoftQuality(double softQuality) {
         this.softQuality = softQuality;
+    }
+
+    public BPMMeasures getMeasures() {
+        return measures;
+    }
+
+    public void setMeasures(BPMMeasures measures) {
+        this.measures = measures;
     }
 }
