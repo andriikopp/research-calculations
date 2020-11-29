@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 import re
 
-home_page = 'https://www.turboatom.com.ua/'
+home_page = input("Web address: ")
 
 req = urllib.request.Request(home_page, headers={
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'})
